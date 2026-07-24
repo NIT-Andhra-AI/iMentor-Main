@@ -5,9 +5,8 @@
 const axios = require('axios');
 
 async function checkOllamaHealth(url) {
-    if (!url) return false;
+    const baseUrl = (url || process.env.OLLAMA_API_BASE_URL || `http://localhost:${process.env.OLLAMA_PORT || 11434}`).replace(/\/+$/, '');
     try {
-        const baseUrl = url.replace(/\/+$/, '');
         const resp = await axios.get(`${baseUrl}/api/tags`, { timeout: 3000 });
         return resp.status === 200 && Array.isArray(resp.data?.models);
     } catch {

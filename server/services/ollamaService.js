@@ -3,7 +3,6 @@
  * Direct HTTP calls to Ollama's API for local LLM generation.
  */
 const axios = require('axios');
-const log = require('../utils/logger');
 
 function resolveOllamaUrl(providedUrl) {
     return providedUrl
@@ -19,6 +18,16 @@ function resolveOllamaModel(options = {}) {
         || 'qwen2.5-coder:7b';
 }
 
+async function checkHealth() {
+    try {
+        const url = resolveOllamaUrl().replace(/\/+$/, '');
+        const resp = await axios.get(`${url}/api/tags`, { timeout: 3000 });
+        return resp.status === 200 && Array.isArray(resp.data?.models);
+    } catch {
+        return false;
+    }
+}
+
 async function generateContentWithHistory(chatHistory, currentUserQuery, systemPromptText = null, options = {}) {
     const baseUrl = resolveOllamaUrl(options.ollamaUrl).replace(/\/+$/, '');
     const model = resolveOllamaModel(options);
@@ -30,73 +39,49 @@ async function generateContentWithHistory(chatHistory, currentUserQuery, systemP
     }
     if (Array.isArray(chatHistory)) {
         for (const msg of chatHistory) {
-            const role = msg.role === 'model' ? 'assistant' : (msg.role || 'user');
+            const role = msg.role === 'model' || msg.role === 'assistant' ? 'assistant' : (msg.role || 'user');
             const content = Array.isArray(msg.parts) ? msg.parts[0].text : (msg.text || msg.content || '');
             if (role && content) messages.push({ role, content });
         }
     }
-    messages.push({ role: 'user', content: currentUserQuery });
+    if (currentUserQuery) {
+        messages.push({ role: 'user', content: currentUserQuery });
+    }
 
-    const resp = await axios.post(`${baseUrl}/api/chat`, {
-        model,
-        messages,
-        stream: false,
-        options: {
-            temperature: options.temperature ?? 0.7,
-            num_predict: options.maxOutputTokens ?? 4096,
-        }
-    }, { timeout });
+    try {
+        const resp = await axios.post(`${baseUrl}/api/chat`, {
+            model,
+            messages,
+            stream: false,
+            options: {
+                temperature: options.temperature ?? 0.7,
+                num_predict: options.maxOutputTokens ?? options.maxTokens ?? 4096,
+            }
+        }, { timeout });
 
-    return resp.data?.message?.content || '';
+        return resp.data?.message?.content || '';
+    } catch (err) {
+        throw new Error(`Ollama error: ${err.message}`);
+    }
 }
 
 async function streamChat(chatHistory, currentUserQuery, systemPromptText = null, options = {}, onToken) {
-    const baseUrl = resolveOllamaUrl(options.ollamaUrl).replace(/\/+$/, '');
-    const model = resolveOllamaModel(options);
-    const timeout = options.timeout || 30000;
-
-    const messages = [];
-    if (systemPromptText) messages.push({ role: 'system', content: systemPromptText });
-    if (Array.isArray(chatHistory)) {
-        for (const msg of chatHistory) {
-            const role = msg.role === 'model' ? 'assistant' : (msg.role || 'user');
-            const content = Array.isArray(msg.parts) ? msg.parts[0].text : (msg.text || msg.content || '');
-            if (role && content) messages.push({ role, content });
-        }
-    }
-    messages.push({ role: 'user', content: currentUserQuery });
-
-    const resp = await axios.post(`${baseUrl}/api/chat`, {
-        model,
-        messages,
-        stream: false,
-        options: {
-            temperature: options.temperature ?? 0.7,
-            num_predict: options.maxOutputTokens ?? 4096,
-        }
-    }, { timeout });
-
-    const text = resp.data?.message?.content || '';
+    const text = await generateContentWithHistory(chatHistory, currentUserQuery, systemPromptText, options);
     if (onToken && typeof onToken === 'function') {
         onToken({ type: 'token', content: text });
     }
     return text;
 }
 
-async function checkHealth() {
-    try {
-        const url = resolveOllamaUrl().replace(/\/+$/, '');
-        const resp = await axios.get(`${url}/api/tags`, { timeout: 3000 });
-        return resp.status === 200 && Array.isArray(resp.data?.models);
-    } catch {
-        return false;
-    }
-}
+const SGLANG_ENABLED = false;
 
 module.exports = {
     generateContentWithHistory,
     generateContent: (prompt, options = {}) =>
-        generateContentWithHistory([], prompt, null, options),
+        generateContentWithHistory([], typeof prompt === 'string' ? prompt : prompt.prompt, null, options),
     streamChat,
     checkHealth,
+    SGLANG_ENABLED,
+    DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG: 2000,
+    DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA: 2000,
 };

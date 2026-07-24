@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 const mongoose = require('mongoose');
 
-=======
-const mongoose = require('mongoose');
-
->>>>>>> pr-2
 const ConceptQuestionSchema = new mongoose.Schema({
   question_id: { type: String, required: true, unique: true, index: true },
   concept_id: { type: String, required: true, index: true },
@@ -21,17 +16,10 @@ const ConceptQuestionSchema = new mongoose.Schema({
   version: { type: Number, default: 1 },
 
   difficulty: {
-<<<<<<< HEAD
     type: String,
     default: 'medium',
     enum: ['easy', 'medium', 'hard', 'boss', 'expert']
   },
-=======
-    type: String,
-    default: 'medium',
-    enum: ['easy', 'medium', 'hard', 'boss', 'expert']
-  },
->>>>>>> pr-2
   bloom_level: { type: String, default: 'remember' },
   tags: { type: [String], default: [] },
   usage_count: { type: Number, default: 0 },
@@ -53,7 +41,3 @@ ConceptQuestionSchema.pre('save', function (next) {
 });
 
 module.exports = mongoose.model('ConceptQuestion', ConceptQuestionSchema);
-<<<<<<< HEAD
-
-=======
->>>>>>> pr-2

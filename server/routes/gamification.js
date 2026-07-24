@@ -380,8 +380,6 @@ async function generateDiagnosticWithLLM(topic, req, res) {
         return res.status(503).json({ message: 'AI Service Unavailable. Please try a pre-configured course.' });
     }
 }
-    }
-}
 
 // @route   POST /api/gamification/skill-tree/diagnostic/submit
 // @desc    Submit diagnostic answers and get assessment result

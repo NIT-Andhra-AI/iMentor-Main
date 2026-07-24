@@ -164,13 +164,6 @@ function safeExtractJson(rawResponse) {
   return null;
 }
 
-<<<<<<< HEAD
-/**
- * Robust parser for LLM JSON output.
- * Attempt order: JSON.parse → JSON5.parse → extract first object/array → sanitize → retry.
- */
-=======
->>>>>>> pr-2
 function safeParseLLMJson(rawResponse, { topic = '' } = {}) {
   const cleaned = stripCodeFences(rawResponse);
   const strategies = [

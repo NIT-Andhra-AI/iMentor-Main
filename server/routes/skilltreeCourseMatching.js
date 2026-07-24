@@ -1,23 +1,44 @@
+<<<<<<< HEAD
 // server/routes/skilltreeCourseMatching.js
 // Dedicated routes for course search bar + CSV upload matching.
 // No modifications to existing SkillTree generation routes.
 
+=======
+>>>>>>> pr-2
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const { authMiddleware } = require('../middleware/authMiddleware');
+<<<<<<< HEAD
 const log = require('../utils/logger');
+=======
+>>>>>>> pr-2
 
 const skilltreeCourseMatchingService = require('../services/skilltreeCourseMatchingService');
 const SkillTreeCsvUploadSnapshot = require('../models/SkillTreeCsvUploadSnapshot');
 
+<<<<<<< HEAD
 const REPORT_PATH = path.join(__dirname, '..', '..', 'curriculum_reports', 'skilltree_course_matching_report.json');
+=======
+const REPORT_DIR = path.join(__dirname, '..', '..', 'curriculum_reports');
+const REPORT_PATH = path.join(REPORT_DIR, 'skilltree_course_matching_report.json');
+
+// Ensure reports directory exists
+try {
+    if (!fs.existsSync(REPORT_DIR)) {
+        fs.mkdirSync(REPORT_DIR, { recursive: true });
+    }
+} catch (e) {
+    // Non-critical — directory may already exist
+}
+>>>>>>> pr-2
 
 function writeReport(report) {
   try {
     fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2), 'utf8');
   } catch (e) {
+<<<<<<< HEAD
     // best-effort; do not fail request
   }
 }
@@ -36,6 +57,14 @@ router.post('/upload', authMiddleware, async (req, res) => {
     }));
     console.log(`[${requestId}] [CSV UPLOAD] request received`);
     console.log(`[${requestId}] [CSV UPLOAD] uploadedFileName=`, req.body?.uploadedFileName || null);
+=======
+  }
+}
+
+router.post('/course-matching/upload', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user?._id;
+>>>>>>> pr-2
 
     let csvText = '';
 
@@ -56,11 +85,20 @@ router.post('/upload', authMiddleware, async (req, res) => {
     const existingCourseNames = Array.isArray(req.body?.existingCourseNames) ? req.body.existingCourseNames : [];
     const existingSkillTreeTopics = Array.isArray(req.body?.existingSkillTreeTopics) ? req.body.existingSkillTreeTopics : [];
 
+<<<<<<< HEAD
     console.log(`[${requestId}] [CSV UPLOAD] csvText length=`, csvText?.length || 0);
     console.log(`[${requestId}] [CSV UPLOAD] existingCourseNames count=`, existingCourseNames?.length || 0);
     console.log(`[${requestId}] [CSV UPLOAD] existingSkillTreeTopics count=`, existingSkillTreeTopics?.length || 0);
 
     // First, validate CSV structure and extract topics
+=======
+    const match = await skilltreeCourseMatchingService.matchUploadedCsvToExistingTopics({
+      csvText,
+      existingCourseNames,
+      existingSkillTreeTopics,
+      userId,
+    });
+>>>>>>> pr-2
     const uploadValidation = skilltreeCourseMatchingService.validateCsvUploadStructure(csvText);
 
     if (uploadValidation.validRows === 0) {
@@ -75,6 +113,7 @@ router.post('/upload', authMiddleware, async (req, res) => {
       });
     }
 
+<<<<<<< HEAD
     // Pre-extract topics to populate snapshot BEFORE matching (fixes first-upload cold start)
     const rawExtracted = await skilltreeCourseMatchingService.extractTopicsFromCsvText(csvText);
     const preExtractedTopics = skilltreeCourseMatchingService.cleanCurriculumTopics(rawExtracted) || [];
@@ -105,10 +144,13 @@ router.post('/upload', authMiddleware, async (req, res) => {
       userId,
     });
 
+=======
+>>>>>>> pr-2
     const extractedTopics = Array.isArray(match.extractedTopics) ? match.extractedTopics : [];
     const matchedConcepts = Array.isArray(match.matchedConcepts) && match.matchedConcepts.length > 0
       ? match.matchedConcepts
       : (match.matchedCandidate ? [match.matchedCandidate] : []);
+<<<<<<< HEAD
     let matchPercentage = match.matchPercentage;
     let reusedSkillTreeDecision = match.reusedSkillTreeDecision;
 
@@ -162,13 +204,22 @@ router.post('/upload', authMiddleware, async (req, res) => {
     if (!extractedTopics || extractedTopics.length === 0) {
       console.log(`[${requestId}] [CSV UPLOAD] WARNING: no topics extracted from CSV`);
     }
+=======
+    const matchPercentage = match.matchPercentage;
+    const reusedSkillTreeDecision = match.reusedSkillTreeDecision;
+>>>>>>> pr-2
 
     const report = {
       uploadedFileName: req.body?.uploadedFileName || null,
       extractedTopics,
       matchedConcepts,
+<<<<<<< HEAD
       matchPercentage: matchPercentage,
       reusedSkillTreeDecision: reusedSkillTreeDecision,
+=======
+      matchPercentage: match.matchPercentage,
+      reusedSkillTreeDecision: match.reusedSkillTreeDecision,
+>>>>>>> pr-2
       uploadReport: {
         validRows: uploadValidation.validRows,
         invalidRows: uploadValidation.invalidRows,
@@ -182,7 +233,10 @@ router.post('/upload', authMiddleware, async (req, res) => {
       }
     };
 
+<<<<<<< HEAD
     // Persist snapshot for later CFP usage (do not change response contract)
+=======
+>>>>>>> pr-2
     try {
       const canonicalTopic = skilltreeCourseMatchingService.firstRealCurriculumTopic(extractedTopics);
 
@@ -193,6 +247,7 @@ router.post('/upload', authMiddleware, async (req, res) => {
         (req.body?.topic || '').trim(),
       ].filter(Boolean))];
 
+<<<<<<< HEAD
       if (!canonicalTopic || skilltreeCourseMatchingService.isInvalidSnapshotCanonical(canonicalTopic)) {
         console.warn('[SNAPSHOT SAVE] skipped — no valid curriculum canonicalTopic', {
           firstFiveTopics: extractedTopics.slice(0, 5),
@@ -212,6 +267,9 @@ router.post('/upload', authMiddleware, async (req, res) => {
       }));
 
       if (canonicalTopic) {
+=======
+      if (canonicalTopic && !skilltreeCourseMatchingService.isInvalidSnapshotCanonical(canonicalTopic)) {
+>>>>>>> pr-2
         const snapshotPayload = {
           userId,
           canonicalTopic,
@@ -239,6 +297,7 @@ router.post('/upload', authMiddleware, async (req, res) => {
 
     res.json(report);
   } catch (err) {
+<<<<<<< HEAD
     log.error('CSV_MATCHING', `Course matching failed: ${err.message}${err.stack ? '\n' + err.stack : ''}`);
     res.status(500).json({
       success: false,
@@ -252,4 +311,81 @@ router.post('/upload', authMiddleware, async (req, res) => {
   }
 });
 
+=======
+    res.status(500).json({ message: 'Course matching failed', error: err?.message });
+  }
+});
+
+router.post('/course-matching/validate', authMiddleware, async (req, res) => {
+  const courseName = req.body?.courseName;
+  if (!courseName || !String(courseName).trim()) {
+    return res.status(400).json({ message: 'courseName is required' });
+  }
+
+  const qNorm = String(courseName).trim().toLowerCase();
+
+  const inventoryPath = path.join(__dirname, '..', '..', 'curriculum_reports', 'curriculum_inventory.json');
+  let inventory = { courses: [] };
+  try {
+    if (fs.existsSync(inventoryPath)) {
+      inventory = JSON.parse(fs.readFileSync(inventoryPath, 'utf8'));
+    }
+  } catch (e) {
+  }
+
+  const courses = (Array.isArray(inventory?.courses) ? inventory.courses : [])
+    .map(c => c.courseName || c.name || '').filter(Boolean);
+
+  const exact = courses.find(c => c.toLowerCase() === qNorm);
+  if (exact) {
+    return res.json({ status: 'exact', canonical: exact, suggestions: [] });
+  }
+
+  const alias = courses.find(c => c.toLowerCase().includes(qNorm) || qNorm.includes(c.toLowerCase()));
+  if (alias) {
+    return res.json({ status: 'alias', canonical: alias, suggestions: [] });
+  }
+
+  const suggestions = courses
+    .filter(c => c.toLowerCase().includes(qNorm) || qNorm.includes(c.toLowerCase()))
+    .slice(0, 6);
+
+  res.json({ status: suggestions.length ? 'suggestions' : 'other', canonical: null, suggestions });
+});
+
+router.get('/course-matching/autocomplete', authMiddleware, async (req, res) => {
+  const q = req.query?.q;
+  if (!q || String(q).trim().length < 3) {
+    return res.json({ suggestions: [] });
+  }
+
+  const query = String(q).trim().toLowerCase();
+
+  const inventoryPath = path.join(__dirname, '..', '..', 'curriculum_reports', 'curriculum_inventory.json');
+  let inventory = { courses: [] };
+  try {
+    if (fs.existsSync(inventoryPath)) {
+      inventory = JSON.parse(fs.readFileSync(inventoryPath, 'utf8'));
+    }
+  } catch (e) {
+  }
+
+  const courseNames = Array.isArray(inventory?.courses) ? inventory.courses.map(c => c.courseName || c.name || '').filter(Boolean) : [];
+
+  const scored = courseNames
+    .map(name => {
+      const lower = name.toLowerCase();
+      let score = 0;
+      if (lower.startsWith(query)) score = 1;
+      else if (lower.includes(query)) score = 0.6;
+      return { type: 'course', value: name, label: name, score };
+    })
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 8);
+
+  res.json({ suggestions: scored });
+});
+
+>>>>>>> pr-2
 module.exports = router;

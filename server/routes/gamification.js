@@ -14,6 +14,8 @@ const SkillTree = require('../models/SkillTree');
 const { selectLLM } = require('../services/llmRouterService');
 const geminiService = require('../services/geminiService');
 const { getCurriculumStructure } = require('../services/socraticTutorService');
+const conceptQuestionRepository = require('../services/conceptQuestionRepository');
+const skillTreeGameService = require('../services/skillTreeGameService');
 const log = require('../utils/logger');
 
 // All routes require authentication
@@ -331,101 +333,53 @@ router.post('/skill-tree/diagnostic', async (req, res) => {
     }
 });
 
-// Helper for legacy LLM fallback — generates diagnostic questions dynamically
-// for any course/topic that doesn't have pre-computed SkillTree questions.
 async function generateDiagnosticWithLLM(topic, req, res) {
     try {
-        // 1. Attempt generation via unified pipeline (Redis → MongoDB → Provider Chain → Template)
-        const contentGen = require('../services/contentGenerationService');
-        const assessment = await contentGen.generateOrRetrieveAssessment(topic, topic, req.user?._id);
-
-        if (assessment && assessment.questions && assessment.questions.length >= 3) {
-            const formatted = assessment.questions.map((q, i) => ({
-                question: q.question,
-                options: q.options || [],
-                level: q.difficulty || 'beginner',
-                skillId: `auto_diag_${topic}_${i}`,
-                type: 'mcq',
-            }));
-            log.success('GAMIFICATION', `Pipeline generated ${formatted.length} diagnostic questions for "${topic}" via ${assessment._source}`);
-            return res.json({
-                questions: formatted,
-                source: assessment._source || 'generated',
-                generatedBy: assessment.generatedBy || '',
-                model: assessment.model || '',
-                pipelineVersion: assessment.pipelineVersion || '',
-                generatedAt: assessment.generatedAt || '',
-            });
-        }
-
-        // 2. Fallback: Try Question Bank
-        log.info('GAMIFICATION', `No pipeline result, trying Question Bank for "${topic}"`);
+        // 1. Check repository first
         try {
-            const QuestionBank = require('../models/QuestionBank');
-            const existing = await QuestionBank.find({
-                course: { $regex: new RegExp(topic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }
-            }).sort({ difficulty: 1, bloomLevel: 1 }).lean();
-
-            if (existing.length >= 5) {
-                const shuffled = existing.sort(() => Math.random() - 0.5).slice(0, 5);
-                const questions = shuffled.map(q => ({
-                    question: q.question,
+            const conceptQuestionRepository = require('../services/questionReuseService');
+            const repoQuestions = await conceptQuestionRepository.getReusableQuestionsByConcept({
+                concept_id: topic,
+                question_text: topic,
+                limit: 5,
+                threshold: 0.8
+            });
+            if (repoQuestions && repoQuestions.length >= 3) {
+                const questions = repoQuestions.slice(0, 5).map(q => ({
+                    question: q.question || q.question_text,
                     options: q.options || [],
                     level: q.difficulty || 'beginner',
-                    skillId: q.skillNodeId || `qb_${q._id}`,
-                    type: q.type || 'mcq',
+                    skillId: q.concept_id,
+                    type: 'mcq'
                 }));
-                log.success('GAMIFICATION', `Reused ${questions.length} questions from Question Bank for "${topic}"`);
-                return res.json({ questions });
+                log.success('GAMIFICATION', `Served ${questions.length} repository diagnostic questions for "${topic}"`);
+                return res.json({ questions, source: 'repository' });
             }
-        } catch (qbErr) {
-            log.warn('GAMIFICATION', `Question Bank query failed: ${qbErr.message}`);
+        } catch (repoErr) {
+            log.warn('GAMIFICATION', `Repository lookup for "${topic}" failed: ${repoErr.message}`);
         }
 
-        // 3. Concept-based fallback: questions about subject matter, not course codes
-        const conceptQuestions = [
-            {
-                question: 'What is the most important foundational concept that underpins this subject?',
-                options: ['A: A core theoretical framework', 'B: A set of practical techniques', 'C: An empirical observation', 'D: A mathematical model'],
-                level: 'beginner',
-                skillId: `diag_generic_1`,
-                type: 'mcq',
-            },
-            {
-                question: 'How do the fundamental principles in this field guide practical problem-solving?',
-                options: ['A: They provide direct step-by-step instructions', 'B: They establish boundaries and constraints for solutions', 'C: They are only useful for theoretical analysis', 'D: They replace the need for practical experience'],
-                level: 'beginner',
-                skillId: `diag_generic_2`,
-                type: 'mcq',
-            },
-            {
-                question: 'When applying concepts from this subject to a new problem, what is the most important first step?',
-                options: ['A: Identify which principles are relevant', 'B: Immediately implement a known solution', 'C: Search for existing code or templates', 'D: Guess and check different approaches'],
-                level: 'intermediate',
-                skillId: `diag_generic_3`,
-                type: 'mcq',
-            },
-            {
-                question: 'In evaluating different approaches to a problem in this domain, what factor is most critical to consider?',
-                options: ['A: The specific constraints and requirements of the problem', 'B: Which approach is most popular', 'C: Which approach is easiest to implement', 'D: Which approach uses the latest technology'],
-                level: 'intermediate',
-                skillId: `diag_generic_4`,
-                type: 'mcq',
-            },
-            {
-                question: 'What distinguishes a well-designed solution from a poorly-designed one in this field?',
-                options: ['A: It appropriately balances trade-offs between competing concerns', 'B: It uses the most advanced techniques available', 'C: It is the fastest possible implementation', 'D: It follows the most common pattern'],
-                level: 'advanced',
-                skillId: `diag_generic_5`,
-                type: 'mcq',
-            },
-        ];
+        // 2. Generate via LLM
+        log.info('GAMIFICATION', `Generating diagnostic questions via LLM for "${topic}"`);
+        const skillTreeGameService = require('../services/skillTreeGameService');
+        const diagnostic = await skillTreeGameService.getDiagnosticQuiz(topic, req.user._id);
+        const questions = (diagnostic.questions || []).map(q => ({
+            question: q.question || q,
+            options: q.options || [],
+            level: 'beginner',
+            type: q.options?.length ? 'mcq' : 'open-ended'
+        }));
+        if (questions.length === 0) {
+            return res.status(503).json({ message: 'AI Service could not generate diagnostic questions. Please try again.' });
+        }
 
-        log.info('GAMIFICATION', `Generated ${conceptQuestions.length} concept-based diagnostic questions`);
-        return res.json({ questions: conceptQuestions });
-    } catch (err) {
-        log.error('GAMIFICATION', `LLM diagnostic generation failed for "${topic}": ${err.message}`);
-        return res.status(500).json({ message: `AI generation failed for "${topic}". Please try a different topic.` });
+        log.success('GAMIFICATION', `Generated ${questions.length} LLM-based diagnostic questions for "${topic}"`);
+        return res.json({ questions });
+    } catch (llmError) {
+        log.error('GAMIFICATION', `LLM diagnostic generation failed for "${topic}": ${llmError.message}`);
+        return res.status(503).json({ message: 'AI Service Unavailable. Please try a pre-configured course.' });
+    }
+}
     }
 }
 

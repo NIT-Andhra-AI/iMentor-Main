@@ -59,6 +59,7 @@ const analyticsRoutes = require('./routes/analytics');
 const feedbackRoutes = require('./routes/feedback');
 const finetuningRoutes = require('./routes/finetuning');
 const gamificationRoutes = require('./routes/gamification');
+const skilltreeCourseMatchingRoutes = require('./routes/skilltreeCourseMatching');
 const knowledgeStateRoutes = require('./routes/knowledgeState');
 const filesRoutes = require('./routes/files');
 const researchRoutes = require('./routes/research');
@@ -267,12 +268,9 @@ app.use("/api/knowledge-sources", authMiddleware, knowledgeSourceRoutes);
 app.use('/api/feedback', authMiddleware, feedbackRoutes);
 app.use('/api/gamification', authMiddleware, gamificationRoutes);
 app.use('/api/skill-tree', authMiddleware, skillTreeGeneratorRoutes);
-
-// --- Course Matching Routes (CSV upload, validate, autocomplete) ---
 app.use('/api/course-matching', authMiddleware, require('./routes/index_skilltreeCourseMatching'));
-
-// --- Skill Tree Course Bridge (Course → Skill Tree reuse pipeline) ---
 app.use('/api/skill-tree', authMiddleware, require('./routes/skillTreeCourseBridge'));
+app.use('/api/gamification/skill-tree', authMiddleware, skilltreeCourseMatchingRoutes);
 
 // --- Internal Service Routes (Python → Node.js callbacks, no JWT required) ---
 const { syncSkillTreeToMongo } = require('./services/skillTreeSyncService');

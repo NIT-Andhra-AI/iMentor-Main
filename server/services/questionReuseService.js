@@ -73,6 +73,14 @@ async function findReusableQuestions({
     return exact.slice(0, limit).map(normalizeQuestionRecord);
   }
 
+<<<<<<< HEAD
+=======
+  const normalized = candidates.filter(item => normalizeText(item.question_text) === normalizedQuestion);
+  if (normalized.length > 0) {
+    return normalized.slice(0, limit).map(normalizeQuestionRecord);
+  }
+
+>>>>>>> pr-2
   if (!questionText) {
     return candidates.slice(0, limit).map(normalizeQuestionRecord);
   }

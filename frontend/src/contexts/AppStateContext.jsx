@@ -53,7 +53,7 @@ export const AppStateProvider = ({ children }) => {
 
     // Tutor Mode (Beta) feature flag - defaults to false
     const [tutorMode, setTutorMode] = useState(false);
-    const [tutorModeType, setTutorModeType] = useState(null); // 'structured' | 'general_socratic' | 'assistant'
+    const [tutorModeType, setTutorModeType] = useState(null); // 'structured' | 'general_socratic' | 'assistant' | 'guided_learning' | 'study_mode'
 
     // Course viewer panel — opens when an admin course is selected from KB dropdown
     const [courseViewerOpen, setCourseViewerOpen] = useState(false);

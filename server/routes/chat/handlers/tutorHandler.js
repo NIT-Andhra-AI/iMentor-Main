@@ -26,6 +26,7 @@ const { triggerPeriodicAnalysis } = require('../../../middleware/contextualMemor
 const log = require('../../../utils/logger');
 const { streamEvent, TUTOR_MODE_TYPES, emitTutorKnowledgeEvents } = require('../helpers');
 const { computeTurnXp, awardTurnXpAsync, scheduleQualityBonusAsync } = require('../../../services/tutorXpService');
+const guidedLearningOrchestrator = require('../../../services/guidedLearningOrchestrator');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -1111,6 +1112,110 @@ async function handleStructured(res, ctx) {
     res.end();
     return true;
 }
- 
-module.exports = { handleGeneral, handleStructured };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GUIDED LEARNING / STUDY MODE (Document-Driven & Step-by-Step Socratic)
+// ─────────────────────────────────────────────────────────────────────────────
+
+async function handleGuidedLearning(res, ctx) {
+    const {
+        tutorMode, tutorModeType, query, sessionId, userId,
+        llmConfig, chatSession, userMessageForDb, historyForLlm,
+        documentContextName, isAutoGreeting
+    } = ctx;
+
+    if (!tutorMode || (tutorModeType !== TUTOR_MODE_TYPES.GUIDED_LEARNING && tutorModeType !== TUTOR_MODE_TYPES.STUDY_MODE)) return false;
+
+    log.info('TUTOR', `Processing Guided Learning / Study Mode for session ${sessionId} (Document: ${documentContextName || 'None'})`);
+
+    res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    const sendStatus = (status) => streamEvent(res, { type: 'status_update', content: status });
+
+    const sessionContext = {
+        userId: userId.toString(),
+        sessionId,
+        documentContext: documentContextName || null,
+        courseName: documentContextName || 'Guided Study'
+    };
+
+    try {
+        const guidedResult = await guidedLearningOrchestrator.processGuidedLearning(
+            query.trim(),
+            null, // correctAnswer
+            historyForLlm || [],
+            llmConfig,
+            sessionContext,
+            (eventData) => {
+                if (eventData.type === 'status') {
+                    sendStatus(eventData.content);
+                } else if (eventData.type === 'answer') {
+                    streamEvent(res, { type: 'token', content: eventData.content });
+                } else if (eventData.type === 'thought') {
+                    streamEvent(res, { type: 'thinking', content: eventData.content });
+                }
+            }
+        );
+
+        const text = guidedResult.finalAnswer || guidedResult.text || '';
+        const guidedReply = {
+            sender: 'bot',
+            role: 'model',
+            text,
+            parts: [{ text }],
+            timestamp: new Date(),
+            source_pipeline: 'guided-learning-study-mode',
+            socraticState: 'GUIDED_LEARNING',
+            thinking: guidedResult.thinking || 'Guided Learning / Study Mode Active',
+            action: guidedResult.action || null,
+            tutorSession: guidedResult.tutorSession || null,
+            criticalThinkingCues: []
+        };
+
+        streamEvent(res, { type: 'final_answer', content: guidedReply });
+        res.end();
+
+        setImmediate(async () => {
+            try {
+                const aiMsgForDb = {
+                    role: 'model',
+                    parts: [{ text }],
+                    timestamp: new Date(),
+                    source_pipeline: 'guided-learning-study-mode'
+                };
+                await ChatHistory.findOneAndUpdate(
+                    { sessionId, userId },
+                    {
+                        $push: { messages: { $each: buildMessagesEach(userMessageForDb, aiMsgForDb, isAutoGreeting), $slice: -100 } },
+                        $set: { isTutorMode: true, tutorModeType: 'guided_learning', updatedAt: new Date() }
+                    },
+                    { upsert: true }
+                );
+            } catch (err) {
+                log.error('TUTOR', `Guided learning DB write error: ${err.message}`);
+            }
+        });
+
+        return true;
+    } catch (error) {
+        log.error('TUTOR', `Guided learning handler failed: ${error.message}`);
+        const fallbackText = `I'm in **Guided Learning Study Mode**. Let's break down "${query.trim()}" step by step.\n\nWhat do you already understand about this concept?`;
+        const fallbackReply = {
+            sender: 'bot',
+            role: 'model',
+            text: fallbackText,
+            parts: [{ text: fallbackText }],
+            timestamp: new Date(),
+            source_pipeline: 'guided-learning-fallback'
+        };
+        streamEvent(res, { type: 'final_answer', content: fallbackReply });
+        res.end();
+        return true;
+    }
+}
+
+module.exports = { handleGeneral, handleStructured, handleGuidedLearning };
  

@@ -857,11 +857,15 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                 <div className="flex items-center justify-between px-4 py-2 border-b text-[10px] sm:text-xs font-semibold tracking-wider text-indigo-400 bg-indigo-500/10 border-indigo-500/20 rounded-t-vs select-none animate-fadeIn flex-shrink-0">
                     <div className="flex items-center gap-2">
                         <GraduationCap size={14} className="text-indigo-400 animate-pulse" />
-                        <span>SOCRATIC LEARNING MODE ACTIVE</span>
+                        <span>
+                            {effectiveTutorModeType === 'guided_learning' || effectiveTutorModeType === 'study_mode'
+                                ? 'STUDY & GUIDED LEARNING MODE ACTIVE'
+                                : 'SOCRATIC LEARNING MODE ACTIVE'}
+                        </span>
                     </div>
                     {effectiveTutorModeType && (
                         <span className="text-[9px] sm:text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-medium capitalize">
-                            {effectiveTutorModeType} Tutor
+                            {effectiveTutorModeType.replace('_', ' ')} Tutor
                         </span>
                     )}
                 </div>

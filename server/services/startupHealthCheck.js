@@ -70,7 +70,7 @@ async function runHealthCheck() {
         prompt: 'Reply with one word: OK',
         stream: false,
         options: { num_predict: 10, temperature: 0 },
-      }, { timeout: 30000 });
+      }, { timeout: 3000 });
       const ok = resp.data?.response?.trim()?.toLowerCase() === 'ok';
       results.push({ name: 'Ollama (test gen)', reachable: ok, response: resp.data?.response?.trim() });
       if (!ok) results.push({ name: 'Ollama (test gen)', reachable: false, error: `unexpected response: ${resp.data?.response}` });

@@ -103,7 +103,9 @@ function doesQuerySuggestRecall(query) {
 const TUTOR_MODE_TYPES = {
     COURSE_STRUCTURED: 'structured',
     GENERAL_SOCRATIC: 'general_socratic',
-    ASSISTANT: 'assistant'
+    ASSISTANT: 'assistant',
+    GUIDED_LEARNING: 'guided_learning',
+    STUDY_MODE: 'study_mode'
 };
 
 function hasCourseSelection(documentContextName) {
@@ -115,6 +117,9 @@ function hasCourseSelection(documentContextName) {
 function resolveTutorModeType(requestedModeType, documentContextName) {
     if (requestedModeType === TUTOR_MODE_TYPES.ASSISTANT) {
         return TUTOR_MODE_TYPES.ASSISTANT;
+    }
+    if (requestedModeType === TUTOR_MODE_TYPES.GUIDED_LEARNING || requestedModeType === TUTOR_MODE_TYPES.STUDY_MODE) {
+        return requestedModeType;
     }
 
     return hasCourseSelection(documentContextName)

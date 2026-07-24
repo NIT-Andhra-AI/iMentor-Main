@@ -626,6 +626,9 @@ Output style:
         // ── Code routing ──────────────────────────────────────────────────────
         if (await codeHandler.handle(res, ctx)) return;
 
+        // ── Tutor: Guided Learning / Study Mode ─────────────────────────────
+        if (await tutorHandler.handleGuidedLearning(res, ctx)) return;
+
         // ── Tutor: General Socratic ───────────────────────────────────────────
         if (await tutorHandler.handleGeneral(res, ctx)) return;
 

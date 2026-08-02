@@ -19,7 +19,7 @@ const createLimiter = (maxRequestsPerMinute, prefix = 'rl') => {
     validate: false,
     keyGenerator: (req) => {
       // Use userId if authenticated, otherwise fall back to IP
-      return req.user?.userId || req.ip;
+      return req.user?.id || req.user?._id || req.ip;
     }
   };
 
@@ -41,8 +41,8 @@ const createLimiter = (maxRequestsPerMinute, prefix = 'rl') => {
   return rateLimit(options);
 };
 
-const authLimiter = createLimiter(10, 'auth');
-const chatLimiter = createLimiter(30, 'chat');
+const authLimiter = createLimiter(30, 'auth');
+const chatLimiter = createLimiter(60, 'chat');
 const researchLimiter = createLimiter(5, 'research');
 const toolsLimiter = createLimiter(5, 'tools');
 // STT/Whisper: tight limit to protect GPU — keyed by userId (auth'd) or IP (guest)

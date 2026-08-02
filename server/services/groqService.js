@@ -1,6 +1,7 @@
 const log = require('../utils/logger');
 // server/services/groqService.js
 const Groq = require('groq-sdk');
+const tokenOptimizer = require('../utils/tokenOptimizer');
 
 const SERVER_API_KEY = process.env.GROQ_API_KEY;
 const DEFAULT_MODEL_NAME = "llama-3.1-8b-instant";
@@ -42,16 +43,20 @@ async function generateContentWithHistory(
     try {
         const groq = getGroqClient(apiKeyToUse);
 
+        const optimizedSystemPrompt = systemPromptText ? tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText)) : tokenOptimizer.injectSystemInstruction();
+        const optimizedQuery = tokenOptimizer.minifyPrompt(currentUserQuery);
+        const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
+
         const messages = [];
 
         // Build messages array
-        if (systemPromptText) {
-            messages.push({ role: 'system', content: systemPromptText });
+        if (optimizedSystemPrompt) {
+            messages.push({ role: 'system', content: optimizedSystemPrompt });
         }
 
         // Add history
-        if (chatHistory && Array.isArray(chatHistory)) {
-            chatHistory.forEach(msg => {
+        if (optimizedHistory && Array.isArray(optimizedHistory)) {
+            optimizedHistory.forEach(msg => {
                 // Adapt roles if necessary (Groq uses 'user', 'assistant', 'system')
                 const role = msg.role === 'model' ? 'assistant' : msg.role;
                 const content = Array.isArray(msg.parts) ? msg.parts[0].text : (msg.text || msg.content);
@@ -62,11 +67,11 @@ async function generateContentWithHistory(
         }
 
         // Add current query
-        messages.push({ role: 'user', content: currentUserQuery });
+        messages.push({ role: 'user', content: optimizedQuery });
 
         let completion;
         let attempts = 0;
-        const maxAttempts = 12;
+        const maxAttempts = 3;
         while (attempts < maxAttempts) {
             try {
                 attempts++;
@@ -86,18 +91,8 @@ async function generateContentWithHistory(
                 const isRateLimit = status === 429 || errMsg.toLowerCase().includes('rate limit') || errMsg.toLowerCase().includes('rate_limit') || errMsg.toLowerCase().includes('quota');
                 
                 if (isRateLimit && attempts < maxAttempts) {
-                    let waitMs = 5000;
-                    const match = errMsg.match(/try again in (\d+(\.\d+)?)s/i);
-                    if (match) {
-                        waitMs = Math.ceil(parseFloat(match[1]) * 1000) + 1500; // add 1.5s buffer
-                    } else {
-                        const msMatch = errMsg.match(/try again in (\d+)ms/i);
-                        if (msMatch) {
-                            waitMs = parseInt(msMatch[1], 10) + 500;
-                        } else {
-                            waitMs = attempts * 5000;
-                        }
-                    }
+                    // Exponential backoff: 2s, 4s, 8s
+                    const waitMs = Math.min(2000 * Math.pow(2, attempts - 1), 8000);
                     log.warn('AI', `Groq rate limit hit. Attempt ${attempts}/${maxAttempts}. Waiting ${waitMs}ms before retrying...`);
                     await new Promise(resolve => setTimeout(resolve, waitMs));
                 } else {
@@ -114,7 +109,8 @@ async function generateContentWithHistory(
             }
         }
 
-        return completion.choices[0]?.message?.content || "";
+        const responseText = completion.choices[0]?.message?.content || "";
+        return tokenOptimizer.expandOutgoingResponse(responseText);
     } catch (error) {
         log.error('AI', `Groq outer failure: ${error.message}`);
         throw error;

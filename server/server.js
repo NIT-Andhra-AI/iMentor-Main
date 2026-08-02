@@ -33,7 +33,8 @@ const {
   authLimiter,
   chatLimiter,
   researchLimiter,
-  toolsLimiter
+  toolsLimiter,
+  sttLimiter
 } = require('./middleware/rateLimitMiddleware');
 
 // --- Route Imports ---
@@ -237,7 +238,7 @@ app.get('/metrics', async (req, res) => {
 // --- Public Routes (No Authentication Required) ---
 app.use("/api/network", networkRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
-app.use("/api/guest", guestChatRoutes);
+app.use("/api/guest", chatLimiter, guestChatRoutes); // [Optimization] Rate-limit unauthenticated chat
 
 // --- Admin Routes (Uses its own adminAuthMiddleware) ---
 app.use('/api/admin/analytics', adminAuthMiddleware, analyticsRoutes);
@@ -254,7 +255,7 @@ app.use("/api/files", authMiddleware, filesRoutes);
 app.use("/api/analysis", authMiddleware, analysisRoutes);
 app.use("/api/subjects", authMiddleware, subjectsRoutes);
 app.use("/api/courses", authMiddleware, coursesRoutes);
-app.use("/api/generate", authMiddleware, generationRoutes);
+app.use("/api/generate", authMiddleware, toolsLimiter, generationRoutes); // [Optimization] Rate-limit LLM generation
 app.use("/api/export", authMiddleware, exportRoutes);
 app.use("/api/kg", authMiddleware, kgRoutes);
 app.use("/api/llm", authMiddleware, llmConfigRoutes);
@@ -264,6 +265,12 @@ app.use("/api/learning/paths", authMiddleware, learningPathRoutes);
 app.use("/api/knowledge-sources", authMiddleware, knowledgeSourceRoutes);
 app.use('/api/feedback', authMiddleware, feedbackRoutes);
 app.use('/api/gamification', authMiddleware, gamificationRoutes);
+
+// --- Course Matching Routes (CSV upload, validate, autocomplete) ---
+app.use('/api/course-matching', authMiddleware, require('./routes/index_skilltreeCourseMatching'));
+
+// --- Skill Tree Course Bridge (Course → Skill Tree reuse pipeline) ---
+app.use('/api/skill-tree', authMiddleware, require('./routes/skillTreeCourseBridge'));
 
 // --- Internal Service Routes (Python → Node.js callbacks, no JWT required) ---
 const { syncSkillTreeToMongo } = require('./services/skillTreeSyncService');
@@ -293,14 +300,16 @@ app.post('/api/internal/skill-tree/sync', (req, res, next) => {
 app.use('/api/knowledge-state', authMiddleware, knowledgeStateRoutes);
 app.use('/api/research', authMiddleware, researchLimiter, researchRoutes);
 app.use('/api/deep-research', authMiddleware, researchLimiter, deepResearchRoutes); // [Team1-6] Deep research
-app.use('/api/tutor', authMiddleware, tutorRoutes); // [Team1-6] Socratic tutor
-app.use('/api/socratic', authMiddleware, socraticRoutes); // [Team1-6] Socratic sessions
+app.use('/api/tutor', authMiddleware, chatLimiter, tutorRoutes); // [Team1-6] Socratic tutor — rate-limited
+app.use('/api/socratic', authMiddleware, chatLimiter, socraticRoutes); // [Team1-6] Socratic sessions — rate-limited
 app.use('/api/study-mode', authMiddleware, studyModeRoutes); // Study questions + skill tree
 app.use('/api/debug', authMiddleware, debugRoutes);
 app.use('/api/progress', authMiddleware, require('./routes/progress'));
 app.use('/api/jobs', authMiddleware, require('./routes/jobs'));
-app.use('/api/quiz', authMiddleware, quizRoutes); // [Team1] Quiz generation, submission & grading
+app.use('/api/quiz', authMiddleware, chatLimiter, quizRoutes); // [Team1] Quiz generation, submission & grading
+app.use('/api/question-bank', authMiddleware, require('./routes/questionBank')); // Question Bank CRUD
 app.use('/api/adaptive-profile', authMiddleware, adaptiveProfileRoutes); // [Team8] Student adaptive learning profiles
+app.use('/api/assessment', authMiddleware, require('./routes/knowledgeAssessment')); // Knowledge Assessment Engine
 
 // --- Sentry Error Handler ---
 Sentry.setupExpressErrorHandler(app);
@@ -337,6 +346,14 @@ async function startServer() {
     // Courses are expected to be pre-configured via offline jobs
     
     await auditRedisUsage();
+
+    // --- Startup health check ---
+    try {
+      const { logHealthSummary } = require('./services/startupHealthCheck');
+      await logHealthSummary();
+    } catch (e) {
+      log.warn('HEALTH', `Health check failed: ${e.message}`);
+    }
 
     // --- Course material processing disabled on server startup ---
     // Use offline maintenance jobs (scripts/maintenanceJobs.js) for:
@@ -397,8 +414,21 @@ async function startServer() {
         }
       });
     };
-    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+  process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
+  // Global production error handlers
+  process.on("unhandledRejection", (reason, promise) => {
+    log.error('SYSTEM', 'Unhandled Rejection', { reason: reason?.message || reason, stack: reason?.stack });
+    // Graceful shutdown
+    gracefulShutdown('UNHANDLED_REJECTION');
+  });
+
+  process.on("uncaughtException", (err) => {
+    log.error('SYSTEM', 'Uncaught Exception', { message: err.message, stack: err.stack });
+    // Graceful shutdown
+    gracefulShutdown('UNCAUGHT_EXCEPTION');
+  });
   } catch (error) {
     log.error('SYSTEM', "Failed to start Node.js server", error);
     process.exit(1);

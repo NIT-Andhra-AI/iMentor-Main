@@ -1,3 +1,4 @@
+
 // const log         = require('../utils/logger');
 // const sglangCaps  = require('./sglangCapabilities');
 // const LLMConfiguration = require('../models/LLMConfiguration');
@@ -492,12 +493,15 @@ const ollamaService = require('./ollamaService');
 const llmStreamingService = require('./llmStreamingService');
 const { redisClient } = require('../config/redisClient');
 const { classifyQuery } = require('./queryClassifierService');
-const { selectModel, calculateComplexityScore } = require('./smartModelRouterService');
+const { selectModel, calculateComplexityScore, tuneParameters } = require('./smartModelRouterService');
 const { resolveProviderByPreference, getProviderChain } = require('./providerPriorityService');
 const { getCachedRoutingDecision, cacheRoutingDecision } = require('./routingCacheService');
+const { getIntelligentRoutingDecision, TASK_TYPES, COMPLEXITY_LEVELS, ROUTING_MODES } = require('./intelligentRouterService');
 
 // SGLang — lazy-imported so the server starts cleanly when SGLANG_ENABLED=false
 const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
+// [Optimization] LOW_RAM_MODE: skip SGLang entirely on student laptops with insufficient RAM/VRAM
+const LOW_RAM_MODE = process.env.LOW_RAM_MODE === 'true';
 
 // Groq — available when API key is set
 const GROQ_API_KEY = process.env.GROQ_API_KEY || null;
@@ -668,8 +672,27 @@ async function selectLLM(query, context) {
   }
 
   if (routingMode === 'auto') {
+    // ── INTELLIGENT ROUTER (Sprint 3) ──────────────────────────────────────────
+    // Enhances routing decision with task classification, complexity estimation,
+    // intelligent model/provider selection, and health-aware scoring.
+    // Runs BEFORE existing cache/routing logic to improve initial decision.
+    let intelligentDecision = null;
     try {
-      // ── Check routing decision cache (Redis, 5-min TTL keyed by query hash+provider) ──
+      const { getIntelligentRoutingDecision } = require('./intelligentRouterService');
+      intelligentDecision = await getIntelligentRoutingDecision(query, {
+        ...context,
+        userId: effectiveUserId,
+        preferredProvider,
+        routingMode: context.routingMode,
+        latencyBudget: context.latencyBudget,
+      });
+      log.info('AI', `[IntelligentRouter] Task: ${intelligentDecision.taskType} | Complexity: ${intelligentDecision.complexity} | Provider: ${intelligentDecision.provider} | Model: ${intelligentDecision.model} | Score: ${intelligentDecision.providerScore} | Reasons: ${intelligentDecision.providerReasons}`);
+    } catch (intErr) {
+      log.warn('AI', `Intelligent router failed, continuing with legacy: ${intErr.message}`);
+    }
+
+    // ── Check routing decision cache (Redis, 5-min TTL keyed by query hash+provider) ──
+    try {
       const cachedModelId = await getCachedRoutingDecision(`${cacheKey}:${preferredProvider}`);
       if (cachedModelId) {
         const cachedModel = catalogFind({ modelId: cachedModelId }) || await LLMConfiguration.findOne({ modelId: cachedModelId }).lean();
@@ -702,6 +725,42 @@ async function selectLLM(query, context) {
       }
 
       if (!autoDecision) {
+        // Prefer intelligent router's model decision directly if available
+        if (intelligentDecision?.model && intelligentDecision?.provider) {
+          const intelligentModel = catalogFind({ modelId: intelligentDecision.model, provider: intelligentDecision.provider })
+            || await LLMConfiguration.findOne({ modelId: intelligentDecision.model, provider: intelligentDecision.provider }).lean();
+          
+          if (intelligentModel) {
+            log.info('AI', `[IntelligentRouter] Using model decision directly: ${intelligentDecision.model} (${intelligentDecision.provider})`);
+            await cacheRoutingDecision(`${cacheKey}:${preferredProvider}`, intelligentDecision.model);
+            if (redisClient && redisClient.isOpen) {
+              await redisClient.setEx(`router:model:${cacheKey}`, AUTO_ROUTING_TTL, JSON.stringify({
+                modelId: intelligentDecision.model,
+                provider: intelligentDecision.provider,
+                strategy: 'intelligent_router_direct',
+                complexityScore: intelligentDecision.complexityScore,
+                reasoningMode: intelligentDecision.reasoningDepth === 'deep' ? 'complex_reasoning' : 'standard',
+              }));
+            }
+            return {
+              chosenModel: { ...intelligentModel, workingUrl: workingOllamaUrl },
+              logic: 'intelligent_router_direct',
+              modelRoutingMode: routingMode,
+              routingDecision: {
+                provider: intelligentDecision.provider,
+                modelId: intelligentDecision.model,
+                strategy: 'intelligent_router_direct',
+                complexityScore: intelligentDecision.complexityScore,
+                reasoningMode: intelligentDecision.reasoningDepth === 'deep' ? 'complex_reasoning' : 'standard',
+              },
+              intelligentRouting: intelligentDecision,
+            };
+          }
+        }
+
+        // Fallback to smart model router with intelligent router's provider preference
+        const effectiveProvider = intelligentDecision?.provider || preferredProvider;
+        
         const catalog = catalogFindAll({ provider: { $in: ['ollama', 'gemini'] } });
         const catalogForAutoRoute = catalog.length ? catalog : await LLMConfiguration.find({ provider: { $in: ['ollama', 'gemini'] } }).lean();
         const tokenEstimate = Math.ceil(query.length / 3) + ((Array.isArray(context.chatHistory) ? context.chatHistory.length : 0) * 40);
@@ -711,12 +770,13 @@ async function selectLLM(query, context) {
         const complexityScore = calculateComplexityScore({ query, tokenEstimate, reasoningMode });
 
         autoDecision = await selectModel({
+          query,
           complexityScore,
           reasoningMode,
           tokenEstimate,
-          userPreference: preferredProvider,
+          userPreference: effectiveProvider,
           latencyBudget: context.latencyBudget || 'balanced',
-          localMode: preferredProvider === 'ollama',
+          localMode: effectiveProvider === 'ollama',
           isOllamaActive: isOllamaActuallyUp,
           catalog: catalogForAutoRoute,
         });
@@ -729,28 +789,31 @@ async function selectLLM(query, context) {
       if (autoDecision?.modelId) {
         const autoModel = catalogFind({ modelId: autoDecision.modelId }) || await LLMConfiguration.findOne({ modelId: autoDecision.modelId }).lean();
         if (autoModel) {
-          // Don't route to ollama if it's actually down
-          if (autoModel.provider === 'ollama' && !isOllamaActuallyUp) {
-            log.warn('AI', `[AutoRoute] selectModel chose ollama (${autoModel.modelId}) but Ollama is down — falling to Groq`);
-            if (GROQ_ENABLED) return groqFallbackModel('groq_fallback_auto_ollama_down');
-          } else {
-            // Persist routing decision to cache so future identical queries skip the heavy routing logic
-            await cacheRoutingDecision(`${cacheKey}:${preferredProvider}`, autoDecision.modelId);
-            return {
-              chosenModel: { ...autoModel, workingUrl: workingOllamaUrl },
-              logic: 'auto_smart_model_router',
-              modelRoutingMode: routingMode,
-              routingDecision: autoDecision,
-            };
-          }
+          // Persist routing decision to cache so future identical queries skip the heavy routing logic
+          await cacheRoutingDecision(`${cacheKey}:${preferredProvider}`, autoDecision.modelId);
+          return {
+            chosenModel: { ...autoModel, workingUrl: workingOllamaUrl },
+            logic: 'auto_smart_model_router',
+            modelRoutingMode: routingMode,
+            routingDecision: autoDecision,
+            intelligentRouting: intelligentDecision || null,
+          };
         }
       }
 
-      if (autoDecision?.provider) {
+      // Use intelligent router's provider if smart model router didn't return one
+      if (intelligentDecision?.provider && !autoDecision?.provider) {
+        preferredProvider = intelligentDecision.provider;
+      } else if (autoDecision?.provider) {
         preferredProvider = autoDecision.provider;
       }
     } catch (autoRoutingError) {
       log.warn('AI', `Smart model routing failed, using legacy router: ${autoRoutingError.message}`);
+      
+      // Fallback to intelligent router's decision if available
+      if (intelligentDecision?.provider) {
+        preferredProvider = intelligentDecision.provider;
+      }
     }
   }
 
@@ -766,27 +829,46 @@ async function selectLLM(query, context) {
   }
 
   // ── PRIORITY -1: SGLang (when deployed) ──────────────────────────────────────
-  // When SGLANG_ENABLED=true SGLang beats every other provider.
-  // semantic route from context determines which SGLang endpoint (chat / reason / heavy).
-  if (SGLANG_ENABLED) {
+  // [Optimization] Intent-based SGLang routing: uses semantic route to pick the right endpoint.
+  // LOW_RAM_MODE skips SGLang entirely for student laptops → falls through to Gemini/Groq.
+  if (SGLANG_ENABLED && !LOW_RAM_MODE) {
     try {
       const sglangService = require('./sglangService');
       const semanticRoute = context.semanticRoute || context.queryIntent?.semanticRoute || null;
-      const endpoint = (semanticRoute === 'tot' || context.criticalThinkingEnabled || context.useReAct)
-          ? 'reason' : 'chat';
-      const modelId = endpoint === 'reason'
-          ? (process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen2.5-14B-Instruct-AWQ')
-          : (process.env.SGLANG_CHAT_MODEL   || 'Qwen/Qwen2.5-14B-Instruct-AWQ');
+      const semanticIntent = context.semanticRouting?.intent || null;
 
-      log.info('AI', `[SGLang] PRIORITY-1 route → endpoint=${endpoint} model=${modelId}`);
+      // Map semantic intent/route to SGLang endpoint
+      // direct_answer / greeting / standard → sglang_chat (light, fast)
+      // tot / research / deep reasoning / math → sglang_reason (if available)
+      // tutor → sglang_tutor (or chat if no dedicated tutor endpoint)
+      // night_stn / night_kg / report generation → sglang_heavy
+      let endpoint = 'chat'; // default: fast chat
+      if (semanticRoute === 'tot' || context.criticalThinkingEnabled || context.useReAct
+          || semanticIntent === 'MATHEMATICAL_REASONING' || semanticIntent === 'TECHNICAL_CODING') {
+        endpoint = 'reason';
+      } else if (context.tutorMode) {
+        endpoint = 'chat'; // tutor uses chat endpoint (same model, tutor logic is in the handler)
+      } else if (semanticRoute === 'deep_research' || semanticIntent === 'DEEP_RESEARCH') {
+        endpoint = 'reason'; // deep research benefits from reasoning model
+      }
+
+      const endpointEnvMap = {
+        chat:   { model: process.env.SGLANG_CHAT_MODEL   || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+                  url:   process.env.SGLANG_CHAT_URL     || 'http://localhost:8000/v1' },
+        reason: { model: process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+                  url:   process.env.SGLANG_REASON_URL   || 'http://localhost:8000/v1' },
+        heavy:  { model: process.env.SGLANG_HEAVY_MODEL  || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+                  url:   process.env.SGLANG_HEAVY_URL    || 'http://localhost:8000/v1' },
+      };
+      const target = endpointEnvMap[endpoint] || endpointEnvMap.chat;
+
+      log.info('AI', `[SGLang] PRIORITY-1 route → endpoint=${endpoint} model=${target.model} (intent=${semanticIntent || 'none'})`);
       return {
         chosenModel: {
-          modelId,
+          modelId:     target.model,
           provider:     'sglang',
-          displayName:  `SGLang ${modelId}`,
-          workingUrl:   endpoint === 'reason'
-              ? (process.env.SGLANG_REASON_URL || 'http://localhost:8000/v1')
-              : (process.env.SGLANG_CHAT_URL   || 'http://localhost:8000/v1'),
+          displayName:  `SGLang ${target.model}`,
+          workingUrl:   target.url,
           _sglangEndpoint: endpoint,
           _sglangService:  sglangService,
         },
@@ -794,8 +876,10 @@ async function selectLLM(query, context) {
         modelRoutingMode: routingMode,
       };
     } catch (sglangErr) {
-      log.warn('AI', `[SGLang] Priority-1 routing failed (${sglangErr.message}) — falling back to Ollama/Gemini`);
+      log.warn('AI', `[SGLang] Priority-1 routing failed (${sglangErr.message}) — falling back to Gemini/Groq`);
     }
+  } else if (LOW_RAM_MODE) {
+    log.info('AI', `[Router] LOW_RAM_MODE=true — skipping SGLang, routing to cloud providers`);
   }
 
   // PRIORITY 0: Tutor Mode
@@ -871,7 +955,8 @@ async function selectLLM(query, context) {
     try {
       classification = await classifyQuery(query, {
         preferredProvider,
-        enforcePreferredProvider: Boolean(context.deepResearchContext)
+        enforcePreferredProvider: Boolean(context.deepResearchContext),
+        req: context.req // [Optimization] Pass req to reuse query embedding
       });
     } catch (e) {
       classification = { category: 'chat', confidence: 0, strength: 'chat' };
@@ -946,7 +1031,7 @@ async function selectLLM(query, context) {
 const LLMRouter = {
   async generate({ query, systemPrompt = null, chatHistory = [], userId = null, deepResearchContext = false, onToken = null }) {
     try {
-      const { chosenModel } = await selectLLM(query, { userId, deepResearchContext });
+      const { chosenModel, routingDecision } = await selectLLM(query, { userId, deepResearchContext });
 
       let apiKey = chosenModel.apiKey;
       if (!apiKey && chosenModel.provider === 'gemini') {
@@ -956,21 +1041,35 @@ const LLMRouter = {
         apiKey = process.env.GROQ_API_KEY;
       }
 
+      const tunedParams = routingDecision?.tunedParameters || tuneParameters({
+        query,
+        reasoningMode: deepResearchContext ? 'deep_research' : 'standard'
+      });
+      const temperature = tunedParams.temperature ?? (deepResearchContext ? 0.2 : 0.7);
+      const maxOutputTokens = tunedParams.maxOutputTokens ?? (deepResearchContext ? 8192 : 4096);
+
       const llmOptions = {
         apiKey,
         model: chosenModel.modelId,
-        temperature: deepResearchContext ? 0.2 : 0.7,
-        maxOutputTokens: deepResearchContext ? 8192 : 4096,
+        temperature,
+        maxOutputTokens,
         ollamaUrl: chosenModel.workingUrl 
       };
 
+      let maxLimit = 24000;
+      if (chosenModel.provider === 'gemini') maxLimit = 400000;
+      else if (chosenModel.provider === 'groq' && chosenModel.modelId && chosenModel.modelId.includes('70b')) maxLimit = 120000;
+
       if (onToken) {
         // STREAMING PATH — all providers now supported
-        const streamMessages = [...chatHistory, { role: 'user', content: query }];
+        const rawStreamMessages = [...chatHistory, { role: 'user', content: query }];
+        const streamMessages = truncateContextToWindow(rawStreamMessages, maxLimit);
+        const truncatedUserQuery = streamMessages[streamMessages.length - 1]?.content || query;
+        const truncatedChatHistory = streamMessages.slice(0, -1);
 
         if (chosenModel.provider === 'sglang') {
           // Dynamic token calculation for SGLang to prevent context overflow
-          const allText = chatHistory.map(m => m.content).join(' ') + query + (systemPrompt || '');
+          const allText = truncatedChatHistory.map(m => m.content).join(' ') + truncatedUserQuery + (systemPrompt || '');
           const estimatedInputTokens = Math.ceil(allText.length / 4);
           const modelMaxContext = sglangCaps.getModelMaxContext(); // live from /v1/models
           const safetyBuffer = 200;
@@ -980,7 +1079,7 @@ const LLMRouter = {
           log.info('AI', `[SGLang Deep Research] Token budget: input≈${estimatedInputTokens} + completion=${adjustedMaxTokens} ≈ ${estimatedInputTokens + adjustedMaxTokens} / ${modelMaxContext}`);
           
           return await chosenModel._sglangService.streamChat(
-            chatHistory, query, systemPrompt,
+            truncatedChatHistory, truncatedUserQuery, systemPrompt,
             { model: chosenModel.modelId, ollamaUrl: chosenModel.workingUrl, maxTokens: adjustedMaxTokens },
             onToken
           );
@@ -988,8 +1087,8 @@ const LLMRouter = {
 
         if (chosenModel.provider === 'ollama') {
           return await ollamaService.streamChat(
-            chatHistory,
-            query,
+            truncatedChatHistory,
+            truncatedUserQuery,
             systemPrompt,
             llmOptions,
             (token) => {
@@ -1011,11 +1110,16 @@ const LLMRouter = {
         });
       }
 
+      const rawMessages = [...chatHistory, { role: 'user', content: query }];
+      const optimizedMessages = truncateContextToWindow(rawMessages, maxLimit);
+      const finalUserQuery = optimizedMessages[optimizedMessages.length - 1]?.content || query;
+      const finalChatHistory = optimizedMessages.slice(0, -1);
+
       const llmService = chosenModel.provider === 'sglang'
           ? chosenModel._sglangService
           : (chosenModel.provider === 'ollama' ? ollamaService : geminiService);
 
-      return await llmService.generateContentWithHistory(chatHistory, query, systemPrompt, llmOptions);
+      return await llmService.generateContentWithHistory(finalChatHistory, finalUserQuery, systemPrompt, llmOptions);
     } catch (error) {
       log.error('AI', `Generation failed: ${error.message}`);
       throw error;

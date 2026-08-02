@@ -363,7 +363,7 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
             prompt,
             'You are an expert educational assessor. Respond with ONLY valid JSON.',
             llmConfig,
-            { jsonMode: true }
+            { jsonMode: true, maxOutputTokens: 200 } // [Optimization] Assessment returns small JSON, cap output
         );
 
         const jsonMatch = responseText.match(/\{[\s\S]*\}/);
@@ -376,7 +376,7 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
                 ? Number(Math.max(0.5, Math.min(3.0, rawMultiplier)).toFixed(2))
                 : defaultMultiplier(level, quality);
 
-            return {
+            const result = {
                 ...parsed,
                 bloom_level: category,
                 bloomLevel: level,
@@ -389,13 +389,13 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
                 specificGaps: Array.isArray(parsed.specificGaps) ? parsed.specificGaps : [],
                 reasoning: parsed.reasoning || 'Assessment parsed with defaults'
             };
-            const parsed = JSON.parse(jsonMatch[0]);
-            if (parsed.priorKnowledge) {
-                parsed.understanding = 'CORRECT';
-                parsed.confidence = 'HIGH';
-                parsed.emotionalState = parsed.emotionalState || 'CONFIDENT';
+
+            if (result.priorKnowledge) {
+                result.understanding = 'CORRECT';
+                result.confidence = 'HIGH';
+                result.emotionalState = result.emotionalState || 'CONFIDENT';
             }
-            return parsed;
+            return result;
         }
         
         throw new Error('No JSON found in assessment response');

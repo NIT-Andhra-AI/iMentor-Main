@@ -1,5 +1,8 @@
+
 // server/routes/chat/index.js
 // Orchestrates the /message route by delegating to focused handler modules.
+const { buildMemoryAwareSystemPrompt } = require('../../services/socraticService');
+const contextService = require('../../services/contextService');
 const express = require('express');
 const ChatHistory = require('../../models/ChatHistory');
 const User = require('../../models/User');
@@ -10,8 +13,6 @@ const { buildOptimalContext } = require('../../services/contextManager');
 const { createPerformanceTracker, logPerformance } = require('../../services/performanceDiagnosticsService');
 const { calculateComplexityScore } = require('../../services/smartModelRouterService');
 const { injectContextualMemory } = require('../../middleware/contextualMemoryMiddleware');
-const { buildMemoryAwareSystemPrompt } = require('../../services/socraticService');
-const contextService = require('../../services/contextService');
 const { validateChatMessage } = require('../../middleware/requestValidation');
 const { sttLimiter } = require('../../middleware/rateLimitMiddleware');
 const { authMiddleware } = require('../../middleware/authMiddleware');
@@ -21,6 +22,7 @@ const routerFeedback = require('../../services/routerFeedbackService');
 const { routeQuery } = require('../../services/semanticRouter');
 const { routeWithLLM } = require('../../services/llmToolRouter');
 const { decomposeQuery, buildHybridContextBlock } = require('../../services/hybridQueryDecomposer');
+
 
 const {
     streamEvent,
@@ -255,6 +257,7 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
                 tot:           criticalThinkingEnabled,
                 deepResearch:  deepResearchMode,
             },
+            req, // [Optimization] Pass req to cache the query embedding
         });
 
         log.info('CHAT', `Semantic routing: ${semanticRouting.intent} (confidence: ${semanticRouting.confidence.toFixed(3)})`);
@@ -465,7 +468,12 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
         const chatContext = {
             userId, subject: documentContextName,
             courseId: documentContextName || null,
-            chatHistory: historyFromDb, user, tutorMode, tutorModeType
+            chatHistory: historyFromDb, user, tutorMode, tutorModeType,
+            // [Optimization] Pass semantic routing result so selectLLM can pick the right SGLang endpoint
+            semanticRouting,
+            criticalThinkingEnabled,
+            useReAct,
+            req, // [Optimization] Pass request object to reuse query embedding
         };
 
         const routingStart = Date.now();
@@ -537,17 +545,7 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
             ).catch(e => log.warn('SYSTEM', `Failed to persist summary: ${e.message}`));
         }
 
-        // Load formatted conversation context (non-blocking — degrade gracefully)
-        let formattedContext = '';
-        try {
-            formattedContext = await contextService.getFormattedContextForPrompt(userId, sessionId);
-        } catch (err) {
-            log.warn('CONTEXT', `Failed to assemble formatted context: ${err.message}`);
-            formattedContext = '';
-        }
-
-        let finalSystemPrompt = buildMemoryAwareSystemPrompt(req.contextualMemory, clientProvidedSystemInstruction, tutorMode, query);
-        if (formattedContext) finalSystemPrompt = `${finalSystemPrompt}\n\n${formattedContext}`;
+        let finalSystemPrompt = req.contextualMemory?.systemPrompt || clientProvidedSystemInstruction;
 
         if (tutorMode && tutorModeType === TUTOR_MODE_TYPES.ASSISTANT) {
             finalSystemPrompt = `You are iMentor, an academic AI tutor assistant. Your ONLY purpose is to help students with academic subjects: Mathematics, Physics, Chemistry, Biology, Computer Science, Engineering, History, Geography, Economics, Literature, and any other formal educational topic.
@@ -674,33 +672,18 @@ Output style:
         }
 
         let clientMessage = error.response?.data?.error || error.message || 'An internal error occurred while processing your message.';
-        let providerDetail = null;
 
         if (isAIServiceError) {
-            // Prefer a concise user-facing message; optionally include provider details in dev/debug mode
-            providerDetail = (error.providerErrors && error.providerErrors.length)
-                ? error.providerErrors.map(e => `${e.provider}:${e.model} -> ${e.message}`).join(' | ')
-                : (error.lastError?.message || error.originalError?.message || error.message);
-
-            if (process.env.SHOW_AI_ERRORS === 'true') {
-                clientMessage = `AI provider error: ${providerDetail}`;
-            } else {
-                clientMessage = 'It seems like the AI service is not working right now or is temporarily overwhelmed. Please wait a few moments and try again! 📚';
-            }
+            clientMessage = 'It seems like the AI service is not working right now or is temporarily overwhelmed. Please wait a few moments and try again! 📚';
         }
 
         if (res.headersSent && !res.writableEnded) {
-            // Stream a structured error so the frontend can optionally show provider details
-            const payload = (process.env.SHOW_AI_ERRORS === 'true')
-                ? { userMessage: clientMessage, providerDetail }
-                : { userMessage: clientMessage };
-            streamEvent(res, { type: 'error', content: payload });
+            streamEvent(res, { type: 'error', content: clientMessage });
             res.end();
         } else if (!res.headersSent) {
             res.status(status).json({
                 message: clientMessage,
-                error: (process.env.NODE_ENV === 'development' && !isAIServiceError) ? error.stack : undefined,
-                aiError: (process.env.SHOW_AI_ERRORS === 'true') ? providerDetail : undefined
+                error: (process.env.NODE_ENV === 'development' && !isAIServiceError) ? error.stack : undefined
             });
         }
     }
@@ -725,7 +708,7 @@ const _sttUpload = multer({
     limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max audio
 }).single('audio');
 
-router.post('/transcribe', authMiddleware, (req, res) => {
+router.post('/transcribe', authMiddleware, sttLimiter, (req, res) => {
     _sttUpload(req, res, async (err) => {
         if (err) return res.status(400).json({ message: err.message });
         if (!req.file) return res.status(400).json({ message: 'No audio file provided.' });

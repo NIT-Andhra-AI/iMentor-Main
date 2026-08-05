@@ -373,4 +373,3 @@ router.get('/curriculum/:subject', (req, res) => {
     }
 });
 
-module.exports = router;

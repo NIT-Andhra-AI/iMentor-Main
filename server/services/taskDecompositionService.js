@@ -4,7 +4,7 @@ const { DAG_PLANNER_PROMPT_TEMPLATE } = require("../config/promptTemplates");
 // ... (Rest of imports stay same)
 const geminiService = require("./geminiService");
 const groqService = require("./groqService");
-const ollamaService = require("./ollamaService");
+const sglangService = require("./sglangService");
 const anthropicService = require("./anthropicService");
 const mistralService = require("./mistralService");
 const TaskGraphManager = require("./taskGraphManager");
@@ -22,7 +22,7 @@ async function decomposeQuery(query, requestContext) {
   };
 
   const llmService =
-    llmProvider === "ollama" ? ollamaService :
+    llmProvider === "ollama" ? sglangService :
       (llmProvider === "groq" ? groqService :
         (llmProvider === "anthropic" ? anthropicService :
           (llmProvider === "mistral" ? mistralService : geminiService)));

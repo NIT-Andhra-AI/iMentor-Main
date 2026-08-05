@@ -21,7 +21,7 @@ async function injectContextualMemory(req, res, next) {
 
         // Lightweight gating: contextual memory is only worth it for tutor-like flows.
         // This avoids prompt/token bloat for non-tutor endpoints.
-        const isTutorLikeMode = (tutorMode === 'tutor' || tutorMode === 'tutorMode' || tutorMode === 'quizMode' || tutorMode === 'studyMode' || tutorMode === 'socratic');
+        const isTutorLikeMode = (tutorMode === true || tutorMode === 'true' || tutorMode === 'tutor' || tutorMode === 'tutorMode' || tutorMode === 'quizMode' || tutorMode === 'studyMode' || tutorMode === 'socratic' || req.body.tutorModeType === 'guided_learning');
 
 
         if (!userId) {
@@ -29,7 +29,7 @@ async function injectContextualMemory(req, res, next) {
             // log.warn('SYSTEM', 'No user ID found for memory injection');
             req.contextualMemory = {
                 knowledgeContext: null,
-                systemPrompt: generateTutorSystemPrompt(null, tutorMode),
+                systemPrompt: isTutorLikeMode ? generateTutorSystemPrompt(null, tutorMode) : null,
                 hasMemory: false
             };
             return next();
@@ -53,7 +53,7 @@ async function injectContextualMemory(req, res, next) {
                     if (parsed._optedOut === true) {
                         req.contextualMemory = {
                             knowledgeContext: null,
-                            systemPrompt: generateTutorSystemPrompt(null, tutorMode),
+                            systemPrompt: isTutorLikeMode ? generateTutorSystemPrompt(null, tutorMode) : null,
                             hasMemory: false,
                             optedOut: true
                         };
@@ -85,7 +85,7 @@ async function injectContextualMemory(req, res, next) {
         if (!isTutorLikeMode) {
             req.contextualMemory = {
                 knowledgeContext: null,
-                systemPrompt: generateTutorSystemPrompt(null, tutorMode),
+                systemPrompt: null,
                 hasMemory: false,
                 optedOut: false
             };
@@ -104,7 +104,7 @@ async function injectContextualMemory(req, res, next) {
             }
             req.contextualMemory = {
                 knowledgeContext: null,
-                systemPrompt: generateTutorSystemPrompt(null, tutorMode),
+                systemPrompt: isTutorLikeMode ? generateTutorSystemPrompt(null, tutorMode) : null,
                 hasMemory: false,
                 optedOut: true
             };
@@ -172,7 +172,7 @@ async function injectContextualMemory(req, res, next) {
         // CRITICAL: Don't block the request, just proceed without memory (graceful degradation)
         req.contextualMemory = {
             knowledgeContext: null,
-            systemPrompt: generateTutorSystemPrompt(null, req.body?.tutorMode),
+            systemPrompt: isTutorLikeMode ? generateTutorSystemPrompt(null, req.body?.tutorMode) : null,
             hasMemory: false,
             error: true
         };

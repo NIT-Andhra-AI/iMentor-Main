@@ -4,7 +4,7 @@ const StudentKnowledgeState = require('../models/StudentKnowledgeState');
 const ChatHistory = require('../models/ChatHistory');
 const log = require('../utils/logger');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const neo4j = require('../config/neo4j');
 
@@ -229,7 +229,7 @@ Respond with a JSON object in this exact format (NO deviations):
                     geminiModel: llmConfig.geminiModel
                 }
             });
-            response = fallbackResult.text;
+            const response = fallbackResult.text;
 
             // Parse JSON response
             const insights = this.parseJSON(response);

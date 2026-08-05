@@ -5,7 +5,7 @@
  */
 
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 
 /**
  * Determines the appropriate scaffolding level
@@ -66,7 +66,7 @@ async function generateAdaptiveHint({
     llmConfig,
     emotionalState = null
 }) {
-    const llmService = llmConfig.provider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
 
     const scaffoldLevel = determineScaffoldingLevel(tutorSession, emotionalState);
     const knowledgeGaps = tutorSession.knowledgeGaps.filter(g => !g.resolved).map(g => g.concept);

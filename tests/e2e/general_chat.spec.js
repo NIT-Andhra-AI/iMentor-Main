@@ -12,11 +12,11 @@ test.describe('UI-CHAT — General Chat', () => {
     await sendMessage(page, 'What is machine learning?');
 
     // Assert user message bubble
-    const userMsg = page.locator('.user-message, [class*="user-message"]').last();
+    const userMsg = page.locator('.items-end .message-bubble').last();
     await expect(userMsg).toBeVisible({ timeout: 5000 });
 
     // Assert bot response bubble
-    const botMsg = page.locator('.message-bubble, [class*="message-bubble"], [class*="items-start"] .message-bubble-wrapper').last();
+    const botMsg = page.locator('.items-start .message-bubble').last();
     await expect(botMsg).toBeVisible({ timeout: 60000 });
 
     // Assert response has text
@@ -60,6 +60,34 @@ test.describe('UI-CHAT — General Chat', () => {
     expect(isCleared).toBeTruthy();
 
     console.log('✓ UI-CHAT-03 passed: New chat cleared messages');
+  });
+
+  test('UI-CHAT-04 — Socratic Learning Mode in General Chat', async ({ page }) => {
+    // Click the GraduationCap/Learn button to enable Learning Mode
+    const learnBtn = page.locator('button').filter({ hasText: /^Learn$/ }).first();
+    await learnBtn.waitFor({ state: 'visible', timeout: 5000 });
+    await learnBtn.click();
+
+    // Verify Learning Mode status indicator is visible
+    const learnBadge = page.locator('.flex.flex-wrap.items-center span').filter({ hasText: /learning mode/i }).first();
+    await expect(learnBadge).toBeVisible({ timeout: 5000 });
+
+    // Send a message
+    await sendMessage(page, 'What is the concept of recursion in programming?');
+
+    // Assert user message bubble
+    const userMsg = page.locator('.items-end .message-bubble').last();
+    await expect(userMsg).toBeVisible({ timeout: 5000 });
+
+    // Assert bot response bubble
+    const botMsg = page.locator('.items-start .message-bubble').last();
+    await expect(botMsg).toBeVisible({ timeout: 60000 });
+
+    // Assert response contains a question mark, characteristic of Socratic guided learning style
+    const responseText = await botMsg.textContent();
+    expect(responseText).toContain('?');
+
+    console.log('✓ UI-CHAT-04 passed: Socratic Learning Mode active and responses are socratic');
   });
 
 });

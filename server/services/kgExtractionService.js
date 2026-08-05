@@ -3,7 +3,7 @@ const log = require("../utils/logger");
 const { decrypt } = require("../utils/crypto");
 const User = require("../models/User");
 const geminiService = require("./geminiService");
-const ollamaService = require("./ollamaService");
+const sglangService = require("./sglangService");
 const axios = require("axios");
 const path = require("path");
 
@@ -113,7 +113,7 @@ async function extractAndStoreKgFromText(text, sessionId, userId, llmConfig, cou
     const { chosenModel } = await selectLLM(text, { userId, subject: 'technical' });
 
     let llmService;
-    if (chosenModel.provider === 'ollama') llmService = ollamaService;
+    if (chosenModel.provider === 'ollama') llmService = sglangService;
     else if (chosenModel.provider === 'groq') llmService = groqService;
     else llmService = geminiService;
 

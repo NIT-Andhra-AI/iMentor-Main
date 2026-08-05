@@ -43,7 +43,7 @@ async function generateContentWithHistory(
             throw new Error("currentUserQuery must be a non-empty string.");
         }
 
-        const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText));
+        const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText, options));
         const optimizedQuery = tokenOptimizer.minifyPrompt(currentUserQuery);
         const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
@@ -52,11 +52,14 @@ async function generateContentWithHistory(
             maxOutputTokens: options.maxOutputTokens || DEFAULT_MAX_OUTPUT_TOKENS_CHAT,
         };
 
-        const model = genAI.getGenerativeModel({
+        const modelOptions = {
             model: modelNameToUse,
-            systemInstruction: { parts: [{ text: optimizedSystemPrompt }] },
             safetySettings: baseSafetySettings,
-        });
+        };
+        if (optimizedSystemPrompt && typeof optimizedSystemPrompt === 'string' && optimizedSystemPrompt.trim() !== '') {
+            modelOptions.systemInstruction = { parts: [{ text: optimizedSystemPrompt }] };
+        }
+        const model = genAI.getGenerativeModel(modelOptions);
 
         const historyForStartChat = optimizedHistory
             .map(msg => ({
@@ -113,7 +116,7 @@ async function generateContentWithHistory(
                         (msg.includes('overloaded') || status === 503) ? 'Service temporarily overloaded' :
                             (msg.includes('not found') || status === 404) ? 'AI model not found or unavailable' :
                                 'Unexpected error';
-        log.warn('AI', `Gemini call failed: ${reason}`);
+        log.warn('AI', `Gemini call failed: ${reason}. Original error: ${error.message}`);
 
         // Pass through the actual error message for better diagnostics
         let clientMessage = error.message || "Failed to get response from AI service.";
@@ -145,11 +148,14 @@ const generateText = async (prompt, config = {}) => {
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const optimizedSystemPrompt = tokenOptimizer.injectSystemInstruction(config.systemPrompt);
-        const model = genAI.getGenerativeModel({
+        const optimizedSystemPrompt = tokenOptimizer.injectSystemInstruction(config.systemPrompt, config);
+        const modelOptions = {
             model: modelName,
-            systemInstruction: optimizedSystemPrompt
-        });
+        };
+        if (optimizedSystemPrompt && typeof optimizedSystemPrompt === 'string' && optimizedSystemPrompt.trim() !== '') {
+            modelOptions.systemInstruction = optimizedSystemPrompt;
+        }
+        const model = genAI.getGenerativeModel(modelOptions);
 
         // log.info('AI', `Gemini text generation request (model: ${modelName})`);
 
@@ -191,14 +197,17 @@ const generateContentWithVision = async (textPrompt, imageData, options = {}) =>
     try {
         const genAI = new GoogleGenerativeAI(apiKeyToUse);
 
-        const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(options.systemPrompt));
+        const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(options.systemPrompt, options));
         const optimizedTextPrompt = tokenOptimizer.minifyPrompt(textPrompt);
 
-        const model = genAI.getGenerativeModel({
+        const modelOptions = {
             model: modelNameToUse.startsWith('models/') ? modelNameToUse : `models/${modelNameToUse}`,
-            systemInstruction: { parts: [{ text: optimizedSystemPrompt }] },
             safetySettings: baseSafetySettings,
-        });
+        };
+        if (optimizedSystemPrompt && typeof optimizedSystemPrompt === 'string' && optimizedSystemPrompt.trim() !== '') {
+            modelOptions.systemInstruction = { parts: [{ text: optimizedSystemPrompt }] };
+        }
+        const model = genAI.getGenerativeModel(modelOptions);
 
         const parts = [
             { text: optimizedTextPrompt },

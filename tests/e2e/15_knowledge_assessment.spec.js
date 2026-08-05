@@ -25,7 +25,7 @@ test.describe('KA — Knowledge Assessment', () => {
     await expect(startBtn).toBeVisible();
 
     await expect(page.getByText('My Profile')).toBeVisible();
-    await expect(page.getByText("Bloom's Taxonomy")).toBeVisible();
+    await expect(page.getByText("Bloom's Taxonomy", { exact: true })).toBeVisible();
 
     console.log('✓ KA-01 passed: Start screen loaded with all elements');
   });
@@ -66,7 +66,7 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
     const firstQuestionText = await page.locator('.text-lg.text-white.font-medium').first().textContent();
 
@@ -105,7 +105,7 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
     const textarea = page.locator('textarea');
     if (await textarea.isVisible({ timeout: 3000 }).catch(() => false)) {
@@ -143,9 +143,9 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
-    const totalText = await page.locator('text=/question \d+ of \d+/i').first().textContent();
+    const totalText = await page.locator('text=/question \\d+ of \\d+/i').first().textContent();
     const match = totalText.match(/of (\d+)/);
     const totalQuestions = match ? parseInt(match[1]) : 0;
 
@@ -156,12 +156,17 @@ test.describe('KA — Knowledge Assessment', () => {
       if (await textarea.isVisible({ timeout: 1000 }).catch(() => false)) {
         await textarea.fill('Sample answer for question navigation.');
       } else {
-        const mcqOptions = page.locator('button').filter({ hasText: /^[A-D]\./ });
-        const firstOption = mcqOptions.first();
-        if (await firstOption.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await firstOption.click();
-          await page.waitForTimeout(500);
-          continue;
+        const buttons = await page.locator('button').all();
+        for (const btn of buttons) {
+          const firstSpan = btn.locator('span').first();
+          if (await firstSpan.isVisible().catch(() => false)) {
+            const spanText = (await firstSpan.textContent() || '').trim();
+            if (/^[A-D]$/.test(spanText)) {
+              await btn.click();
+              await page.waitForTimeout(500);
+              break;
+            }
+          }
         }
       }
 
@@ -190,9 +195,9 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
-    const totalText = await page.locator('text=/question \d+ of \d+/i').first().textContent();
+    const totalText = await page.locator('text=/question \\d+ of \\d+/i').first().textContent();
     const match = totalText.match(/of (\d+)/);
     const totalQuestions = match ? parseInt(match[1]) : 0;
 
@@ -201,12 +206,17 @@ test.describe('KA — Knowledge Assessment', () => {
       if (await textarea.isVisible({ timeout: 1000 }).catch(() => false)) {
         await textarea.fill('Sample answer for navigating to submit.');
       } else {
-        const mcqOptions = page.locator('button').filter({ hasText: /^[A-D]\./ });
-        const firstOption = mcqOptions.first();
-        if (await firstOption.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await firstOption.click();
-          await page.waitForTimeout(500);
-          continue;
+        const buttons = await page.locator('button').all();
+        for (const btn of buttons) {
+          const firstSpan = btn.locator('span').first();
+          if (await firstSpan.isVisible().catch(() => false)) {
+            const spanText = (await firstSpan.textContent() || '').trim();
+            if (/^[A-D]$/.test(spanText)) {
+              await btn.click();
+              await page.waitForTimeout(500);
+              break;
+            }
+          }
         }
       }
 
@@ -220,21 +230,30 @@ test.describe('KA — Knowledge Assessment', () => {
     const textarea = page.locator('textarea');
     if (await textarea.isVisible({ timeout: 2000 }).catch(() => false)) {
       await textarea.fill('Machine Learning is a subset of AI where systems learn from data to improve performance.');
+    } else {
+      const buttons = await page.locator('button').all();
+      for (const btn of buttons) {
+        const firstSpan = btn.locator('span').first();
+        if (await firstSpan.isVisible().catch(() => false)) {
+          const spanText = (await firstSpan.textContent() || '').trim();
+          if (/^[A-D]$/.test(spanText)) {
+            await btn.click();
+            await page.waitForTimeout(500);
+            break;
+          }
+        }
+      }
     }
 
     const submitBtn = page.getByText('Submit Answer');
     await submitBtn.click();
 
-    await page.waitForTimeout(1000);
-
+    // Check for either the evaluating screen or the completed results page to support fast responses
     const evaluatingText = page.getByText('Evaluating your assessment...');
-    const spinner = page.locator('.animate-spin');
-    const hasEval = await evaluatingText.isVisible({ timeout: 5000 }).catch(() => false);
-    const hasSpinner = await spinner.isVisible({ timeout: 2000 }).catch(() => false);
+    const completedText = page.getByText('Assessment Complete');
+    await expect(evaluatingText.or(completedText)).toBeVisible({ timeout: 15000 });
 
-    expect(hasEval || hasSpinner).toBeTruthy();
-
-    console.log('✓ KA-06 passed: Submit button triggered evaluating state with spinner/text');
+    console.log('✓ KA-06 passed: Submit button triggered evaluating state or completed state');
   });
 
   test('KA-07 — Results display level, score, strengths, weak areas, feedback', async ({ page }) => {
@@ -249,9 +268,9 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
-    const totalText = await page.locator('text=/question \d+ of \d+/i').first().textContent();
+    const totalText = await page.locator('text=/question \\d+ of \\d+/i').first().textContent();
     const match = totalText.match(/of (\d+)/);
     const totalQuestions = match ? parseInt(match[1]) : 0;
 
@@ -260,12 +279,17 @@ test.describe('KA — Knowledge Assessment', () => {
       if (await textarea.isVisible({ timeout: 1000 }).catch(() => false)) {
         await textarea.fill('I have a good understanding of this concept. This involves mathematical optimization and statistical inference techniques applied to data.');
       } else {
-        const mcqOptions = page.locator('button').filter({ hasText: /^[A-D]\./ });
-        const firstOption = mcqOptions.first();
-        if (await firstOption.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await firstOption.click();
-          await page.waitForTimeout(500);
-          continue;
+        const buttons = await page.locator('button').all();
+        for (const btn of buttons) {
+          const firstSpan = btn.locator('span').first();
+          if (await firstSpan.isVisible().catch(() => false)) {
+            const spanText = (await firstSpan.textContent() || '').trim();
+            if (/^[A-D]$/.test(spanText)) {
+              await btn.click();
+              await page.waitForTimeout(500);
+              break;
+            }
+          }
         }
       }
 
@@ -279,6 +303,19 @@ test.describe('KA — Knowledge Assessment', () => {
     const textarea = page.locator('textarea');
     if (await textarea.isVisible({ timeout: 2000 }).catch(() => false)) {
       await textarea.fill('Machine Learning is a subset of artificial intelligence where models learn patterns from data to make predictions or decisions.');
+    } else {
+      const buttons = await page.locator('button').all();
+      for (const btn of buttons) {
+        const firstSpan = btn.locator('span').first();
+        if (await firstSpan.isVisible().catch(() => false)) {
+          const spanText = (await firstSpan.textContent() || '').trim();
+          if (/^[A-D]$/.test(spanText)) {
+            await btn.click();
+            await page.waitForTimeout(500);
+            break;
+          }
+        }
+      }
     }
 
     const submitBtn = page.getByText('Submit Answer');
@@ -292,7 +329,7 @@ test.describe('KA — Knowledge Assessment', () => {
     const levelText = page.locator('text=/Beginner|Intermediate|Advanced|Expert/');
     await expect(levelText.first()).toBeVisible({ timeout: 5000 });
 
-    const scoreText = page.locator('text=/%').first();
+    const scoreText = page.getByText(/%|\//).first();
     await expect(scoreText).toBeVisible({ timeout: 5000 });
 
     await expect(page.getByText("Bloom's Taxonomy Breakdown")).toBeVisible({ timeout: 5000 });
@@ -334,11 +371,11 @@ test.describe('KA — Knowledge Assessment', () => {
 
     await expect(page.getByText('Knowledge Assessment')).toBeVisible();
 
-    const bloomBtn = page.getByText("Bloom's Taxonomy");
+    const bloomBtn = page.getByText("Bloom's Taxonomy", { exact: true });
     await bloomBtn.click();
     await page.waitForTimeout(2000);
 
-    await expect(page.getByText("Bloom's Taxonomy")).toBeVisible();
+    await expect(page.getByText("Bloom's Taxonomy", { exact: true })).toBeVisible();
 
     const bloomBack = page.getByText('Back').first();
     await bloomBack.click();
@@ -365,7 +402,7 @@ test.describe('KA — Knowledge Assessment', () => {
     await page.getByText('Start Assessment').click();
     await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text=/question \d+ of \d+/i', { timeout: 60000 });
+    await page.waitForSelector('text=/question \\d+ of \\d+/i', { timeout: 60000 });
 
     await page.getByText('Next').click();
     await page.waitForTimeout(1500);

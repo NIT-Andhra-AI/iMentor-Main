@@ -26,7 +26,7 @@ QDRANT_GRPC_PORT=6336
 ELASTIC_PORT=9201
 SGLANG_PORT=8000
 
-ALL_PORTS="$RAG_PORT $NODE_PORT $FRONTEND_PORT $MONGO_PORT $REDIS_PORT $NEO4J_BOLT_PORT $NEO4J_HTTP_PORT $QDRANT_HTTP_PORT $QDRANT_GRPC_PORT $ELASTIC_PORT $SGLANG_PORT"
+ALL_PORTS="$RAG_PORT $NODE_PORT $FRONTEND_PORT 3006 $MONGO_PORT $REDIS_PORT $NEO4J_BOLT_PORT $NEO4J_HTTP_PORT $QDRANT_HTTP_PORT $QDRANT_GRPC_PORT $ELASTIC_PORT $SGLANG_PORT"
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 1. CLEANUP — kill processes on all ports + known process names
@@ -61,8 +61,15 @@ echo "🐳 Restarting Docker infrastructure..."
 # Stop any existing containers (including orphans from removed services)
 docker compose down --remove-orphans 2>/dev/null || true
 
-# Start infrastructure + SGLang LLM server
-docker compose up -d mongo redis neo4j qdrant elasticsearch sglang
+# Start infrastructure
+SGLANG_CONF=$(grep -E '^SGLANG_ENABLED=' "$PROJECT_DIR/server/.env" 2>/dev/null | cut -d= -f2 | tr -d '[:space:]')
+if [ "$SGLANG_CONF" = "true" ]; then
+    echo "🐳 Starting SGLang (GPU) + standard databases..."
+    docker compose up -d mongo redis neo4j qdrant elasticsearch sglang
+else
+    echo "🐳 Starting databases (SGLang disabled)..."
+    docker compose up -d mongo redis neo4j qdrant elasticsearch
+fi
 
 echo "⏳ Waiting for Docker services to become healthy..."
 
@@ -91,10 +98,9 @@ wait_healthy "chatbot-redis"    30
 wait_healthy "chatbot-neo4j"    90
 wait_healthy "chatbot-qdrant"   60
 wait_healthy "chatbot-elastic"  90
-
-echo ""
-echo "🤖 Waiting for SGLang LLM server (model download on first run may take a few minutes)..."
-wait_healthy "chatbot-sglang"  300
+if [ "$SGLANG_CONF" = "true" ]; then
+    wait_healthy "chatbot-sglang"  120
+fi
 
 # ── Validate Neo4j database name (Community Edition only supports 'neo4j') ──
 NEO4J_DB=$(grep -E '^NEO4J_DATABASE=' "$PROJECT_DIR/server/.env" 2>/dev/null | cut -d= -f2 | tr -d '[:space:]')

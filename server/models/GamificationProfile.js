@@ -16,7 +16,7 @@ const XPHistorySchema = new mongoose.Schema({
             'tutor_misconception', 'tutor_no_foundation',
             'tutor_mastery',
             // Quality bonus from LLM eval
-            'quality_bonus'
+            'quality_bonus', 'direct_answer'
         ],
         required: true
     },
@@ -75,7 +75,7 @@ const GamificationProfileSchema = new mongoose.Schema({
                 'tutor_turn', 'tutor_correct', 'tutor_partial', 'tutor_wrong',
                 'tutor_unknown', 'tutor_incomplete', 'tutor_vague',
                 'tutor_misconception', 'tutor_no_foundation',
-                'tutor_mastery', 'quality_bonus'
+                'tutor_mastery', 'quality_bonus', 'direct_answer'
             ],
             required: true
         },

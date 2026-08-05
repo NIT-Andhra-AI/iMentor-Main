@@ -285,7 +285,7 @@ const KnowledgeAssessmentPage = () => {
             <span className="capitalize">{BLOOM_LABELS[q.bloomLevel] || q.bloomLevel}</span>
           </div>
           <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full bg-white rounded-full transition-all duration-300" style={{ width: `${progressPct}%` }} />
+            <div className="h-full bg-white rounded-full transition-all duration-300" style={{ width: `${Math.max(3, progressPct)}%` }} />
           </div>
         </div>
 
@@ -377,83 +377,96 @@ const KnowledgeAssessmentPage = () => {
     const colors = LEVEL_COLORS[result.level] || LEVEL_COLORS.Beginner;
 
     return (
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto space-y-6">
         <div className="text-center mb-8">
-          <div className={`w-20 h-20 ${colors.bg} rounded-full flex items-center justify-center mx-auto mb-4 border ${colors.border}`}>
+          <div className={`w-20 h-20 ${colors.bg} rounded-full flex items-center justify-center mx-auto mb-4 border ${colors.border} shadow-[0_0_30px_rgba(255,255,255,0.05)]`}>
             <CheckCircle2 className={`w-10 h-10 ${colors.text}`} />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Assessment Complete</h1>
-          <p className="text-zinc-400">Here's your knowledge profile</p>
+          <h1 className="text-3xl font-extrabold text-white mb-2 bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">Assessment Complete</h1>
+          <p className="text-zinc-400 font-sans">Here's your diagnostic knowledge profile</p>
         </div>
 
-        <div className={`${colors.bg} ${colors.border} border rounded-2xl p-6 mb-6 text-center`}>
-          <div className={`text-5xl font-bold ${colors.text} mb-2`}>{result.level}</div>
-          <div className="text-zinc-400 text-sm">Proficiency Level</div>
-          <div className={`mt-3 text-2xl font-bold text-white`}>{result.scorePercent}%</div>
-          <div className="text-zinc-500 text-sm">({result.score}/{result.maxScore} correct)</div>
+        <div className="relative overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-6 backdrop-blur-md">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
+          <div className="relative text-center">
+            <div className={`text-5xl font-black ${colors.text} mb-2 tracking-tight`}>{result.level}</div>
+            <div className="text-zinc-400 font-medium text-xs tracking-wider uppercase mb-4">Proficiency Level</div>
+            <div className="flex justify-center items-baseline gap-2">
+              <span className="text-4xl font-extrabold text-white">{result.scorePercent}%</span>
+              <span className="text-zinc-500 text-sm">({result.score} / {result.maxScore} Correct)</span>
+            </div>
+          </div>
         </div>
 
-        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-          <h3 className="text-white font-semibold mb-3">Bloom's Taxonomy Breakdown</h3>
-          <div className="space-y-3">
-            {Object.entries(result.bloomProfile || {}).map(([level, data]) => (
-              <div key={level}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-zinc-300 capitalize">{BLOOM_LABELS[level] || level}</span>
-                  <span className={data.mastered ? 'text-emerald-400' : 'text-zinc-500'}>
-                    {data.mastered ? 'Mastered' : `${data.score}%`}
-                  </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+            <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-indigo-400" />
+              Bloom's Taxonomy Breakdown
+            </h3>
+            <div className="space-y-4">
+              {Object.entries(result.bloomProfile || {}).map(([level, data]) => (
+                <div key={level} className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-zinc-300 capitalize font-medium">{BLOOM_LABELS[level] || level}</span>
+                    <span className={data.mastered ? 'text-emerald-400 font-bold' : 'text-zinc-500'}>
+                      {data.mastered ? 'Mastered' : `${data.score}%`}
+                    </span>
+                  </div>
+                  <div className="w-full h-1.5 bg-zinc-800/50 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full transition-all ${data.mastered ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                      style={{ width: `${data.score}%` }} />
+                  </div>
                 </div>
-                <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full transition-all ${data.mastered ? 'bg-emerald-500' : 'bg-zinc-500'}`}
-                    style={{ width: `${data.score}%` }} />
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {result.weakAreas?.length > 0 && (
+              <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+                <h3 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-400" />
+                  Areas to Review
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {result.weakAreas.map((area, i) => (
+                    <span key={i} className="px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-400 text-xs font-medium">
+                      {area}
+                    </span>
+                  ))}
                 </div>
               </div>
-            ))}
+            )}
+
+            {result.strengths?.length > 0 && (
+              <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+                <h3 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  Strengths
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {result.strengths.map((area, i) => (
+                    <span key={i} className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 text-xs font-medium">
+                      {area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {result.weakAreas?.length > 0 && (
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-            <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-yellow-400" />
-              Areas to Review
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.weakAreas.map((area, i) => (
-                <span key={i} className="px-3 py-1 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-400 text-sm">
-                  {area}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {result.strengths?.length > 0 && (
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-            <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              Strengths
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {result.strengths.map((area, i) => (
-                <span key={i} className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 text-sm">
-                  {area}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         {result.misconceptions?.length > 0 && (
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-            <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+          <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+            <h3 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-orange-400" />
               Misconceptions to Address
             </h3>
             <div className="flex flex-wrap gap-2">
               {result.misconceptions.map((m, i) => (
-                <span key={i} className="px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-lg text-orange-400 text-sm">
+                <span key={i} className="px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-lg text-orange-400 text-xs font-medium">
                   {m}
                 </span>
               ))}
@@ -462,33 +475,83 @@ const KnowledgeAssessmentPage = () => {
         )}
 
         {result.suggestedRevisionTopics?.length > 0 && (
-          <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-            <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+          <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+            <h3 className="text-white font-semibold mb-3 text-sm flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-blue-400" />
               Suggested Revision Topics
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="space-y-2">
               {result.suggestedRevisionTopics.map((t, i) => (
-                <span key={i} className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400 text-sm">
-                  {t}
-                </span>
+                <div key={i} className="flex items-start gap-2.5 text-zinc-300 text-xs py-1">
+                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 shrink-0" />
+                  <span>{t}</span>
+                </div>
               ))}
             </div>
           </div>
         )}
 
-        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-          <p className="text-zinc-300 mb-2">{result.feedback}</p>
-          <p className="text-zinc-400 text-sm">{result.recommendation}</p>
+        {/* Detailed Question Review & Explanation Section */}
+        <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+          <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
+            <Target className="w-4 h-4 text-indigo-400" />
+            Detailed Question Analysis
+          </h3>
+          <div className="space-y-4">
+            {result.gradingDetails?.map((item, idx) => (
+              <div key={idx} className="p-4 bg-black/40 border border-zinc-800/60 rounded-xl space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-2.5">
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                      item.correct ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                    }`}>
+                      {idx + 1}
+                    </span>
+                    <p className="text-white font-medium text-sm leading-relaxed">{item.question}</p>
+                  </div>
+                  <span className={`px-2.5 py-0.5 rounded-full text-2xs font-semibold shrink-0 uppercase tracking-wider ${
+                    item.correct ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  }`}>
+                    {item.correct ? 'Correct' : 'Incorrect'}
+                  </span>
+                </div>
+
+                <div className="space-y-1.5 text-xs pl-8 border-l border-zinc-800/40 ml-3">
+                  <div className="text-zinc-400">
+                    <span className="text-zinc-500 font-medium">Your Answer:</span>{' '}
+                    <span className={item.correct ? 'text-emerald-400/90' : 'text-red-400/90'}>
+                      {item.userAnswer || 'No answer submitted'}
+                    </span>
+                  </div>
+                  {!item.correct && item.correctAnswer && (
+                    <div className="text-emerald-400/95 font-medium">
+                      <span className="text-zinc-500 font-medium">Correct Answer:</span> {item.correctAnswer}
+                    </div>
+                  )}
+                  {item.explanation && (
+                    <div className="text-zinc-400 mt-2 bg-zinc-950/40 p-2.5 rounded-lg border border-zinc-800/40 text-2xs leading-relaxed">
+                      <span className="text-zinc-500 font-semibold block mb-1 uppercase tracking-wider">Explanation / Socratic Feedback</span>
+                      {item.explanation}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
+          <p className="text-zinc-300 text-sm mb-2 font-medium">{result.feedback}</p>
+          <p className="text-zinc-400 text-xs leading-relaxed">{result.recommendation}</p>
         </div>
 
         <div className="flex gap-4">
           <button onClick={() => { setStep('start'); setResult(null); setQuestions([]); }}
-            className="flex-1 py-3 bg-zinc-800 rounded-xl text-white font-bold hover:bg-zinc-700 transition-all">
+            className="flex-1 py-3.5 bg-zinc-800 hover:bg-zinc-700/90 border border-zinc-700 text-white rounded-xl font-bold transition-all shadow-md">
             Take Another
           </button>
           <button onClick={loadProfile}
-            className="flex-1 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2">
+            className="flex-1 py-3.5 bg-white hover:bg-zinc-100 text-black rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-md">
             <BarChart3 className="w-4 h-4" />
             View Profile
           </button>
@@ -623,7 +686,7 @@ const KnowledgeAssessmentPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-black font-sans overflow-y-auto">
+    <div className="h-screen bg-black font-sans overflow-y-auto">
       <div className="max-w-4xl mx-auto p-6 pb-32">
         <button
           onClick={() => step === 'start' ? navigate(-1) : setStep('start')}

@@ -48,8 +48,8 @@ class VectorDBService:
             )
 
         try:
-            # Use get_embedding_model() which respects EMBED_PROVIDER (ollama or sentence_transformers).
-            # OllamaEmbedder routes through Ollama HTTP API — no GPU usage.
+            # Use get_embedding_model() which respects EMBED_PROVIDER (sglang or sentence_transformers).
+            # OllamaEmbedder routes through SGLang HTTP API — no GPU usage.
             self.model = config.get_embedding_model()
             if self.model is None:
                 raise RuntimeError("get_embedding_model() returned None — check EMBED_PROVIDER and model config.")

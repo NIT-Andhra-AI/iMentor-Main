@@ -122,15 +122,12 @@ function testStreamingTokenExpander() {
 }
 
 // Run all tests
-try {
-    testMinifyPrompt();
-    testExpandOutgoingResponse();
-    testCasePreservation();
-    testJsonKeyProtection();
-    testStreamingTokenExpander();
-    console.log('\n=== All Hardened Token Optimizer Tests Passed Successfully! ===');
-} catch (error) {
-    console.error('\n❌ Test failed:');
-    console.error(error);
-    process.exit(1);
-}
+describe('Token Optimizer Hardened', () => {
+    it('should pass all tests', () => {
+        testMinifyPrompt();
+        testExpandOutgoingResponse();
+        testCasePreservation();
+        testJsonKeyProtection();
+        testStreamingTokenExpander();
+    });
+});

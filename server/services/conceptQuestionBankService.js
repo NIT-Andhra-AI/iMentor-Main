@@ -605,18 +605,13 @@ async function generateFallbackQuestions({ course, concept, topic, moduleName, c
   });
 
   try {
-    const providerHealth = require('./providerHealthCache');
-    const healthyProviders = providerHealth.getHealthyProviders(['groq', 'sglang', 'gemini', 'openai', 'ollama']);
-    const preferredProvider = healthyProviders.includes('groq')
-      ? 'groq'
-      : (healthyProviders[0] || 'groq');
     const result = await callWithFallback({
       userQuery: prompt,
       systemPrompt: `${CONCEPT_QUESTION_SYSTEM_PROMPT}\n\nReturn ONLY valid JSON array of MCQ objects with all required fields.`,
       chatHistory: [],
-      preferredProvider,
-      preferLocalFirst: false,
-      options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.25, maxOutputTokens: 4096, timeout: 30000 },
+      preferredProvider: 'sglang',
+      preferLocalFirst: true,
+      options: { temperature: 0.25, maxOutputTokens: 4096, timeout: 45000 },
     });
 
     const parsed = extractJsonArray(result?.text || '');
@@ -922,21 +917,26 @@ async function selectQuestionsForLevel({ course, concept, count = 5, seenQuestio
 
   if (allQuestions.length === 0) return [];
 
-  const seenSet = new Set(seenQuestionIds.map(s => s.toLowerCase().trim()));
+  const seenSet = new Set(seenQuestionIds.map(s => String(s || '').toLowerCase().trim()));
 
-  const annotated = allQuestions.map(q => ({
-    ...q,
-    _usageCount: q.usageCount || 0,
-    _seen: seenSet.has(q.question?.toLowerCase().trim()),
-    _lastUsed: q.lastUsedAt ? new Date(q.lastUsedAt).getTime() : 0,
-    _successRate: q.usageCount > 0 ? (q.successCount || 0) / q.usageCount : 0.5,
-    _random: Math.random(),
-  }));
+  const annotated = allQuestions.map(q => {
+    const qId = q._id ? String(q._id).toLowerCase().trim() : '';
+    const qStem = q.question ? String(q.question).toLowerCase().trim() : '';
+    const qCustId = q.question_id ? String(q.question_id).toLowerCase().trim() : '';
+    const isSeen = seenSet.has(qId) || seenSet.has(qStem) || (qCustId && seenSet.has(qCustId));
+    return {
+      ...q,
+      _usageCount: q.usageCount || 0,
+      _seen: isSeen,
+      _lastUsed: q.lastUsedAt ? new Date(q.lastUsedAt).getTime() : 0,
+      _successRate: q.usageCount > 0 ? (q.successCount || 0) / q.usageCount : 0.5,
+      _random: Math.random(),
+    };
+  });
 
   const unseenFirst = annotated.sort((a, b) => {
     if (a._seen !== b._seen) return a._seen ? 1 : -1;
     if (a._usageCount !== b._usageCount) return a._usageCount - b._usageCount;
-    if (a._lastUsed !== b._lastUsed) return a._lastUsed - b._lastUsed;
     return a._random - b._random;
   });
 

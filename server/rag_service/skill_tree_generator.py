@@ -260,7 +260,7 @@ def _write_skill_tree_to_neo4j(course: str, skill_tree: List[Dict]) -> int:
 
 
 # =============================================================================
-# LLM CALL  —  Provider Manager (SGLang → Grok → Gemini → Ollama)
+# LLM CALL  —  Provider Manager (SGLang → Grok → Gemini → SGLang)
 # =============================================================================
 
 _sglang_client = None
@@ -276,7 +276,7 @@ _gemini_dead = False
 
 
 def _call_llm(prompt: str, max_tokens: int = 4000) -> Optional[str]:
-    """Provider Manager (SGLang → Grok → Gemini → Ollama)."""
+    """Provider Manager (SGLang → Grok → Gemini → SGLang)."""
     global _gemini_dead
 
     # Use Provider Manager if available

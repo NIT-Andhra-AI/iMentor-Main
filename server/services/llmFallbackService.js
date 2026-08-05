@@ -17,13 +17,11 @@
  */
 
 const log = require('../utils/logger');
-const { checkOllamaHealth } = require('./ollamaHealthService');
 const Bottleneck = require('bottleneck'); // [Optimization] Per-provider concurrency control
 
 // Lazy-load provider services to avoid circular deps
-let _gemini, _ollama, _streaming, _sglang, _groq, _openai, _claude, _anthropic;
+let _gemini, _streaming, _sglang, _groq, _openai, _claude, _anthropic;
 function geminiService()    { return _gemini    || (_gemini    = require('./geminiService'));    }
-function ollamaService()    { return _ollama    || (_ollama    = require('./ollamaService'));    }
 function sglangService()    { return _sglang    || (_sglang    = require('./sglangService'));    }
 function groqService()      { return _groq      || (_groq      = require('./groqService'));      }
 function openaiService()    { return _openai    || (_openai    = require('./openaiService'));    }
@@ -150,11 +148,11 @@ async function isSglangUp() {
         return _sglangHealthy;
     }
     try {
-        // Quick HTTP health check with short timeout instead of relying on SDK client
         const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
-        const baseUrl = sglangUrl.replace(/\/v1\/?$/, '').replace(/\/chat\/completions\/?$/, '');
+        const baseUrl = sglangUrl.replace(/\/chat\/completions\/?$/, '');
         const axios = require('axios');
-        await axios.get(`${baseUrl}/health`, { timeout: 3000 });
+        const modelsUrl = baseUrl.endsWith('/v1') ? `${baseUrl}/models` : `${baseUrl}/v1/models`;
+        await axios.get(modelsUrl, { timeout: 3000 });
         _sglangHealthy = true;
         _sglangHealthTs = now;
         return true;
@@ -213,7 +211,7 @@ function getApiKey(provider, userKeys = {}) {
 
 // ─── PER-PROVIDER TIMEOUTS (ms) ────────────────────────────────────────────
 const PROVIDER_TIMEOUTS = {
-    sglang: 5_000,
+    sglang: 120_000,
     groq:   15_000,
     gemini: 15_000,
     openai: 15_000,
@@ -221,18 +219,25 @@ const PROVIDER_TIMEOUTS = {
 };
 
 // ─── FALLBACK CHAIN BUILDER ────────────────────────────────────────────────
-// SGLang (local GPU) → Groq → Gemini → OpenAI → Ollama (last resort)
-const LOCAL_FIRST_CHAIN  = ['sglang', 'groq', 'gemini', 'openai', 'ollama'];
-const CLOUD_FIRST_CHAIN  = ['groq', 'gemini', 'openai', 'sglang', 'ollama'];
+// SGLang (local GPU) is the default. Groq/Gemini only if user explicitly chooses.
+const LOCAL_FIRST_CHAIN  = ['sglang'];
+const CLOUD_FIRST_CHAIN  = ['sglang'];
 
 /**
  * Build an ordered provider chain with user preference first.
  */
-function buildFallbackChain(preferredProvider = 'groq', preferLocalFirst = true) {
-    const base = preferLocalFirst ? [...LOCAL_FIRST_CHAIN] : [...CLOUD_FIRST_CHAIN];
+function buildFallbackChain(preferredProvider = 'sglang', preferLocalFirst = true) {
     const norm = (preferredProvider || 'sglang').toLowerCase().trim();
-    // Put preferred first, then the rest in default order
-    const chain = [norm, ...base.filter(p => p !== norm)];
+    let chain = [];
+
+    if (norm === 'groq') {
+        chain = ['groq', 'gemini', 'sglang'];
+    } else if (norm === 'gemini') {
+        chain = ['gemini', 'groq', 'sglang'];
+    } else {
+        chain = ['sglang', 'gemini', 'groq'];
+    }
+
     return chain;
 }
 
@@ -242,7 +247,7 @@ function getServiceForProvider(provider) {
         case 'gemini': return geminiService();
         case 'groq':   return groqService();
         case 'openai': return openaiService();
-        case 'ollama': return ollamaService();
+        case 'ollama': return sglangService();
         case 'sglang': return sglangService();
         case 'claude': return claudeService();
         case 'anthropic': return anthropicService();
@@ -274,7 +279,7 @@ async function callWithFallback({
     userQuery,
     systemPrompt = null,
     options = {},
-    preferredProvider = 'groq',
+    preferredProvider = 'sglang',
     preferLocalFirst = false,
     userApiKeys = {},
     ollamaUrl = null,
@@ -335,7 +340,7 @@ async function callWithFallback({
             const executeLlmCall = async () => {
                 if (onToken && provider === 'ollama') {
                     // Ollama has native streaming via streamChat
-                    return await ollamaService().streamChat(
+                    return await sglangService().streamChat(
                         chatHistory, userQuery, systemPrompt, callOptions,
                         (token) => {
                             if (typeof token === 'string') {
@@ -388,7 +393,7 @@ async function callWithFallback({
                         max_tokens: callOptions.maxOutputTokens ?? 4096,
                         temperature: callOptions.temperature ?? 0.7,
                         stream: false,
-                    }, { timeout: 30000 });
+                    }, { timeout: 120000 });
                     return resp.data?.choices?.[0]?.message?.content || '';
                 } else {
                     // Non-streaming path for gemini/groq/ollama/openai
@@ -517,14 +522,7 @@ async function getFastModel(userApiKeys = {}, ollamaUrlHint = null) {
         };
     }
 
-    // 3) Groq — fast cloud provider
-    if (hasApiKey('groq', userApiKeys)) {
-        return {
-            provider: 'groq',
-            model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
-            apiKey: getApiKey('groq', userApiKeys),
-        };
-    }
+
 
     // 3) Gemini — cloud fallback
     if (hasApiKey('gemini', userApiKeys)) {
@@ -627,7 +625,7 @@ async function parallelCallWithFallback({
     options = {},
     parallelProviders = [],
     staggerMs = 200,
-    preferredProvider = 'groq',
+    preferredProvider = 'sglang',
     userApiKeys = {},
     ollamaUrl = null,
 }) {

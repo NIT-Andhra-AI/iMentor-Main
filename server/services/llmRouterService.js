@@ -1,3 +1,4 @@
+const { truncateContextToWindow } = require('../utils/tokenOptimizer');
 
 // const log         = require('../utils/logger');
 // const sglangCaps  = require('./sglangCapabilities');
@@ -6,7 +7,7 @@
 // const User = require('../models/User');
 // const { checkOllamaHealth } = require('./ollamaHealthService');
 // const geminiService = require('./geminiService');
-// const ollamaService = require('./ollamaService');
+// const sglangService = require('./sglangService');
 // const llmStreamingService = require('./llmStreamingService');
 // const { redisClient } = require('../config/redisClient');
 // const { classifyQuery } = require('./queryClassifierService');
@@ -119,8 +120,8 @@
 //     process.env.OLLAMA_API_BASE_URL
 //   ].filter(url => url && typeof url === 'string');
 
-//   let isOllamaActuallyUp = false;
-//   let workingOllamaUrl = null;
+//   let isLocalLlmActuallyUp = false;
+//   let workingLocalLlmUrl = null;
 
 //   // Probe all Ollama URLs concurrently — first healthy one wins
 //   if (ollamaUrls.length > 0) {
@@ -134,20 +135,20 @@
 //       );
 //       const first = results.find(r => r.status === 'fulfilled');
 //       if (first) {
-//           isOllamaActuallyUp = true;
-//           workingOllamaUrl = first.value;
+//           isLocalLlmActuallyUp = true;
+//           workingLocalLlmUrl = first.value;
 //       }
 //   }
 
 //   if (routingMode !== 'auto' && selectedModelId) {
 //     const manualModel = catalogFind({ modelId: selectedModelId }) || await LLMConfiguration.findOne({ modelId: selectedModelId }).lean();
 //     if (manualModel) {
-//       if (manualModel.provider === 'ollama' && !isOllamaActuallyUp) {
+//       if (manualModel.provider === 'sglang' && !isLocalLlmActuallyUp) {
 //         log.warn('AI', `Manual model ${selectedModelId} requested but Ollama is unreachable; falling back to provider routing.`);
 //       } else {
 //         log.info('AI', `Manual model selection active: ${manualModel.modelId}`);
 //         return {
-//           chosenModel: { ...manualModel, workingUrl: workingOllamaUrl },
+//           chosenModel: { ...manualModel, workingUrl: workingLocalLlmUrl },
 //           logic: 'manual_model_selection',
 //           modelRoutingMode: routingMode,
 //         };
@@ -164,7 +165,7 @@
 //         if (cachedModel) {
 //           log.info('AI', `[RoutingCache] HIT — routing to ${cachedModelId}`);
 //           return {
-//             chosenModel: { ...cachedModel, workingUrl: workingOllamaUrl },
+//             chosenModel: { ...cachedModel, workingUrl: workingLocalLlmUrl },
 //             logic: 'routing_cache_hit',
 //             modelRoutingMode: routingMode,
 //           };
@@ -195,7 +196,7 @@
 //           userPreference: preferredProvider,
 //           latencyBudget: context.latencyBudget || 'balanced',
 //           localMode: preferredProvider === 'ollama',
-//           isOllamaActive: isOllamaActuallyUp,
+//           isOllamaActive: isLocalLlmActuallyUp,
 //           catalog: catalogForAutoRoute,
 //         });
 
@@ -210,7 +211,7 @@
 //           // Persist routing decision to cache so future identical queries skip the heavy routing logic
 //           await cacheRoutingDecision(`${cacheKey}:${preferredProvider}`, autoDecision.modelId);
 //           return {
-//             chosenModel: { ...autoModel, workingUrl: workingOllamaUrl },
+//             chosenModel: { ...autoModel, workingUrl: workingLocalLlmUrl },
 //             logic: 'auto_smart_model_router',
 //             modelRoutingMode: routingMode,
 //             routingDecision: autoDecision,
@@ -233,8 +234,8 @@
 //     skipOllamaHealthCheck: false,
 //   });
 //   preferredProvider = resolvedProvider.chosenProvider;
-//   if (resolvedProvider.workingOllamaUrl) {
-//     workingOllamaUrl = resolvedProvider.workingOllamaUrl;
+//   if (resolvedProvider.workingLocalLlmUrl) {
+//     workingLocalLlmUrl = resolvedProvider.workingLocalLlmUrl;
 //   }
 
 //   // ── PRIORITY -1: SGLang (when deployed) ──────────────────────────────────────
@@ -272,13 +273,13 @@
 
 //   // PRIORITY 0: Tutor Mode
 //   if (context.tutorMode) {
-//     const customTutorModel = catalogFind({ modelId: 'ai-tutor-custom:latest', provider: 'ollama' }) 
-//         || await LLMConfiguration.findOne({ modelId: 'ai-tutor-custom:latest', provider: 'ollama' });
+//     const customTutorModel = catalogFind({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' }) 
+//         || await LLMConfiguration.findOne({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' });
 //       if (customTutorModel) {
 //         log.info('AI', `Routing to specialized tutor model: ${customTutorModel.modelId}`);
 //         const chosen = customTutorModel.toObject ? customTutorModel.toObject() : customTutorModel;
 //         return { 
-//           chosenModel: { ...chosen, workingUrl: workingOllamaUrl }, 
+//           chosenModel: { ...chosen, workingUrl: workingLocalLlmUrl }, 
 //           logic: 'tutor_mode_priority' 
 //         };
 //       }
@@ -304,7 +305,7 @@
 //           log.info('AI', `Routing to course adapter: ${baseModelObj.modelId}`);
   
 //           return {
-//             chosenModel: { ...baseModelObj, workingUrl: workingOllamaUrl },
+//             chosenModel: { ...baseModelObj, workingUrl: workingLocalLlmUrl },
 //             logic: `course_adapter_mapping_${context.courseId}`,
 //             adapterUsed: adapterMapping.adapterName,
 //             adapterVersion: adapterMapping.version,
@@ -381,7 +382,7 @@
 //       || await LLMConfiguration.findOne({ provider: preferredProvider }).then(m => m?.toObject?.() || m);
 //   if (catalogModel) {
 //     return {
-//       chosenModel: { ...catalogModel, workingUrl: workingOllamaUrl },
+//       chosenModel: { ...catalogModel, workingUrl: workingLocalLlmUrl },
 //       logic: `catalog_strict_${preferredProvider}`,
 //       classification
 //     };
@@ -392,7 +393,7 @@
 //     : (process.env.GEMINI_MODEL || 'gemini-2.0-flash');
 
 //   return {
-//     chosenModel: { modelId: defaultModelId, provider: SGLANG_ENABLED ? 'sglang' : preferredProvider, workingUrl: workingOllamaUrl },
+//     chosenModel: { modelId: defaultModelId, provider: SGLANG_ENABLED ? 'sglang' : preferredProvider, workingUrl: workingLocalLlmUrl },
 //     logic: 'strict_hardcoded_default',
 //     classification
 //   };
@@ -438,8 +439,8 @@
 //           );
 //         }
 
-//         if (chosenModel.provider === 'ollama') {
-//           return await ollamaService.streamChat(
+//         if (chosenModel.provider === 'sglang') {
+//           return await sglangService.streamChat(
 //             chatHistory,
 //             query,
 //             systemPrompt,
@@ -465,7 +466,7 @@
 
 //       const llmService = chosenModel.provider === 'sglang'
 //           ? chosenModel._sglangService
-//           : (chosenModel.provider === 'ollama' ? ollamaService : geminiService);
+//           : (chosenModel.provider === 'sglang' ? sglangService : geminiService);
 
 //       return await llmService.generateContentWithHistory(chatHistory, query, systemPrompt, llmOptions);
 //     } catch (error) {
@@ -487,9 +488,8 @@ const sglangCaps  = require('./sglangCapabilities');
 const LLMConfiguration = require('../models/LLMConfiguration');
 const CourseAdapterMapping = require('../models/CourseAdapterMapping');
 const User = require('../models/User');
-const { checkOllamaHealth } = require('./ollamaHealthService');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const llmStreamingService = require('./llmStreamingService');
 const { redisClient } = require('../config/redisClient');
 const { classifyQuery } = require('./queryClassifierService');
@@ -614,56 +614,53 @@ async function selectLLM(query, context) {
   const routingMode = user?.modelRoutingMode === 'auto' ? 'auto' : 'manual';
   const selectedModelId = String(user?.selectedModelId || '').trim();
 
-  let preferredProvider = user?.preferredLlmProvider || 'ollama';
-  // 'local_llm' is the frontend alias for local inference — treat as 'ollama'
-  if (preferredProvider === 'local_llm') preferredProvider = 'ollama';
-  // When SGLang is enabled, always prefer local — never route to Gemini
-  if (SGLANG_ENABLED) preferredProvider = 'ollama';
+  let preferredProvider = user?.preferredLlmProvider || 'sglang';
+  // 'local_llm' is the frontend alias for local inference — treat as 'sglang'
+  if (preferredProvider === 'local_llm' || preferredProvider === 'ollama') preferredProvider = 'sglang';
   const lowerQuery = query.toLowerCase();
 
-  const ollamaUrls = [
-    user?.ollamaUrl,
-    process.env.OLLAMA_API_BASE_URL
+  const sglangUrls = [
+    user?.localLlmUrl,
+    process.env.SGLANG_CHAT_URL
   ].filter(url => url && typeof url === 'string');
 
-  let isOllamaActuallyUp = false;
-  let workingOllamaUrl = null;
+  let isLocalLlmActuallyUp = false;
+  let workingLocalLlmUrl = null;
 
-  // Probe all Ollama URLs concurrently — first healthy one wins
-  if (ollamaUrls.length > 0) {
+  // Probe all SGLang URLs concurrently — first healthy one wins
+  if (sglangUrls.length > 0) {
       const results = await Promise.allSettled(
-          ollamaUrls.map(async (url) => {
+          sglangUrls.map(async (url) => {
               const trimmed = url.trim();
-              const healthy = await checkOllamaHealth(trimmed);
+              const healthy = await sglangService.checkHealth('chat');
               if (!healthy) throw new Error('unhealthy');
               return trimmed;
           })
       );
       const first = results.find(r => r.status === 'fulfilled');
       if (first) {
-          isOllamaActuallyUp = true;
-          workingOllamaUrl = first.value;
+          isLocalLlmActuallyUp = true;
+          workingLocalLlmUrl = first.value;
       }
   }
 
   // ── EARLY GROQ FALLBACK ───────────────────────────────────────────────────
-  // When SGLang is disabled AND Ollama is unreachable AND Groq key is available,
-  // skip all routing logic and go straight to Groq. This prevents every downstream
-  // path from crashing with a SGLang/Ollama error.
-  if (!SGLANG_ENABLED && !isOllamaActuallyUp && GROQ_ENABLED) {
-    log.info('AI', `[Router] SGLang disabled + Ollama unreachable → routing to Groq (${GROQ_MODEL})`);
+  // When SGLang is unreachable AND Groq key is available,
+  // skip all routing logic and go straight to Groq.
+  if (!isLocalLlmActuallyUp && GROQ_ENABLED) {
+    log.info('AI', `[Router] SGLang unreachable → routing to Groq (${GROQ_MODEL})`);
     return groqFallbackModel('groq_early_fallback_no_local');
   }
 
   if (routingMode !== 'auto' && selectedModelId) {
     const manualModel = catalogFind({ modelId: selectedModelId }) || await LLMConfiguration.findOne({ modelId: selectedModelId }).lean();
     if (manualModel) {
-      if (manualModel.provider === 'ollama' && !isOllamaActuallyUp) {
-        log.warn('AI', `Manual model ${selectedModelId} requested but Ollama is unreachable; falling back to provider routing.`);
+      if (manualModel.provider === 'sglang' && !isLocalLlmActuallyUp) {
+        log.warn('AI', `Manual model ${selectedModelId} requested but SGLang is unreachable; falling back to provider routing.`);
       } else {
         log.info('AI', `Manual model selection active: ${manualModel.modelId}`);
         return {
-          chosenModel: { ...manualModel, workingUrl: workingOllamaUrl },
+          chosenModel: { ...manualModel, workingUrl: workingLocalLlmUrl },
           logic: 'manual_model_selection',
           modelRoutingMode: routingMode,
         };
@@ -698,12 +695,12 @@ async function selectLLM(query, context) {
         const cachedModel = catalogFind({ modelId: cachedModelId }) || await LLMConfiguration.findOne({ modelId: cachedModelId }).lean();
         if (cachedModel) {
           // Don't use cached ollama decision if Ollama is now down
-          if (cachedModel.provider === 'ollama' && !isOllamaActuallyUp) {
+          if (cachedModel.provider === 'sglang' && !isLocalLlmActuallyUp) {
             log.warn('AI', `[RoutingCache] HIT for ollama but Ollama is down — skipping cache`);
           } else {
             log.info('AI', `[RoutingCache] HIT — routing to ${cachedModelId}`);
             return {
-              chosenModel: { ...cachedModel, workingUrl: workingOllamaUrl },
+              chosenModel: { ...cachedModel, workingUrl: workingLocalLlmUrl },
               logic: 'routing_cache_hit',
               modelRoutingMode: routingMode,
             };
@@ -717,7 +714,7 @@ async function selectLLM(query, context) {
         if (cached) {
           autoDecision = JSON.parse(cached);
           // Invalidate cached ollama decision if Ollama is now down
-          if (autoDecision?.provider === 'ollama' && !isOllamaActuallyUp) {
+          if (autoDecision?.provider === 'sglang' && !isLocalLlmActuallyUp) {
             log.warn('AI', `[AutoRoute] Cached decision was ollama but Ollama is down — recomputing`);
             autoDecision = null;
           }
@@ -743,7 +740,7 @@ async function selectLLM(query, context) {
               }));
             }
             return {
-              chosenModel: { ...intelligentModel, workingUrl: workingOllamaUrl },
+              chosenModel: { ...intelligentModel, workingUrl: workingLocalLlmUrl },
               logic: 'intelligent_router_direct',
               modelRoutingMode: routingMode,
               routingDecision: {
@@ -777,7 +774,7 @@ async function selectLLM(query, context) {
           userPreference: effectiveProvider,
           latencyBudget: context.latencyBudget || 'balanced',
           localMode: effectiveProvider === 'ollama',
-          isOllamaActive: isOllamaActuallyUp,
+          isOllamaActive: isLocalLlmActuallyUp,
           catalog: catalogForAutoRoute,
         });
 
@@ -792,7 +789,7 @@ async function selectLLM(query, context) {
           // Persist routing decision to cache so future identical queries skip the heavy routing logic
           await cacheRoutingDecision(`${cacheKey}:${preferredProvider}`, autoDecision.modelId);
           return {
-            chosenModel: { ...autoModel, workingUrl: workingOllamaUrl },
+            chosenModel: { ...autoModel, workingUrl: workingLocalLlmUrl },
             logic: 'auto_smart_model_router',
             modelRoutingMode: routingMode,
             routingDecision: autoDecision,
@@ -824,8 +821,8 @@ async function selectLLM(query, context) {
     skipOllamaHealthCheck: false,
   });
   preferredProvider = resolvedProvider.chosenProvider;
-  if (resolvedProvider.workingOllamaUrl) {
-    workingOllamaUrl = resolvedProvider.workingOllamaUrl;
+  if (resolvedProvider.workingLocalLlmUrl) {
+    workingLocalLlmUrl = resolvedProvider.workingLocalLlmUrl;
   }
 
   // ── PRIORITY -1: SGLang (when deployed) ──────────────────────────────────────
@@ -884,13 +881,13 @@ async function selectLLM(query, context) {
 
   // PRIORITY 0: Tutor Mode
   if (context.tutorMode) {
-    const customTutorModel = catalogFind({ modelId: 'ai-tutor-custom:latest', provider: 'ollama' }) 
-        || await LLMConfiguration.findOne({ modelId: 'ai-tutor-custom:latest', provider: 'ollama' });
-      if (customTutorModel && isOllamaActuallyUp) {
+    const customTutorModel = catalogFind({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' }) 
+        || await LLMConfiguration.findOne({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' });
+      if (customTutorModel && isLocalLlmActuallyUp) {
         log.info('AI', `Routing to specialized tutor model: ${customTutorModel.modelId}`);
         const chosen = customTutorModel.toObject ? customTutorModel.toObject() : customTutorModel;
         return { 
-          chosenModel: { ...chosen, workingUrl: workingOllamaUrl }, 
+          chosenModel: { ...chosen, workingUrl: workingLocalLlmUrl }, 
           logic: 'tutor_mode_priority' 
         };
       }
@@ -916,7 +913,7 @@ async function selectLLM(query, context) {
           log.info('AI', `Routing to course adapter: ${baseModelObj.modelId}`);
   
           return {
-            chosenModel: { ...baseModelObj, workingUrl: workingOllamaUrl },
+            chosenModel: { ...baseModelObj, workingUrl: workingLocalLlmUrl },
             logic: `course_adapter_mapping_${context.courseId}`,
             adapterUsed: adapterMapping.adapterName,
             adapterVersion: adapterMapping.version,
@@ -981,7 +978,7 @@ async function selectLLM(query, context) {
 
     if (specializedModel) {
       // Don't use ollama specialized model if Ollama is down
-      if (specializedModel.provider === 'ollama' && !isOllamaActuallyUp) {
+      if (specializedModel.provider === 'sglang' && !isLocalLlmActuallyUp) {
         log.warn('AI', `[Router] Specialized ollama model found but Ollama is down — skipping`);
       } else {
         log.info('AI', `Specialized route: ${specializedModel.modelId} (${specializedModel.provider})`);
@@ -999,12 +996,12 @@ async function selectLLM(query, context) {
       || await LLMConfiguration.findOne({ provider: preferredProvider }).then(m => m?.toObject?.() || m);
   if (catalogModel) {
     // Don't route to ollama catalog model if Ollama is down
-    if (catalogModel.provider === 'ollama' && !isOllamaActuallyUp) {
+    if (catalogModel.provider === 'sglang' && !isLocalLlmActuallyUp) {
       log.warn('AI', `[Router] Catalog model is ollama but Ollama is down — falling to Groq`);
       if (GROQ_ENABLED) return groqFallbackModel('groq_fallback_catalog_ollama_down');
     } else {
       return {
-        chosenModel: { ...catalogModel, workingUrl: workingOllamaUrl },
+        chosenModel: { ...catalogModel, workingUrl: workingLocalLlmUrl },
         logic: `catalog_strict_${preferredProvider}`,
         classification
       };
@@ -1022,7 +1019,7 @@ async function selectLLM(query, context) {
     : (process.env.GEMINI_MODEL || 'gemini-2.0-flash');
 
   return {
-    chosenModel: { modelId: defaultModelId, provider: SGLANG_ENABLED ? 'sglang' : preferredProvider, workingUrl: workingOllamaUrl },
+    chosenModel: { modelId: defaultModelId, provider: SGLANG_ENABLED ? 'sglang' : preferredProvider, workingUrl: workingLocalLlmUrl },
     logic: 'strict_hardcoded_default',
     classification
   };
@@ -1085,8 +1082,8 @@ const LLMRouter = {
           );
         }
 
-        if (chosenModel.provider === 'ollama') {
-          return await ollamaService.streamChat(
+        if (chosenModel.provider === 'sglang') {
+          return await sglangService.streamChat(
             truncatedChatHistory,
             truncatedUserQuery,
             systemPrompt,
@@ -1117,7 +1114,7 @@ const LLMRouter = {
 
       const llmService = chosenModel.provider === 'sglang'
           ? chosenModel._sglangService
-          : (chosenModel.provider === 'ollama' ? ollamaService : geminiService);
+          : (chosenModel.provider === 'sglang' ? sglangService : geminiService);
 
       return await llmService.generateContentWithHistory(finalChatHistory, finalUserQuery, systemPrompt, llmOptions);
     } catch (error) {

@@ -25,7 +25,7 @@ llm_model_name = os.getenv("QA_LLM_MODEL")
 
 def llm_generate(prompt):
     """
-    Unified wrapper with automatic fallback: Gemini -> Groq -> Ollama.
+    Unified wrapper with automatic fallback: Gemini -> Groq -> SGLang.
     """
     
     # --- 1. Try Gemini first ---
@@ -57,11 +57,11 @@ def llm_generate(prompt):
             if completion.choices[0].message.content:
                 return completion.choices[0].message.content
         except Exception as e:
-            logger.warning(f"[QA Generator] Groq failed: {e}. Falling back to Ollama...")
+            logger.warning(f"[QA Generator] Groq failed: {e}. Falling back to SGLang...")
 
-    # --- 3. Final Fallback to Ollama (Local) ---
+    # --- 3. Final Fallback to SGLang (Local) ---
     try:
-        logger.info("[QA Generator] Attempting Ollama...")
+        logger.info("[QA Generator] Attempting SGLang...")
         import requests
         model = os.getenv("QA_LLM_MODEL", "llama3")
         response = requests.post(
@@ -72,7 +72,7 @@ def llm_generate(prompt):
         if response.status_code == 200:
             return response.json().get("response", "")
     except Exception as e:
-        logger.error(f"[QA Generator] All providers failed. Last error (Ollama): {e}")
+        logger.error(f"[QA Generator] All providers failed. Last error (SGLang): {e}")
     
     return ""
 

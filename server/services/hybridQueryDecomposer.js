@@ -176,7 +176,7 @@ function decomposeQuery(query, opts = {}) {
 
     if (isHybrid) {
         log.info('HYBRID', `Query decomposed into ${typed.length} segments — web:${webSegments.length} academic:${academicSegments.length} llm-only:${typed.filter(s=>s.retrieval==='llm').length}`);
-        typed.forEach((s, i) => log.debug('HYBRID', `  [${i+1}] (${s.retrieval}) "${s.text.substring(0, 60)}"`));
+        typed.forEach((s, i) => log.info('HYBRID', `  [${i+1}] (${s.retrieval}) "${s.text.substring(0, 60)}"`));
     }
 
     return {

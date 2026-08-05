@@ -58,6 +58,18 @@ export async function selectTutorCourse(page, courseName) {
 
   await select.selectOption({ label: match });
   await page.waitForTimeout(3000); // curriculum loads
+
+  // Wait for the initial welcome message to start and complete streaming
+  try {
+    await page.waitForSelector(TUTOR_SEL.botMessage, { timeout: 15000 });
+    // Wait up to 300 seconds for streaming to start
+    await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'visible', timeout: 300000 });
+    // Wait for streaming to finish
+    await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'hidden', timeout: 300000 });
+    await page.waitForTimeout(1000);
+  } catch (err) {
+    // If no welcome message is streamed or if it was instant (cached), proceed
+  }
 }
 
 /* ─── Progress Management (API) ────────────────────────────────────── */
@@ -67,10 +79,13 @@ export async function selectTutorCourse(page, courseName) {
  * Uses POST /api/progress/update with type='sync' and empty arrays.
  */
 export async function clearTutorProgress(page, courseName) {
-  // Get token from cookie or local storage
-  const token = await page.evaluate(() => {
-    return localStorage.getItem('authToken') || localStorage.getItem('token') || '';
-  });
+  // Retry reading token until it's available
+  let token = '';
+  for (let i = 0; i < 10; i++) {
+    token = await page.evaluate(() => localStorage.getItem('authToken') || localStorage.getItem('token') || '');
+    if (token && token.length > 10) break;
+    await page.waitForTimeout(500);
+  }
 
   const response = await page.request.post(`${BASE_API}/progress/update`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -97,7 +112,7 @@ export async function saveTutorProgress(page, courseName, progress) {
   const token = await page.evaluate(() => localStorage.getItem('authToken') || localStorage.getItem('token') || '');
 
   const response = await page.request.post(
-    `${BASE_API}/chat/tutor/progress/${encodeURIComponent(courseName)}`,
+    `${BASE_API}/chat/progress/${encodeURIComponent(courseName)}`,
     {
       headers: { Authorization: `Bearer ${token}` },
       data: progress
@@ -117,7 +132,7 @@ export async function getCurriculumStructure(page, courseName) {
   const token = await page.evaluate(() => localStorage.getItem('authToken') || localStorage.getItem('token') || '');
 
   const response = await page.request.get(
-    `${BASE_API}/chat/tutor/curriculum/${encodeURIComponent(courseName)}`,
+    `${BASE_API}/chat/curriculum/${encodeURIComponent(courseName)}`,
     { headers: { Authorization: `Bearer ${token}` } }
   );
 
@@ -136,6 +151,13 @@ export async function getCurriculumStructure(page, courseName) {
  * Returns the bot response text.
  */
 export async function sendTutorMessage(page, text, timeout = 120000) {
+  // Dismiss any level-up or overlay modals that might block input/send clicks
+  const closeBtn = page.locator('button[aria-label="Close modal"], button[aria-label="Close"], button:has-text("Close"), button:has-text("Keep Learning")').first();
+  if (await closeBtn.isVisible({ timeout: 1500 }).catch(() => false)) {
+    await closeBtn.click();
+    await page.waitForTimeout(1000);
+  }
+
   const input = page.locator('textarea').first();
   await input.waitFor({ state: 'visible', timeout: 10000 });
   await input.fill(text);
@@ -143,27 +165,48 @@ export async function sendTutorMessage(page, text, timeout = 120000) {
   // Click send or press Enter
   const sendBtn = page.locator('button[title="Send message (Enter)"]');
   if (await sendBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
-    await sendBtn.click();
+    // Retry closing modal if it blocked during send action
+    try {
+      await sendBtn.click({ timeout: 3000 });
+    } catch {
+      const retryClose = page.locator('button[aria-label="Close modal"], button[aria-label="Close"], button:has-text("Close"), button:has-text("Keep Learning")').first();
+      if (await retryClose.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await retryClose.click();
+        await page.waitForTimeout(1000);
+      }
+      await sendBtn.click();
+    }
   } else {
     await input.press('Enter');
   }
 
-  // Wait for bot response
+  // Wait for bot response bubble to appear
   await page.waitForSelector(TUTOR_SEL.botMessage, { timeout });
 
-  // Wait for streaming to complete
-  try {
-    await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'visible', timeout: 15000 });
-  } catch { /* may be instant */ }
-  try {
-    await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'hidden', timeout });
-  } catch { /* already done */ }
+  // Get last bot message bubble
+  let msgs = page.locator(TUTOR_SEL.botMessage);
+  let count = await msgs.count();
+  if (count > 0) {
+    let lastMsg = msgs.nth(count - 1);
+    let lastText = (await lastMsg.textContent()) || '';
 
-  await page.waitForTimeout(1000);
+    // If the message bubble contains a loading placeholder, wait for streaming to start and finish
+    if (lastText.includes('Thinking') || lastText.includes('reasoning') || lastText.includes('🧠') || lastText.includes('depth')) {
+      try {
+        // Wait up to 300 seconds for the streaming cursor to become visible
+        await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'visible', timeout: 300000 });
+      } catch (err) { /* may be instant */ }
+      try {
+        // Wait for the streaming cursor to be hidden (streaming complete)
+        await page.waitForSelector(TUTOR_SEL.streamingCursor, { state: 'hidden', timeout: 300000 });
+      } catch (err) { /* already done */ }
+      await page.waitForTimeout(1000);
+    }
+  }
 
-  // Get last bot message
-  const msgs = page.locator(TUTOR_SEL.botMessage);
-  const count = await msgs.count();
+  // Refetch last bot message text to get the fully streamed content
+  msgs = page.locator(TUTOR_SEL.botMessage);
+  count = await msgs.count();
   return count > 0 ? (await msgs.nth(count - 1).textContent()) || '' : '';
 }
 

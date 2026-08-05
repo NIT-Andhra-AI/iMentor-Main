@@ -552,8 +552,8 @@
 15:10:12 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:10:12 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:10:12 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:10:12 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:10:32 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:10:12 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:10:32 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:10:32 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -562,7 +562,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:10:32 | [33mAI        [0m | [Fallback] Skipping sglang — not reachable or disabled
@@ -576,8 +576,8 @@
 15:10:39 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:10:39 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:10:39 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:10:39 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:10:59 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:10:39 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:10:59 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:10:59 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -586,7 +586,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:11:01 | [33mAI        [0m | [SGLang] Health check failed for endpoint=chat: Connection error.
@@ -601,8 +601,8 @@
 15:11:07 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:11:07 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:11:07 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:11:07 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:11:27 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:11:07 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:11:27 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:11:27 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -611,7 +611,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:11:27 | [36mCONCEPT_QB[0m | LLM providers exhausted — using template fallback for Sorting Algorithms
@@ -721,8 +721,8 @@
 15:11:34 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:11:34 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:11:34 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:11:34 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:11:54 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:11:34 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:11:54 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:11:54 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -731,7 +731,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:11:54 | [33mAI        [0m | [Fallback] Skipping sglang — not reachable or disabled
@@ -745,8 +745,8 @@
 15:12:01 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:12:01 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:12:01 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:12:01 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:12:21 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:12:01 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:12:21 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:12:21 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -755,7 +755,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:12:22 | [33mAI        [0m | [SGLang] Health check failed for endpoint=chat: Connection error.
@@ -770,8 +770,8 @@
 15:12:29 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:12:29 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:12:29 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:12:29 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:12:49 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:12:29 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:12:49 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:12:49 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -780,7 +780,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:12:49 | [36mCONCEPT_QB[0m | LLM providers exhausted — using template fallback for Graphs
@@ -890,8 +890,8 @@
 15:12:55 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:12:56 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:12:56 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:12:56 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:13:16 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:12:56 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:13:16 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:13:16 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -900,7 +900,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:13:16 | [33mAI        [0m | [Fallback] Skipping sglang — not reachable or disabled
@@ -914,8 +914,8 @@
 15:13:23 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:13:23 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:13:23 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:13:23 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:13:43 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:13:23 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:13:43 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:13:43 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -924,7 +924,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:13:45 | [33mAI        [0m | [SGLang] Health check failed for endpoint=chat: Connection error.
@@ -939,8 +939,8 @@
 15:13:51 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:13:51 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:13:51 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:13:51 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:14:11 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:13:51 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:14:11 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:14:11 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -949,7 +949,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:14:11 | [36mCONCEPT_QB[0m | LLM providers exhausted — using template fallback for Trees
@@ -1056,8 +1056,8 @@
 15:20:55 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:20:56 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:20:56 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:20:56 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:21:16 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:20:56 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:21:16 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:21:16 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -1066,7 +1066,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:21:16 | [36mPIPELINE  [0m | [GENERATED VIA NONE] Levels in 32461ms
@@ -1086,8 +1086,8 @@
 15:21:23 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:21:23 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:21:23 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:21:23 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:21:43 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:21:23 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:21:43 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:21:43 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -1096,7 +1096,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:21:45 | [33mAI        [0m | [SGLang] Health check failed for endpoint=chat: Connection error.
@@ -1111,8 +1111,8 @@
 15:21:51 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:21:52 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:21:52 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:21:52 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:22:12 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:21:52 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:22:12 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:22:12 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -1121,7 +1121,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:22:12 | [33mAI        [0m | [Fallback] Skipping sglang — not reachable or disabled
@@ -1135,8 +1135,8 @@
 15:22:18 | [36mAI        [0m | [Fallback] Attempting openai/gpt-4o (timeout: 15000ms)
 15:22:18 | [33mAI        [0m | OpenAI failure: API key is invalid or unauthorized
 15:22:18 | [33mAI        [0m | [Fallback] ✗ openai failed: OpenAI API failure: Request failed with status code 401
-15:22:18 | [36mAI        [0m | [Fallback] Attempting ollama/qwen2.5-coder:7b (timeout: 20000ms)
-15:22:38 | [33mAI        [0m | [Fallback] ✗ ollama failed: timeout of 20000ms exceeded
+15:22:18 | [36mAI        [0m | [Fallback] Attempting sglang/qwen2.5-coder:7b (timeout: 20000ms)
+15:22:38 | [33mAI        [0m | [Fallback] ✗ sglang failed: timeout of 20000ms exceeded
 15:22:38 | [31mERROR     [0m | [Fallback] ALL providers exhausted
 [31mCAUSE    | [ { provider: [32m'groq'[39m,
     model: [32m'llama-3.3-70b-versatile'[39m,
@@ -1145,7 +1145,7 @@
   { provider: [32m'openai'[39m,
     model: [32m'gpt-4o'[39m,
     error: [32m'OpenAI API failure: Request failed with status code 401'[39m },
-  { provider: [32m'ollama'[39m,
+  { provider: [32m'sglang'[39m,
     model: [32m'qwen2.5-coder:7b'[39m,
     error: [32m'timeout of 20000ms exceeded'[39m } ][0m
 15:22:38 | [36mCONCEPT_QB[0m | LLM providers exhausted — using template fallback for Introduction to Replay Topic 1784022637270 Concepts

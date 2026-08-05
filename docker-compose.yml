@@ -93,12 +93,10 @@ services:
       retries: 5
 
   # ═══════════════════════════════════════════════════════════════════════════
-  # SGLANG — LLM Inference Server (GPU)
+  # OLLAMA — LLM Inference Server (GPU)
   # ═══════════════════════════════════════════════════════════════════════════
-  # Qwen2.5-7B-AWQ on RTX A4000 16GB: ~4.5GB weights + ~3GB KV = ~7-8GB VRAM
-  # Exposes OpenAI-compatible API on port 8000
 
-  sglang:
+  chatbot-sglang:
     image: lmsysorg/sglang:latest
     container_name: chatbot-sglang
     restart: unless-stopped
@@ -108,6 +106,7 @@ services:
       - huggingface_cache:/root/.cache/huggingface
     environment:
       - HF_HOME=/root/.cache/huggingface
+      - SGLANG_PORT=30000
     deploy:
       resources:
         reservations:
@@ -115,7 +114,8 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    entrypoint: ["python3", "-m", "sglang.launch_server",
+    command: [
+      "python3", "-m", "sglang.launch_server",
       "--model-path", "Qwen/Qwen2.5-7B-Instruct-AWQ",
       "--quantization", "awq",
       "--host", "0.0.0.0",
@@ -129,8 +129,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:30000/v1/models || exit 1"]
       interval: 30s
-      timeout: 10s
-      retries: 10
+      timeout: 15s
+      retries: 5
       start_period: 120s
 
   # ═══════════════════════════════════════════════════════════════════════════

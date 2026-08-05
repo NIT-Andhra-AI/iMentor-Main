@@ -149,12 +149,17 @@ def _build_context(subtopic_name: str, stn: Optional[dict]) -> str:
 _SYSTEM_PROMPT = (
     "You are an expert university-level AI/ML educator. "
     "You write crystal-clear, beautifully structured lecture notes in Markdown. "
-    "Every equation must use $$ … $$ double-dollar blocks (on their own line). "
-    "Every diagram must be a valid ```mermaid``` code block using graph TD or flowchart LR syntax. "
-    "CRITICAL MERMAID RULES: Node labels must contain ONLY plain text — no LaTeX, no parentheses with backslashes, no special characters. "
-    "Use simple words in node labels: write 'f(x)' as 'f of x', write Greek letters as words (alpha, beta, theta). "
-    "Never use \\documentclass, \\begin{document}, or any LaTeX document commands. "
-    "Never output raw JSON. Output only clean Markdown."
+    "MATERIAL HIERARCHY & CROSS-VALIDATION RULES:\n"
+    "1. The foundational concepts must be derived from the user's local reference materials and your core pre-trained knowledge.\n"
+    "2. Web-augmented search results are ONLY for finishing touches, enriching definitions, and detailing specifics, not for the core foundation.\n"
+    "3. You MUST cross-validate any facts, definitions, or terminology retrieved from web searches against the user's local documents. Ensure they align perfectly and resolve any conflicts in favor of the user's local resource conventions.\n"
+    "FORMATTING RULES:\n"
+    "- Every equation must use $$ … $$ double-dollar blocks (on their own line).\n"
+    "- Every diagram must be a valid ```mermaid``` code block using graph TD or flowchart LR syntax.\n"
+    "- CRITICAL MERMAID RULES: Node labels must contain ONLY plain text — no LaTeX, no parentheses with backslashes, no special characters.\n"
+    "- Use simple words in node labels: write 'f(x)' as 'f of x', write Greek letters as words (alpha, beta, theta).\n"
+    "- Never use \\documentclass, \\begin{document}, or any LaTeX document commands.\n"
+    "- Never output raw JSON. Output only clean Markdown."
 )
 
 _USER_PROMPT_TMPL = """\
@@ -314,7 +319,7 @@ def _call_groq(prompt: str) -> Optional[str]:
 
 
 def _call_llm(prompt: str) -> Optional[str]:
-    """Provider Manager (SGLang → Grok → Gemini → Ollama)."""
+    """Provider Manager (SGLang → Grok → Gemini → SGLang)."""
     # Use Provider Manager if available
     if _PROVIDER_MANAGER_AVAILABLE:
         try:
@@ -384,6 +389,29 @@ def get_or_generate_lecture(
     # ── 2. STN context ──
     stn = _fetch_stn(course, subtopic_id)
     context = _build_context(name, stn)
+
+    # Enrich context with real-time web search if no STN notes are available, or to augment quality
+    if not stn or "No pre-existing notes available" in context:
+        logger.info(f"Lecture Gen: STN is missing or sparse for '{name}'. Performing web search to augment...")
+        try:
+            from duckduckgo_search import DDGS
+            with DDGS() as ddgs:
+                results = list(ddgs.text(f"{course} {name} explanation definition", max_results=3))
+            web_docs = []
+            for r in results:
+                title = r.get("title", "No Title")
+                body = r.get("body", "")
+                url = r.get("href", "#")
+                if body:
+                    web_docs.append(f"Source Web Resource: {title} ({url})\nContent: {body}")
+            if web_docs:
+                web_context = "\n\n---\n\n[Web-Augmented Knowledge Base]\n" + "\n\n---\n\n".join(web_docs)
+                if not stn:
+                    context = web_context
+                else:
+                    context = context + web_context
+        except Exception as e:
+            logger.debug(f"Web search augmentation failed during lecture generation: {e}")
 
     # ── 3. LLM generation ──
     prompt = _build_prompt(name, course, topic_name, context)

@@ -34,7 +34,7 @@ async function streamCompletion({
     }
 
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt));
+    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
     const optimizedMessages = tokenOptimizer.optimizeIncomingMessages(messages || []);
 
     // Wrap onToken to handle thinking tags if requested
@@ -47,17 +47,17 @@ async function streamCompletion({
             buffer += token;
 
             // Handle start tag
-            if (!isThinking && buffer.includes('<thinking>')) {
+            if (!isThinking && buffer.includes('<think>')) {
                 isThinking = true;
-                const parts = buffer.split('<thinking>');
+                const parts = buffer.split('<think>');
                 if (parts[0]) onToken({ type: 'token', content: parts[0] });
                 buffer = parts[1] || '';
             }
 
             // Handle end tag
-            if (isThinking && buffer.includes('</thinking>')) {
+            if (isThinking && buffer.includes('</think>')) {
                 isThinking = false;
-                const parts = buffer.split('</thinking>');
+                const parts = buffer.split('</think>');
                 if (parts[0]) onToken({ type: 'thought', content: parts[0] });
                 buffer = parts[1] || '';
             }
@@ -88,14 +88,9 @@ async function streamCompletion({
     });
 
     const providerOnToken = (chunk) => {
-        if (options.handleThinkingTags) {
-            // Providers pass strings
-            expander.processChunk(chunk);
-        } else {
-            // Providers pass { type: 'token', content: '...' }
-            if (chunk && typeof chunk.content === 'string') {
-                expander.processChunk(chunk.content);
-            }
+        const text = (chunk && typeof chunk === 'object' && typeof chunk.content === 'string') ? chunk.content : chunk;
+        if (text && typeof text === 'string') {
+            expander.processChunk(text);
         }
     };
 

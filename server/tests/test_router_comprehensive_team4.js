@@ -169,15 +169,7 @@ require.cache[require.resolve('../services/sglangCapabilities')] = {
     loaded: true
 };
 
-// Mock ollamaHealthService
-require.cache[require.resolve('../services/ollamaHealthService')] = {
-    id: require.resolve('../services/ollamaHealthService'),
-    exports: {
-        checkOllamaHealth: async () => mockState.ollamaHealthy
-    },
-    filename: require.resolve('../services/ollamaHealthService'),
-    loaded: true
-};
+
 
 // Mock queryClassifierService
 require.cache[require.resolve('../services/queryClassifierService')] = {
@@ -213,7 +205,7 @@ require.cache[require.resolve('../services/routingCacheService')] = {
     loaded: true
 };
 
-// Mock provider services (geminiService, ollamaService, sglangService, groqService)
+// Mock provider services (geminiService, sglangService, sglangService, groqService)
 const mockGeminiService = {
     generateContentWithHistory: async () => {
         if (mockState.geminiCallShouldFail) throw new Error('Gemini service error');
@@ -227,25 +219,6 @@ require.cache[require.resolve('../services/geminiService')] = {
     loaded: true
 };
 
-const mockOllamaService = {
-    generateContentWithHistory: async () => {
-        if (mockState.ollamaCallShouldFail) throw new Error('Ollama service error');
-        return 'Mocked Ollama success';
-    },
-    streamChat: async (chatHistory, userQuery, systemPrompt, options, onToken) => {
-        if (mockState.ollamaCallShouldFail) throw new Error('Ollama stream error');
-        onToken('Mocked ');
-        onToken('Ollama ');
-        onToken('Stream');
-        return 'Mocked Ollama Stream';
-    }
-};
-require.cache[require.resolve('../services/ollamaService')] = {
-    id: require.resolve('../services/ollamaService'),
-    exports: mockOllamaService,
-    filename: require.resolve('../services/ollamaService'),
-    loaded: true
-};
 
 const mockSglangService = {
     checkHealth: async () => mockState.sglangHealthy,
@@ -442,10 +415,10 @@ addTest('History Truncation - Preserves system message and final user prompt', (
 // -------------------------------------------------------------
 addTest('Fallback chain priority resolver list', () => {
     const chainL = buildFallbackChain('sglang', true);
-    assert.deepStrictEqual(chainL, ['sglang', 'groq', 'gemini']);
+    assert.deepStrictEqual(chainL, ['sglang']);
 
     const chainC = buildFallbackChain('gemini', false);
-    assert.deepStrictEqual(chainC, ['gemini', 'groq', 'sglang']);
+    assert.deepStrictEqual(chainC, ['gemini', 'sglang']);
 });
 
 addTest('Thinking Model Detection', () => {
@@ -462,19 +435,20 @@ addTest('Separation of <thinking> tags', () => {
 });
 
 addAsyncTest('callWithFallback - Success cascade if preferred fails', async () => {
-    mockState.sglangCallShouldFail = true; 
-    mockState.groqCallShouldFail = false;    
+    mockState.sglangCallShouldFail = false; 
+    mockState.groqCallShouldFail = true;    
     mockState.geminiCallShouldFail = false;
 
     process.env.GROQ_API_KEY = 'mock_key';
+    process.env.SGLANG_ENABLED = 'true';
     const result = await callWithFallback({
         userQuery: 'test query',
-        preferredProvider: 'sglang',
+        preferredProvider: 'groq',
         userApiKeys: { groq: 'mock_key' }
     });
 
-    assert.strictEqual(result.provider, 'groq', 'Should cascade to successful groq service');
-    assert.ok(result.text.includes('Mocked Groq success'), 'Fallback result carries Groq output');
+    assert.strictEqual(result.provider, 'sglang', 'Should cascade to successful sglang service');
+    assert.ok(result.text.includes('Mocked SGLang'), 'Fallback result carries SGLang output');
     assert.strictEqual(result.wasFailover, true, 'Failover flag should be true');
 });
 
@@ -501,37 +475,23 @@ addAsyncTest('Provider limiter bottleneck overflow handling', async () => {
 // -------------------------------------------------------------
 // Runner
 // -------------------------------------------------------------
-(async () => {
-    logReport(`Executing ${tests.length} tests sequentially...\n`);
-    let failedNum = 0;
-    
-    for (const test of tests) {
-        totalTests++;
-        try {
+describe('Router Comprehensive Team 4', () => {
+    tests.forEach((test) => {
+        it(test.name, async () => {
             if (test.isAsync) {
                 await test.fn();
             } else {
                 test.fn();
             }
-            passedTests++;
-            logReport(`[PASS] ${test.name}`);
+        });
+    });
+
+    afterAll(() => {
+        try {
+            fs.writeFileSync(reportPath, resultsBuffer.join('\n') + '\n', 'utf8');
+            console.log(`Successfully wrote Team-4 report to ${reportPath}`);
         } catch (e) {
-            failedNum++;
-            logReport(`[FAIL] ${test.name}\n       Error: ${e.message}\n       Stack: ${e.stack}`);
+            console.error(`Failed to write report: ${e.message}`);
         }
-    }
-    
-    logReport('\n========================================================================');
-    logReport(`   Execution Finished: ${passedTests}/${totalTests} Tests Passed successfully.`);
-    logReport(`   Failures: ${failedNum}`);
-    logReport('========================================================================\n');
-
-    try {
-        fs.writeFileSync(reportPath, resultsBuffer.join('\n') + '\n', 'utf8');
-        console.log(`Successfully wrote Team-4 report to ${reportPath}`);
-    } catch (e) {
-        console.error(`Failed to write report: ${e.message}`);
-    }
-
-    process.exit(failedNum === 0 ? 0 : 1);
-})();
+    });
+});

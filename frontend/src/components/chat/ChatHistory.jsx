@@ -46,20 +46,9 @@ function ChatHistory({ messages, onCueClick, onAnalyze }) {
         }
     }, [messages.length]);
 
-    // Throttle auto-follow while streaming so the bubble grows in place without jumpy per-token scrolling.
-    useEffect(() => {
-        if (messages.length === 0) return;
-        const lastMessage = messages[messages.length - 1];
-        const shouldAutoFollowStream = lastMessage?.isStreaming && isNearBottomRef.current;
-        if (shouldAutoFollowStream) {
-            const now = Date.now();
-            if (now - lastStreamAutoScrollAtRef.current < 120) {
-                return;
-            }
-            lastStreamAutoScrollAtRef.current = now;
-            scrollToBottom('auto');
-        }
-    }, [messages]);
+    // Auto-scroll while streaming has been disabled to prevent jumpy per-token scrolling
+    // that disrupts the user's reading flow and forces manual scrolling.
+    // The window will still scroll to the bottom once at the beginning of a user or bot message.
 
 
     // --- GROUPING LOGIC START ---

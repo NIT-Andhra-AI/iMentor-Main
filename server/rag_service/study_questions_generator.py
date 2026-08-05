@@ -200,7 +200,7 @@ def _push_questions_to_qdrant(course: str, subtopic_id: str, payload: Dict) -> b
 
 
 # =============================================================================
-# LLM CALL  —  Provider Manager (SGLang → Grok → Gemini → Ollama)
+# LLM CALL  —  Provider Manager (SGLang → Grok → Gemini → SGLang)
 # =============================================================================
 
 _sglang_client = None
@@ -216,7 +216,7 @@ _gemini_dead = False
 
 
 def _call_llm(prompt: str) -> Optional[str]:
-    """Provider Manager (SGLang → Grok → Gemini → Ollama)."""
+    """Provider Manager (SGLang → Grok → Gemini → SGLang)."""
     global _gemini_dead
 
     # Use Provider Manager if available

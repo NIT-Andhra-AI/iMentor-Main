@@ -115,13 +115,13 @@ function parseAnalysisOutput(rawOutput) {
   if (!rawOutput || typeof rawOutput !== 'string') {
     return { content: '', thinking: '' };
   }
-  const thinkingMatch = rawOutput.match(/<thinking>([\s\S]*?)<\/thinking>/i);
+  const thinkingMatch = rawOutput.match(/<think(?:ing)?>([\s\S]*?)<\/think(?:ing)?>/i);
   let thinkingText = '';
   let mainContent = rawOutput;
 
   if (thinkingMatch && thinkingMatch[1]) {
     thinkingText = thinkingMatch[1].trim();
-    mainContent = rawOutput.replace(/<thinking>[\s\S]*?<\/thinking>\s*/i, '').trim();
+    mainContent = rawOutput.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>\s*/i, '').trim();
   }
   return { content: mainContent, thinking: thinkingText };
 }

@@ -198,7 +198,7 @@ def log_source(
 # =============================================================================
 
 def _call_llm(prompt: str) -> Optional[str]:
-    """Simple LLM wrapper for validation (Gemini → Ollama)."""
+    """Simple LLM wrapper for validation (Gemini → SGLang)."""
     if config.GEMINI_API_KEY and not getattr(config, "_GEMINI_DEAD_DISCOVERY", False):
         try:
             from google import genai
@@ -214,7 +214,7 @@ def _call_llm(prompt: str) -> Optional[str]:
             logger.warning(f"Discovery LLM: Gemini failed: {e}")
 
     try:
-        ollama_url = getattr(config, "OLLAMA_BASE_URL", "http://localhost:11434")
+        ollama_url = getattr(config, "SGLANG_BASE_URL", "http://localhost:11434")
         payload = json.dumps({
             "model": "qwen2.5:3b",
             "prompt": prompt,
@@ -229,7 +229,7 @@ def _call_llm(prompt: str) -> Optional[str]:
             data = json.loads(r.read())
         return data.get("response", "").strip()
     except Exception as e:
-        logger.error(f"Discovery LLM: Ollama failed: {e}")
+        logger.error(f"Discovery LLM: SGLang failed: {e}")
     return None
 
 

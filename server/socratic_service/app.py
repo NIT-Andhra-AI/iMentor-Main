@@ -179,14 +179,14 @@ def _upgrade_chunks_with_marker(filepath: str, safe_name: str, file_hash: str):
         logger.error(f"marker upgrade failed for {safe_name}: {e}", exc_info=True)
 
 
-# ─── Ollama fallback ──────────────────────────────────────────────────────────
-_OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+# ─── SGLang fallback ──────────────────────────────────────────────────────────
+_OLLAMA_BASE_URL = os.getenv("SGLANG_BASE_URL", "http://localhost:11434")
 _OLLAMA_CHAT_MODELS = ["qwen3.5:27b", "qwen2.5:14b-instruct", "qwen3.5:9b", "qwen3.5:2b"]
 _gemini_permanently_failed = False  # Skip Gemini after API_KEY_INVALID
 
 
 def _call_ollama_generate(prompt: str) -> str:
-    """Try Ollama models in priority order."""
+    """Try SGLang models in priority order."""
     import urllib.request as _ur
     for model in _OLLAMA_CHAT_MODELS:
         try:
@@ -206,17 +206,17 @@ def _call_ollama_generate(prompt: str) -> str:
                 data = json.loads(r.read())
             text = data.get("response", "").strip()
             if text:
-                logger.debug(f"Ollama fallback used model: {model}")
+                logger.debug(f"SGLang fallback used model: {model}")
                 return text
         except Exception as e:
-            logger.warning(f"Ollama fallback failed with {model}: {e}")
+            logger.warning(f"SGLang fallback failed with {model}: {e}")
     return ""
 
 
 # ─── Gemini helpers ───────────────────────────────────────────────────────────
 
 def generate_with_retry(prompt: str, **kwargs) -> str:
-    """Gemini generation with exponential backoff; falls back to Ollama on failure."""
+    """Gemini generation with exponential backoff; falls back to SGLang on failure."""
     global _gemini_permanently_failed
     if _gemini_client is not None and not _gemini_permanently_failed:
         base_delay, max_retries = 10, 3
@@ -230,14 +230,14 @@ def generate_with_retry(prompt: str, **kwargs) -> str:
                 err = str(e)
                 if "API_KEY_INVALID" in err or "key expired" in err.lower():
                     _gemini_permanently_failed = True
-                    logger.warning("Gemini API key expired/invalid — switching permanently to Ollama.")
+                    logger.warning("Gemini API key expired/invalid — switching permanently to SGLang.")
                     break
                 elif "429" in err or "quota" in err.lower():
                     wait = base_delay * (2 ** attempt)
                     logger.warning(f"Rate limit. Retrying in {wait}s... ({attempt+1}/{max_retries})")
                     time.sleep(wait)
                 else:
-                    logger.warning(f"Gemini error: {e}. Falling back to Ollama.")
+                    logger.warning(f"Gemini error: {e}. Falling back to SGLang.")
                     break
     return _call_ollama_generate(prompt)
 

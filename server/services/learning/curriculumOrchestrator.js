@@ -2,7 +2,7 @@
 const LearningPath = require('../../models/LearningPath');
 const User = require('../../models/User');
 const geminiService = require('../geminiService');
-const ollamaService = require('../ollamaService');
+const sglangService = require('../sglangService');
 const groqService = require('../groqService');
 const { decrypt } = require('../../utils/crypto');
 const { queryPythonRagService } = require('../toolExecutionService');
@@ -131,7 +131,7 @@ async function generateModulesForGoal(goal, user, context) {
     });
     const activeProvider = providerResolution.chosenProvider;
     const llmService = activeProvider === 'ollama'
-        ? ollamaService
+        ? sglangService
         : (activeProvider === 'groq' ? groqService : geminiService);
     const llmOptions = {
         apiKey: providerResolution.apiKey,
@@ -204,7 +204,7 @@ async function createLearningPath(userId, goal, context = {}) {
     });
     const activeProvider = providerResolution.chosenProvider;
     const llmService = activeProvider === 'ollama'
-        ? ollamaService
+        ? sglangService
         : (activeProvider === 'groq' ? groqService : geminiService);
     const llmOptions = {
         apiKey: providerResolution.apiKey,

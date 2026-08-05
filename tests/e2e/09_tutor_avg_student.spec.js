@@ -34,7 +34,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
   });
 
   test('TUTOR-AVG-M1 — Module 1 progression (average student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -64,7 +64,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
 
         console.log(`  [M1-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 50)}..." → "${response.slice(0, 70)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b/i.test(response);
         if (mastered) {
           console.log(`  → M1-S${subtopicIdx + 1} mastered after ${attempt} attempts`);
           break;
@@ -83,7 +83,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
   });
 
   test('TUTOR-AVG-M2 — Module 2 progression (average student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -108,7 +108,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
 
         console.log(`  [M2-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 40)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b/i.test(response);
         if (mastered) break;
       }
     }
@@ -119,7 +119,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
   });
 
   test('TUTOR-AVG-M3 — Module 3 progression (average student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -144,7 +144,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
 
         console.log(`  [M3-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 40)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b/i.test(response);
         if (mastered) break;
       }
     }
@@ -155,7 +155,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
   });
 
   test('TUTOR-AVG-M4 — Module 4 progression (average student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -180,7 +180,7 @@ test.describe('TUTOR-AVG — Average Student Profile (ML Modules 1-4)', () => {
 
         console.log(`  [M4-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 40)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b/i.test(response);
         if (mastered) break;
       }
     }

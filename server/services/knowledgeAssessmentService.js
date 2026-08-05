@@ -34,30 +34,95 @@ async function fetchCurriculumConcepts(course) {
 
 async function reuseOrGenerateQuestions({ course, module, topic, count = 5 }) {
   const searchTerm = topic || course || '';
+  if (!searchTerm) return null;
 
-  // 1. Reuse from Question Bank first
-  if (searchTerm) {
-    try {
-      const filter = { course: { $regex: new RegExp(`^${escapeRegex(searchTerm)}$`, 'i') } };
-      const existing = await QuestionBank.find(filter).sort({ difficulty: 1, bloomLevel: 1 }).lean();
-      if (existing.length >= count) {
-        const shuffled = existing.sort(() => Math.random() - 0.5).slice(0, count);
-        log.info('KNOWLEDGE_ASSESS', `Reused ${shuffled.length} questions from Question Bank for "${searchTerm}"`);
-        return shuffled.map((q, i) => ({
-          id: `qb_${i}_${Date.now()}`,
-          question: q.question,
-          type: q.type || 'mcq',
-          options: q.options || [],
-          bloomLevel: q.bloomLevel || 'understand',
-          difficulty: q.difficulty || 'medium',
-          concepts: q.tags || q.concepts || [],
-          correctAnswer: q.correctAnswer || '',
-          modelAnswer: q.explanation || '',
-        }));
+  try {
+    const escapeTerm = escapeRegex(searchTerm);
+    const qbFilter = {
+      $or: [
+        { course: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
+        { topic: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } }
+      ]
+    };
+    
+    // Query legacy QuestionBank
+    const qbExisting = await QuestionBank.find(qbFilter).lean();
+    
+    // Query ConceptQuestionBank
+    const ConceptQuestionBank = require('../models/ConceptQuestionBank');
+    const cqbFilter = {
+      $or: [
+        { course: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
+        { concept: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
+        { topic: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } }
+      ]
+    };
+    const cqbExisting = await ConceptQuestionBank.find(cqbFilter).lean();
+
+    // Map legacy QuestionBank questions
+    const mappedQb = qbExisting.map((q, i) => ({
+      id: `qb_${i}_${Date.now()}`,
+      question: q.question,
+      type: q.type || 'mcq',
+      options: q.options || [],
+      bloomLevel: q.bloomLevel || 'understand',
+      difficulty: q.difficulty || 'medium',
+      concepts: q.tags || q.concepts || [q.topic || searchTerm],
+      correctAnswer: q.correctAnswer || (q.options && q.options[q.correctIndex || 0]) || '',
+      modelAnswer: q.explanation || '',
+    }));
+
+    // Map ConceptQuestionBank questions
+    const mappedCqb = cqbExisting.map((q, i) => ({
+      id: `cqb_${i}_${Date.now()}`,
+      question: q.question,
+      type: 'mcq',
+      options: q.options || [],
+      bloomLevel: q.bloomLevel || 'understand',
+      difficulty: q.difficulty || 'medium',
+      concepts: q.conceptTags || [q.concept || searchTerm],
+      correctAnswer: (q.options && q.options[q.correctIndex !== undefined ? q.correctIndex : 0]) || '',
+      modelAnswer: q.explanation || '',
+    }));
+
+    const combined = [...mappedQb, ...mappedCqb];
+    if (combined.length >= count) {
+      // Prioritize spanning across bloom levels
+      const bloomGroups = {};
+      combined.forEach(q => {
+        const bl = q.bloomLevel.toLowerCase();
+        if (!bloomGroups[bl]) bloomGroups[bl] = [];
+        bloomGroups[bl].push(q);
+      });
+
+      const chosen = [];
+      const bloomLevels = ['remember', 'understand', 'apply', 'analyze', 'evaluate'];
+      
+      // Shuffle each group
+      Object.keys(bloomGroups).forEach(bl => {
+        bloomGroups[bl].sort(() => Math.random() - 0.5);
+      });
+
+      // Try to pick one from each bloom level first
+      for (const level of bloomLevels) {
+        if (bloomGroups[level] && bloomGroups[level].length > 0) {
+          chosen.push(bloomGroups[level].pop());
+        }
       }
-    } catch (qbErr) {
-      log.warn('KNOWLEDGE_ASSESS', `Question Bank query failed: ${qbErr.message}`);
+
+      // If we still need more questions, pull randomly from all remaining
+      const remaining = Object.values(bloomGroups).flat().sort(() => Math.random() - 0.5);
+      while (chosen.length < count && remaining.length > 0) {
+        chosen.push(remaining.pop());
+      }
+
+      if (chosen.length >= count) {
+        log.info('KNOWLEDGE_ASSESS', `Reused ${chosen.length} questions (legacy QB: ${qbExisting.length}, CQB: ${cqbExisting.length}) spanning bloom levels for "${searchTerm}"`);
+        return chosen.slice(0, count);
+      }
     }
+  } catch (qbErr) {
+    log.warn('KNOWLEDGE_ASSESS', `Predefined Question Bank query/merge failed: ${qbErr.message}`);
   }
 
   return null;

@@ -22,6 +22,7 @@ const routerFeedback = require('../../services/routerFeedbackService');
 const { routeQuery } = require('../../services/semanticRouter');
 const { routeWithLLM } = require('../../services/llmToolRouter');
 const { decomposeQuery, buildHybridContextBlock } = require('../../services/hybridQueryDecomposer');
+const { CHAT_MAIN_SYSTEM_PROMPT } = require('../../config/promptTemplates');
 
 
 const {
@@ -545,7 +546,7 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
             ).catch(e => log.warn('SYSTEM', `Failed to persist summary: ${e.message}`));
         }
 
-        let finalSystemPrompt = req.contextualMemory?.systemPrompt || clientProvidedSystemInstruction;
+        let finalSystemPrompt = clientProvidedSystemInstruction || req.contextualMemory?.systemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
 
         if (tutorMode && tutorModeType === TUTOR_MODE_TYPES.ASSISTANT) {
             finalSystemPrompt = `You are iMentor, an academic AI tutor assistant. Your ONLY purpose is to help students with academic subjects: Mathematics, Physics, Chemistry, Biology, Computer Science, Engineering, History, Geography, Economics, Literature, and any other formal educational topic.

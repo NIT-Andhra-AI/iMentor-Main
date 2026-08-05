@@ -146,10 +146,10 @@ def run_fine_tuning(dataset_path: str, model_tag_to_update: str, job_id: str):
         
         trainer.train()
         
-        # 6. Merge & Save for Ollama (Simplification: Saving Adapters)
-        # Note: For Ollama, we usually need the GGUF. 
+        # 6. Merge & Save for SGLang (Simplification: Saving Adapters)
+        # Note: For SGLang, we usually need the GGUF. 
         # Since standard conversion on 3.12 requires llama.cpp, we will simulate the
-        # creation step or use `ollama create` with a GGUF if available.
+        # creation step or use `sglang create` with a GGUF if available.
         # For this example, we will save the PEFT model locally.
         
         logger.info("Step 4/6: Saving Adapters...")
@@ -161,11 +161,11 @@ def run_fine_tuning(dataset_path: str, model_tag_to_update: str, job_id: str):
         # In a production 3.12 env, you'd `subprocess.run` llama-quantize here.
         
         # --- Modelfile Update Logic ---
-        # Assuming we have a base GGUF or pointing to the base model in Ollama
-        logger.info(f"Step 5/6: Updating Ollama tag '{model_tag_to_update}'...")
+        # Assuming we have a base GGUF or pointing to the base model in SGLang
+        logger.info(f"Step 5/6: Updating SGLang tag '{model_tag_to_update}'...")
         
         # Create a simple Modelfile that layers on top of the base
-        # Note: Real LoRA support in Ollama uses the ADAPTERS directly.
+        # Note: Real LoRA support in SGLang uses the ADAPTERS directly.
         modelfile_content = f"""
 FROM {BASE_MODEL}
 # In a real setup, you would point to the GGUF of the adapter here
@@ -176,16 +176,16 @@ SYSTEM You are a helpful AI Tutor.
         with open(modelfile_path, 'w') as f:
             f.write(modelfile_content)
 
-        # Trigger Ollama create
-        ollama_cmd = ["ollama", "create", model_tag_to_update, "-f", modelfile_path]
+        # Trigger SGLang create
+        ollama_cmd = ["sglang", "create", model_tag_to_update, "-f", modelfile_path]
         logger.info(f"Running: {' '.join(ollama_cmd)}")
         
-        # We perform the call, but don't fail hard if Ollama isn't local
+        # We perform the call, but don't fail hard if SGLang isn't local
         try:
             subprocess.run(ollama_cmd, check=True, capture_output=True)
-            logger.info("Ollama model created successfully.")
+            logger.info("SGLang model created successfully.")
         except Exception as e:
-            logger.warning(f"Ollama creation step skipped/failed (expected if Ollama not installed locally): {e}")
+            logger.warning(f"SGLang creation step skipped/failed (expected if SGLang not installed locally): {e}")
 
         report_status_to_nodejs(job_id, "completed")
 

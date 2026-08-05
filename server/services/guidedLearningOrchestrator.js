@@ -14,7 +14,7 @@
  */
 
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const TutorSession = require('../models/TutorSession');
 const {
     analyzeKnowledgeGaps,

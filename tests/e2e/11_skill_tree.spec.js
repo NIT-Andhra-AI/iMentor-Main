@@ -60,12 +60,16 @@ test.describe('ST — Skill Tree Progression', () => {
     }
 
     // Step 2: Enter topic
+    const otherCourseBtn = page.locator('button').filter({ hasText: /Other Course/i }).first();
+    if (await otherCourseBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await otherCourseBtn.click();
+      await page.waitForTimeout(1000);
+    }
     const topicInput = page.locator('input[placeholder]').first();
     if (await topicInput.isVisible({ timeout: 5000 }).catch(() => false)) {
       await topicInput.fill(SKILL_TREE_TOPIC);
       await page.waitForTimeout(500);
-
-      const nextBtn = page.locator('button').filter({ hasText: /next/i }).first();
+      const nextBtn = page.locator('button').filter({ hasText: /next|continue/i }).first();
       if (await nextBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
         await nextBtn.click();
         await page.waitForTimeout(2000);
@@ -211,7 +215,7 @@ test.describe('ST — Skill Tree Progression', () => {
     }
 
     // Check for stars or completion markers
-    const stars = page.locator('[class*="star"], text=/★|⭐/');
+    const stars = page.locator('[class*="star"]').or(page.locator('text=★')).or(page.locator('text=⭐'));
     const starCount = await stars.count();
     console.log(`  → Stars visible: ${starCount}`);
 

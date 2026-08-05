@@ -65,7 +65,7 @@ try:
     import podcast_generator
     from google import genai
     from google.genai import types as genai_types
-    # Groq removed — using Ollama + Gemini only
+    # Groq removed — using SGLang + Gemini only
     from prompts import (
         CODE_ANALYSIS_PROMPT_TEMPLATE,
         TEST_CASE_GENERATION_PROMPT_TEMPLATE,
@@ -2869,33 +2869,10 @@ async def generate_skill_tree_question(request: QuestionGenerationRequest):
     """
     Generate unique skill tree assessment questions using constrained JSON.
     
-    Uses SGLang with constrained decoding to ensure valid JSON output.
-    Generates questions across Bloom's taxonomy levels and hardness levels.
+    Uses LLMProviderManager (SGLang -> Groq -> Gemini -> SGLang) to support
+    robust generation across different platforms with structured schemas.
     """
     try:
-        # Use SGLang with constrained decoding for guaranteed valid JSON
-        sglang_enabled = os.getenv("SGLANG_ENABLED", "true").lower() == "true"
-        
-        if not sglang_enabled:
-            return JSONResponse(
-                status_code=503,
-                content={"error": "SGLang is required for question generation but is not enabled"}
-            )
-        
-        sglang_url = os.getenv("SGLANG_HEAVY_URL", "http://localhost:8000/v1")
-        sglang_model = os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen2.5-7B-Instruct-AWQ")
-        
-        # Import OpenAI client for SGLang API compatibility
-        try:
-            from openai import OpenAI
-        except ImportError:
-            return JSONResponse(
-                status_code=500,
-                content={"error": "OpenAI SDK not installed (required for SGLang)"}
-            )
-        
-        client = OpenAI(base_url=sglang_url, api_key="EMPTY")
-        
         # Define Pydantic schema for constrained decoding
         try:
             from pydantic import BaseModel as PydanticBase
@@ -2913,32 +2890,60 @@ async def generate_skill_tree_question(request: QuestionGenerationRequest):
                 content={"error": "Pydantic not installed (required for schema validation)"}
             )
         
-        # Generate question with constrained JSON
-        response = client.chat.completions.create(
-            model=sglang_model,
-            messages=[
-                {"role": "system", "content": "You are an expert educator creating assessment questions."},
-                {"role": "user", "content": request.prompt}
-            ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "schema": QuestionOutput.model_json_schema(),
-                    "strict": True
+        try:
+            from llm_provider_manager import get_llm_manager
+            manager = get_llm_manager()
+            schema = QuestionOutput.model_json_schema()
+            
+            # Generate question with constrained JSON using Provider Manager fallback
+            question_json = manager.generate_structured(
+                system_prompt="You are an expert educator creating assessment questions. Output only valid JSON matching the schema.",
+                user_prompt=request.prompt,
+                schema=schema,
+                temperature=0.7,
+                max_tokens=1024
+            )
+            
+            if not question_json:
+                raise RuntimeError("Failed to generate structured question from provider manager")
+            
+            return {
+                "status": "success",
+                "question": question_json
+            }
+        except Exception as provider_err:
+            logging.getLogger(__name__).warning(f"[QUESTION_GEN] Provider manager structured generation failed: {provider_err}")
+            # Try a direct SGLang fallback if provider manager failed and SGLang is enabled
+            sglang_enabled = os.getenv("SGLANG_ENABLED", "true").lower() == "true"
+            if sglang_enabled:
+                sglang_url = os.getenv("SGLANG_HEAVY_URL", "http://localhost:8000/v1")
+                sglang_model = os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen2.5-7B-Instruct-AWQ")
+                from openai import OpenAI
+                client = OpenAI(base_url=sglang_url, api_key="EMPTY")
+                response = client.chat.completions.create(
+                    model=sglang_model,
+                    messages=[
+                        {"role": "system", "content": "You are an expert educator creating assessment questions."},
+                        {"role": "user", "content": request.prompt}
+                    ],
+                    response_format={
+                        "type": "json_schema",
+                        "json_schema": {
+                            "schema": QuestionOutput.model_json_schema(),
+                            "strict": True
+                        }
+                    },
+                    temperature=0.7,
+                    max_tokens=1024
+                )
+                question_json = json.loads(response.choices[0].message.content)
+                return {
+                    "status": "success",
+                    "question": question_json
                 }
-            },
-            temperature=0.7,  # Some creativity for question variety
-            max_tokens=1024
-        )
-        
-        # Parse and return the generated question
-        question_json = json.loads(response.choices[0].message.content)
-        
-        return {
-            "status": "success",
-            "question": question_json
-        }
-        
+            else:
+                raise provider_err
+
     except Exception as e:
         logging.getLogger(__name__).error(f"[QUESTION_GEN] Failed: {str(e)}")
         return JSONResponse(

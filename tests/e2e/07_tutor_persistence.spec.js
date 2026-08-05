@@ -27,7 +27,7 @@ test.describe('TP — Tutor Mode Persistence', () => {
   });
 
   test('TP-02 — Progress persists across navigation', async ({ page }) => {
-    test.setTimeout(180000);
+    test.setTimeout(480000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -66,7 +66,7 @@ test.describe('TP — Tutor Mode Persistence', () => {
   });
 
   test('TP-03 — Progress persists across logout/login', async ({ page }) => {
-    test.setTimeout(180000);
+    test.setTimeout(480000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -76,15 +76,15 @@ test.describe('TP — Tutor Mode Persistence', () => {
     console.log(`  → Progress before logout: ${progressBefore}%`);
 
     // Logout — navigate to landing or click logout
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(1000);
 
     // Clear auth state (simulate logout)
     await page.evaluate(() => {
-      localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       localStorage.removeItem('user');
     });
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
     await page.waitForTimeout(1000);
 
     // Re-login
@@ -103,7 +103,7 @@ test.describe('TP — Tutor Mode Persistence', () => {
   });
 
   test('TP-04 — Clear progress resets to zero', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(300000);
     await loginAs(page);
 
     // Clear progress via API

@@ -110,7 +110,7 @@ def setup_pedagogical_collection():
 # =============================================================================
 
 def _call_sglang(system_prompt: str, user_prompt: str, max_tokens: int = 1500) -> Optional[str]:
-    """Call LLM via Provider Manager (SGLang → Grok → Gemini → Ollama)."""
+    """Call LLM via Provider Manager (SGLang → Grok → Gemini → SGLang)."""
     # Use Provider Manager if available
     if _PROVIDER_MANAGER_AVAILABLE:
         try:

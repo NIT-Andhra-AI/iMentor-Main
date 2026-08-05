@@ -21,7 +21,7 @@ const {
 // @route   POST /api/chat/tutor/init
 // @desc    Initialize tutor session state for Socratic reasoning loop
 // @access  Private
-router.post('/tutor/init', async (req, res) => {
+router.post('/init', async (req, res) => {
     const { sessionId, moduleTitle, initialQuestion } = req.body;
 
     if (!sessionId || !moduleTitle || !initialQuestion) {
@@ -61,7 +61,7 @@ router.post('/tutor/init', async (req, res) => {
 // @route   GET /api/chat/tutor/current-position/:course
 // @desc    Resolve current teaching position based on user's progress
 // @access  Private
-router.get('/tutor/current-position/:course', async (req, res) => {
+router.get('/current-position/:course', async (req, res) => {
     const userId = req.user._id;
     const { course } = req.params;
 
@@ -117,7 +117,7 @@ router.get('/tutor/current-position/:course', async (req, res) => {
 //          Returns a ready-to-display welcome/resume message so the UI can show it
 //          instantly when the user selects a course — no chat turn needed.
 // @access  Private
-router.get('/tutor/greeting/:course', async (req, res) => {
+router.get('/greeting/:course', async (req, res) => {
     const userId = req.user._id;
     const { course } = req.params;
     try {
@@ -132,7 +132,7 @@ router.get('/tutor/greeting/:course', async (req, res) => {
 // @route   GET /api/chat/tutor/resume/:course
 // @desc    Resume or start tutor session based on saved Redis progress
 // @access  Private
-router.get('/tutor/resume/:course', async (req, res) => {
+router.get('/resume/:course', async (req, res) => {
     const userId = req.user._id;
     const { course } = req.params;
 
@@ -148,7 +148,7 @@ router.get('/tutor/resume/:course', async (req, res) => {
 // @route   GET /api/chat/tutor/precomputed/:course/:topicId
 // @desc    Fetch precomputed Socratic content for a specific topic (for frontend prefetch)
 // @access  Private
-router.get('/tutor/precomputed/:course/:topicId', async (req, res) => {
+router.get('/precomputed/:course/:topicId', async (req, res) => {
     const { course, topicId } = req.params;
     try {
         const content = await getPrecomputedContent(course, topicId);
@@ -163,7 +163,7 @@ router.get('/tutor/precomputed/:course/:topicId', async (req, res) => {
 // @route   POST /api/chat/tutor/progress/:course
 // @desc    Save user's curriculum progress
 // @access  Private
-router.post('/tutor/progress/:course', async (req, res) => {
+router.post('/progress/:course', async (req, res) => {
     const userId = req.user._id;
     const { course } = req.params;
     const { completedSubtopics, completedTopics, completedModules, currentPosition } = req.body;
@@ -193,7 +193,7 @@ router.post('/tutor/progress/:course', async (req, res) => {
 // @route   GET /api/chat/tutor/curriculum/:course
 // @desc    Get full curriculum structure for a course
 // @access  Private
-router.get('/tutor/curriculum/:course', async (req, res) => {
+router.get('/curriculum/:course', async (req, res) => {
     const { course } = req.params;
 
     try {
@@ -229,7 +229,7 @@ router.get('/curriculum/structure/:course', async (req, res) => {
 // @route   POST /api/chat/tutor/invalidate-cache/:course
 // @desc    Invalidate Redis curriculum cache for a course
 // @access  Private
-router.post('/tutor/invalidate-cache/:course', async (req, res) => {
+router.post('/invalidate-cache/:course', async (req, res) => {
     const { course } = req.params;
 
     try {

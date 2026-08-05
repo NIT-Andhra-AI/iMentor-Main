@@ -34,6 +34,61 @@ const MOD_TIMEOUT    = 720000;  // 12 min per module
 const SKILL_TIMEOUT  = 480000;  // 8 min for skill tree
 const REPORT_DIR     = path.resolve('test-results');
 
+async function getAgenticStudentResponse(tutorMessage, previousTurns = []) {
+  try {
+    const messages = [
+      {
+        role: 'system',
+        content: `You are Priya, a 3rd-year B.Tech CSE student participating in a Socratic tutoring session on Machine Learning.
+You are smart and know basic Python programming, but you are a beginner to ML theory.
+Converse naturally and dynamically with the tutor.
+
+CRITICAL RULES:
+1. Do not act like an AI or write long-winded textbooks. Answer the tutor's specific question or prompt.
+2. Keep your answer brief: under 3 sentences, maximum 40 words.
+3. If this is the start of a topic, show moderate confidence or basic intuition.
+4. If you are stuck or wrong and the tutor guides you, show that you learn from their hint and give a better, more accurate follow-up answer.
+5. Do NOT use headings, lists, or markdown structure. Just write natural prose.`
+      }
+    ];
+
+    for (const turn of previousTurns.slice(-4)) {
+      messages.push({ role: 'user', content: turn.tutor });
+      messages.push({ role: 'assistant', content: turn.student });
+    }
+
+    messages.push({ role: 'user', content: tutorMessage });
+
+    const res = await fetch('http://localhost:8000/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'Qwen/Qwen2.5-7B-Instruct-AWQ',
+        messages,
+        temperature: 0.7,
+        max_tokens: 100
+      }),
+      signal: AbortSignal.timeout(10000)
+    });
+
+    const data = await res.json();
+    const reply = data?.choices?.[0]?.message?.content?.trim();
+    if (reply) {
+      return reply.replace(/^Priya:\s*/i, '').replace(/"/g, '');
+    }
+  } catch (err) {
+    console.log(`[Agentic Student Warning] Failed to generate response via SGLang: ${err.message}. Using fallback.`);
+  }
+
+  if (/definition/i.test(tutorMessage)) return "I think machine learning is about using data to teach computers instead of writing explicit code.";
+  if (/regression|least squares/i.test(tutorMessage)) return "Linear regression fits a line by minimizing the squared errors between predictions and actual values.";
+  if (/tree|entropy/i.test(tutorMessage)) return "Decision trees split data using entropy to reduce impurity and maximize information gain.";
+  if (/overfit/i.test(tutorMessage)) return "Overfitting means the model memorized the training data and won't work well on new data.";
+  return "I think I understand. Could you explain the next step?";
+}
+
 // ─── Shared state (accumulated across tests in the same worker) ───────────────
 const journal = {
   startTime:    Date.now(),
@@ -482,8 +537,8 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
 
     for (const topic of m1Topics) {
       modData.subtopics++;
-      // Initial answer
-      const answer1 = priyaAnswer(topic.name, 1, 1);
+      const topicHistory = [];
+      const answer1 = await getAgenticStudentResponse(topic.question, topicHistory);
       console.log(`\n  [M1] ${topic.name}`);
       console.log(`  Priya: "${shortSnippet(answer1, 80)}"`);
 
@@ -499,20 +554,21 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
       if (assertSocraticResponse(response)) modData.socratic++;
       console.log(`  Tutor: "${shortSnippet(response, 80)}"`);
 
-      // Save sample dialogue (first 2 topics only)
+      topicHistory.push({ tutor: topic.question, student: answer1 });
+
       if (modData.sampleDialogue.length < 2) {
         modData.sampleDialogue.push({ student: shortSnippet(answer1, 120), tutor: shortSnippet(response, 120) });
       }
 
-      // Follow-up if Socratic
       if (/\?/.test(response) && modData.turns < 20) {
-        const answer2 = priyaAnswer(topic.name, 1, 2);
+        const answer2 = await getAgenticStudentResponse(response, topicHistory);
         console.log(`  Priya (follow-up): "${shortSnippet(answer2, 80)}"`);
         try {
           const resp2 = await sendTutorMessage(page, answer2, MSG_TIMEOUT);
           modData.turns++;
           if (assertSocraticResponse(resp2)) modData.socratic++;
           console.log(`  Tutor: "${shortSnippet(resp2, 80)}"`);
+          topicHistory.push({ tutor: response, student: answer2 });
         } catch (err) {
           journal.errors.push(`M1 follow-up ${topic.name}: ${err.message}`);
         }
@@ -552,7 +608,8 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
 
     for (const topic of m2Topics) {
       modData.subtopics++;
-      const answer = priyaAnswer(topic.name, 2, 1);
+      const topicHistory = [];
+      const answer = await getAgenticStudentResponse(topic.question, topicHistory);
       console.log(`\n  [M2] ${topic.name}`);
       console.log(`  Priya: "${shortSnippet(answer, 80)}"`);
 
@@ -568,17 +625,19 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
       if (assertSocraticResponse(response)) modData.socratic++;
       console.log(`  Tutor: "${shortSnippet(response, 80)}"`);
 
+      topicHistory.push({ tutor: topic.question, student: answer });
+
       if (modData.sampleDialogue.length < 2) {
         modData.sampleDialogue.push({ student: shortSnippet(answer, 120), tutor: shortSnippet(response, 120) });
       }
 
-      // Deeper follow-up — Priya is more confident now
-      const deeperAnswer = priyaAnswer(topic.name, 2, 2);
+      const deeperAnswer = await getAgenticStudentResponse(response, topicHistory);
       try {
         const resp2 = await sendTutorMessage(page, deeperAnswer, MSG_TIMEOUT);
         modData.turns++;
         if (assertSocraticResponse(resp2)) modData.socratic++;
         console.log(`  Priya (deeper): "${shortSnippet(deeperAnswer, 60)}" → Tutor: "${shortSnippet(resp2, 60)}"`);
+        topicHistory.push({ tutor: response, student: deeperAnswer });
       } catch (err) {
         journal.errors.push(`M2 deeper ${topic.name}: ${err.message}`);
       }
@@ -618,7 +677,8 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
 
     for (const topic of m3Topics) {
       modData.subtopics++;
-      const answer = priyaAnswer(topic.name, 3, 1);
+      const topicHistory = [];
+      const answer = await getAgenticStudentResponse(topic.question, topicHistory);
       console.log(`\n  [M3] ${topic.name}`);
       console.log(`  Priya: "${shortSnippet(answer, 80)}"`);
 
@@ -634,16 +694,18 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
       if (assertSocraticResponse(response)) modData.socratic++;
       console.log(`  Tutor: "${shortSnippet(response, 80)}"`);
 
+      topicHistory.push({ tutor: topic.question, student: answer });
+
       if (modData.sampleDialogue.length < 2) {
         modData.sampleDialogue.push({ student: shortSnippet(answer, 120), tutor: shortSnippet(response, 120) });
       }
 
-      // Expert-level synthesis (Priya is strong by now)
-      const synthAnswer = priyaAnswer(topic.name, 3, 2);
+      const synthAnswer = await getAgenticStudentResponse(response, topicHistory);
       try {
         const resp2 = await sendTutorMessage(page, synthAnswer, MSG_TIMEOUT);
         modData.turns++;
         if (assertSocraticResponse(resp2)) modData.socratic++;
+        topicHistory.push({ tutor: response, student: synthAnswer });
       } catch (err) {
         journal.errors.push(`M3 synthesis ${topic.name}: ${err.message}`);
       }
@@ -682,7 +744,8 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
 
     for (const topic of m4Topics) {
       modData.subtopics++;
-      const answer = priyaAnswer(topic.name, 4, 1);
+      const topicHistory = [];
+      const answer = await getAgenticStudentResponse(topic.question, topicHistory);
       console.log(`\n  [M4] ${topic.name}`);
       console.log(`  Priya: "${shortSnippet(answer, 80)}"`);
 
@@ -698,15 +761,18 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
       if (assertSocraticResponse(response)) modData.socratic++;
       console.log(`  Tutor: "${shortSnippet(response, 80)}"`);
 
+      topicHistory.push({ tutor: topic.question, student: answer });
+
       if (modData.sampleDialogue.length < 2) {
         modData.sampleDialogue.push({ student: shortSnippet(answer, 120), tutor: shortSnippet(response, 120) });
       }
 
-      const deepAnswer = priyaAnswer(topic.name, 4, 2);
+      const deepAnswer = await getAgenticStudentResponse(response, topicHistory);
       try {
         const resp2 = await sendTutorMessage(page, deepAnswer, MSG_TIMEOUT);
         modData.turns++;
         if (assertSocraticResponse(resp2)) modData.socratic++;
+        topicHistory.push({ tutor: response, student: deepAnswer });
       } catch (err) {
         journal.errors.push(`M4 deep ${topic.name}: ${err.message}`);
       }
@@ -790,11 +856,16 @@ test.describe('ML-JOURNAL — Machine Learning Full Student Journey', () => {
     }
 
     // Enter topic
+    const otherCourseBtn = page.locator('button').filter({ hasText: /Other Course/i }).first();
+    if (await otherCourseBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await otherCourseBtn.click();
+      await page.waitForTimeout(1000);
+    }
     const topicInput = page.locator('input[placeholder]').first();
     if (await topicInput.isVisible({ timeout: 5000 }).catch(() => false)) {
       await topicInput.fill('Machine Learning');
       await page.waitForTimeout(500);
-      const nextBtn = page.locator('button').filter({ hasText: /next/i }).first();
+      const nextBtn = page.locator('button').filter({ hasText: /next|continue/i }).first();
       if (await nextBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
         await nextBtn.click();
         await page.waitForTimeout(2000);

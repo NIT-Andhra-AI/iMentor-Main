@@ -144,15 +144,15 @@ GROQ_MODEL_NAME = os.getenv('GROQ_MODEL_NAME', 'llama-3.3-70b-versatile')
 
 # ─── LLM Provider Fallback Configuration ────────────────────────────────────
 # Priority order for LLM providers. First healthy provider will be used.
-# Options: sglang, groq, gemini, grok, ollama
-LLM_PROVIDER_PRIORITY = os.getenv('LLM_PROVIDER_PRIORITY', 'sglang,groq,gemini,grok,ollama')
+# Options: sglang, groq, gemini, grok, sglang
+LLM_PROVIDER_PRIORITY = os.getenv('LLM_PROVIDER_PRIORITY', 'sglang,groq,gemini,grok,sglang')
 
 # Grok (xAI) — secondary provider
 GROK_MODEL = os.getenv('GROK_MODEL', 'grok-2-latest')
 
-# Ollama — local fallback (re-enabled for fallback pipeline)
-OLLAMA_URL = os.getenv('OLLAMA_URL', 'http://localhost:11434')
-OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'qwen2.5:7b-instruct')
+# SGLang — local fallback (re-enabled for fallback pipeline)
+SGLANG_URL = os.getenv('SGLANG_URL', 'http://localhost:11434')
+SGLANG_MODEL = os.getenv('SGLANG_MODEL', 'qwen2.5:7b-instruct')
 
 # ─── SGLang — primary LLM for all generation tasks ───────────────────────────
 SGLANG_ENABLED      = os.getenv('SGLANG_ENABLED', 'true').lower() == 'true'
@@ -194,13 +194,13 @@ QUERY_VECTOR_DIMENSION = int(os.getenv("QUERY_VECTOR_DIMENSION", _MODEL_TO_DIM_M
 if QUERY_VECTOR_DIMENSION != QDRANT_COLLECTION_VECTOR_DIM:
     logger.warning(f"[Config Warning] Query vector dim ({QUERY_VECTOR_DIMENSION}) != Qdrant dim ({QDRANT_COLLECTION_VECTOR_DIM})")
 
-# --- Embedding Provider (sentence_transformers — Ollama removed) ---
-# Uses mxbai-embed-large-v1 via SentenceTransformers — CPU-efficient, no Ollama dependency.
+# --- Embedding Provider (sentence_transformers — SGLang removed) ---
+# Uses mxbai-embed-large-v1 via SentenceTransformers — CPU-efficient, no SGLang dependency.
 EMBED_PROVIDER      = os.getenv('EMBED_PROVIDER', 'fastembed')  # 'fastembed' | 'sentence_transformers'
 FASTEMBED_MODEL     = os.getenv('FASTEMBED_MODEL', 'mixedbread-ai/mxbai-embed-large-v1')
-# Legacy Ollama embed vars — Ollama removed, kept as empty for backward compat
-OLLAMA_EMBED_URL    = ''
-OLLAMA_EMBED_MODEL  = 'mxbai-embed-large'  # reference only — not used
+# Legacy SGLang embed vars — SGLang removed, kept as empty for backward compat
+SGLANG_EMBED_URL    = ''
+SGLANG_EMBED_MODEL  = 'mxbai-embed-large'  # reference only — not used
 
 # --- AI Core & Search Configuration ---
 AI_CORE_CHUNK_SIZE = int(os.getenv("AI_CORE_CHUNK_SIZE", 512))
@@ -364,10 +364,10 @@ EMBEDDING_MODEL_LOADED = False
 class FastEmbedder:
     """
     Drop-in replacement for SentenceTransformer / OllamaEmbedder that uses
-    fastembed (ONNX-based, CPU-efficient, no Ollama dependency).
+    fastembed (ONNX-based, CPU-efficient, no SGLang dependency).
 
     Uses mixedbread-ai/mxbai-embed-large-v1 → 1024-dim, identical output to the
-    old Ollama mxbai-embed-large route — Qdrant collections remain compatible.
+    old SGLang mxbai-embed-large route — Qdrant collections remain compatible.
 
     Interface mirrors SentenceTransformer.encode() so all callers work unchanged.
     """
@@ -468,7 +468,7 @@ def get_embedding_model():
             try:
                 from sentence_transformers import SentenceTransformer
                 logger.info(f"Loading Sentence Transformer: {DOCUMENT_EMBEDDING_MODEL_NAME}...")
-                # Force CPU to avoid competing with SGLang/Ollama for VRAM
+                # Force CPU to avoid competing with SGLang/SGLang for VRAM
                 _document_embedding_model = SentenceTransformer(DOCUMENT_EMBEDDING_MODEL_NAME, device='cpu', local_files_only=True)
                 EMBEDDING_MODEL_LOADED = True
                 logger.info(f"Successfully loaded embedding model '{DOCUMENT_EMBEDDING_MODEL_NAME}'")

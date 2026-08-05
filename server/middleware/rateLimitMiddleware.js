@@ -10,6 +10,9 @@ const RATE_LIMIT_ERROR_RESPONSE = {
  * Falls back to in-memory store if Redis or rate-limit-redis is unavailable.
  */
 const createLimiter = (maxRequestsPerMinute, prefix = 'rl') => {
+  if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development' || process.env.DISABLE_RATE_LIMIT === 'true') {
+    return (req, res, next) => next();
+  }
   const options = {
     windowMs: 60 * 1000,
     max: maxRequestsPerMinute,

@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ArrowUp, Mic, Server, Loader2 } from 'lucide-react';
 import { renderMarkdown } from '../../utils/markdownUtils';
 import toast from 'react-hot-toast';
+import { useWebSpeech } from '../../hooks/useWebSpeech';
 
 // ─── Minimal top nav ──────────────────────────────────────
 function LandingNav({ onLoginClick }) {
@@ -71,6 +72,27 @@ function ChatBubble({ role, text }) {
 // ─── Landing page component ───────────────────────────────
 function LandingPage({ onLoginClick }) {
     const [inputValue, setInputValue] = useState('');
+    const { transcript, listening, isSpeechSupported, startListening, stopListening, resetTranscript } = useWebSpeech();
+
+    useEffect(() => {
+        if (transcript) {
+            setInputValue(prev => {
+                const prevNorm = prev.trim().toLowerCase();
+                const nextNorm = transcript.trim().toLowerCase();
+                if (nextNorm && (prevNorm === nextNorm || prevNorm.endsWith(` ${nextNorm}`) || prevNorm.endsWith(nextNorm))) {
+                    return prev;
+                }
+                return prev + (prev ? " " : "") + transcript;
+            });
+            resetTranscript();
+        }
+    }, [transcript, resetTranscript]);
+
+    const handleVoiceClick = () => {
+        if (listening) stopListening();
+        else startListening();
+    };
+
     const [messages, setMessages] = useState(() => {
         try {
             const stored = sessionStorage.getItem('guest_messages');
@@ -106,10 +128,10 @@ function LandingPage({ onLoginClick }) {
         }
     }, [inputValue]);
 
-    // Scroll to bottom when messages change
+    // Scroll to bottom when new messages are added (avoid scrolling on every streamed token)
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    }, [messages.length]);
 
     // Sync messages and count to sessionStorage (RAM-only persistence)
     useEffect(() => {
@@ -316,15 +338,20 @@ function LandingPage({ onLoginClick }) {
                             className="flex-1 bg-transparent text-white text-base leading-relaxed resize-none min-h-[28px] max-h-36 py-1.5 border-none outline-none placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         />
 
-                        {/* Mic — available after sign-in */}
-                        <button
-                            onClick={() => toast('Sign in to use voice input', { icon: '🎙️' })}
-                            className="flex-shrink-0 p-2 rounded-lg text-gray-600 hover:text-gray-400 transition-colors"
-                            title="Voice input — sign in to use"
-                            aria-label="Voice input requires sign-in"
-                        >
-                            <Mic size={18} />
-                        </button>
+                        {/* Mic */}
+                        {isSpeechSupported && (
+                            <button
+                                onClick={handleVoiceClick}
+                                disabled={guestMessageCount >= 3}
+                                className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
+                                    listening ? 'text-red-400 hover:text-red-300' : 'text-gray-400 hover:text-gray-200'
+                                }`}
+                                title={listening ? 'Stop listening' : 'Voice input'}
+                                aria-label={listening ? 'Stop listening' : 'Voice input'}
+                            >
+                                <Mic size={18} className={listening ? 'animate-pulse' : ''} />
+                            </button>
+                        )}
 
                         {/* Send button */}
                         <button

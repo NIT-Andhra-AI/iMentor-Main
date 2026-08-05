@@ -230,6 +230,11 @@ Write the section content as flowing academic prose with inline citations. DO NO
     log.info('AI', `[Deep Research] Stage 1: Generating research plan with ${enrichedSources.length} sources`);
     
     let researchPlan;
+    const FINANCE_TOPIC_PATTERNS = [
+      /\bstock\b/i, /\bfinance\b/i, /\beconom/i, /\bmarket\b/i,
+      /\bcryptocurrenc/i, /\btrading\b/i, /\bportfolio\b/i, /\binvestment\b/i,
+    ];
+    const isFinanceTopic = FINANCE_TOPIC_PATTERNS.some(re => re.test(query));
     try {
       // Pass researchConfig so the planner knows section count + page targets
       const planWithConfig = { ...plan, researchConfig };
@@ -248,12 +253,7 @@ Write the section content as flowing academic prose with inline citations. DO NO
         /\bsanction\b/i, /\bdiplomatic\b/i, /\bpolitical\b/i,
       ];
 
-      // Determine if the query is finance/economics related (to allow economic sections for those)
-      const FINANCE_TOPIC_PATTERNS = [
-        /\bstock\b/i, /\bfinance\b/i, /\beconom/i, /\bmarket\b/i,
-        /\bcryptocurrenc/i, /\btrading\b/i, /\bportfolio\b/i, /\binvestment\b/i,
-      ];
-      const isFinanceTopic = FINANCE_TOPIC_PATTERNS.some(re => re.test(query));
+
       const originalCount = researchPlan.sections?.length || 0;
       if (researchPlan.sections && !isFinanceTopic) {
         researchPlan.sections = researchPlan.sections.filter(sec => {

@@ -8,7 +8,7 @@ import argparse
 import requests
 import time
 import os
-from ollama_util import call_ollama_sync
+from sglang_util import call_ollama_sync
 
 def query_ollama(model_tag, prompt):
     try:
@@ -21,7 +21,7 @@ def query_ollama(model_tag, prompt):
         latency = (time.time() - start) * 1000
         return response.json().get('response', ''), latency
     except Exception as e:
-        print(f"[Evaluate] Ollama Error: {str(e)}", file=sys.stderr)
+        print(f"[Evaluate] SGLang Error: {str(e)}", file=sys.stderr)
         return "", 0
 
 def llm_judge(question, expected, actual):
@@ -91,7 +91,7 @@ def evaluate_model(model_tag, course_id, test_jsonl_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Automated Regression Metrics')
-    parser.add_argument('--model', type=str, required=True, help='Ollama model tag to test')
+    parser.add_argument('--model', type=str, required=True, help='SGLang model tag to test')
     parser.add_argument('--course', type=str, required=True, help='Course specific intent')
     
     args = parser.parse_args()

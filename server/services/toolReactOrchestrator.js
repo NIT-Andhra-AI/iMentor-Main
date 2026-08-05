@@ -14,7 +14,7 @@ const { availableTools } = require('./toolRegistry');
 const { createReActSystemPrompt } = require('./reactToolSelector');
 const { CHAT_MAIN_SYSTEM_PROMPT, createSynthesizerPrompt } = require('../config/promptTemplates');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const llmStreamingService = require('./llmStreamingService');
 
 /**
@@ -27,8 +27,8 @@ const llmStreamingService = require('./llmStreamingService');
  * @returns {Object} Result with finalAnswer, thinking trace, references.
  */
 async function processQueryWithReAct(userQuery, chatHistory, requestContext, streamCallback = null) {
-    const { llmProvider, apiKey, ollamaUrl, sessionId } = requestContext;
-    const llmService = llmProvider === 'ollama' ? ollamaService : geminiService;
+    const { llmProvider, apiKey, ollamaUrl, sessionId, systemPrompt } = requestContext;
+    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
 
     // LLM Config
     const llmOptions = {
@@ -167,7 +167,7 @@ async function processQueryWithReAct(userQuery, chatHistory, requestContext, str
                         provider: llmProvider,
                         model: llmOptions.geminiModel || llmOptions.model,
                         apiKey: apiKey,
-                        systemPrompt: CHAT_MAIN_SYSTEM_PROMPT(),
+                        systemPrompt: systemPrompt || CHAT_MAIN_SYSTEM_PROMPT(),
                         onToken: (token) => {
                             streamCallback({ type: 'token', content: token });
                         },

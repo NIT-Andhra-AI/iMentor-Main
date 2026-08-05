@@ -155,83 +155,84 @@ def ingest_course(
             "total_chunks_added": 0
         }
         
-        supported_extensions = ['.pdf', '.docx', '.pptx', '.txt']
+        supported_extensions = ['.pdf', '.docx', '.pptx', '.txt', '.md', '.html']
         
-        for filename in os.listdir(materials_folder):
-            file_ext = os.path.splitext(filename)[1].lower()
-            if file_ext not in supported_extensions:
-                continue
-            
-            file_path = os.path.join(materials_folder, filename)
-            
-            # Get syllabus context for this document
-            syllabus_ctx = linker.get_context_for_document(filename)
-            
-            doc_result = {
-                "filename": filename,
-                "syllabus_linked": syllabus_ctx is not None
-            }
-            
-            if syllabus_ctx:
-                doc_result["syllabus_context"] = {
-                    "module": syllabus_ctx.module,
-                    "topic": syllabus_ctx.topic,
-                    "lecture_number": syllabus_ctx.lecture_number
+        for root, dirs, files in os.walk(materials_folder):
+            for filename in files:
+                file_ext = os.path.splitext(filename)[1].lower()
+                if file_ext not in supported_extensions:
+                    continue
+                
+                file_path = os.path.join(root, filename)
+                
+                # Get syllabus context for this document
+                syllabus_ctx = linker.get_context_for_document(filename)
+                
+                doc_result = {
+                    "filename": filename,
+                    "syllabus_linked": syllabus_ctx is not None
                 }
-            
-            try:
-                # Process document
-                processed_chunks, raw_text, kg_chunks = ai_core.process_document_for_qdrant(
-                    file_path=file_path,
-                    original_name=filename,
-                    user_id=user_id
-                )
                 
-                # Inject syllabus metadata into each chunk
-                enriched_metadata = linker.enrich_metadata_with_syllabus({}, filename)
-                for chunk in processed_chunks:
-                    if chunk.get('metadata'):
-                        for key, value in enriched_metadata.items():
-                            if key.startswith('syllabus_'):
-                                chunk['metadata'][key] = value
-                        # Also add course_name for multi-course support
-                        chunk['metadata']['course_name'] = course_name
+                if syllabus_ctx:
+                    doc_result["syllabus_context"] = {
+                        "module": syllabus_ctx.module,
+                        "topic": syllabus_ctx.topic,
+                        "lecture_number": syllabus_ctx.lecture_number
+                    }
                 
-                # Add to Qdrant
-                if processed_chunks:
-                    from flask import current_app
-                    num_added = current_app.vector_service.add_processed_chunks(processed_chunks)
-                    doc_result["chunks_added"] = num_added
-                    qdrant_stats["total_chunks_added"] += num_added
-                else:
-                    doc_result["chunks_added"] = 0
-
-                # Phase 2b: Extract entity-relation triples into Neo4j (background thread)
-                if _graph_rag and raw_text:
-                    import threading, asyncio
-
-                    def _run_entity_extraction(text, doc_name, uid):
-                        try:
-                            asyncio.run(_graph_rag.extract_and_store_graph(text, doc_name, uid))
-                            logger.info(f"[Course Pipeline] Entity extraction done: {doc_name}")
-                        except Exception as _e:
-                            logger.warning(f"[Course Pipeline] Entity extraction failed for {doc_name}: {_e}")
-
-                    threading.Thread(
-                        target=_run_entity_extraction,
-                        args=(raw_text, filename, user_id),
-                        daemon=True,
-                        name=f"entity_extract:{filename}",
-                    ).start()
-
-                doc_result["status"] = "success"
-                qdrant_stats["documents_processed"].append(doc_result)
-                
-            except Exception as e:
-                logger.error(f"[Course Pipeline] Error processing '{filename}': {e}", exc_info=True)
-                doc_result["status"] = "error"
-                doc_result["error"] = str(e)
-                qdrant_stats["documents_skipped"].append(doc_result)
+                try:
+                    # Process document
+                    processed_chunks, raw_text, kg_chunks = ai_core.process_document_for_qdrant(
+                        file_path=file_path,
+                        original_name=filename,
+                        user_id=user_id
+                    )
+                    
+                    # Inject syllabus metadata into each chunk
+                    enriched_metadata = linker.enrich_metadata_with_syllabus({}, filename)
+                    for chunk in processed_chunks:
+                        if chunk.get('metadata'):
+                            for key, value in enriched_metadata.items():
+                                if key.startswith('syllabus_'):
+                                    chunk['metadata'][key] = value
+                            # Also add course_name for multi-course support
+                            chunk['metadata']['course_name'] = course_name
+                    
+                    # Add to Qdrant
+                    if processed_chunks:
+                        from app import vector_service
+                        num_added = vector_service.add_processed_chunks(processed_chunks)
+                        doc_result["chunks_added"] = num_added
+                        qdrant_stats["total_chunks_added"] += num_added
+                    else:
+                        doc_result["chunks_added"] = 0
+    
+                    # Phase 2b: Extract entity-relation triples into Neo4j (background thread)
+                    if _graph_rag and raw_text:
+                        import threading, asyncio
+    
+                        def _run_entity_extraction(text, doc_name, uid):
+                            try:
+                                asyncio.run(_graph_rag.extract_and_store_graph(text, doc_name, uid))
+                                logger.info(f"[Course Pipeline] Entity extraction done: {doc_name}")
+                            except Exception as _e:
+                                logger.warning(f"[Course Pipeline] Entity extraction failed for {doc_name}: {_e}")
+    
+                        threading.Thread(
+                            target=_run_entity_extraction,
+                            args=(raw_text, filename, user_id),
+                            daemon=True,
+                            name=f"entity_extract:{filename}",
+                        ).start()
+    
+                    doc_result["status"] = "success"
+                    qdrant_stats["documents_processed"].append(doc_result)
+                    
+                except Exception as e:
+                    logger.error(f"[Course Pipeline] Error processing '{filename}': {e}", exc_info=True)
+                    doc_result["status"] = "error"
+                    doc_result["error"] = str(e)
+                    qdrant_stats["documents_skipped"].append(doc_result)
         
         result["qdrant"] = qdrant_stats
 
@@ -312,8 +313,8 @@ def get_topic_context(course: str, topic_id: str) -> Dict[str, Any]:
             topic_name = result["topic"].get("name", "")
             if topic_name:
                 # Obtain the active vector service singleton from Flask
-                from flask import current_app
-                vector_svc = current_app.vector_service
+                from app import vector_service
+                vector_svc = vector_service
                 
                 # Construct filter for user_id="admin"
                 from qdrant_client import models as qdrant_models

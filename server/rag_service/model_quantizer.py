@@ -1,5 +1,5 @@
 # RAG Service: Model Quantizer
-# Implements Task 2.2.1: Implement quantization pipeline (GGUF format for Ollama)
+# Implements Task 2.2.1: Implement quantization pipeline (GGUF format for SGLang)
 
 import sys
 import argparse

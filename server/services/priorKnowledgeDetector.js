@@ -18,15 +18,15 @@ const log = require('../utils/logger');
 const PATTERNS = {
     // Prior knowledge signals
     mastery: {
-        strong: /i\s+(already\s+)?know\s+(?:about\s+)?|i\s+understand(?:\s+about)?|i\s+am\s+familiar\s+with/i,
-        moderate: /i\s+(have\s+)?studied|i\s+learned|i\s+took\s+(?:a\s+)?course|i\s+took\s+(?:a\s+)?class|from\s+(?:my|the)\s+course|previously\s+(?:studied|learned)/i,
-        signal: /i\s+know|i\s+understand|i\s+studied|i\s+learned|familiar\s+with|prior\s+knowledge|background\s+in|expertise\s+in/i
+        strong: /(?:i\s+(?:already\s+)?(?:know|understand)\s*(?:about\s+)?|i(?:\s+am|'m)\s+(?:already\s+)?familiar\s+with)/i,
+        moderate: /(?:i(?:\s+have|\s+'ve|'ve)?\s+studied|i(?:\s+have|\s+'ve|'ve)?\s+learned|i\s+took\s+(?:a\s+)?course|i\s+took\s+(?:a\s+)?class|from\s+(?:my|the)\s+course|previously\s+(?:studied|learned))/i,
+        signal: /(?:i(?:\s+already|\s+have|\s+'ve|'ve)*\s+(?:know|understand|studied|learned)|familiar\s+with|prior\s+knowledge|background\s+in|expertise\s+in)/i
     },
 
     // Difficulty level intent
     advanced: /advanced|expert|deep\s+(?:dive|understanding|learning)|in-depth|sophisticated|complex|challenging|hard\s+(?:version|problems)|more\s+(?:advanced|complex|challenging)|next\s+level|intermediate\s+(?:level|concepts)|beyond\s+basics/i,
-    intermediate: /intermediate|intermediate\s+level|moving\s+(?:beyond|past)\s+basics|beyond\s+intro|step\s+up|level\s+up/i,
-    beginner: /beginner|intro(?:duction)?|basics|fundamentals|start\s+from\s+scratch|never\s+learned|first\s+time|completely\s+new|brand\s+new|explain\s+like\s+i\s+(?:am\s+a|am\s+five|m\s+five|don't|dont|don\'t)\s+.*\s+(?:to|it)|eli(?:5|m5)|no\s+(?:prior\s+)?knowledge/i,
+    intermediate: /intermediate|intermediate\s+level|mov(?:e|ing)\s+(?:beyond|past)\s+basics|beyond\s+intro|step\s+up|level\s+up/i,
+    beginner: /beginner|intro(?:duction)?|basics|fundamentals|start\s+from\s+scratch|never\s+learned|first\s+time|completely\s+new|brand\s+new|explain\s+like\s+i(?:\s+am|'m)\s+(?:a\s+|five|don't|dont|don\'t)?|eli(?:5|m5)|no\s+(?:prior\s+)?knowledge/i,
 
     // Topic extraction patterns
     topics: /(?:about\s+|with\s+|in\s+|on\s+|regarding\s+)?([a-zA-Z\s\-]+?)(?:\s+(?:already|studied|learned|know|understand|familiar|from|in|on|about)|$)/i,
@@ -45,15 +45,15 @@ const PATTERNS = {
  * @param {string} query - Student's query
  * @returns {string} "beginner" | "intermediate" | "advanced"
  */
-function detectDifficultyLevel(query) {
+function detectDifficultyLevel(query, hasPriorKnowledge = false) {
     if (!query || typeof query !== 'string') return 'intermediate'; // Default safe fallback
 
     const lowerQuery = query.toLowerCase();
 
-    // Check for explicit beginner intent
-    if (PATTERNS.beginner.test(lowerQuery)) {
-        log.info('PRIOR_KNOWLEDGE', `⏪ Beginner intent detected: "${query.substring(0, 50)}..."`);
-        return 'beginner';
+    // Check for explicit intermediate intent
+    if (PATTERNS.intermediate.test(lowerQuery)) {
+        log.info('PRIOR_KNOWLEDGE', `➡️  Intermediate intent detected: "${query.substring(0, 50)}..."`);
+        return 'intermediate';
     }
 
     // Check for explicit advanced intent
@@ -62,10 +62,18 @@ function detectDifficultyLevel(query) {
         return 'advanced';
     }
 
-    // Check for intermediate intent
-    if (PATTERNS.intermediate.test(lowerQuery)) {
-        log.info('PRIOR_KNOWLEDGE', `➡️  Intermediate intent detected: "${query.substring(0, 50)}..."`);
-        return 'intermediate';
+    // Check for explicit beginner intent
+    let isBeginner = PATTERNS.beginner.test(lowerQuery);
+    if (isBeginner && hasPriorKnowledge) {
+        const knowBasics = /(?:know|understand|studied|learned|familiar\s+with)\s+(?:the\s+)?(?:basics|fundamentals)/i.test(lowerQuery);
+        if (knowBasics) {
+            isBeginner = false; // Not a beginner query
+        }
+    }
+
+    if (isBeginner) {
+        log.info('PRIOR_KNOWLEDGE', `⏪ Beginner intent detected: "${query.substring(0, 50)}..."`);
+        return 'beginner';
     }
 
     // Default: intermediate (balanced approach)
@@ -210,7 +218,11 @@ function detectPriorKnowledge(studentQuery) {
     const masteredTopics = hasMastery ? extractMasteredTopics(query) : [];
 
     // Detect difficulty level
-    const difficultyLevel = detectDifficultyLevel(query);
+    const hasNegation = PATTERNS.negation.test(lowerQuery);
+    let difficultyLevel = detectDifficultyLevel(query, hasMastery);
+    if (hasNegation) {
+        difficultyLevel = 'intermediate'; // Force safe default
+    }
 
     // Check for explicit advanced/beginner signals (for metadata)
     const advancedSignal = PATTERNS.advanced.test(lowerQuery);

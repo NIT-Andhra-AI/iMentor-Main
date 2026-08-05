@@ -4,10 +4,12 @@
   "description": "iMentor AI Tutor Platform - Complete Suite",
   "scripts": {
     "test": "playwright test",
+    "test:unit": "vitest run",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:server": "cd server && npm test",
-    "test:all": "npm run test:server && npm run test",
+    "test:all": "npm run test:unit && npm run test:server && npm run test",
+    "lint": "cd server && npx eslint . && cd ../frontend && npm run lint",
     "test:load": "artillery run artillery.yml --output artillery-report.json",
     "test:load:report": "artillery report artillery-report.json --output artillery-report.html",
     "test:lighthouse": "lhci autorun",
@@ -24,7 +26,8 @@
     "logs:rag": "docker compose logs -f rag",
     "health": "curl http://localhost:5001/health && curl http://localhost:2001/health",
     "deploy:staging": "npm run cleanup:dev && npm run build:frontend && npm run start:dev",
-    "deploy:prod": "npm run test:all && npm run audit:security && npm run cleanup:dev && npm run build:frontend && npm run start:prod"
+    "deploy:prod": "npm run test:all && npm run audit:security && npm run cleanup:dev && npm run build:frontend && npm run start:prod",
+    "prepare": "husky"
   },
   "keywords": [
     "ai-tutor",
@@ -36,6 +39,20 @@
   "author": "iMentor Team",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.58.2"
+    "@playwright/test": "^1.62.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "vitest": "^4.1.10"
+  },
+  "lint-staged": {
+    "server/**/*.js": [
+      "eslint --fix"
+    ],
+    "frontend/**/*.{js,jsx}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "playwright": "^1.62.1"
   }
 }

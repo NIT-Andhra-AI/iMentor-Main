@@ -192,10 +192,10 @@ function optimizeIncomingMessages(messages) {
     });
 }
 
-/**
- * Injects token optimization instructions into the system prompt.
- */
-function injectSystemInstruction(systemPrompt = '') {
+function injectSystemInstruction(systemPrompt = '', options = {}) {
+    if (options.disableTokenSaving === true || process.env.DISABLE_TOKEN_SAVING !== 'false') {
+        return systemPrompt;
+    }
     const instruction = `\n[TOKEN_SAVING_MODE: ACTIVE. To optimize latency/costs, always use these abbreviations in non-code text: 'w/' for 'with', 'w/o' for 'without', 'esp' for 'especially', 'msg' for 'message', 'msgs' for 'messages', 'info' for 'information', 'approx' for 'approximately', 'defn' for 'definition', 'ctx' for 'context', 'db' for 'database', 'config' for 'configuration', 'configs' for 'configurations', 'param' for 'parameter', 'params' for 'parameters', 'impl' for 'implementation', 'char' for 'character', 'chars' for 'characters', 'doc' for 'document', 'docs' for 'documents'. If returning JSON, always output it in minified/compact form without any newlines or indentation. Do not use conversational filler or greetings. Keep response text compact, dense, and factual.]`;
     return systemPrompt ? `${systemPrompt}\n${instruction}` : instruction;
 }

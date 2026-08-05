@@ -278,7 +278,7 @@ Return ONLY valid JSON:
       options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.3, maxOutputTokens: 1024, timeout: 30000 },
     });
 
-    const text = typeof result?.text === 'string' ? result.text : '';
+    const text = typeof result === 'string' ? result : (result?.text || JSON.stringify(result || ''));
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON in LLM response');
 
@@ -361,17 +361,18 @@ async function evaluateAssessment({ responses, course, topic }) {
       question: r.question,
       userAnswer: r.userAnswer || r.answer || '',
       correct: isCorrectThreshold,
-      score: evalResult.score,
+      score: isMcq ? (isCorrectThreshold ? 10 : 0) : evalResult.rawScore,
       bloomLevel: r.bloomLevel || 'understand',
       difficulty: r.difficulty || 'medium',
       confidence: evalResult.confidence,
       weightedScore: weighted.weightedScore,
       maxWeightedScore: weighted.maxWeightedScore,
-      explanation: evalResult.feedback,
+      explanation: r.modelAnswer || evalResult.feedback,
       strengths: evalResult.strengths,
       weaknesses: evalResult.weaknesses,
       misconceptions: evalResult.misconceptions,
       source: evalResult.source,
+      correctAnswer: r.correctAnswer || r.modelAnswer,
     });
 
     agentResults.push(evalResult);
@@ -409,9 +410,24 @@ async function evaluateAssessment({ responses, course, topic }) {
     levelSource = 'weighted_scoring';
   }
 
-  // Collect strengths/weaknesses across all evaluations
-  const allStrengths = [...new Set(agentResults.flatMap(r => r.strengths || []))].slice(0, 5);
-  const allWeaknesses = [...new Set(agentResults.flatMap(r => r.weaknesses || []))].slice(0, 5);
+  // Collect actual concept-based strengths and weak areas
+  const conceptStrengths = [];
+  const conceptWeaknesses = [];
+  for (const g of gradingDetails) {
+    const questionMeta = responses.find(r => r.question === g.question);
+    const questionConcepts = questionMeta?.concepts || [];
+    if (g.correct) {
+      conceptStrengths.push(...questionConcepts);
+    } else {
+      conceptWeaknesses.push(...questionConcepts);
+    }
+  }
+
+  const uniqueWeak = [...new Set(conceptWeaknesses)];
+  const uniqueStrong = [...new Set(conceptStrengths)].filter(c => !uniqueWeak.includes(c));
+
+  const allStrengths = uniqueStrong.slice(0, 5);
+  const allWeaknesses = uniqueWeak.slice(0, 5);
   const allMisconceptions = [...new Set(agentResults.flatMap(r => r.misconceptions || []))].slice(0, 3);
 
   // Bloom profile
@@ -443,6 +459,8 @@ async function evaluateAssessment({ responses, course, topic }) {
     });
   }
 
+  const suggestedRevisionTopics = allWeaknesses.map(t => `Study concept notes and practice Socratic questions on: ${t}`);
+
   return {
     level,
     levelSource,
@@ -471,7 +489,7 @@ async function evaluateAssessment({ responses, course, topic }) {
       ? levelReasoning
       : weightedPercent >= 70 ? 'Ready to advance to next topic.' : 'Review weak areas before proceeding.',
     proficiencyLevel: level,
-    suggestedRevisionTopics: allWeaknesses,
+    suggestedRevisionTopics,
     learningReadiness: weightedPercent >= 40 ? 'ready' : 'needs_preparation',
     gradingDetails,
     sourcesUsed: [...new Set(gradingDetails.map(g => g.source))],

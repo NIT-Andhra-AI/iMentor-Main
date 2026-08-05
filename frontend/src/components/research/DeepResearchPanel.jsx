@@ -384,10 +384,10 @@ export default function DeepResearchPanel({ onToggleMode }) {
                      </div>
                      <div className="space-y-4 text-center max-w-[420px]">
                         <h2 className="text-[18px] font-medium text-[#FFFFFF] tracking-tight">
-                           {progressMessage || 'Research Aborted'}
+                           Research Aborted
                         </h2>
                         <p className="text-[14px] text-[#B3B3B3] leading-relaxed">
-                           Adaptive retrieval could not locate any usable sources after all fallback stages. Please refine your query or broaden the topic scope.
+                           {progressMessage || 'Adaptive retrieval could not locate any usable sources after all fallback stages. Please refine your query or broaden the topic scope.'}
                         </p>
                         <p className="text-[12px] text-[#666666] italic mt-2">
                            No file was generated or saved to your history.

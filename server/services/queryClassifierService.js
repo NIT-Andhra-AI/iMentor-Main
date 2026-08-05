@@ -15,7 +15,6 @@
 const log = require('../utils/logger');
 const axios = require('axios');
 const geminiService = require('./geminiService');
-const { ensureModel } = require('./ollamaModelManager');
 const { routeQuery, mapIntentToRoute } = require('./semanticRouter'); // [Team9] upgraded waterfall
 const { getSemanticRoute } = require('./semanticRouterService'); // [Optimization] Fix: was ReferenceError — function was called but never imported
 const { routerMethodCounter, routerCacheCounter } = require('../utils/metrics');
@@ -66,20 +65,13 @@ async function zeroShotClassify(query) {
 }
 
 // Dedicated small model for semantic routing — fast, low VRAM, no thinking overhead
-const ROUTER_MODEL = process.env.OLLAMA_ROUTER_MODEL || 'qwen3.5:2b';
-const ROUTER_OLLAMA_URL = (process.env.OLLAMA_API_BASE_URL || 'http://localhost:11434').trim();
+// Dedicated small model for semantic routing — fast, low VRAM, no thinking overhead
+const ROUTER_MODEL = process.env.SGLANG_CHAT_MODEL || 'QuantTrio/Qwen3.5-9B-AWQ';
 
-// Pull the router model in the background at module load time so it's ready on first request
-let _routerModelReady = false;
-let _routerModelPromise = null;
+// SGLang is assumed ready on server start
+let _routerModelReady = true;
+let _routerModelPromise = Promise.resolve(true);
 function _initRouterModel() {
-    if (_routerModelPromise) return _routerModelPromise;
-    _routerModelPromise = ensureModel(ROUTER_MODEL, ROUTER_OLLAMA_URL).then(ok => {
-        _routerModelReady = ok;
-        if (ok) log.success('AI', `Semantic router model ready: ${ROUTER_MODEL}`);
-        else log.warn('AI', `Semantic router model ${ROUTER_MODEL} unavailable — will use keyword fallback`);
-        return ok;
-    });
     return _routerModelPromise;
 }
 _initRouterModel();
@@ -255,18 +247,13 @@ async function classifyQuery(query, config = {}) {
         // Priority: SGLang (already-hot GPU) → Ollama (CPU fallback) → Gemini
         const prompt = buildClassificationPrompt(query);
 
-        // Model priority: SGLang (hot GPU, ~50-100ms) → Ollama router model → Gemini
+        // Model priority: SGLang (hot GPU, ~50-100ms) → Gemini
         const modelsToTry = [];
         if (process.env.SGLANG_ENABLED === 'true') {
-            modelsToTry.push({ provider: 'sglang', name: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct', endpoint: 'chat' });
-        }
-        // Ollama as CPU fallback (only init if SGLang unavailable)
-        if (modelsToTry.length === 0) {
-            if (!_routerModelReady) await _initRouterModel();
-            if (_routerModelReady) modelsToTry.push({ provider: 'ollama', name: ROUTER_MODEL });
+            modelsToTry.push({ provider: 'sglang', name: process.env.SGLANG_CHAT_MODEL || 'QuantTrio/Qwen3.5-9B-AWQ', endpoint: 'chat' });
         }
         if (process.env.GEMINI_API_KEY) {
-            modelsToTry.push({ provider: 'gemini', name: process.env.GEMINI_MODEL || 'gemini-2.0-flash' });
+            modelsToTry.push({ provider: 'gemini', name: process.env.GEMINI_MODEL || 'gemini-1.5-flash' });
         }
 
         if (modelsToTry.length === 0) {
@@ -289,20 +276,6 @@ async function classifyQuery(query, config = {}) {
                             endpoint: model.endpoint || 'chat',
                             maxTokens: 150,
                             temperature: 0.1,
-                        }
-                    );
-                } else if (model.provider === 'ollama') {
-                    const ollamaService = require('./ollamaService');
-                    response = await ollamaService.generateContentWithHistory(
-                        [],
-                        prompt,
-                        'You are a query classification expert. Your ENTIRE response must be a single JSON object. No text before or after. No markdown fences. Just raw JSON.',
-                        {
-                            model: model.name,
-                            ollamaUrl: ROUTER_OLLAMA_URL,
-                            maxTokens: 150,
-                            temperature: 0.1,
-                            think: false   // no thinking chain — pure fast classification
                         }
                     );
                 } else if (model.provider === 'gemini') {

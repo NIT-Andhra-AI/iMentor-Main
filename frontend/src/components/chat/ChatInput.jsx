@@ -2,7 +2,7 @@
 import { useAppState } from '../../contexts/AppStateContext.jsx';
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api.js';
-import { Send, Mic, Plus, Brain, Zap, Globe, BookMarked, Sparkles, Square, Database, Lock } from 'lucide-react';
+import { Send, Mic, Plus, Brain, Zap, Globe, BookMarked, Sparkles, Square, Database, Lock, GraduationCap } from 'lucide-react';
 import { useWebSpeech } from '../../hooks/useWebSpeech';
 import { useDeepResearch } from '../../contexts/DeepResearchContext';
 import Button from '../core/Button.jsx';
@@ -29,6 +29,8 @@ function ChatInput({
     setUseAcademicSearch,
     criticalThinkingEnabled,
     setCriticalThinkingEnabled,
+    ragEnabled,
+    setRagEnabled,
     initialPrompt,
     setInitialPromptForNewSession,
     openCoachModalWithData,
@@ -44,7 +46,7 @@ function ChatInput({
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
     const { isResearchMode, setIsResearchMode } = useDeepResearch();
-    const { selectDocumentForAnalysis, selectedDocumentForAnalysis, selectedSubject, setSelectedSubject } = useAppState();
+    const { selectDocumentForAnalysis, selectedDocumentForAnalysis, selectedSubject, setSelectedSubject, learningMode, setLearningMode } = useAppState();
     // True when an admin course is selected from the left panel — RAG is mandatory in this state
     const isAdminCourseActive = !!selectedSubject;
 
@@ -283,6 +285,7 @@ function ChatInput({
                                 {[
                                     { onClick: handleWebSearchToggle,      Icon: Globe,     active: useWebSearch,      label: useWebSearch      ? 'Web Search ON'      : 'Enable Web Search'     },
                                     { onClick: handleAcademicSearchToggle, Icon: BookMarked, active: useAcademicSearch, label: useAcademicSearch ? 'Academic Search ON'  : 'Enable Academic Search' },
+                                    { onClick: () => { setLearningMode(!learningMode); setIsMenuOpen(false); }, Icon: GraduationCap, active: learningMode, label: learningMode ? 'Learning Mode ON (Socratic)' : 'Enable Learning Mode (Socratic)' },
                                 ].map(({ onClick, Icon, active, label }) => (
                                     <button
                                         key={label}
@@ -323,6 +326,7 @@ function ChatInput({
                                         { onClick: () => { handleRequestPromptCoaching(); setIsMenuOpen(false); }, Icon: Sparkles, label: 'Prompt Coach', active: false },
                                         { onClick: () => { setCriticalThinkingEnabled(!criticalThinkingEnabled); setIsMenuOpen(false); }, Icon: Brain, label: `Tree of Thought ${criticalThinkingEnabled ? 'ON' : 'OFF'}`, active: criticalThinkingEnabled },
                                         { onClick: () => { setIsKbOpen(prev => !prev); setIsMenuOpen(false); }, Icon: Database, label: selectedDocumentForAnalysis ? `RAG: ${selectedDocumentForAnalysis}` : 'RAG / Knowledge Base', active: !!(isKbOpen || selectedDocumentForAnalysis) },
+                                        { onClick: () => { setLearningMode(!learningMode); setIsMenuOpen(false); }, Icon: GraduationCap, label: `Learning Mode ${learningMode ? 'ON' : 'OFF'}`, active: learningMode },
                                     ].map(({ onClick, Icon, label, active }) => (
                                         <button
                                             key={label}
@@ -466,32 +470,64 @@ function ChatInput({
 
                     {/* RAG / Knowledge Base - Desktop */}
                     <button
-                        onClick={() => { if (!isAdminCourseActive) setIsKbOpen(prev => !prev); }}
+                        onClick={() => {
+                            if (selectedSubject || selectedDocumentForAnalysis) {
+                                setRagEnabled(!ragEnabled);
+                            } else {
+                                setIsKbOpen(prev => !prev);
+                            }
+                        }}
                         disabled={isLoading}
                         className="hidden sm:flex items-center gap-1"
                         title={
-                            isAdminCourseActive
-                                ? `RAG locked — "${selectedSubject}" is the active course. Deselect it from the Admin Subjects panel to disable.`
-                                : selectedDocumentForAnalysis ? `RAG active: ${selectedDocumentForAnalysis}` : 'Enable RAG / Knowledge Base'
+                            selectedSubject
+                                ? (ragEnabled ? `RAG active: grounded in "${selectedSubject}". Click to disable.` : `RAG disabled. Click to ground chat in "${selectedSubject}".`)
+                                : selectedDocumentForAnalysis
+                                    ? (ragEnabled ? `RAG active: "${selectedDocumentForAnalysis}". Click to disable.` : `RAG disabled. Click to ground chat in "${selectedDocumentForAnalysis}".`)
+                                    : 'Enable RAG / Knowledge Base'
                         }
                         aria-label="Toggle RAG / Knowledge Base"
-                        aria-pressed={!!(isKbOpen || selectedDocumentForAnalysis)}
+                        aria-pressed={!!(ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject))}
                         style={{
                             padding: '4px 6px', borderRadius: '3px',
-                            background: (isKbOpen || selectedDocumentForAnalysis) ? 'var(--vs-active)' : 'transparent',
-                            border: (isKbOpen || selectedDocumentForAnalysis) ? '1px solid var(--vs-border-hi)' : '1px solid transparent',
-                            color: (isKbOpen || selectedDocumentForAnalysis) ? 'var(--vs-text)' : 'var(--vs-text-dim)',
-                            cursor: isAdminCourseActive ? 'default' : (isLoading ? 'not-allowed' : 'pointer'),
+                            background: (ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject)) ? 'var(--vs-active)' : 'transparent',
+                            border: (ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject)) ? '1px solid var(--vs-border-hi)' : '1px solid transparent',
+                            color: (ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject)) ? 'var(--vs-text)' : 'var(--vs-text-dim)',
+                            cursor: isLoading ? 'not-allowed' : 'pointer',
                             opacity: isLoading ? 0.4 : 1,
-                            fontSize: '0.6875rem', fontWeight: (isKbOpen || selectedDocumentForAnalysis) ? 600 : 400,
+                            fontSize: '0.6875rem', fontWeight: (ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject)) ? 600 : 400,
                             transition: 'color 0.15s, background 0.15s',
                         }}
-                        onMouseEnter={e => { if (!(isKbOpen || selectedDocumentForAnalysis) && !isLoading && !isAdminCourseActive) e.currentTarget.style.color = 'var(--vs-text-lo)'; }}
-                        onMouseLeave={e => { if (!(isKbOpen || selectedDocumentForAnalysis)) e.currentTarget.style.color = 'var(--vs-text-dim)'; }}
+                        onMouseEnter={e => { if (!(ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject)) && !isLoading) e.currentTarget.style.color = 'var(--vs-text-lo)'; }}
+                        onMouseLeave={e => { if (!(ragEnabled && (isKbOpen || selectedDocumentForAnalysis || selectedSubject))) e.currentTarget.style.color = 'var(--vs-text-dim)'; }}
                     >
                         <Database size={13} />
                         <span>RAG</span>
-                        {isAdminCourseActive && <Lock size={10} style={{ marginLeft: '2px', opacity: 0.7 }} />}
+                    </button>
+
+                    {/* Learning Mode - Desktop */}
+                    <button
+                        onClick={() => setLearningMode(!learningMode)}
+                        disabled={isLoading}
+                        className="hidden sm:flex items-center gap-1"
+                        title={learningMode ? 'Learning Mode ON (Socratic)' : 'Enable Socratic Learning Mode'}
+                        aria-label="Toggle Learning Mode"
+                        aria-pressed={learningMode}
+                        style={{
+                            padding: '4px 6px', borderRadius: '3px',
+                            background: learningMode ? 'var(--vs-active)' : 'transparent',
+                            border: learningMode ? '1px solid var(--vs-border-hi)' : '1px solid transparent',
+                            color: learningMode ? 'var(--vs-text)' : 'var(--vs-text-dim)',
+                            cursor: isLoading ? 'not-allowed' : 'pointer',
+                            opacity: isLoading ? 0.4 : 1,
+                            fontSize: '0.6875rem', fontWeight: learningMode ? 600 : 400,
+                            transition: 'color 0.15s, background 0.15s',
+                        }}
+                        onMouseEnter={e => { if (!learningMode && !isLoading) e.currentTarget.style.color = 'var(--vs-text-lo)'; }}
+                        onMouseLeave={e => { if (!learningMode) e.currentTarget.style.color = 'var(--vs-text-dim)'; }}
+                    >
+                        <GraduationCap size={13} />
+                        <span>Learn</span>
                     </button>
 
                     {/* Divider */}
@@ -539,12 +575,13 @@ function ChatInput({
             </div>{/* end relative wrapper */}
 
             {/* Status Indicators — flat VS Code statusbar style */}
-            {(useWebSearch || useAcademicSearch || criticalThinkingEnabled || selectedDocumentForAnalysis || selectedSubject) && (
+            {(useWebSearch || useAcademicSearch || criticalThinkingEnabled || selectedDocumentForAnalysis || selectedSubject || learningMode) && (
                 <div className="flex flex-wrap items-center justify-center gap-1.5 mt-1.5 px-1">
                     {[
                         useWebSearch        && { key: 'ws',  Icon: Globe,      label: 'Web Search'        },
                         useAcademicSearch   && { key: 'as',  Icon: BookMarked, label: 'Academic Search'   },
                         criticalThinkingEnabled && { key: 'tot', Icon: Brain,  label: 'Tree of Thought'   },
+                        learningMode        && { key: 'learn', Icon: GraduationCap, label: 'Learning Mode' },
                     ].filter(Boolean).map(({ key, Icon, label }) => (
                         <Animate key={key} animation="slide-up-sm">
                             <span
@@ -562,27 +599,27 @@ function ChatInput({
                             </span>
                         </Animate>
                     ))}
-                    {(selectedDocumentForAnalysis || selectedSubject) && (
+                    {ragEnabled && (selectedDocumentForAnalysis || selectedSubject) && (
                         <Animate key="rag" animation="slide-up-sm">
                             {isAdminCourseActive ? (
-                                // Admin course — RAG is mandatory, show lock instead of ×
-                                <span
-                                    title={`RAG locked to "${selectedSubject}". Deselect from Admin Subjects panel to disable.`}
-                                    className="inline-flex items-center gap-1 text-2xs"
+                                // Admin course — RAG can be disabled with click
+                                <button
+                                    onClick={() => setRagEnabled(false)}
+                                    title={`RAG active: grounded in "${selectedSubject}". Click to disable.`}
+                                    className="inline-flex items-center gap-1 text-2xs cursor-pointer"
                                     style={{
                                         padding:      '2px 6px',
                                         borderRadius: '2px',
                                         background:   'var(--vs-surface)',
                                         border:       '1px solid var(--vs-border-hi)',
                                         color:        'var(--vs-text)',
-                                        cursor:       'default',
                                     }}
                                 >
                                     <Database size={10} />
                                     <span style={{ fontWeight: 600, marginRight: '2px' }}>RAG:</span>
                                     <span className="max-w-[100px] truncate">{selectedSubject}</span>
-                                    <Lock size={9} style={{ color: 'var(--vs-text-dim)', marginLeft: '2px' }} />
-                                </span>
+                                    <span style={{ color: 'var(--vs-text-dim)', marginLeft: '1px' }}>×</span>
+                                </button>
                             ) : (
                                 // User-uploaded doc — allow deselect with ×
                                 <button

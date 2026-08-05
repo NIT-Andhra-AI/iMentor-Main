@@ -573,12 +573,14 @@ router.post('/skill-tree/generate-levels', async (req, res) => {
 // @desc    Generate quiz questions for a specific level
 router.post('/skill-tree/level-questions', async (req, res) => {
     try {
-        const { topic, levelId, levelName, difficulty, gameId } = req.body;
+        const { topic, levelId, levelName, difficulty, gameId, seenQuestions: reqBodySeen } = req.body;
 
         // Accept either a numeric `levelId` or a `levelName` from frontend.
         if (!topic || (!levelId && !levelName)) {
             return res.status(400).json({ message: 'Topic and level identifier (levelId or levelName) are required' });
         }
+
+        let seenQuestions = Array.isArray(reqBodySeen) ? [...reqBodySeen] : [];
 
         // 1. Try to find pre-computed technical MCQs for this skill
         // We match by name or skillId, and ensure it belongs to the right course
@@ -595,7 +597,6 @@ router.post('/skill-tree/level-questions', async (req, res) => {
             log.success('GAMIFICATION', `Serving ${skillNode.assessmentQuestions.length} pre-computed technical MCQs for level "${levelName}" in "${topic}"`);
             
             // 1.1 Fetch current game state to track seen questions
-            let seenQuestions = [];
             let game = null;
             if (gameId) {
                 game = await SkillTreeGame.findOne({ _id: gameId, userId: req.user._id });
@@ -603,7 +604,9 @@ router.post('/skill-tree/level-questions', async (req, res) => {
                     const level = typeof levelId !== 'undefined'
                         ? game.levels.find(l => String(l.id) === String(levelId))
                         : game.levels.find(l => l.name === levelName);
-                    seenQuestions = level?.seenQuestions || [];
+                    if (level?.seenQuestions) {
+                        seenQuestions = Array.from(new Set([...seenQuestions, ...level.seenQuestions]));
+                    }
                 }
             }
 
@@ -702,9 +705,10 @@ router.post('/skill-tree/level-questions', async (req, res) => {
         }
 
         // Use content generation service (Redis → MongoDB → QuestionBank → Generate → Cache)
+        const combinedSeen = Array.from(new Set([...(seenQuestions || []), ...(seenQuestionsForLevel || [])]));
         const contentGen = require('../services/contentGenerationService');
         const genResult = await contentGen.generateOrRetrieveLevelQuestions(
-          topic, levelId, levelName, difficulty, gameId, seenQuestionsForLevel
+          topic, levelId, levelName, difficulty, gameId, combinedSeen
         );
 
         let questions = genResult.questions || [];
@@ -1226,7 +1230,7 @@ Return JSON:
                 temperature: 0.4
             });
         } else {
-            evaluationText = await require('./services/ollamaService').generateContent(
+            evaluationText = await require('./services/sglangService').generateContent(
                 evaluationPrompt,
                 chosenModel.modelId,
                 { temperature: 0.4 }

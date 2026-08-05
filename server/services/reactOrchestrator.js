@@ -11,7 +11,7 @@
  */
 
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const log = require('../utils/logger');
 const {
     SOCRATIC_CLASSIFICATION_PROMPT,
@@ -456,7 +456,7 @@ function getLLMService(llmConfig) {
     // ⚠️ FIX: declare llmService with let to prevent global variable leak
     let llmService;
 
-    llmService = llmConfig.llmProvider === 'ollama' ? ollamaService : geminiService;
+    llmService = llmConfig.llmProvider === 'ollama' ? sglangService : geminiService;
 
     const llmOptions = {
         ...(llmConfig.llmProvider === 'ollama' && {

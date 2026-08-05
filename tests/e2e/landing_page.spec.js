@@ -87,10 +87,10 @@ test.describe('Landing Page — Chat Interaction Tests', () => {
         console.log('✓ LP-02 passed: Sample chip populates textarea');
     });
 
-    test('LP-03 — Send 5 questions across different topics and depths', async ({ page }) => {
+    test('LP-03 — Send 3 questions across different topics and depths in Guest Mode', async ({ page }) => {
         await page.goto('/');
 
-        for (let i = 0; i < QUESTIONS.length; i++) {
+        for (let i = 0; i < 3; i++) {
             const q = QUESTIONS[i];
             console.log(`  → Sending Q${i + 1} [${q.depth}]: "${q.text.slice(0, 50)}..."`);
 
@@ -107,61 +107,74 @@ test.describe('Landing Page — Chat Interaction Tests', () => {
 
             // User message bubble should appear with exact text
             const userBubble = page.locator('.rounded-2xl.bg-white').filter({ hasText: q.text.slice(0, 30) });
-            await expect(userBubble.first()).toBeVisible({ timeout: 5000 });
+            await expect(userBubble.first()).toBeVisible({ timeout: 10000 });
 
-            // Wait for bot response (appears after ~600ms delay)
-            const botBubble = page.locator('.border.border-white\\/10').filter({ hasText: /sign in/i });
-            await expect(botBubble.last()).toBeVisible({ timeout: 5000 });
-
-            // Verify the auth response text
-            const lastBotText = await botBubble.last().textContent();
-            expect(lastBotText).toContain(AUTH_RESPONSE);
+            // Wait for bot response (appears after streaming completes)
+            const botBubble = page.locator('.border.border-white\\/10');
+            await expect(botBubble.last()).toBeVisible({ timeout: 30000 });
 
             // Textarea should be cleared after send
             await expect(textarea).toHaveValue('');
 
-            console.log(`  ✓ Q${i + 1} [${q.topic}] — user bubble + auth prompt visible`);
+            console.log(`  ✓ Q${i + 1} [${q.topic}] — response visible`);
         }
 
-        // After 5 questions, we should have 10 bubbles total (5 user + 5 bot)
-        const allUserBubbles = page.locator('.rounded-2xl.bg-white');
-        const userCount = await allUserBubbles.count();
-        expect(userCount).toBe(5);
+        // Verify limit state is active
+        const textarea = page.locator('textarea');
+        await expect(textarea).toBeDisabled();
+        await expect(textarea).toHaveAttribute('placeholder', /message limit reached/i);
 
-        console.log(`✓ LP-03 passed: All 5 questions sent, ${userCount} user bubbles + auth prompts visible`);
+        // Guest limit banner should be visible
+        const limitBanner = page.locator('.bg-teal-500\\/10');
+        await expect(limitBanner).toBeVisible();
+        await expect(limitBanner.getByText(/reached the limit of 3 free guest messages/i)).toBeVisible();
+
+        console.log(`✓ LP-03 passed: 3 guest questions sent, message limit block active`);
     });
 
-    test('LP-04 — Auth CTA buttons appear after first message', async ({ page }) => {
+    test('LP-04 — Auth CTA buttons appear after second message', async ({ page }) => {
         await page.goto('/');
 
-        // Send a message
         const textarea = page.locator('textarea');
+        const sendBtn = page.getByLabel('Send message');
+
+        // Send 1st message
         await textarea.fill('What is recursion?');
-        await page.getByLabel('Send message').click();
+        await sendBtn.click();
+        await expect(page.locator('.border.border-white\\/10').last()).toBeVisible({ timeout: 30000 });
 
-        // Wait for bot response
-        await page.waitForTimeout(1000);
+        // Send 2nd message
+        await textarea.fill('How does it differ from iteration?');
+        await sendBtn.click();
+        await expect(page.locator('.border.border-white\\/10').last()).toBeVisible({ timeout: 30000 });
 
-        // Auth CTA buttons should appear
-        const signInCTA = page.getByRole('button', { name: /sign in to continue/i });
-        const createAccCTA = page.getByRole('button', { name: /create account/i });
-        await expect(signInCTA).toBeVisible({ timeout: 5000 });
-        await expect(createAccCTA).toBeVisible({ timeout: 5000 });
+        // Auth CTA buttons should appear in the banner
+        const limitBanner = page.locator('.bg-teal-500\\/10');
+        await expect(limitBanner).toBeVisible();
+        await expect(limitBanner.getByRole('button', { name: 'Sign In' })).toBeVisible();
+        await expect(limitBanner.getByRole('button', { name: 'Create Account' })).toBeVisible();
 
-        console.log('✓ LP-04 passed: Auth CTA buttons appear after message');
+        console.log('✓ LP-04 passed: Auth CTA buttons appear after 2 messages');
     });
 
     test('LP-05 — Sign In CTA opens auth modal', async ({ page }) => {
         await page.goto('/');
 
-        // Send a message to trigger auth CTA
         const textarea = page.locator('textarea');
-        await textarea.fill('Teach me about linked lists');
-        await page.getByLabel('Send message').click();
-        await page.waitForTimeout(1000);
+        const sendBtn = page.getByLabel('Send message');
 
-        // Click "Sign In to Continue"
-        await page.getByRole('button', { name: /sign in to continue/i }).click();
+        // Send 2 messages to trigger auth CTA
+        await textarea.fill('Teach me about linked lists');
+        await sendBtn.click();
+        await expect(page.locator('.border.border-white\\/10').last()).toBeVisible({ timeout: 30000 });
+
+        await textarea.fill('How to reverse a linked list');
+        await sendBtn.click();
+        await expect(page.locator('.border.border-white\\/10').last()).toBeVisible({ timeout: 30000 });
+
+        // Click "Sign In" in the CTA banner
+        const limitBanner = page.locator('.bg-teal-500\\/10');
+        await limitBanner.getByRole('button', { name: 'Sign In' }).click();
 
         // Auth modal should open with email/password fields
         const emailField = page.getByPlaceholder(/email/i);
@@ -198,19 +211,16 @@ test.describe('Landing Page — Chat Interaction Tests', () => {
         console.log('✓ LP-07 passed: Nav Sign Up opens signup modal');
     });
 
-    test('LP-08 — Mic button triggers auth hint', async ({ page }) => {
+    test('LP-08 — Mic button triggers sign-in toast', async ({ page }) => {
         await page.goto('/');
 
         // Click mic button
         await page.getByLabel('Voice input').click();
 
-        // Auth CTA should appear (showAuthHint set to true)
-        // Since no message was sent, CTA might appear in chat area
-        // The auth hint is in the messages area — it shows Sign In / Create Account buttons
-        const signInCTA = page.getByRole('button', { name: /sign in to continue/i });
-        await expect(signInCTA).toBeVisible({ timeout: 5000 });
+        // Toast with text "Sign in to use voice input" should appear
+        await expect(page.getByText('Sign in to use voice input')).toBeVisible({ timeout: 5000 });
 
-        console.log('✓ LP-08 passed: Mic click triggers auth hint');
+        console.log('✓ LP-08 passed: Mic click triggers sign-in toast');
     });
 
     test('LP-09 — Enter key sends message (not Shift+Enter)', async ({ page }) => {

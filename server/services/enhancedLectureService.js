@@ -5,7 +5,7 @@ function getServiceForProvider(provider) {
     case 'gemini': return require('./geminiService');
     case 'groq': return require('./groqService');
     case 'openai': return require('./openaiService');
-    case 'ollama': return require('./ollamaService');
+    case 'ollama': return require('./sglangService');
     case 'sglang': return require('./sglangService');
     default: return null;
   }
@@ -36,47 +36,7 @@ let _discoveredModel = null;
 let _discoveryDone = false;
 
 async function discoverOllamaModel() {
-  if (_discoveryDone) return _discoveredModel;
-  _discoveryDone = true;
-
-  const ollamaUrl = process.env.OLLAMA_URL || `http://localhost:${process.env.OLLAMA_PORT || 11434}`;
-  try {
-    const resp = await axios.get(`${ollamaUrl.replace(/\/+$/, '')}/api/tags`, { timeout: 5000 });
-    const installed = (resp.data?.models || []).map(m => m.name);
-    if (!installed.length) {
-      log.warn('OLLAMA', 'No models installed');
-      _discoveredModel = null;
-      return null;
-    }
-
-    const configured = process.env.LECTURE_OLLAMA_MODEL;
-    if (configured) {
-      const normalized = configured.trim();
-      if (installed.some(m => m === normalized || m.startsWith(normalized.replace(/:.*$/, '') + ':'))) {
-        _discoveredModel = normalized;
-        log.info('OLLAMA', `Using configured model LECTURE_OLLAMA_MODEL=${normalized}`);
-        return _discoveredModel;
-      }
-      log.warn('OLLAMA', `Configured LECTURE_OLLAMA_MODEL=${normalized} not installed, auto-selecting...`);
-    }
-
-    for (const preferred of OLLAMA_PREFERRED_ORDER) {
-      const match = installed.find(m => m === preferred || m.startsWith(preferred.replace(/:.*$/, '') + ':'));
-      if (match) {
-        _discoveredModel = match;
-        log.info('OLLAMA', `Selected model ${match} (preferred order)`);
-        return _discoveredModel;
-      }
-    }
-
-    _discoveredModel = installed[0];
-    log.warn('OLLAMA', `No preferred model found, using ${_discoveredModel} (first installed)`);
-    return _discoveredModel;
-  } catch (e) {
-    log.warn('OLLAMA', `Model discovery failed: ${e.message}`);
-    _discoveredModel = null;
-    return null;
-  }
+  return null;
 }
 
 function estimateLectureSize(prompt) {
@@ -177,7 +137,7 @@ async function upgradeLecture(course, subtopicId, subtopicName, topicName, modul
     const startTime = Date.now();
 
     const baseOpts = { temperature: 0.7, maxOutputTokens: 1536 };
-    const chain = ['sglang', 'groq', 'gemini', 'openai', 'ollama'];
+    const chain = ['sglang', 'groq', 'gemini', 'openai'];
     const healthyProviders = providerHealth.getHealthyProviders(chain);
 
     logPipeline('HEALTHY_PROVIDERS', `${course}/${subtopicId}: ${healthyProviders.join(', ') || 'none (falling back to sequential)'}`);

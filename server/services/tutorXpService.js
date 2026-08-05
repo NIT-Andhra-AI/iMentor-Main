@@ -54,7 +54,7 @@ const MASTERY_BONUS   = 20;  // flat bonus for achieving mastery on a subtopic
  * @param {boolean}       isMastery      - true when this turn achieves mastery (adds flat bonus)
  * @returns {{ xp: number, label: string, type: 'gain'|'loss'|'neutral', classification: string, cognitiveLevel: string }}
  */
-function computeTurnXp(classification, cognitiveLevel, hintsUsed = 0, isMastery = false) {
+function computeTurnXp(classification, cognitiveLevel, hintsUsed = 0, isMastery = false, qualityMultiplier = 1.0) {
     const cls = typeof classification === 'object'
         ? (classification?.status || 'UNKNOWN')
         : (String(classification || 'UNKNOWN'));
@@ -63,9 +63,9 @@ function computeTurnXp(classification, cognitiveLevel, hintsUsed = 0, isMastery 
     const mult = LEVEL_MULT[cognitiveLevel] || 1.0;
     const hintDeduct = Math.max(MAX_HINT_DEDUCT, HINT_PENALTY * Math.max(0, hintsUsed));
 
-    // Positive XP scales with cognitive level; negative penalties stay flat
+    // Positive XP scales with cognitive level and quality multiplier; negative penalties stay flat
     const scaled = base > 0
-        ? Math.round(base * mult) + hintDeduct
+        ? Math.round(base * mult * qualityMultiplier) + hintDeduct
         : base + hintDeduct;
 
     const masteryAdd = isMastery ? MASTERY_BONUS : 0;

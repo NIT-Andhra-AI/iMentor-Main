@@ -139,7 +139,7 @@ async function checkQdrant() {
     }
 
     try {
-        const response = await axios.get(`${url}/health`, { timeout: 5000 });
+        const response = await axios.get(`${url}/readyz`, { timeout: 5000 });
         if (response.status === 200) {
             SERVICE_STATUS.qdrant.available = true;
             log.success('SYSTEM', '✓ Qdrant Vector Store is available');
@@ -212,10 +212,19 @@ async function checkSGLang() {
 
     try {
         const healthUrl = url.replace('/v1', '') + '/health';
-        const response = await axios.get(healthUrl, { timeout: 5000 });
+        let response;
+        try {
+            response = await axios.get(healthUrl, { timeout: 5000 });
+        } catch (e) {
+            // Fallback for Ollama proxy compatibility: check root path (Ollama returns 200 for /)
+            const rootUrl = url.replace('/v1', '');
+            response = await axios.get(rootUrl, { timeout: 5000 });
+        }
         if (response.status === 200) {
             SERVICE_STATUS.sglang.available = true;
             log.success('SYSTEM', '✓ SGLang is available');
+        } else {
+            throw new Error(`HTTP ${response.status}`);
         }
     } catch (err) {
         SERVICE_STATUS.sglang.available = false;
@@ -248,7 +257,7 @@ async function checkGemini() {
         // Quick validation call
         const { GoogleGenerativeAI } = require('@google/generative-ai');
         const client = new GoogleGenerativeAI(key);
-        const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+        const model = client.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-2.5-flash' });
         
         await Promise.race([
             model.generateContent('test'),

@@ -1,7 +1,7 @@
 const log = require('../utils/logger');
 // server/services/criticalThinkingService.js
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const { CRITICAL_THINKING_CUE_TEMPLATE } = require('../config/promptTemplates');
 
@@ -21,7 +21,7 @@ async function generateCues(aiAnswerText, llmConfig) {
     }
 
     const { llmProvider, ollamaUrl, apiKey } = llmConfig;
-    const llmService = llmProvider === 'ollama' ? ollamaService : (llmProvider === 'groq' ? groqService : geminiService);
+    const llmService = llmProvider === 'ollama' ? sglangService : (llmProvider === 'groq' ? groqService : geminiService);
 
     const promptForLlm = CRITICAL_THINKING_CUE_TEMPLATE.replace('{aiAnswer}', aiAnswerText.substring(0, 2000));
 

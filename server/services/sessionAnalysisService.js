@@ -1,6 +1,6 @@
 const log = require('../utils/logger');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const User = require('../models/User');
 const { decrypt } = require('../utils/crypto');
@@ -92,7 +92,7 @@ async function getSummaryAndGaps(transcript, existingSummary, llmProvider, ollam
         userOllamaUrl,
       });
       const activeProvider = providerResolution.chosenProvider;
-      const llmService = activeProvider === 'ollama' ? ollamaService : (activeProvider === 'groq' ? groqService : geminiService);
+      const llmService = activeProvider === 'ollama' ? sglangService : (activeProvider === 'groq' ? groqService : geminiService);
 
       const llmOptions = {
         apiKey: providerResolution.apiKey,
@@ -146,7 +146,7 @@ async function generateRecommendations(knowledgeGaps, llmProvider, ollamaModel, 
         userOllamaUrl,
       });
       const activeProvider = providerResolution.chosenProvider;
-      const llmService = activeProvider === 'ollama' ? ollamaService : (activeProvider === 'groq' ? groqService : geminiService);
+      const llmService = activeProvider === 'ollama' ? sglangService : (activeProvider === 'groq' ? groqService : geminiService);
 
       const llmOptions = {
         apiKey: providerResolution.apiKey,

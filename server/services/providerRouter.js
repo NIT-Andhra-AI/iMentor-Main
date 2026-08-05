@@ -20,7 +20,7 @@ const axios = require('axios');
 const log = require('../utils/logger');
 const geminiService = require('./geminiService');
 const groqService = require('./groqService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 
 const PROVIDER_TIMEOUTS = {
     gemini: 30000,      // 30 second timeout
@@ -202,7 +202,7 @@ async function generateWithFallback(userMessage, context = {}, options = {}) {
 
                     case 'sglang':
                         result = await Promise.race([
-                            ollamaService.generateContentWithHistory(
+                            sglangService.generateContentWithHistory(
                                 context.history || [],
                                 userMessage,
                                 context.systemPrompt,
@@ -214,7 +214,7 @@ async function generateWithFallback(userMessage, context = {}, options = {}) {
 
                     case 'ollama':
                         result = await Promise.race([
-                            ollamaService.generateContentWithHistory(
+                            sglangService.generateContentWithHistory(
                                 context.history || [],
                                 userMessage,
                                 context.systemPrompt,

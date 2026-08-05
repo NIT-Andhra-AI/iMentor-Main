@@ -2,7 +2,7 @@ const GamificationProfile = require('../models/GamificationProfile');
 const User = require('../models/User');
 const { selectLLM } = require('./llmRouterService');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const rewardService = require('./rewardService');
 const log = require('../utils/logger');
@@ -43,21 +43,16 @@ Return ONLY a JSON object in this exact format:
         let evaluationText;
         let generationSuccess = false;
 
-        // Try Ollama first
-        if (chosenModel.provider === 'ollama') {
+        // Try SGLang first
+        if (chosenModel.provider === 'sglang') {
             try {
-                // log.info('SYSTEM', "Attempting evaluation with Ollama...");
-                const userDoc = await User.findById(user?._id).select('ollamaUrl');
-                evaluationText = await ollamaService.generateContentWithHistory([], prompt, null, {
+                evaluationText = await sglangService.generateContentWithHistory([], prompt, null, {
                     model: chosenModel.modelId,
-                    ollamaUrl: userDoc?.ollamaUrl,
                     temperature: 0.3
                 });
                 generationSuccess = true;
-                // log.success('SYSTEM', "Ollama evaluation successful");
-            } catch (ollamaError) {
-                log.warn('SYSTEM', `Ollama evaluation failed: ${ollamaError.message}`);
-                // log.info('SYSTEM', "Evaluation fallback from Ollama...");
+            } catch (sglangError) {
+                log.warn('SYSTEM', `SGLang evaluation failed: ${sglangError.message}`);
             }
         }
 

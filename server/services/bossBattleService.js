@@ -154,25 +154,22 @@ VERIFY: Before finalizing, check that EVERY question is strictly about ${topic}.
         let response;
         let generationSuccess = false;
 
-        // Try Ollama first if selected
-        if (chosenModel.provider === 'ollama') {
+        // Try SGLang first if selected
+        if (chosenModel.provider === 'sglang') {
             try {
-                // log.info('SYSTEM', 'Attempting battle generation with Ollama...');
-                const ollamaService = require('./ollamaService');
-                response = await ollamaService.generateContentWithHistory(
+                const sglangService = require('./sglangService');
+                response = await sglangService.generateContentWithHistory(
                     [],              // empty chat history
                     prompt,          // the question generation prompt
                     systemPrompt,    // added system prompt
                     {
-                        model: chosenModel.modelId || 'llama3.2:latest',
-                        ollamaUrl: process.env.OLLAMA_API_BASE_URL || 'http://localhost:11434',
+                        model: chosenModel.modelId,
                         temperature: 0.7
                     }
                 );
                 generationSuccess = true;
-                // log.success('SYSTEM', 'Ollama generation successful');
-            } catch (ollamaError) {
-                log.info('SYSTEM', 'Falling back from Ollama...');
+            } catch (sglangError) {
+                log.info('SYSTEM', 'Falling back from SGLang...');
             }
         }
 
@@ -221,7 +218,7 @@ VERIFY: Before finalizing, check that EVERY question is strictly about ${topic}.
                 // log.success('SYSTEM', 'Gemini generation successful');
             } catch (geminiError) {
                 log.error('SYSTEM', 'Gemini generation failed', geminiError);
-                throw new Error('Both Ollama and Gemini failed to generate questions');
+                throw new Error('Both SGLang and Gemini failed to generate questions');
             }
         }
 
@@ -668,16 +665,15 @@ Return a JSON array with one object per question:
         const llm = await selectLLM(prompt, { user: { _id: battle.userId }, subject: battle.targetWeakness });
         let response;
         let evalSuccess = false;
-        if (llm.chosenModel.provider === 'ollama') {
+        if (llm.chosenModel.provider === 'sglang') {
             try {
-                const ollamaService = require('./ollamaService');
-                response = await ollamaService.generateContentWithHistory([], prompt, null, {
+                const sglangService = require('./sglangService');
+                response = await sglangService.generateContentWithHistory([], prompt, null, {
                     model: llm.chosenModel.modelId,
-                    ollamaUrl: llm.chosenModel.workingUrl || process.env.OLLAMA_API_BASE_URL,
                     temperature: 0.3
                 });
                 evalSuccess = true;
-            } catch (e) { log.warn('SYSTEM', `Ollama eval failed: ${e.message}`); }
+            } catch (e) { log.warn('SYSTEM', `SGLang eval failed: ${e.message}`); }
         } else if (llm.chosenModel.provider === 'groq') {
             try {
                 response = await groqService.generateContentWithHistory([], prompt, null, {
@@ -770,16 +766,15 @@ ${incorrectQuestions.map((q, i) => `
         const llm = await selectLLM(prompt, { user: { _id: battle.userId }, subject: battle.targetWeakness });
         let response;
         let revSuccess = false;
-        if (llm.chosenModel.provider === 'ollama') {
+        if (llm.chosenModel.provider === 'sglang') {
             try {
-                const ollamaService = require('./ollamaService');
-                response = await ollamaService.generateContentWithHistory([], prompt, null, {
+                const sglangService = require('./sglangService');
+                response = await sglangService.generateContentWithHistory([], prompt, null, {
                     model: llm.chosenModel.modelId,
-                    ollamaUrl: llm.chosenModel.workingUrl || process.env.OLLAMA_API_BASE_URL,
                     temperature: 0.5
                 });
                 revSuccess = true;
-            } catch (e) { log.warn('SYSTEM', `Ollama revision plan failed: ${e.message}`); }
+            } catch (e) { log.warn('SYSTEM', `SGLang revision plan failed: ${e.message}`); }
         } else if (llm.chosenModel.provider === 'groq') {
             try {
                 response = await groqService.generateContentWithHistory([], prompt, null, {

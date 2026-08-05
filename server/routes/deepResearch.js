@@ -206,7 +206,7 @@ router.post('/report', async (req, res) => {
                     query: bundle.query,
                     mode: bundle.mode,
                     confidenceScore: bundle.overallConfidenceScore,
-                    depthLevel: options?.depthOverride || 'deep',
+                    depthLevel: depthLevel || 'deep',
                 },
             },
         });

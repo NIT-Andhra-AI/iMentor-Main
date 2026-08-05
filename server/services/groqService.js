@@ -43,7 +43,7 @@ async function generateContentWithHistory(
     try {
         const groq = getGroqClient(apiKeyToUse);
 
-        const optimizedSystemPrompt = systemPromptText ? tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText)) : tokenOptimizer.injectSystemInstruction();
+        const optimizedSystemPrompt = systemPromptText ? tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText, options)) : tokenOptimizer.injectSystemInstruction('', options);
         const optimizedQuery = tokenOptimizer.minifyPrompt(currentUserQuery);
         const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 

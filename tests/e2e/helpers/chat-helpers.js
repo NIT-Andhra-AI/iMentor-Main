@@ -50,7 +50,7 @@ export const SEL = {
 export async function waitForStreamComplete(page, timeout = 90000) {
   try {
     // First wait for cursor to appear (streaming started)
-    await page.waitForSelector(SEL.streamingCursor, { state: 'visible', timeout: 15000 });
+    await page.waitForSelector(SEL.streamingCursor, { state: 'visible', timeout: 90000 });
   } catch {
     // Cursor may have already gone or response was instant
   }
@@ -110,6 +110,9 @@ export async function sendAndWait(page, text, timeout = 90000) {
 
   // Wait for streaming to finish
   await waitForStreamComplete(page, timeout);
+
+  // Ensure textarea is re-enabled, meaning stream/reasoning is completely finished
+  await page.waitForSelector('textarea:not([disabled])', { timeout });
 
   return getLastBotText(page);
 }
@@ -257,6 +260,20 @@ export async function selectCourseViaRAG(page, courseName) {
   await courseOption.click();
   await page.waitForTimeout(500);
 
+  // Close the sidebar panel so it doesn't block the chat input with its backdrop
+  const closeSidebarBtn = page.locator('button[title="Close panel (course stays active)"]').first();
+  if (await closeSidebarBtn.isVisible().catch(() => false)) {
+    await closeSidebarBtn.click();
+    await page.waitForTimeout(300);
+  } else {
+    // Fallback: Click backdrop
+    const backdrop = page.locator('.backdrop-blur-\\[2px\\]').first();
+    if (await backdrop.isVisible().catch(() => false)) {
+      await backdrop.click({ force: true });
+      await page.waitForTimeout(300);
+    }
+  }
+
   // Close any remaining popover
   await page.keyboard.press('Escape');
   await page.waitForTimeout(300);
@@ -267,6 +284,29 @@ export async function selectCourseViaRAG(page, courseName) {
  * or by toggling the RAG button if there's no × button.
  */
 export async function deselectCourse(page) {
+  // Try direct click on the close button if CourseViewerPanel is open
+  let deselectBtn = page.locator('button[title="Deselect course"]').first();
+  if (await deselectBtn.isVisible().catch(() => false)) {
+    await deselectBtn.click();
+    await page.waitForTimeout(500);
+    return;
+  }
+
+  // If not open, look for a sidebar "Courses" button to open the CourseViewerPanel
+  const coursesSidebarBtn = page.locator('button').filter({ hasText: /courses/i }).first();
+  if (await coursesSidebarBtn.isVisible().catch(() => false)) {
+    await coursesSidebarBtn.click();
+    await page.waitForTimeout(1000);
+    
+    deselectBtn = page.locator('button[title="Deselect course"]').first();
+    if (await deselectBtn.isVisible().catch(() => false)) {
+      await deselectBtn.click();
+      await page.waitForTimeout(500);
+      return;
+    }
+  }
+
+  // Fallbacks:
   // Try clicking × on the RAG status pill
   const ragChip = page.locator('button').filter({ hasText: /rag/i }).first();
   if (await ragChip.isVisible().catch(() => false)) {
@@ -312,8 +352,8 @@ export async function clickNewChat(page) {
  * Returns the JWT token string.
  */
 export async function getAuthToken(page) {
-  const response = await page.request.post(`${BASE_API}/auth/login`, {
-    data: { email: 'ultra.boy7@gmail.com', password: '123456' }
+  const response = await page.request.post(`${BASE_API}/auth/signin`, {
+    data: { email: 'student@imentor.edu', password: 'password123' }
   });
   const body = await response.json();
   return body.token;

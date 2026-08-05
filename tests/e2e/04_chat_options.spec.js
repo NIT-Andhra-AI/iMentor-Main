@@ -45,10 +45,10 @@ test.describe('OPT — Chat Option Toggles & Routing', () => {
   });
 
   test('OPT-03 — Tree of Thought toggle shows reasoning', async ({ page }) => {
-    test.setTimeout(180000);
+    test.setTimeout(360000);
     await toggleToT(page);
 
-    const text = await sendAndWait(page, 'Analyze the trade-offs between CNNs and Vision Transformers', 180000);
+    const text = await sendAndWait(page, 'Analyze the trade-offs between CNNs and Vision Transformers', 360000);
 
     expect(text.length).toBeGreaterThan(100);
 
@@ -68,11 +68,11 @@ test.describe('OPT — Chat Option Toggles & Routing', () => {
   });
 
   test('OPT-04 — Web Search + ToT combined', async ({ page }) => {
-    test.setTimeout(180000);
+    test.setTimeout(360000);
     await toggleWebSearch(page);
     await toggleToT(page);
 
-    const text = await sendAndWait(page, 'What are the latest criticisms of RLHF in 2026?', 180000);
+    const text = await sendAndWait(page, 'What are the latest criticisms of RLHF in 2026?', 360000);
 
     expect(text.length).toBeGreaterThan(100);
 

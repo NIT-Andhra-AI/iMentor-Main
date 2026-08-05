@@ -68,7 +68,8 @@ async function runTest() {
     console.log("✅ All STN Grounding unit tests passed successfully!");
 }
 
-runTest().catch(err => {
-    console.error("❌ Test failed:", err);
-    process.exit(1);
+describe('STN Grounding', () => {
+    it('should pass all tests', async () => {
+        await runTest();
+    });
 });

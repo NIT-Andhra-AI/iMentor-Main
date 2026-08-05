@@ -5,7 +5,7 @@
  */
 
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 
 /**
  * Analyzes student's response to identify knowledge gaps
@@ -16,7 +16,7 @@ const ollamaService = require('./ollamaService');
  * @returns {Object} - { gaps: [String], comprehensionLevel: Number, misconceptions: [String] }
  */
 async function analyzeKnowledgeGaps(studentResponse, correctAnswer, conversationHistory = [], llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
 
     // Build analysis prompt with rich context
     const analysisPrompt = `
@@ -92,7 +92,7 @@ ${conversationHistory.slice(-3).map(msg => `${msg.role}: ${msg.content}`).join('
  * @returns {String} - The extracted learning goal
  */
 async function extractLearningGoal(query, llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
 
     const goalPrompt = `
 Extract the core learning goal from this student's question. Be concise and specific.
@@ -127,7 +127,7 @@ What is the student trying to learn or understand? Answer in one clear sentence.
  * @returns {String} - 'helpful', 'neutral', 'confusing'
  */
 async function assessHintEffectiveness(hint, studentFollowUp, llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
 
     const assessPrompt = `
 Evaluate if this hint was effective in helping the student.

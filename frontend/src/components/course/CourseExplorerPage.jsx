@@ -63,12 +63,18 @@ function MermaidDiagram({ code }) {
     const containerRef = useRef(null);
     const [ready, setReady]   = useState(false);
     const [error, setError]   = useState(null);
+    const [scale, setScale]   = useState(1.0);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         if (!containerRef.current || !code?.trim()) return;
         let cancelled = false;
         setReady(false);
         setError(null);
+        setScale(1.0);
+        setPosition({ x: 0, y: 0 });
 
         const id    = `mmd-${++_mmdSeq}`;
         const clean = sanitizeMermaid(code);
@@ -112,6 +118,43 @@ function MermaidDiagram({ code }) {
         return () => { cancelled = true; cleanup(); };
     }, [code]);
 
+    const handleMouseDown = (e) => {
+        if (scale <= 1.0) return;
+        setIsDragging(true);
+        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    };
+
+    const handleMouseMove = (e) => {
+        if (!isDragging) return;
+        setPosition({
+            x: e.clientX - dragStart.x,
+            y: e.clientY - dragStart.y
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    const zoomIn = () => {
+        setScale(prev => Math.min(prev + 0.2, 3.0));
+    };
+
+    const zoomOut = () => {
+        setScale(prev => {
+            const next = Math.max(prev - 0.2, 0.5);
+            if (next <= 1.0) {
+                setPosition({ x: 0, y: 0 });
+            }
+            return next;
+        });
+    };
+
+    const resetZoom = () => {
+        setScale(1.0);
+        setPosition({ x: 0, y: 0 });
+    };
+
     if (error) {
         return (
             <pre className="text-xs text-gray-400 bg-white/5 border border-white/10 rounded-xl p-4 my-4 overflow-x-auto whitespace-pre-wrap leading-relaxed">
@@ -121,12 +164,69 @@ function MermaidDiagram({ code }) {
     }
 
     return (
-        <div
-            ref={containerRef}
-            className={`my-6 overflow-x-auto rounded-xl bg-[#0a0d14] border border-white/8 p-4 transition-all duration-300 ${
-                ready ? 'opacity-100 min-h-0' : 'opacity-0 min-h-[80px]'
-            }`}
-        />
+        <div 
+            className="relative my-6 rounded-xl bg-[#0a0d14] border border-white/8 p-4 overflow-hidden group select-none"
+            style={{ minHeight: '120px' }}
+        >
+            {/* Controls */}
+            {ready && (
+                <div 
+                    className="absolute right-3 top-3 z-10 flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#0d1117]/80 p-1.5 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                    <button 
+                        onClick={zoomOut}
+                        disabled={scale <= 0.6}
+                        className="flex h-7 w-7 items-center justify-center rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white/85 hover:text-white disabled:opacity-40 disabled:hover:bg-white/5 transition-all text-sm font-semibold cursor-pointer"
+                        title="Zoom Out"
+                    >
+                        -
+                    </button>
+                    <span className="text-[10px] font-medium text-white/55 min-w-[32px] text-center">
+                        {Math.round(scale * 100)}%
+                    </span>
+                    <button 
+                        onClick={zoomIn}
+                        disabled={scale >= 3.0}
+                        className="flex h-7 w-7 items-center justify-center rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white/85 hover:text-white disabled:opacity-40 disabled:hover:bg-white/5 transition-all text-sm font-semibold cursor-pointer"
+                        title="Zoom In"
+                    >
+                        +
+                    </button>
+                    <button 
+                        onClick={resetZoom}
+                        className="flex h-7 w-7 items-center justify-center rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white/85 hover:text-white transition-all text-xs cursor-pointer"
+                        title="Reset View"
+                    >
+                        ↺
+                    </button>
+                </div>
+            )}
+
+            {/* Viewport Wrapper */}
+            <div
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                className="w-full flex items-center justify-center"
+                style={{
+                    overflow: scale > 1.0 ? 'hidden' : 'auto',
+                    cursor: scale > 1.0 ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                }}
+            >
+                <div
+                    ref={containerRef}
+                    className={`w-full transition-all duration-300 ${
+                        ready ? 'opacity-100 min-h-0' : 'opacity-0 min-h-[80px]'
+                    }`}
+                    style={{
+                        transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+                        transformOrigin: 'center center',
+                        transition: isDragging ? 'none' : 'transform 0.15s ease-out',
+                    }}
+                />
+            </div>
+        </div>
     );
 }
 

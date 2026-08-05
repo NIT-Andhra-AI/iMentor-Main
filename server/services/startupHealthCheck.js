@@ -2,16 +2,6 @@ const axios = require('axios');
 const mongoose = require('mongoose');
 const { redisClient } = require('../config/redisClient');
 const log = require('../utils/logger');
-const { discoverOllamaModel } = require('./enhancedLectureService');
-
-async function checkProvider(name, url, timeout = 3000) {
-  try {
-    const resp = await axios.get(url, { timeout });
-    return { name, reachable: true, status: resp.status };
-  } catch (e) {
-    return { name, reachable: false, error: e.message };
-  }
-}
 
 async function runHealthCheck() {
   const results = [];
@@ -37,9 +27,34 @@ async function runHealthCheck() {
     results.push({ name: 'Neo4j', reachable: false, error: e.message });
   }
 
-  const ollamaUrl = process.env.OLLAMA_URL || `http://localhost:${process.env.OLLAMA_PORT || 11434}`;
-  const ollamaCheck = await checkProvider('SGLang', (process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1').replace('/v1', '') + '/get_server_info', 3000);
-  results.push(ollamaCheck);
+  // ── SGLang Health Checks ──
+  const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
+  const baseUrl = sglangUrl.replace(/\/chat\/completions\/?$/, '');
+  const modelsUrl = baseUrl.endsWith('/v1') ? `${baseUrl}/models` : `${baseUrl}/v1/models`;
+
+  try {
+    const resp = await axios.get(modelsUrl, { timeout: 3000 });
+    results.push({ name: 'SGLang (reachable)', reachable: true });
+    const models = resp.data?.data?.map(m => m.id) || [];
+    results.push({ name: 'SGLang (models)', reachable: true, note: `loaded models: ${models.join(', ')}` });
+
+    // Test SGLang generation
+    try {
+      const testModel = process.env.SGLANG_CHAT_MODEL || 'QuantTrio/Qwen3.5-9B-AWQ';
+      const genResp = await axios.post(`${baseUrl}/chat/completions`, {
+        model: testModel,
+        messages: [{ role: 'user', content: 'Say OK' }],
+        max_tokens: 5,
+        temperature: 0
+      }, { timeout: 3000 });
+      const reply = genResp.data?.choices?.[0]?.message?.content?.trim();
+      results.push({ name: 'SGLang (test gen)', reachable: true, note: `response: "${reply}"` });
+    } catch (genErr) {
+      results.push({ name: 'SGLang (test gen)', reachable: false, error: genErr.message });
+    }
+  } catch (e) {
+    results.push({ name: 'SGLang', reachable: false, error: e.message });
+  }
 
   if (process.env.GROQ_API_KEY) {
     results.push({ name: 'Groq', reachable: true, note: 'API key configured' });
@@ -57,28 +72,6 @@ async function runHealthCheck() {
     results.push({ name: 'OpenAI', reachable: true, note: 'API key configured' });
   } else {
     results.push({ name: 'OpenAI', reachable: false, error: 'API key missing' });
-  }
-
-  const ollamaModel = await discoverOllamaModel();
-  if (ollamaModel) {
-    results.push({ name: 'Ollama (reachable)', reachable: true });
-    results.push({ name: 'Ollama (model)', reachable: true, model: ollamaModel });
-
-    try {
-      const resp = await axios.post(`${ollamaUrl.replace(/\/+$/, '')}/api/generate`, {
-        model: ollamaModel,
-        prompt: 'Reply with one word: OK',
-        stream: false,
-        options: { num_predict: 10, temperature: 0 },
-      }, { timeout: 3000 });
-      const ok = resp.data?.response?.trim()?.toLowerCase() === 'ok';
-      results.push({ name: 'Ollama (test gen)', reachable: ok, response: resp.data?.response?.trim() });
-      if (!ok) results.push({ name: 'Ollama (test gen)', reachable: false, error: `unexpected response: ${resp.data?.response}` });
-    } catch (e) {
-      results.push({ name: 'Ollama (test gen)', reachable: false, error: e.message });
-    }
-  } else {
-    results.push({ name: 'Ollama', reachable: false, error: 'no model discovered' });
   }
 
   return results;

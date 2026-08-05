@@ -33,7 +33,7 @@ async function handle(res, ctx) {
         criticalThinkingEnabled, useReAct,
         tutorMode, tutorModeType,
         documentContextName, bountyId, bountyAnswer,
-        chosenModel, routerLogic, queryIntent,
+        chosenModel, routerLogic, queryIntent, classification,
         estimatedComplexityScore, queryTokenCount, simpleFastPath,
         finalSystemPrompt,
         startTime, performanceTracker,
@@ -49,8 +49,9 @@ async function handle(res, ctx) {
     // Reuse classification result already computed by queryClassifierService (attached to ctx).
     // queryIntent is populated by the chat index.js from classifyQuery() which now embeds semantic route.
     // ctx.semanticRouting comes from semanticRouter.js (routeQuery); ctx.queryIntent is the mapped string
-    const semanticRoute      = ctx.semanticRouting?.intent      || queryIntent?.semanticRoute      || null;
-    const semanticConfidence = ctx.semanticRouting?.confidence  || queryIntent?.semanticConfidence || 0;
+    const { mapIntentToRoute } = require('../../../services/semanticRouter');
+    const semanticRoute      = mapIntentToRoute(ctx.semanticRouting?.intent) || classification?.semanticRoute || null;
+    const semanticConfidence = ctx.semanticRouting?.confidence  || classification?.semanticConfidence || 0;
 
     // ── DIRECT ANSWER FAST PATH ───────────────────────────────────────────────
     // Bypass ALL orchestrators — answer in a single LLM completion.
@@ -67,11 +68,11 @@ async function handle(res, ctx) {
         log.info('AI', `[CRITICAL_PATH] DIRECT_ANSWER route — skipping all orchestrators (conf=${semanticConfidence.toFixed(2)})`);
         const directStart = Date.now();
         try {
-            const ollamaService = require('../../../services/ollamaService');
+            const sglangService = require('../../../services/sglangService');
             const geminiService = require('../../../services/geminiService');
 
             const directAnswer = llmConfig?.provider === 'ollama'
-                ? await ollamaService.generateContentWithHistory(
+                ? await sglangService.generateContentWithHistory(
                     historyForLlm.slice(-4), // last 2 turns only
                     query.trim(),
                     finalSystemPrompt,
@@ -136,19 +137,15 @@ async function handle(res, ctx) {
 
     // ── TOT STRICT GATE ───────────────────────────────────────────────────────
     // Issue 1.2: Distinguish user-explicit ToT (lower gate: 40) from system auto-activation (gate: 85).
-    // When the user explicitly presses "Thinking Mode", respect their intent with a permissive gate.
-    // System auto-activation (semantic router detected tot) still requires score > 85.
-    const totAllowed = advancedReasoningRequested && (
-        (userRequestedToT
-            ? true  // user explicitly enabled ToT — honor it unconditionally
-            : isTotRoute({ route: semanticRoute, confidence: semanticConfidence }, estimatedComplexityScore) // auto: gate = 85
-        ) || useReAct // ReAct is always user-explicit, no complexity gate needed
+    // User requested "Thinking Mode" toggle: Leverage LLM internal thinking + tool calling in single-turn path instead of multi-stage ToT tree orchestrator
+    const totAllowed = !userRequestedToT && advancedReasoningRequested && (
+        isTotRoute({ route: semanticRoute, confidence: semanticConfidence }, estimatedComplexityScore) || useReAct
     );
-    if (advancedReasoningRequested && !totAllowed && !useReAct) {
-        const threshold = userRequestedToT
-            ? ROUTING_THRESHOLDS.TOT_USER_EXPLICIT_MIN_COMPLEXITY
-            : ROUTING_THRESHOLDS.TOT_MIN_COMPLEXITY;
-        log.info('AI', `[CRITICAL_PATH] ToT suppressed: semanticRoute=${semanticRoute} score=${estimatedComplexityScore} < threshold=${threshold} (${userRequestedToT ? 'user-explicit' : 'system-auto'}) — routing to standard path`);
+    if (userRequestedToT) {
+        log.info('AI', '[CRITICAL_PATH] User Thinking Mode active → routing to single-turn native thinking stream with tool calling');
+    } else if (advancedReasoningRequested && !totAllowed && !useReAct) {
+        const threshold = ROUTING_THRESHOLDS.TOT_MIN_COMPLEXITY;
+        log.info('AI', `[CRITICAL_PATH] ToT suppressed: semanticRoute=${semanticRoute} score=${estimatedComplexityScore} < threshold=${threshold} (system-auto) — routing to standard path`);
     }
     const shouldStreamReasoningFlow = totAllowed;
 
@@ -376,12 +373,17 @@ async function handle(res, ctx) {
         }
     }
 
+    if (userRequestedToT) {
+        effectiveSystemPrompt = (effectiveSystemPrompt || '') + '\n\n[Thinking Mode Active]: Think deeper, analyze step-by-step using internal reasoning (<think> tags), and provide a highly detailed, thorough, and comprehensive answer using relevant tools if needed.';
+        log.info('AI', '[THINKING_MODE] Injected deep reasoning directive into system prompt');
+    }
+
     const agentStart = Date.now();
     const agentResponse = await processAgenticRequest(
         query.trim(),
         historyForLlm,
         effectiveSystemPrompt,
-        { ...effectiveRequestContext, forceSimple: simpleFastPath || (queryIntent === 'chat' && !requestContext.isWebSearchEnabled && !requestContext.isAcademicSearchEnabled && !documentContextName) },
+        { ...effectiveRequestContext, forceSimple: simpleFastPath || (!requestContext.isWebSearchEnabled && !requestContext.isAcademicSearchEnabled && !documentContextName) },
         (evt) => {
             const event = typeof evt === 'string' ? { type: 'token', content: evt } : evt;
             // SSE is the primary transport — Socket.IO reserved for cross-tab push only

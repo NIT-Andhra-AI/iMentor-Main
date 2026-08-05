@@ -162,8 +162,8 @@ Return ONLY a JSON object with this exact structure (no other text):
         if (chosenModel.provider === 'ollama') {
             try {
                 // log.info('SYSTEM', 'Attempting bounty generation with Ollama...');
-                const ollamaService = require('./ollamaService');
-                const response = await ollamaService.generateContentWithHistory(
+                const sglangService = require('./sglangService');
+                const response = await sglangService.generateContentWithHistory(
                     [],      // empty chat history
                     prompt,  // the bounty question prompt
                     systemPrompt,    // added system prompt

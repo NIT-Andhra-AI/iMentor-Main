@@ -13,6 +13,9 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
+    connectionTimeout: 2000, // 2s timeout to prevent hanging on blocked ports
+    greetingTimeout: 2000,
+    socketTimeout: 2000,
 });
 
 /**

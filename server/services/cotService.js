@@ -1,6 +1,6 @@
 // server/services/cotService.js
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const { logger } = require('../utils/logger');
 
 /**
@@ -84,7 +84,7 @@ function getNativeThinkingConfig(llmProvider, llmOptions = {}) {
  */
 async function generateStructuredStep(stepDescription, context, options = {}) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
     
     // --- Tier Check: skip CoT for trivial queries ---
     const tier = classifyReasoningTier(stepDescription, context, options);
@@ -214,7 +214,7 @@ Your task is to provide a detailed, accurate thought process for the following s
  */
 async function triggerReflection(initialResult, stepDescription, context, options) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
 
     const reflectionPrompt = `You previously generated this thought for the task "${stepDescription}":
 "${initialResult.thought}"
@@ -261,7 +261,7 @@ RETURN ONLY THE JSON OBJECT WITH THE CORRECTED FLAG SET TO TRUE.
  */
 async function generateReActStep(stepDescription, context, availableTools = {}, options = {}) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? ollamaService : geminiService;
+    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
 
     const toolDescriptions = Object.entries(availableTools)
         .map(([name, tool]) => `- ${name}: ${tool.description} (Params: ${tool.requiredParams.join(', ')})`)

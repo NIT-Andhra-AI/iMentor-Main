@@ -27,6 +27,7 @@ const log = require('../../../utils/logger');
 const { streamEvent, TUTOR_MODE_TYPES, emitTutorKnowledgeEvents } = require('../helpers');
 const { computeTurnXp, awardTurnXpAsync, scheduleQualityBonusAsync } = require('../../../services/tutorXpService');
 const guidedLearningOrchestrator = require('../../../services/guidedLearningOrchestrator');
+const priorKnowledgeDetector = require('../../../services/priorKnowledgeDetector');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -581,7 +582,16 @@ async function handleStructured(res, ctx) {
         const _strCls = (() => { const c = tutorResult?.classification; return typeof c === 'object' ? (c?.status || 'UNKNOWN') : (c || 'UNKNOWN'); })();
         const _strCogLvl = currentSmState?.cognitiveLevelName || currentSmState?.cognitiveLevel || tutorState?.cognitiveLevel || 'L1_CONCEPT';
         const _strHints = tutorState?.hintsGiven || 0;
-        const xpResult = tutorResult ? computeTurnXp(_strCls, _strCogLvl, _strHints, !!tutorResult.isMastered) : null;
+        const isActualMastery = !!tutorResult?.isMastered && !tutorResult?.isStuckProgress && !tutorResult?.isRepetitive;
+        const _strXpMult = tutorResult?.xpMultiplier || 1.0;
+        const xpResult = tutorResult ? computeTurnXp(_strCls, _strCogLvl, _strHints, isActualMastery, _strXpMult) : null;
+        if (tutorResult?.isStuckProgress && xpResult) {
+            xpResult.xp = 0;
+            xpResult.label = "0 XP (Stuck - Moved Forward)";
+        } else if (tutorResult?.isRepetitive && xpResult) {
+            xpResult.xp = 0;
+            xpResult.label = "0 XP (Repeated Answer - Moved Forward)";
+        }
         const _masteryProgress = masteryService.calculateMasteryProgress(currentSmState, _strCls);
  
         if (!tutorResult) {
@@ -1142,9 +1152,28 @@ async function handleGuidedLearning(res, ctx) {
         courseName: documentContextName || 'Guided Study'
     };
 
+    let documentRagContext = '';
+    if (documentContextName) {
+        try {
+            const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2001';
+            const graphRes = await axios.post(
+                `${PYTHON_RAG_SERVICE_URL}/graph/search`,
+                { query: query.trim(), user_id: userId.toString(), document_context: documentContextName },
+                { timeout: 3000 }
+            );
+            if (graphRes.data?.facts) documentRagContext = graphRes.data.facts;
+        } catch (_gErr) {
+            log.debug('TUTOR', `Guided learning RAG search skipped: ${_gErr.message}`);
+        }
+    }
+
+    const effectiveQuery = documentRagContext
+        ? `${query.trim()}\n\n[DOCUMENT CONTEXT (${documentContextName})]:\n${documentRagContext}`
+        : query.trim();
+
     try {
         const guidedResult = await guidedLearningOrchestrator.processGuidedLearning(
-            query.trim(),
+            effectiveQuery,
             null, // correctAnswer
             historyForLlm || [],
             llmConfig,

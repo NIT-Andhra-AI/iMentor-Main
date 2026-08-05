@@ -210,7 +210,7 @@ def populate_stn_notes(course: str, progress: dict, subtopics: list, module_filt
         except Exception as e:
             logger.error(f"  STN error for {sub_id}: {e}")
 
-        time.sleep(1)  # rate limit for Ollama
+        time.sleep(1)  # rate limit for SGLang
 
     logger.info(f"STN: completed {total_done}/{len(subtopics)} for '{course}'")
     return total_done

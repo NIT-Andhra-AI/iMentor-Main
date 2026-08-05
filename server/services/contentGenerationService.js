@@ -610,7 +610,7 @@ async function generateOrRetrieveLevelQuestions(topic, levelId, levelName, diffi
         concept: conceptName,
         topic,
       }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank generation timed out (>8s)')), 8000)),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank generation timed out (>50s)')), 50000)),
     ]);
 
     if (conceptBank && conceptBank.length > 0) {
@@ -793,11 +793,6 @@ EVERY OBJECT MUST HAVE ALL 9 FIELDS. Valid JSON array only, no markdown.`;
 
   try {
     const startTime = Date.now();
-    const providerHealth = require('./providerHealthCache');
-    const healthyProviders = providerHealth.getHealthyProviders(['groq', 'sglang', 'gemini', 'openai', 'ollama']);
-    const preferredProvider = healthyProviders.includes('groq')
-      ? 'groq'
-      : (healthyProviders[0] || 'groq');
     const result = await callWithFallback({
       userQuery: prompt,
       systemPrompt: 'Return ONLY valid JSON array of 5 MCQ objects with all required fields.',
@@ -1116,7 +1111,7 @@ async function generateOrRetrieveAssessment(courseName, topic, userId) {
         concept: topic,
         topic,
       }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank generation timed out (>8s)')), 8000)),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank generation timed out (>50s)')), 50000)),
     ]);
 
     if (conceptBank && conceptBank.length > 0) {
@@ -1313,7 +1308,7 @@ async function generateOrRetrieveQuiz(courseName, moduleName, userId, seenQuesti
         topic: moduleName,
         moduleName: '',
       }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank timed out')), 8000)),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank timed out (>50s)')), 50000)),
     ]);
 
     if (conceptBank && conceptBank.length > 0) {

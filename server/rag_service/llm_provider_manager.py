@@ -5,7 +5,7 @@ Priority Order:
 1. SGLang (Primary)
 2. Grok (Secondary)
 3. Gemini (Tertiary)
-4. Ollama (Final local fallback)
+4. SGLang (Final local fallback)
 
 Provides health checks, retry logic, timeout handling, and automatic failover.
 """
@@ -47,7 +47,7 @@ class ProviderType(Enum):
     GROK = "grok"
     GROQ = "groq"
     GEMINI = "gemini"
-    OLLAMA = "ollama"
+    OLLAMA = "sglang"
 
 
 @dataclass
@@ -498,12 +498,12 @@ class GeminiProvider(BaseProvider):
 
 
 class OllamaProvider(BaseProvider):
-    """Ollama local provider."""
+    """SGLang local provider."""
 
     def __init__(self, config: ProviderConfig):
         super().__init__(config)
-        self.base_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
-        self.default_model = os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct")
+        self.base_url = os.getenv("SGLANG_URL", "http://localhost:11434")
+        self.default_model = os.getenv("SGLANG_MODEL", "qwen2.5:7b-instruct")
 
     def _check_model_installed(self) -> bool:
         try:
@@ -560,7 +560,7 @@ class OllamaProvider(BaseProvider):
                     return resp.json().get("response", "").strip()
             except Exception as e:
                 if attempt == self.config.max_retries:
-                    logger.error(f"Ollama generation failed: {e}")
+                    logger.error(f"SGLang generation failed: {e}")
                 else:
                     time.sleep(self.config.retry_delay)
         return None
@@ -608,7 +608,7 @@ class LLMProviderManager:
         self._init_providers()
 
     def _get_priority_from_env(self) -> List[str]:
-        priority_str = os.getenv("LLM_PROVIDER_PRIORITY", "groq,gemini,grok,ollama,sglang")
+        priority_str = os.getenv("LLM_PROVIDER_PRIORITY", "groq,gemini,grok,sglang,sglang")
         return [p.strip().lower() for p in priority_str.split(",") if p.strip()]
 
     def _init_providers(self):
@@ -617,7 +617,7 @@ class LLMProviderManager:
             ProviderType.GROK: ProviderConfig("grok", True, 30, 2, 1.0),
             ProviderType.GROQ: ProviderConfig("groq", True, 30, 2, 1.0),
             ProviderType.GEMINI: ProviderConfig("gemini", True, 30, 2, 1.0),
-            ProviderType.OLLAMA: ProviderConfig("ollama", True, 300, 1, 2.0),
+            ProviderType.OLLAMA: ProviderConfig("sglang", True, 300, 1, 2.0),
         }
 
         for pname in self.priority:

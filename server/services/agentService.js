@@ -13,7 +13,7 @@ const {
   createAgenticContext,
 } = require("../protocols/contextProtocols.js");
 const geminiService = require("./geminiService.js");
-const ollamaService = require("./ollamaService.js");
+const sglangService = require("./sglangService.js");
 const llmStreamingService = require("./llmStreamingService.js");
 const { redisClient } = require('../config/redisClient');
 const { getAgentState, updateAgentState } = require('./agentStateService');
@@ -96,13 +96,39 @@ function withTimeout(promise, timeoutMs, label = 'operation') {
 function safeJsonParseFromText(text, fallback = null) {
   try {
     if (!text || typeof text !== 'string') return fallback;
-    const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-    const candidate = fenced ? fenced[1] : text;
-    const objMatch = candidate.match(/\{[\s\S]*\}/);
-    return JSON.parse(objMatch ? objMatch[0] : candidate);
-  } catch {
-    return fallback;
+
+    // 1. Remove thinking tags (<think>...</think> or <thinking>...</thinking>)
+    let cleaned = text
+      .replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '')
+      .trim();
+
+    // 2. Extract content from markdown code fences if present
+    const fencedMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (fencedMatch && fencedMatch[1]) {
+      cleaned = fencedMatch[1].trim();
+    }
+
+    // 3. Direct parse attempt
+    try {
+      return JSON.parse(cleaned);
+    } catch (_) {}
+
+    // 4. Slice between outermost curly braces or square brackets
+    const firstBrace = cleaned.indexOf('{');
+    const lastBrace = cleaned.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));
+    }
+
+    const firstBracket = cleaned.indexOf('[');
+    const lastBracket = cleaned.lastIndexOf(']');
+    if (firstBracket !== -1 && lastBracket > firstBracket) {
+      return JSON.parse(cleaned.slice(firstBracket, lastBracket + 1));
+    }
+  } catch (err) {
+    // Return fallback on failure
   }
+  return fallback;
 }
 
 function normalizeChatText(msg) {
@@ -857,7 +883,7 @@ async function processAgenticRequest(
   } = requestContext;
 
   const groqService = require("./groqService");
-  const llmService = llmProvider === "ollama" ? ollamaService
+  const llmService = llmProvider === "ollama" ? sglangService
                     : llmProvider === "sglang" ? null  // answer generation uses llmStreamingService
                     : llmProvider === "groq" ? groqService
                     : geminiService;
@@ -872,6 +898,7 @@ async function processAgenticRequest(
     ...(llmProvider === "groq" && { model: requestContext.groqModel || process.env.GROQ_MODEL || 'llama-3.1-8b-instant' }),
     apiKey: apiKey,
     ollamaUrl: ollamaUrl,
+    disableTokenSaving: requestContext.disableTokenSaving || (requestContext.intent === 'chat')
   };
 
   // Multi-pass reasoning only activates via explicit ToT toggle (criticalThinkingEnabled),
@@ -989,7 +1016,7 @@ async function processAgenticRequest(
   }
 
   if (requestContext.forceSimple === true || !toolCall || !toolCall.tool_name) {
-    const finalSystemPrompt = CHAT_MAIN_SYSTEM_PROMPT();
+    const finalSystemPrompt = clientSystemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
 
     let directAnswer;
     const fb = getFallbackService();
@@ -1024,7 +1051,7 @@ async function processAgenticRequest(
           { role: 'user', content: userQuery }
         ];
 
-        const isThinkingModel = /qwen3|qwq|deepseek.*r1|gemma3|gemma-3/i.test(llmOptions.model || llmOptions.geminiModel || '');
+        const isThinkingModel = /qwen|qwq|deepseek.*r1|gemma3|gemma-3/i.test(llmOptions.model || llmOptions.geminiModel || '');
 
         if (llmProvider === 'gemini' || llmProvider === 'groq' || llmProvider === 'anthropic' || llmProvider === 'mistral') {
           directAnswer = await llmStreamingService.streamCompletion({
@@ -1038,7 +1065,7 @@ async function processAgenticRequest(
           });
         } else if (llmProvider === 'ollama') {
           // Router uses its own streamChat which handles thinking models natively
-          directAnswer = await ollamaService.streamChat(
+          directAnswer = await sglangService.streamChat(
             chatHistory,
             userQuery,
             finalSystemPrompt,
@@ -1207,7 +1234,7 @@ async function processAgenticRequest(
 
     log.info('AI', "Synthesizing final response...");
 
-    const finalSystemPrompt = CHAT_MAIN_SYSTEM_PROMPT();
+    const finalSystemPrompt = clientSystemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
     const synthesizerUserQuery = createSynthesizerPrompt(
       userQuery,
       toolOutput,

@@ -1,30 +1,20 @@
-const { checkOllamaHealth } = require('./ollamaHealthService');
+const sglangService = require('./sglangService');
 
-const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
-
-// Base preferred fallback order. We'll expose a chain starting from the
-// preferred provider and following the global priority: Gemini -> Groq -> SGLang -> Ollama
-const BASE_PROVIDER_PRIORITY = ['gemini', 'groq', 'sglang', 'ollama'];
-// Backwards-compatible export name
+const BASE_PROVIDER_PRIORITY = ['gemini', 'groq', 'sglang'];
 const PROVIDER_FALLBACK_ORDER = BASE_PROVIDER_PRIORITY.slice();
 
 function normalizeProvider(provider) {
-    if (typeof provider !== 'string') return 'ollama';
+    if (typeof provider !== 'string') return 'sglang';
     const normalized = provider.trim().toLowerCase();
-    if (normalized === 'local_llm') return 'ollama';
+    if (normalized === 'local_llm' || normalized === 'ollama') return 'sglang';
     if (BASE_PROVIDER_PRIORITY.includes(normalized)) return normalized;
-    return 'ollama';
+    return 'sglang';
 }
 
 function getProviderChain(preferredProvider) {
     const preferred = normalizeProvider(preferredProvider);
     // Build chain starting with preferred, then append remaining providers in BASE_PROVIDER_PRIORITY order.
     const list = BASE_PROVIDER_PRIORITY.slice();
-    // If SGLang isn't enabled, remove it from chain
-    if (!SGLANG_ENABLED) {
-        const idx = list.indexOf('sglang');
-        if (idx !== -1) list.splice(idx, 1);
-    }
     // Ensure uniqueness and preferred-first ordering
     const ordered = [preferred, ...list.filter(p => p !== preferred)];
     return ordered;
@@ -41,36 +31,24 @@ function getApiKeyForProvider(provider, preferredProvider, userApiKey) {
 async function resolveProviderByPreference({
     preferredProvider,
     userApiKey = null,
-    userOllamaUrl = null,
-    skipOllamaHealthCheck = false,
+    userLocalLlmUrl = null,
 }) {
     const preferred = normalizeProvider(preferredProvider);
     const chain = getProviderChain(preferred);
 
-    const ollamaCandidates = [userOllamaUrl, process.env.OLLAMA_API_BASE_URL]
-        .filter((url) => typeof url === 'string' && url.trim())
-        .map((url) => url.trim().replace(/\/+$/, ''));
-
-    let workingOllamaUrl = null;
-    for (const candidate of ollamaCandidates) {
-        if (skipOllamaHealthCheck || await checkOllamaHealth(candidate)) {
-            workingOllamaUrl = candidate;
-            break;
-        }
-    }
+    const isSglangHealthy = await sglangService.checkHealth('chat');
 
     const availability = {
-        ollama: Boolean(workingOllamaUrl),
-        gemini: !SGLANG_ENABLED && Boolean(process.env.GEMINI_API_KEY || (preferred === 'gemini' && userApiKey)),
+        gemini: Boolean(process.env.GEMINI_API_KEY || (preferred === 'gemini' && userApiKey)),
         groq: Boolean(process.env.GROQ_API_KEY || (preferred === 'groq' && userApiKey)),
-        sglang: SGLANG_ENABLED
+        sglang: isSglangHealthy
     };
 
     return {
         chosenProvider: preferred,
         chain,
         availability,
-        workingOllamaUrl,
+        workingLocalLlmUrl: process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1',
         apiKey: getApiKeyForProvider(preferred, preferredProvider, userApiKey),
     };
 }

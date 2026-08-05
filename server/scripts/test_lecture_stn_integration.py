@@ -34,8 +34,8 @@ _mock_config = MagicMock(
     QDRANT_COLLECTION_NAME="col",
     DOCUMENT_EMBEDDING_MODEL_NAME="all-MiniLM-L6-v2",
     STN_BACKUP_DIR="/tmp/_stn_test",
-    OLLAMA_BASE_URL="http://localhost:11434",
-    OLLAMA_STN_MODEL="qwen2.5:3b",
+    SGLANG_BASE_URL="http://localhost:11434",
+    SGLANG_STN_MODEL="qwen2.5:3b",
     NEO4J_DATABASE="neo4j",
 )
 

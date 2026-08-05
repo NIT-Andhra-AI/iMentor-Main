@@ -111,15 +111,15 @@ if _SGLANG_ENABLED:
         logger.warning(f"STN: SGLang init failed: {e}")
         _sglang_client = None
 
-# ── Ollama (Fallback) ────────────────────────────────────────────────────────
-_OLLAMA_BASE_URL = getattr(config, "OLLAMA_BASE_URL", "http://localhost:11434")
-_OLLAMA_STN_MODEL = getattr(config, "OLLAMA_STN_MODEL", "qwen2.5:3b")
-# Priority: STN model → 7b → 3b (models actually available in typical Ollama setups)
+# ── SGLang (Fallback) ────────────────────────────────────────────────────────
+_OLLAMA_BASE_URL = getattr(config, "SGLANG_BASE_URL", "http://localhost:11434")
+_OLLAMA_STN_MODEL = getattr(config, "SGLANG_STN_MODEL", "qwen2.5:3b")
+# Priority: STN model → 7b → 3b (models actually available in typical SGLang setups)
 _OLLAMA_MODELS = list(dict.fromkeys([_OLLAMA_STN_MODEL, "qwen2.5:7b", "qwen2.5:3b", "qwen2.5:1.5b"]))
 
 
 def _is_model_available(model: str) -> bool:
-    """Check if an Ollama model is pulled and ready."""
+    """Check if an SGLang model is pulled and ready."""
     try:
         req = urllib.request.Request(f"{_OLLAMA_BASE_URL}/api/tags")
         with urllib.request.urlopen(req, timeout=3) as r:
@@ -442,7 +442,7 @@ def _call_ollama(prompt: str) -> Optional[str]:
             logger.debug(f"subtopic_notes: {model} not available, skipping.")
             continue
         try:
-            logger.info(f"subtopic_notes: using Ollama model {model}")
+            logger.info(f"subtopic_notes: using SGLang model {model}")
             payload = json.dumps({
                 "model": model, "prompt": prompt, "stream": False,
                 "options": {"temperature": 0.2, "num_predict": 3000},
@@ -457,12 +457,12 @@ def _call_ollama(prompt: str) -> Optional[str]:
             if text:
                 return text
         except Exception as e:
-            logger.warning(f"subtopic_notes: Ollama {model} failed: {e}")
+            logger.warning(f"subtopic_notes: SGLang {model} failed: {e}")
     return None
 
 
 def _call_llm(prompt: str) -> Optional[str]:
-    """Provider Manager (SGLang → Grok → Gemini → Ollama)."""
+    """Provider Manager (SGLang → Grok → Gemini → SGLang)."""
     # Use Provider Manager if available
     if _PROVIDER_MANAGER_AVAILABLE:
         try:
@@ -492,7 +492,7 @@ def _call_llm(prompt: str) -> Optional[str]:
     if gemini_result:
         return gemini_result
 
-    # ── 3. Ollama — local fallback ────────────────────────────────────────────
+    # ── 3. SGLang — local fallback ────────────────────────────────────────────
     ollama_result = _call_ollama(prompt)
     if ollama_result:
         return ollama_result
@@ -653,9 +653,41 @@ def _get_qdrant_chunks_for_subtopic(
 
         chunks = [d.page_content for d in docs if d.page_content]
         combined = "\n\n---\n\n".join(chunks)
+
+        if len(combined) < 1500:
+            logger.info(f"STN: Material from Qdrant is sparse ({len(combined)} chars) for '{subtopic_name}'. Augmenting with web search...")
+            web_query = f"{course} {subtopic_name} explanation definition"
+            web_material = _get_web_search_chunks(web_query)
+            if web_material:
+                if combined:
+                    combined = combined + "\n\n---\n\n[Web-Augmented Knowledge Base]\n" + web_material
+                else:
+                    combined = "[Web-Augmented Knowledge Base]\n" + web_material
+
         return combined[:max_chars]
     except Exception as e:
         logger.debug(f"Qdrant chunk fetch skipped: {e}")
+        return ""
+
+
+def _get_web_search_chunks(query: str, limit: int = 3) -> str:
+    """
+    Search the web via DuckDuckGo Search (DDGS) to retrieve reference articles.
+    """
+    try:
+        from duckduckgo_search import DDGS
+        with DDGS() as ddgs:
+            results = list(ddgs.text(query, max_results=limit))
+        formatted = []
+        for r in results:
+            title = r.get("title", "No Title")
+            body = r.get("body", "")
+            url = r.get("href", "#")
+            if body:
+                formatted.append(f"Web Article: {title} ({url})\nContent: {body}")
+        return "\n\n---\n\n".join(formatted)
+    except Exception as e:
+        logger.debug(f"Web search fallback failed: {e}")
         return ""
 
 
@@ -721,10 +753,12 @@ Generate structured teaching notes as VALID JSON only — no prose outside the J
 }}
 
 Rules:
+- The user's course documents (SOURCE MATERIAL) and your core pre-trained knowledge must serve as the primary foundational truth.
+- Web-augmented search results within the SOURCE MATERIAL are strictly for finishing touches, detailing definitions, and enriching examples.
+- You MUST cross-validate any facts, definitions, or equations retrieved from the web against the user's local course documents. If there is any naming convention difference or conflict, prioritize the user's local documents.
 - teaching_context MUST be complete and self-contained.
 - Explicitly mention how this concept builds on its prerequisites where relevant.
 - Preserve all mathematical notation using LaTeX (e.g. $E = mc^2$).
-- If source material is sparse or empty, generate from your own knowledge.
 - Output ONLY the JSON object — no markdown fences, no preamble.
 """
 

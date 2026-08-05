@@ -108,16 +108,11 @@ function testHistoryTruncation() {
 }
 
 // Run all tests
-(async () => {
-    try {
+describe('Model Router Optimization', () => {
+    it('should pass all tests', async () => {
         testComplexityScoring();
         testParameterTuning();
         await testHybridRouting();
         testHistoryTruncation();
-        console.log('\n=== All Model Router Optimization Tests Passed Successfully! ===');
-    } catch (error) {
-        console.error('\n❌ Test failed:');
-        console.error(error);
-        process.exit(1);
-    }
-})();
+    });
+});

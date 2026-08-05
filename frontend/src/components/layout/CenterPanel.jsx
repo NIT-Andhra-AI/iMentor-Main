@@ -108,17 +108,24 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
     const navigate = useNavigate();
     const location = useLocation();
     const { token: regularUserToken, user: regularUser } = useRegularAuth();
-    const { setSelectedSubject, systemPrompt, selectedDocumentForAnalysis, selectedSubject, tutorMode: contextTutorMode, setTutorMode, tutorModeType: contextTutorModeType, setSessionId } = useAppState();
+    const { setSelectedSubject, systemPrompt, selectedDocumentForAnalysis, selectedSubject, tutorMode: contextTutorMode, setTutorMode, tutorModeType: contextTutorModeType, setSessionId, learningMode } = useAppState();
     const { isResearchMode, setQuery: setResearchQuery, setPipelineStage, handleResearchUpdate } = useDeepResearch();
 
     // Explicitly check route to avoid state race conditions during mode switches
     const isTutorRoute = location.pathname.startsWith('/tutor');
-    const tutorMode = isTutorRoute;
-    const effectiveTutorModeType = isTutorRoute ? (tutorModeType || contextTutorModeType || (selectedSubject ? 'structured' : 'general_socratic')) : null;
+    const tutorMode = isTutorRoute || learningMode;
+    const effectiveTutorModeType = isTutorRoute ? (tutorModeType || contextTutorModeType || (selectedSubject ? 'structured' : 'general_socratic')) : (learningMode ? 'guided_learning' : null);
 
     const [useWebSearch, setUseWebSearch] = useState(false);
     const [useAcademicSearch, setUseAcademicSearch] = useState(false);
     const [criticalThinkingEnabled, setCriticalThinkingEnabled] = useState(false);
+    const [ragEnabled, setRagEnabled] = useState(true);
+
+    useEffect(() => {
+        if (selectedSubject || selectedDocumentForAnalysis) {
+            setRagEnabled(true);
+        }
+    }, [selectedSubject, selectedDocumentForAnalysis]);
     const [isActuallySendingAPI, setIsActuallySendingAPI] = useState(false);
     const abortControllerRef = useRef(null);
     const [recommendations, setRecommendations] = useState([]);
@@ -584,7 +591,7 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
         const effectiveUseAcademicSearch = options.useAcademicSearch ?? useAcademicSearch;
         // --- MANDATORY: Disable Thinking in Tutor Mode ---
         const effectiveCriticalThinking = tutorMode ? false : (options.criticalThinkingEnabled ?? criticalThinkingEnabled);
-        const effectiveDocumentContext = options.documentContextName ?? selectedSubject ?? selectedDocumentForAnalysis;
+        const effectiveDocumentContext = ragEnabled ? (options.documentContextName ?? selectedSubject ?? selectedDocumentForAnalysis) : null;
 
         console.log('[ToT DEBUG] criticalThinkingEnabled state:', criticalThinkingEnabled);
         console.log('[ToT DEBUG] options.criticalThinkingEnabled:', options.criticalThinkingEnabled);
@@ -996,6 +1003,8 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                 setUseAcademicSearch={setUseAcademicSearch}
                 criticalThinkingEnabled={criticalThinkingEnabled}
                 setCriticalThinkingEnabled={setCriticalThinkingEnabled}
+                ragEnabled={ragEnabled}
+                setRagEnabled={setRagEnabled}
                 initialPrompt={initialPromptForNewSession}
                 setInitialPromptForNewSession={setInitialPromptForNewSession}
                 openCoachModalWithData={setCoachData}

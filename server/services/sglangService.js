@@ -14,7 +14,7 @@
  *   SGLANG_HEAVY_URL   — Night-shift 32B-AWQ (~18 GB, GPU 2)  offline STN + KG jobs
  *                      (single GPU — no tensor-parallel needed vs old 35B FP on 2 GPUs)
  *
- * This service is a DROP-IN PEER to ollamaService.js — it exposes the same
+ * This service is a DROP-IN PEER to sglangService.js — it exposes the same
  * interface so llmRouterService.js can switch between them with a flag.
  *
  * Guard: SGLANG_ENABLED must be 'true' in .env or all calls throw a clear error.
@@ -72,7 +72,7 @@ function _formatHistory(chatHistory = [], systemPrompt = null) {
 
 /**
  * Generate a response (non-streaming).
- * Interface matches ollamaService.generateContentWithHistory.
+ * Interface matches sglangService.generateContentWithHistory.
  *
  * @param {Array}   chatHistory     - Message history [{ role, parts[{text}] }]
  * @param {string}  userQuery       - Current user message
@@ -86,11 +86,11 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
         || (endpoint === 'heavy'  ? process.env.SGLANG_HEAVY_MODEL  : null)
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-14B-Instruct';
+        || 'Qwen/Qwen2.5-14B-Instruct-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt));
+    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
@@ -109,13 +109,18 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
     log.info('AI', `[SGLang] Token budget: input≈${estimatedInputTokens} + completion=${maxTokens} ≈ ${estimatedInputTokens + maxTokens} / ${modelMaxContext}`);
 
     try {
-        const completion = await client.chat.completions.create({
+        const body = {
             model,
             messages,
             max_tokens:  maxTokens,
             temperature: options.temperature || 0.7,
             stream:      false,
-        });
+        };
+        if (options.response_format) body.response_format = options.response_format;
+        if (options.tools) body.tools = options.tools;
+        if (options.tool_choice) body.tool_choice = options.tool_choice;
+
+        const completion = await client.chat.completions.create(body);
 
         const text = completion.choices?.[0]?.message?.content?.trim() || '';
         log.success('AI', `[SGLang] response received (${text.length} chars)`);
@@ -131,7 +136,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
 
 /**
  * Streaming generation.
- * Yields tokens via onToken callback, same interface as ollamaService.streamChat.
+ * Yields tokens via onToken callback, same interface as sglangService.streamChat.
  *
  * @param {Array}    chatHistory
  * @param {string}   userQuery
@@ -145,11 +150,11 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
     const model    = options.model
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-14B-Instruct';
+        || 'Qwen/Qwen2.5-14B-Instruct-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt));
+    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
@@ -158,26 +163,38 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
 
     log.info('AI', `[SGLang] stream → endpoint=${endpoint} model=${model}`);
 
-    // Compute safe token budget to avoid exceeding the model's 8192-token context window
+    // Compute safe token budget using live SGLang model capabilities
+    const sglangCaps = require('./sglangCapabilities');
     const allText = messages.map(m => m.content).join(' ');
     const estimatedInputTokens = Math.ceil(allText.length / 3.5);
-    const modelMaxContext = 8192;
+    const modelMaxContext = sglangCaps.getModelMaxContext(16384);
     const safetyBuffer = 256;
-    const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
-    const maxTokensForStream = Math.min(options.maxTokens || 4096, availableForCompletion);
+    const availableForCompletion = Math.max(2048, modelMaxContext - estimatedInputTokens - safetyBuffer);
+    const maxTokensForStream = Math.min(options.maxTokens || 8192, availableForCompletion);
 
     const chunks   = [];
-    const stream   = await client.chat.completions.create({
+    const body = {
         model,
         messages,
         max_tokens:  maxTokensForStream,
         temperature: options.temperature || 0.7,
         stream:      true,
-    });
+    };
+    if (options.response_format) body.response_format = options.response_format;
+    if (options.tools) body.tools = options.tools;
+    if (options.tool_choice) body.tool_choice = options.tool_choice;
+
+    const streamStart = Date.now();
+    let firstTokenTime = null;
+    const stream   = await client.chat.completions.create(body);
 
     for await (const chunk of stream) {
         const delta = chunk.choices?.[0]?.delta?.content;
         if (delta) {
+            if (firstTokenTime === null) {
+                firstTokenTime = Date.now() - streamStart;
+                log.info('AI', `[SGLang] TTFT (Time To First Token): ${firstTokenTime}ms`);
+            }
             chunks.push(delta);
             if (typeof onToken === 'function') {
                 onToken({ type: 'token', content: delta });
@@ -185,8 +202,11 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
         }
     }
 
+    const totalStreamTime = Date.now() - streamStart;
+    const tokensCount = chunks.length;
+    const speed = totalStreamTime > 0 ? ((tokensCount / totalStreamTime) * 1000).toFixed(2) : 0;
     const finalAnswer = chunks.join('');
-    log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars)`);
+    log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars) | Total Time: ${totalStreamTime}ms | TTFT: ${firstTokenTime}ms | Speed: ${speed} tok/s`);
     return { finalAnswer };
 }
 

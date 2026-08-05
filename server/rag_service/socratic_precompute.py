@@ -43,9 +43,9 @@ if config.GEMINI_API_KEY:
     except Exception as e:
         logger.warning(f"socratic_precompute: Gemini init failed: {e}")
 
-# ── Ollama ───────────────────────────────────────────────────────────────────
-_OLLAMA_BASE_URL = getattr(config, "OLLAMA_BASE_URL", "http://localhost:11434")
-_OLLAMA_STN_MODEL = getattr(config, "OLLAMA_STN_MODEL", "qwen3.5:9b")
+# ── SGLang ───────────────────────────────────────────────────────────────────
+_OLLAMA_BASE_URL = getattr(config, "SGLANG_BASE_URL", "http://localhost:11434")
+_OLLAMA_STN_MODEL = getattr(config, "SGLANG_STN_MODEL", "qwen3.5:9b")
 # Priority: STN model (GPU-detected, e.g. 35b) → 9b → 2b, deduplicated
 _OLLAMA_PRECOMPUTE_MODELS = list(dict.fromkeys([_OLLAMA_STN_MODEL, "qwen3.5:9b", "qwen3.5:2b"]))
 
@@ -147,14 +147,14 @@ def _call_gemini(prompt: str) -> Optional[str]:
         # Permanent failures (expired/invalid key) — disable Gemini for rest of session
         if "API_KEY_INVALID" in err or "API key expired" in err or "key expired" in err.lower():
             _gemini_permanently_failed = True
-            logger.warning("Gemini API key expired/invalid — switching to Ollama for all precomputation.")
+            logger.warning("Gemini API key expired/invalid — switching to SGLang for all precomputation.")
         else:
             logger.error(f"Gemini call failed in precompute: {e}")
         return None
 
 
 def _call_ollama(prompt: str) -> Optional[str]:
-    """Try Ollama models in priority order for precomputation."""
+    """Try SGLang models in priority order for precomputation."""
     for model in _OLLAMA_PRECOMPUTE_MODELS:
         if not _is_ollama_model_available(model):
             logger.debug(f"Precompute: {model} not available, skipping.")
@@ -176,19 +176,19 @@ def _call_ollama(prompt: str) -> Optional[str]:
                 data = json.loads(r.read())
             text = data.get("response", "").strip()
             if text:
-                logger.info(f"Precompute: used Ollama model {model}")
+                logger.info(f"Precompute: used SGLang model {model}")
                 return text
         except Exception as e:
-            logger.warning(f"Ollama precompute failed with {model}: {e}")
+            logger.warning(f"SGLang precompute failed with {model}: {e}")
     return None
 
 
 def _call_llm(prompt: str) -> Optional[str]:
-    """Try Gemini first, fall back to Ollama."""
+    """Try Gemini first, fall back to SGLang."""
     result = _call_gemini(prompt)
     if result:
         return result
-    logger.info("Precompute: Gemini unavailable, trying Ollama fallback...")
+    logger.info("Precompute: Gemini unavailable, trying SGLang fallback...")
     return _call_ollama(prompt)
 
 

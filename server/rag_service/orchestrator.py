@@ -14,7 +14,7 @@ from typing import AsyncGenerator
 import config
 from vector_db_service import VectorDBService
 import neo4j_handler
-from ollama_util import call_ollama
+from sglang_util import call_ollama
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO)
@@ -161,7 +161,7 @@ async def chat_bridge_stream(user_prompt: str, user_id: str, course_id: str, doc
                         except json.JSONDecodeError:
                             continue
                 else:
-                    logger.warning(f"Ollama reasoning failover failed with status {resp.status_code}")
+                    logger.warning(f"SGLang reasoning failover failed with status {resp.status_code}")
         except Exception as e:
             logger.error(f"Resilient reasoning connection failed: {e}")
 

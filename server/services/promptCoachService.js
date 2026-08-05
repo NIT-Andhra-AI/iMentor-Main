@@ -1,6 +1,5 @@
-// server/services/promptCoachService.js
+const sglangService = require('./sglangService');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
 const groqService = require('./groqService');
 const { PROMPT_COACH_TEMPLATE } = require('../config/promptTemplates');
 const User = require('../models/User');
@@ -8,7 +7,7 @@ const { decrypt } = require('../utils/crypto');
 const { resolveProviderByPreference } = require('./providerPriorityService');
 
 const COACH_GEMINI_MODEL = process.env.PROMPT_COACH_GEMINI_MODEL || 'gemini-2.0-flash';
-const COACH_OLLAMA_MODEL = process.env.PROMPT_COACH_OLLAMA_MODEL || 'phi3:instruct';
+const COACH_SGLANG_MODEL = process.env.PROMPT_COACH_SGLANG_MODEL || 'qwen3.5:9b';
 const COACH_GROQ_MODEL = process.env.PROMPT_COACH_GROQ_MODEL || 'llama-3.1-8b-instant';
 
 /**
@@ -19,7 +18,7 @@ const COACH_GROQ_MODEL = process.env.PROMPT_COACH_GROQ_MODEL || 'llama-3.1-8b-in
  */
 async function analyzePrompt(userId, userPrompt) {
 
-    const user = await User.findById(userId).select('+encryptedApiKey preferredLlmProvider ollamaUrl apiKeyRequestStatus');
+    const user = await User.findById(userId).select('+encryptedApiKey preferredLlmProvider localLlmUrl apiKeyRequestStatus');
 
     if (!user) {
         throw new Error("User not found.");
@@ -30,13 +29,13 @@ async function analyzePrompt(userId, userPrompt) {
     }
 
 
-    const { preferredLlmProvider, ollamaUrl } = user;
+    const { preferredLlmProvider, localLlmUrl } = user;
     const userApiKey = user.encryptedApiKey ? decrypt(user.encryptedApiKey) : null;
 
     const providerResolution = await resolveProviderByPreference({
         preferredProvider: preferredLlmProvider,
         userApiKey,
-        userOllamaUrl: ollamaUrl,
+        userLocalLlmUrl: localLlmUrl,
     });
     const activeProvider = providerResolution.chosenProvider;
     const promptForLlm = PROMPT_COACH_TEMPLATE.replace('{userPrompt}', userPrompt);
@@ -47,12 +46,12 @@ async function analyzePrompt(userId, userPrompt) {
     console.log(`[PromptCoachService] Analyzing prompt for user ${userId} using provider: ${activeProvider} (preferred: ${preferredLlmProvider})`);
 
     try {
-        if (activeProvider === 'ollama') {
+        if (activeProvider === 'sglang') {
             llmOptions = {
-                model: COACH_OLLAMA_MODEL,
-                ollamaUrl: providerResolution.workingOllamaUrl || ollamaUrl
+                model: COACH_SGLANG_MODEL,
+                localLlmUrl: providerResolution.workingLocalLlmUrl || localLlmUrl
             };
-            responseText = await ollamaService.generateContentWithHistory([], promptForLlm, null, llmOptions);
+            responseText = await sglangService.generateContentWithHistory([], promptForLlm, null, llmOptions);
         } else if (activeProvider === 'groq') {
             const apiKey = providerResolution.apiKey;
             llmOptions = {

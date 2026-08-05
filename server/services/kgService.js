@@ -1,7 +1,7 @@
 const log = require('../utils/logger');
 // server/services/kgService.js
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
@@ -46,11 +46,11 @@ async function _processBatchOfChunksForKg(batchOfChunkObjects, batchIndex, llmPr
         let responseText;
 
         if (llmProvider === 'ollama') {
-            responseText = await ollamaService.generateContentWithHistory(
+            responseText = await sglangService.generateContentWithHistory(
                 historyForLlm,
                 userPromptForBatch, // Pass the chunks as the "current query"
                 KG_GENERATION_SYSTEM_PROMPT, // Pass the KG instructions as the system prompt
-                { model: ollamaModel, maxOutputTokens: ollamaService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG }
+                { model: ollamaModel, maxOutputTokens: sglangService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG }
             );
         } else if (llmProvider === 'groq') {
             responseText = await groqService.generateContentWithHistory(
@@ -60,7 +60,7 @@ async function _processBatchOfChunksForKg(batchOfChunkObjects, batchIndex, llmPr
                 {
                     model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
                     apiKey: process.env.GROQ_API_KEY,
-                    maxOutputTokens: ollamaService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG
+                    maxOutputTokens: sglangService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG
                 }
             );
         } else { // Default to Gemini

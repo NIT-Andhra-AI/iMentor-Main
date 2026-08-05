@@ -182,6 +182,21 @@ async function bootstrapCoursesOnStartup({
       continue;
     }
 
+    // Sync skill tree to MongoDB (always run to ensure DB holds all nodes)
+    const skillTreePath = path.join(seed.courseDir, 'skill_tree.json');
+    if (fs.existsSync(skillTreePath)) {
+      try {
+        const { syncSkillTreeToMongo } = require('./skillTreeSyncService');
+        const skillTreeData = JSON.parse(fs.readFileSync(skillTreePath, 'utf-8'));
+        if (skillTreeData.skill_tree) {
+          const syncResult = await syncSkillTreeToMongo(seed.courseName, skillTreeData.skill_tree);
+          log.success('SYSTEM', `Startup bootstrap: synced skill tree for '${seed.courseName}' (${syncResult.created} created, ${syncResult.updated} updated)`);
+        }
+      } catch (syncErr) {
+        log.warn('SYSTEM', `Startup bootstrap: failed to sync skill tree for '${seed.courseName}': ${syncErr.message}`);
+      }
+    }
+
     if (existingSet.has(normalized)) {
       summary.skippedExisting.push(seed.courseName);
       continue;

@@ -12,6 +12,7 @@ const Sentry = require("@sentry/node");
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet"); // [Team1-6] Security headers
+const compression = require("compression");
 const mongoSanitize = require("express-mongo-sanitize"); // [Team1-6] NoSQL injection prevention
 const axios = require("axios");
 const mongoose = require("mongoose");
@@ -153,18 +154,13 @@ function startCourseFileWatchers() {
   log.info('SYSTEM', `Course file watchers started on: ${watchDirs.join(', ')}`);
 }
 
-if (!process.env.JWT_SECRET || !process.env.ENCRYPTION_SECRET) {
-  log.error('SYSTEM', "JWT_SECRET or ENCRYPTION_SECRET is not set in .env file.");
-  process.exit(1);
-}
-if (!mongoUri) {
-  log.error('SYSTEM', "MONGO_URI is not set in .env file.");
-  process.exit(1);
-}
+const { validateEnv } = require('./config/env');
+validateEnv();
 
 const app = express();
 
 // --- Security Middleware Stack [Team1-6] ---
+app.use(compression()); // Gzip compression for all API responses
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -300,8 +296,9 @@ app.post('/api/internal/skill-tree/sync', (req, res, next) => {
 app.use('/api/knowledge-state', authMiddleware, knowledgeStateRoutes);
 app.use('/api/research', authMiddleware, researchLimiter, researchRoutes);
 app.use('/api/deep-research', authMiddleware, researchLimiter, deepResearchRoutes); // [Team1-6] Deep research
-app.use('/api/tutor', authMiddleware, chatLimiter, tutorRoutes); // [Team1-6] Socratic tutor — rate-limited
-app.use('/api/socratic', authMiddleware, chatLimiter, socraticRoutes); // [Team1-6] Socratic sessions — rate-limited
+app.use('/api/tutor', authMiddleware, chatLimiter, tutorRoutes);
+app.use('/api/chat/tutor', authMiddleware, chatLimiter, tutorRoutes);
+app.use('/api/socratic', authMiddleware, chatLimiter, socraticRoutes);
 app.use('/api/study-mode', authMiddleware, studyModeRoutes); // Study questions + skill tree
 app.use('/api/debug', authMiddleware, debugRoutes);
 app.use('/api/progress', authMiddleware, require('./routes/progress'));

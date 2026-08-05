@@ -111,50 +111,46 @@ geminiService.generateContentWithHistory = async function (chatHistory, currentQ
 try {
     const { assessStudentResponse } = require('../services/socraticTutorService_temp_test');
     
-    (async () => {
-        console.log("=== Running Grounding Unit Test on Patched Stack ===");
-        
-        const mockStudentResponse = "Binary Search divides the list in half each time to find the item in O(log n).";
-        const mockModuleTitle = "Binary Search";
-        const mockLastQuestion = "Can you explain how Binary Search works and its complexity?";
-        const mockLlmConfig = {
-            llmProvider: 'gemini',
-            apiKey: 'fake-api-key',
-            currentCognitiveLevel: 'L2_APPLICATION'
-        };
-        const mockHistory = [];
-        const mockGroundTruth = "Binary Search is a search algorithm that finds the position of a target value within a sorted array. It compares the target value to the middle element of the array. The time complexity is O(log n).";
+    describe('STN Grounding Patched Team 4', () => {
+        it('should pass all tests', async () => {
+            console.log("=== Running Grounding Unit Test on Patched Stack ===");
+            
+            const mockStudentResponse = "Binary Search divides the list in half each time to find the item in O(log n).";
+            const mockModuleTitle = "Binary Search";
+            const mockLastQuestion = "Can you explain how Binary Search works and its complexity?";
+            const mockLlmConfig = {
+                llmProvider: 'gemini',
+                apiKey: 'fake-api-key',
+                currentCognitiveLevel: 'L2_APPLICATION'
+            };
+            const mockHistory = [];
+            const mockGroundTruth = "Binary Search is a search algorithm that finds the position of a target value within a sorted array. It compares the target value to the middle element of the array. The time complexity is O(log n).";
 
-        const assessment = await assessStudentResponse(
-            mockStudentResponse,
-            mockModuleTitle,
-            mockLastQuestion,
-            mockLlmConfig,
-            mockHistory,
-            mockGroundTruth
-        );
+            const assessment = await assessStudentResponse(
+                mockStudentResponse,
+                mockModuleTitle,
+                mockLastQuestion,
+                mockLlmConfig,
+                mockHistory,
+                mockGroundTruth
+            );
 
-        console.log("Assessment Result:", assessment);
-        
-        // Assertions
-        assert.strictEqual(assessment.understanding, "CORRECT");
-        assert.strictEqual(assessment.bloomLevel, 2);
-        
-        console.log("Checking if prompt contains ground truth...");
-        assert.ok(capturedPrompt.includes(mockGroundTruth), "Prompt should contain the ground truth text.");
-        assert.ok(capturedPrompt.includes("STN Context (ground truth reference)"), "Prompt should contain STN Context section.");
-        assert.ok(capturedPrompt.includes("Evaluate the student's response strictly and directly against the \"STN Context (ground truth reference)\""), "Prompt should contain evaluation instructions.");
+            console.log("Assessment Result:", assessment);
+            
+            // Assertions
+            assert.strictEqual(assessment.understanding, "CORRECT");
+            assert.strictEqual(assessment.bloomLevel, 2);
+            
+            console.log("Checking if prompt contains ground truth...");
+            assert.ok(capturedPrompt.includes(mockGroundTruth), "Prompt should contain the ground truth text.");
+            assert.ok(capturedPrompt.includes("STN Context (ground truth reference)"), "Prompt should contain STN Context section.");
+            assert.ok(capturedPrompt.includes("Evaluate the student's response strictly and directly against the \"STN Context (ground truth reference)\""), "Prompt should contain evaluation instructions.");
 
-        console.log("✅ All STN Grounding unit tests passed successfully!");
-        cleanup();
-        process.exit(0);
-    })().catch(err => {
-        console.error("❌ Test failed:", err);
-        cleanup();
-        process.exit(1);
+            console.log("✅ All STN Grounding unit tests passed successfully!");
+            cleanup();
+        });
     });
 } catch (e) {
     console.error("Failed to require temp service:", e);
     cleanup();
-    process.exit(1);
 }

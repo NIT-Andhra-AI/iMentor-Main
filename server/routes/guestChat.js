@@ -51,6 +51,9 @@ router.post('/chat', guestLimiter, async (req, res) => {
     const streamEvent = (data) => {
         if (!res.writableEnded) {
             res.write(`data: ${JSON.stringify(data)}\n\n`);
+            if (typeof res.flush === 'function') {
+                res.flush();
+            }
         }
     };
 

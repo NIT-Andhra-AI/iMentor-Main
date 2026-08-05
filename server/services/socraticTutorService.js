@@ -9,7 +9,7 @@ const { formatSocraticStrict } = require('./socraticTutorStrictFormatter'); // [
 
 const { redisClient } = require('../config/redisClient');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
 const groqService = require('./groqService');
 const claudeService = require('./claudeService');
 const openaiService = require('./openaiService');
@@ -126,12 +126,22 @@ function generateLearningProfile(masteredTopics = []) {
     };
 }
 
+function getPreferredTutorProvider(llmConfig) {
+    if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_VALIDATED === 'true') {
+        return 'gemini';
+    }
+    if (process.env.GROQ_API_KEY) {
+        return 'groq';
+    }
+    return llmConfig?.llmProvider || 'sglang';
+}
+
 /**
  * Multi-provider LLM call with automatic fallback (ported from Team1-6).
  * Tries preferred provider first, then falls back through all available providers.
  */
 async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llmConfig, additionalOptions = {}) {
-    const preferredProvider = llmConfig?.llmProvider || 'sglang';
+    const preferredProvider = additionalOptions.preferredProvider || getPreferredTutorProvider(llmConfig);
     const allProviders = ['sglang', 'groq', 'gemini', 'claude', 'openai', 'ollama'];
     const providers = [
         preferredProvider,
@@ -180,7 +190,7 @@ async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llm
                     options.model = llmConfig.openaiModel || 'gpt-4o';
                     break;
                 case 'ollama':
-                    llmService = ollamaService;
+                    llmService = sglangService;
                     options.ollamaUrl = llmConfig.ollamaUrl || process.env.OLLAMA_API_BASE_URL;
                     options.model = llmConfig.ollamaModel || process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b';
                     break;
@@ -492,7 +502,7 @@ function cleanResponse(text) {
 function getLLMService(llmConfig) {
     let llmService;
     if (llmConfig.llmProvider === 'ollama') {
-        llmService = ollamaService;
+        llmService = sglangService;
     } else if (llmConfig.llmProvider === 'groq') {
         llmService = groqService;
     } else if (llmConfig.llmProvider === 'claude') {
@@ -652,6 +662,121 @@ async function buildInitialLearningPath(courseName, position = null) {
 }
 
 /**
+ * Multi-agent generator-evaluator strategy for high-quality Socratic responses.
+ * 1. Draft Phase: Generate a draft response.
+ * 2. Critique Phase: Inspect the draft for tone, length, analogies, and the exactly-one-question rule.
+ * 3. Refinement Phase: Refine the draft to address any critique points.
+ */
+async function generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConfig, llmOptions, onToken) {
+    log.info('TUTOR', 'Starting multi-agent critique cycle for Socratic question...');
+    
+    // Step 1: Draft Phase (using preferred LLM or fallback, non-streaming)
+    log.info('TUTOR', 'Phase 1: Generating draft response...');
+    const draftResponse = await generateWithFallback(
+        [],
+        prompt,
+        systemPrompt,
+        llmConfig,
+        { ...llmOptions, maxOutputTokens: 1000 }
+    );
+    
+    log.info('TUTOR', `Draft generated:\n${draftResponse}\n`);
+
+    // Step 2: Critique Phase (non-streaming, fast evaluation)
+    log.info('TUTOR', 'Phase 2: Critiquing draft response...');
+    const critiqueSystemPrompt = `You are a Socratic Pedagogy Inspector. Inspect the given Socratic tutor draft response against these rules:
+1. MUST end with exactly ONE clear, focused question.
+2. MUST NOT give away the direct answer to the question.
+3. MUST provide a clear explanation with a concrete analogy or real-world example first.
+4. Tone MUST be warm, patient, and conversational, NOT robotic. Avoid starting with boilerplate like "Great job!", "Spot on!", or similar repetitive phrases.
+
+Draft response to inspect:
+"""
+${draftResponse}
+"""
+
+List any violations of the rules. If there are no violations, reply with "PASSED".`;
+
+    const critique = await generateWithFallback(
+        [],
+        "Critique this Socratic draft.",
+        critiqueSystemPrompt,
+        llmConfig,
+        { maxOutputTokens: 300 }
+    );
+    
+    log.info('TUTOR', `Critique results: ${critique}`);
+
+    // If critique passed, we can just return the draft.
+    if (critique.trim().toUpperCase() === 'PASSED') {
+        log.success('TUTOR', 'Critique passed! Streaming draft directly.');
+        if (onToken) {
+            // Stream the draft response token-by-token
+            const tokens = draftResponse.split(/(\s+)/);
+            for (const token of tokens) {
+                if (token) onToken(token);
+                await new Promise(r => setTimeout(r, 15)); // simulate streaming delay
+            }
+        }
+        return draftResponse;
+    }
+
+    // Step 3: Refinement / Synthesis Phase
+    log.info('TUTOR', 'Phase 3: Refining response based on critique...');
+    const refinementSystemPrompt = `You are iMentor, a Senior Socratic Tutor. You have generated a draft response, but it needs refinement to meet quality standards.
+
+CRITIQUE REPORT:
+"""
+${critique}
+"""
+
+ORIGINAL DRAFT:
+"""
+${draftResponse}
+"""
+
+REFINEMENT INSTRUCTIONS:
+- Rewrite the draft response to address all concerns in the critique.
+- Ensure the tone is extremely natural, warm, and highly engaging.
+- Provide a rich explanation of the concept and a real-world analogy.
+- End with exactly ONE focused Socratic question that makes the student reason. Do NOT give the direct answer to the question.
+- Do NOT output any internal thinking or meta-headers. Begin directly with the tutor response.`;
+
+    let refinedResponse = "";
+    if (onToken && (llmConfig.llmProvider === 'gemini' || llmConfig.llmProvider === 'groq')) {
+        // Stream the final refined response directly to the user
+        refinedResponse = await llmStreamingService.streamCompletion({
+            messages: [{ role: 'user', content: 'Provide the refined Socratic response.' }],
+            provider: llmConfig.llmProvider,
+            model: llmOptions.geminiModel || llmOptions.model,
+            apiKey: llmOptions.apiKey,
+            systemPrompt: refinementSystemPrompt,
+            onToken,
+            options: llmOptions
+        });
+    } else {
+        refinedResponse = await generateWithFallback(
+            [],
+            'Provide the refined Socratic response.',
+            refinementSystemPrompt,
+            llmConfig,
+            { ...llmOptions, maxOutputTokens: 1000 }
+        );
+        if (onToken) {
+            // Stream the refined response token-by-token
+            const tokens = refinedResponse.split(/(\s+)/);
+            for (const token of tokens) {
+                if (token) onToken(token);
+                await new Promise(r => setTimeout(r, 15));
+            }
+        }
+    }
+    
+    log.success('TUTOR', 'Socratic response refined successfully!');
+    return refinedResponse;
+}
+
+/**
  * Generate initial response for a topic/subtopic.
  * Uses precomputed intro+question from Redis when available (zero LLM latency).
  */
@@ -675,8 +800,9 @@ async function startSocraticSession(topic, context, llmConfig, position = null, 
     const { llmService, llmOptions } = getLLMService(llmConfig);
     const prompt = `Start a Study Mode Socratic lesson on: ${safe(topic)}`;
 
-    let systemPrompt = `You are iMentor, an AI-powered learning platform designed to provide guided, Socratic learning.
-Your goal is to introduce the topic clearly and conversationally.
+    let systemPrompt = `You are iMentor, an elite AI-powered Socratic tutor and learning companion tailored for B.Tech engineering students and technical researchers.
+Your goal is to introduce the topic rigorously, clearly, and conversationally. Always match the response quality of ChatGPT and Gemini.
+Ensure the response is detailed, engaging, and thorough, providing rich and essential background information before asking questions.
 
 TOPIC TO INTRODUCE: "${safe(topic)}"
 
@@ -684,49 +810,30 @@ CONTEXT FOR FACTS:
 ${safe(context)}
 
 You must respond conversationally and naturally like a human tutor, but internally logically follow this progression:
-1. Explain the foundational concept in EXACTLY two short, easily digestible paragraphs.
-2. Provide a simple real-world analogy or example to make the concept concrete (max 3 sentences).
-3. Ask ONE focused Socratic question requiring the student to reason about what was explained. Do NOT provide the answer. Stop and wait for the student.
+1. Start with a warm welcome greeting to the course/session (e.g., "Welcome! Let's explore [Topic] today...").
+2. Explain the foundational concept of this first subtopic in detail, providing comprehensive explanations, key context, and background.
+3. Provide an engaging real-world analogy or example to make the concept concrete and easy to visualize.
+4. Ask ONE focused Socratic question requiring the student to reason about what was explained. Do NOT provide the answer. Stop and wait for the student.
 
 CRITICAL RULES:
 - DO NOT use any structural headings (like "1. Concept", "### 1️⃣ CONCEPT", "Intuition", etc.).
 - Render the output as natural, conversational dialogue.
-- KEEP THE ENTIRE RESPONSE COMPACT. Total length should be under 200 words.
+- Make the explanation thorough and detailed to build solid foundations, without arbitrary word limits.
 - Use paragraph breaks to separate the concept, example, and question.
-- DO NOT output any internal thinking tags.`;
+- DO NOT output any internal thinking tags.
+- Frame explanations and Socratic questions to fit the technical level of B.Tech students and researchers. Include math formulas or code blocks where appropriate.`;
 
     if (position) {
         systemPrompt += `\n\n📍 POSITION: ${safe(position.moduleName || 'General')} -> ${safe(position.topicName || topic)}`;
     }
 
+    // Inject dynamic instructions based on topic content/query characteristics (prompt injection)
+    systemPrompt += getAdaptivePromptInjection(topic);
+
     try {
-        if (onToken && (llmConfig.llmProvider === 'gemini' || llmConfig.llmProvider === 'groq')) {
-            log.info('TUTOR', `Starting streamed intro for ${topic}...`);
-            const response = await llmStreamingService.streamCompletion({
-                messages: [{ role: 'user', content: prompt }],
-                provider: llmConfig.llmProvider,
-                model: llmOptions.geminiModel || llmOptions.model,
-                apiKey: llmOptions.apiKey,
-                systemPrompt: systemPrompt.substring(0, 1200),
-                onToken,
-                options: {
-                    ...llmOptions,
-                    maxTokens: 200
-                }
-            });
-            console.log(`\n\n[STUDENT INPUT]\nTopic: ${topic}\n\n[TUTOR ACTION]\nExplaining fundamentals\n\n[SOCRATIC QUESTION]\n(Waiting for response)\n`);
-            return sanitizeGeneratedText(response);
-        }
-
-        const response = await llmService.generateContentWithHistory(
-            [],
-            prompt,
-            systemPrompt,
-            llmOptions
-        );
-
+        const response = await generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConfig, llmOptions, onToken);
         console.log(`\n\n[STUDENT INPUT]\nTopic: ${topic}\n\n[TUTOR ACTION]\nExplaining fundamentals\n\n[SOCRATIC QUESTION]\n(Waiting for response)\n`);
-        return sanitizeGeneratedText(cleanResponse(response));
+        return sanitizeGeneratedText(response);
     } catch (error) {
         log.error('TUTOR', `Start session error: ${error.message}`, error);
         return sanitizeGeneratedText(`We are going to learn about ${safe(topic)}. This is a fundamental idea to grasp.\n\nWhat do you already know about this topic?`);
@@ -865,6 +972,38 @@ async function processTutorResponse(studentResponse, sessionId, llmConfig, onPro
         }
     }
 
+    // Detect semantic repetition against previous answers in this session
+    let isRepetitive = false;
+    const cleanCurrent = studentResponse.trim().toLowerCase().replace(/[^\w\s]/g, '');
+    for (const turn of history) {
+        if (!turn.response) continue;
+        const cleanPrev = turn.response.trim().toLowerCase().replace(/[^\w\s]/g, '');
+        if (cleanPrev.length < 5) continue;
+        
+        // Literal match
+        if (cleanCurrent === cleanPrev) {
+            isRepetitive = true;
+            break;
+        }
+        
+        // Jaccard similarity (word overlap)
+        const wordsCurrent = cleanCurrent.split(/\s+/).filter(Boolean);
+        const wordsPrev = cleanPrev.split(/\s+/).filter(Boolean);
+        if (wordsCurrent.length > 0 && wordsPrev.length > 0) {
+            const setC = new Set(wordsCurrent);
+            const setP = new Set(wordsPrev);
+            let intersection = 0;
+            for (const w of setC) {
+                if (setP.has(w)) intersection++;
+            }
+            const jaccard = intersection / new Set([...setC, ...setP]).size;
+            if (jaccard > 0.82) {
+                isRepetitive = true;
+                break;
+            }
+        }
+    }
+
     // ANALYZE Phase — Multi-dimensional assessment with emotional state
     if (onProgress) onProgress('Evaluating understanding and emotional state...');
 
@@ -880,6 +1019,14 @@ async function processTutorResponse(studentResponse, sessionId, llmConfig, onPro
         history,
         unitContext.slice(-5)
     );
+
+    if (isRepetitive) {
+        log.info('TUTOR', '🔁 Repeated answer detected! Overriding evaluation for XP & progression.');
+        assessment.understanding = 'VAGUE';
+        assessment.xpMultiplier = 0.0;
+        assessment.quality = 'PARTIAL';
+        assessment.reasoning = 'Repeated response; no new insight provided.';
+    }
 
     const supportLevel = determineSupportLevel(state, assessment, responseTime);
     log.info('TUTOR', `📊 Assessment: ${assessment.understanding} | Emotion: ${assessment.emotionalState} | Support: ${supportLevel} | Confidence: ${assessment.confidence}`);
@@ -1000,7 +1147,7 @@ ${mastered.length > 0 ? `- Already mastered: ${mastered.join(', ')}` : ''}`;
     });
 
     const consecutiveWrongNow = (state.consecutiveWrong || 0) + (
-        (classification.status === 'WRONG' || classification.status === 'UNKNOWN') ? 1 : 0
+        (classification.status !== 'CORRECT') ? 1 : 0
     );
     // Visual aid is generated by the caller (tutorHandler) when struggle >= 2
     const visualAidNeeded = consecutiveWrongNow >= 2;
@@ -1021,11 +1168,22 @@ ${mastered.length > 0 ? `- Already mastered: ${mastered.join(', ')}` : ''}`;
         : consecutiveWrongNow === 2
         ? `No worries at all — this is genuinely one of the trickier ideas. Let me break it down a different way:\n\n`
         : consecutiveWrongNow >= 3
-        ? `You're building persistence — that's key in ML! Let me give you the full picture step by step, and we'll work through it together:\n\n`
+        ? `Let me summarize this clearly so we can move forward:\n\n`
         : '';
 
-    const systemPrompt = `You are iMentor's interactive cognitive learning system (Study Mode).
-Your task is to adaptively teach and guide the student. ALWAYS be warm, encouraging, and patient. NEVER give up on the student.
+    const systemPrompt = `You are iMentor's interactive cognitive learning system (Study Mode), an elite academic tutor for B.Tech engineering students and technical researchers.
+Your task is to adaptively teach and guide the student to deep conceptual mastery using Socratic inquiry. ALWAYS be encouraging, mathematically precise, theoretically sound, and patient. NEVER give up on the student.
+Acknowledge and converse like a world-class tutor (comparable to ChatGPT/Gemini quality), avoiding any robotic, repetitive, or templated response prefixes (do NOT start with "Great job!", "Great effort!", "Good try!", "Spot on!", or similar repetitive phrases).
+
+${isRepetitive ? `
+CRITICAL: REPETITIVE STUDENT ANSWER DETECTED
+The student has submitted an answer that is semantically identical or highly similar to one of their earlier responses in this session.
+You MUST:
+1. Genuinely but firmly note that they have already given this explanation/answer.
+2. Suggest that they have already demonstrated their grasp, and state that you are now moving them forward.
+3. Bridge immediately to the next subtopic (or next Bloom's level) and ask a fresh, warm starting question about it.
+` : ''}
+
 ${cognitiveNote}
 ${emotionalNote}
 ${knowledgeNote}
@@ -1042,7 +1200,13 @@ Internal Evaluation:
 Status: ${safe(classification.status)}
 Reasoning: ${safe(classification.reasoning)}
 
-${supportLevel === 'DIRECT' ? `
+${consecutiveWrongNow >= 3 ? `
+CRITICAL: STUDENT IS STUCK (3 TRIES EXCEEDED). DIRECT ANSWER AND PROGRESSION MODE ACTIVATED.
+You MUST:
+1. Provide the COMPLETE, DIRECT answer to the previous question and explain it step-by-step in simple language.
+2. Explicitly state that since they have completed 3 attempts, you are now moving them forward to the next concept.
+3. Bridge to the next subtopic (or next Bloom's level) and ask a warm initial question about it to progress.
+` : supportLevel === 'DIRECT' ? `
 CRITICAL: DIRECT ANSWER MODE ACTIVATED
 The student has struggled ${consecutiveWrongNow} times. You MUST:
 1. Start with genuine encouragement — acknowledge this is hard
@@ -1075,30 +1239,56 @@ The student has struggled twice. You MUST:
 6. Ask ONE simpler, more-guided question (break the original question into a smaller piece)
 ` : `
 ADAPTIVE INSTRUCTION:
-${classification.status === 'CORRECT' ? 'The student answered correctly. Briefly celebrate with genuine warmth, then deepen the topic.' : ''}
-${classification.status === 'PARTIAL' ? `The student has partial understanding. Start by acknowledging what they GOT RIGHT. Then clarify the specific gap: "${safe(classification.reasoning || 'the concept')}". Ask a more focused follow-up.` : ''}
-${classification.status === 'WRONG' ? `The student answered incorrectly. Be encouraging — say something like "Good attempt!". Give a hint that points toward the right answer without giving it away. Ask a simpler version of the question.` : ''}
+${classification.status === 'CORRECT' ? 'The student answered correctly. Appreciate their success warmly and sincerely. Rearticulate their answer in a sophisticated, clear, and better way to crisply summarize and consolidate their understanding. Then transition smoothly to the next subtopic or level.' : ''}
+${classification.status === 'PARTIAL' ? `The student has partial understanding. First, identify and acknowledge exactly what they got right. Then, explain the missing knowledge in detail to fill their gap. Finally, ask a rearticulated Socratic question stressing the missing knowledge.` : ''}
+${classification.status === 'WRONG' ? `The student answered incorrectly. Be encouraging, but identify any tiny seed of correctness in their response. Explain that part, then explain the core concept in detail to fill the gap. Finally, ask a rearticulated question stressing the missing knowledge.` : ''}
 ${classification.status === 'UNKNOWN' ? `The student doesn't know. That's OK! Provide a direct hint and break the concept into the smallest possible sub-question first.` : ''}
 
 You must respond like a warm, patient human tutor:
-1. Acknowledge the student's effort (1 sentence)
-2. Correct or affirm with explanation + analogy (MAX 2 paragraphs)
+1. Acknowledge and appreciate the student's effort in a natural, engaging, and varied way.
+2. Correct or affirm with a thorough, detailed explanation of the concept, including background context, examples, and/or real-world analogies to ensure deep conceptual coverage.
 3. Ask ONE focused Socratic question requiring reasoning. Stop and wait.
 `}
 
 CRITICAL RULES:
 - DO NOT use structural headings (like "### Phase 1", "Step 1:", etc.)
 - Write as natural dialogue, NOT a lecture.
-- KEEP IT CONCISE. Total length must be under 250 words to avoid cognitive overload.
+- Provide comprehensive, proactive, and detailed explanations of essential concepts. Do NOT artificially cap response length.
 - Use paragraph breaks between explanation, analogy, and question.
 - DO NOT output internal thinking tags.
 - Be specific to the topic: "${safe(topic)}"
-- Adapt complexity to the student's preferred depth: ${knowledgeProfile?.learningProfile?.preferredDepth || 'balanced'}.`;
+- Adapt complexity to the student's preferred depth: ${knowledgeProfile?.learningProfile?.preferredDepth || 'balanced'}.
+- Ensure all technical terms, formulas, derivations, algorithms, and complex systems are fully detailed to match the standard of B.Tech engineering and research.`;
+
+    // Inject dynamic instructions based on student response (or the topic/history context) (prompt injection)
+    let dynamicRigorPrompt = getAdaptivePromptInjection(studentResponse);
+    if (!dynamicRigorPrompt) {
+        // Fall back to scanning the topic name if the student response doesn't trigger anything
+        dynamicRigorPrompt = getAdaptivePromptInjection(topic);
+    }
+    const systemPromptFinal = systemPrompt + dynamicRigorPrompt;
 
     const prompt = `Please respond to the student focusing on ${safe(topic)}.`;
 
     let nextCognitiveLevel = state.cognitiveLevel || COGNITIVE_LEVELS.L1_CONCEPT;
-    if (reflectionAction === 'SIMPLIFY_PROBLEM') {
+    const teachingPolicy = require('./teachingPolicyService');
+    const shouldAdvance = teachingPolicy.shouldAdvanceCognitiveLevel({
+        masteryScore: state.masteryScore,
+        consecutiveWrong: state.consecutiveWrong,
+        turnCount: state.turnCount,
+        consecutiveCorrectAtLevel: state.consecutiveCorrect
+    });
+
+    if (shouldAdvance || reflectionAction === 'SKIP_AHEAD' || (policyAction && policyAction.action === 'ADVANCE_DIFFICULTY')) {
+        try {
+            if (tutorSM?.advanceCognitiveLevel) {
+                const advanced = await tutorSM.advanceCognitiveLevel(sessionId);
+                nextCognitiveLevel = advanced?.cognitiveLevelName || advanced?.cognitiveLevel || nextCognitiveLevel;
+            }
+        } catch (reflectionErr) {
+            log.warn('TUTOR_REFLECTION', `Cognitive upgrade failed (non-fatal): ${reflectionErr.message}`);
+        }
+    } else if (reflectionAction === 'SIMPLIFY_PROBLEM') {
         try {
             if (tutorSM?.downgradeCognitiveLevel) {
                 const downgraded = await tutorSM.downgradeCognitiveLevel(sessionId);
@@ -1166,27 +1356,7 @@ CRITICAL RULES:
 
     if (!usedCached) {
         try {
-            if (onToken && (llmConfig.llmProvider === 'gemini' || llmConfig.llmProvider === 'groq')) {
-                followUpQuestion = await llmStreamingService.streamCompletion({
-                    messages: [{ role: 'user', content: prompt }],
-                    provider: llmConfig.llmProvider,
-                    model: llmOptions.geminiModel || llmOptions.model,
-                    apiKey: llmOptions.apiKey,
-                    systemPrompt: systemPrompt,
-                    onToken,
-                    options: llmOptions
-                });
-            } else {
-                // Use generateWithFallback (tries all configured providers with automatic fallback)
-                // instead of single-provider llmService which has no retry mechanism.
-                followUpQuestion = await generateWithFallback(
-                    [],
-                    prompt,
-                    systemPrompt,
-                    llmConfig,
-                    { maxOutputTokens: 600 }
-                );
-            }
+            followUpQuestion = await generateAndCritiqueSocraticResponse(prompt, systemPromptFinal, llmConfig, llmOptions, onToken);
             followUpQuestion = sanitizeGeneratedText(cleanResponse(followUpQuestion));
         } catch (e) {
             // Log to aid debugging — if this still triggers the LLM call is failing
@@ -1227,10 +1397,13 @@ CRITICAL RULES:
     const newMastery = Math.min(5.0, masteryScore + masteryDelta);
     const projectedMastery = Math.max(0, newMastery);
     const priorKnowledge = assessment.priorKnowledge || false;
-    // Mastery requires BOTH consecutive correct answers AND a minimum mastery score
+    const isStuckProgress = consecutiveWrongNow >= 3;
+    // Mastery requires BOTH consecutive correct answers AND a minimum mastery score, OR being stuck/repetitive (forces progression)
     const isMastered = priorKnowledge ||
         (consecutiveCorrect >= 2 && projectedMastery >= 2.0) ||
-        projectedMastery >= 3.5;
+        projectedMastery >= 3.5 ||
+        isStuckProgress ||
+        isRepetitive;
 if (priorKnowledge) {
 
     log.info('TUTOR', `⚡ Prior knowledge — skipping "${topic}"`);
@@ -1359,11 +1532,9 @@ What do you know about ${nextTopic}?`
         usedQuestions: updatedUsedQuestions,
         turnCount: turnCount + 1,
         consecutiveCorrect,
-        consecutiveWrong: (classification.status === 'WRONG' || classification.status === 'UNKNOWN')
-            ? (state.consecutiveWrong || 0) + 1
-            : (classification.status === 'CORRECT' ? 0 : (state.consecutiveWrong || 0)),
+        consecutiveWrong: (isStuckProgress || isRepetitive) ? 0 : consecutiveWrongNow,
         hintsGiven: reflectionAction === 'RETEACH_CONCEPT' ? 0 : (state.hintsGiven || 0),
-        masteryScore: projectedMastery,
+        masteryScore: (isStuckProgress || isRepetitive) ? 1.0 : projectedMastery,
         cognitiveLevel: nextCognitiveLevel,
         learningPath: {
             concept: learningPath.concept || topic,
@@ -1450,6 +1621,9 @@ What do you know about ${nextTopic}?`
     return {
         followUpQuestion: followUpQuestion,
         classification: classification.status,
+        xpMultiplier: classification.xpMultiplier || 1.0,
+        isStuckProgress,
+        isRepetitive,
         pedagogicalMove: classification.action,
         teachingPolicyAction: finalAction,
         reflectionAction,
@@ -1463,7 +1637,7 @@ What do you know about ${nextTopic}?`
         confidence: classification.confidence,
         specificGaps: classification.specificGaps,
         visualAidNeeded,
-        consecutiveWrong: consecutiveWrongNow,
+        consecutiveWrong: (isStuckProgress || isRepetitive) ? 0 : consecutiveWrongNow,
         topic,
         steps: []
     };
@@ -1587,39 +1761,51 @@ async function resolveCurrentPosition(courseName, completedSubtopics = [], compl
     }
 
     // Find the first topic/subtopic that hasn't been completed
-    for (const module of structure.modules) {
-        // If a specific module target was provided, restrict search to that module only
+    for (let mIdx = 0; mIdx < structure.modules.length; mIdx++) {
+        const module = structure.modules[mIdx];
         if (targetModuleId && module.id !== targetModuleId) {
             continue;
         }
 
         const topics = module.topics || [];
-        for (const topic of topics) {
+        for (let tIdx = 0; tIdx < topics.length; tIdx++) {
+            const topic = topics[tIdx];
             if (!completedTopics.includes(topic.id)) {
-                // Check prerequisites (subtopics)
-                const prerequisites = topic.subtopics || topic.prerequisites || [];
-                for (const sub of prerequisites) {
+                const sublist = (topic.subtopics && topic.subtopics.length > 0)
+                    ? topic.subtopics
+                    : (topic.prerequisites && topic.prerequisites.length > 0)
+                        ? topic.prerequisites
+                        : [{ id: topic.id || `sub_${tIdx}`, name: topic.name }];
+
+                for (let sIdx = 0; sIdx < sublist.length; sIdx++) {
+                    const sub = sublist[sIdx];
                     if (!completedSubtopics.includes(sub.id)) {
+                        const isLastInTopic = sIdx === sublist.length - 1;
+                        const isLastInModule = (tIdx === topics.length - 1) && isLastInTopic;
                         return {
                             courseName: courseName,
                             course: courseName,
                             moduleName: module.name,
                             topicName: topic.name,
                             subtopicName: sub.name,
-                            teachingUnit: sub.name, // Added for chat.js compatibility
-                            teachingUnitType: 'subtopic', // Added for chat.js compatibility
+                            teachingUnit: sub.name,
+                            teachingUnitType: sub.id === topic.id ? 'topic' : 'subtopic',
                             moduleId: module.id,
                             topicId: topic.id,
                             subtopicId: sub.id,
-                            isLastInTopic: prerequisites.indexOf(sub) === prerequisites.length - 1,
-                            isLastInModule: topics.indexOf(topic) === topics.length - 1 && prerequisites.indexOf(sub) === prerequisites.length - 1
+                            moduleIndex: mIdx,
+                            topicIndex: tIdx,
+                            subtopicIndex: sIdx,
+                            isLastInTopic,
+                            isLastInModule
                         };
                     }
                 }
                 
-                // All subtopics are completed, so the topic is effectively complete.
-                // We should skip teaching the topic umbrella itself and move to the next topic.
-                continue;
+                // All subtopics completed -> ensure topic.id is in completedTopics
+                if (topic.id && !completedTopics.includes(topic.id)) {
+                    completedTopics.push(topic.id);
+                }
             }
         }
     }
@@ -1764,6 +1950,57 @@ async function clearTutorSessionState(sessionId) {
     }
 }
 
+/**
+ * Helper to dynamically inject rigorous technical prompt guidelines (prompt injection)
+ * depending on user query / topic contents to match B.Tech and technical researcher levels.
+ */
+function getAdaptivePromptInjection(queryText) {
+    if (!queryText) return '';
+    const text = String(queryText).toLowerCase();
+    let injection = '';
+
+    // 1. Math and Derivation
+    if (/\b(derive|derivation|proof|prove|equation|formula|mathematical|integral|differential|summation|matrix|vector|theorem|calculus|equation)\b/.test(text)) {
+        injection += `\n\n[DYNAMIC RIGOR INJECTION: MATH & DERIVATION FOCUS]
+The student's query involves mathematical derivations, proofs, or equations. You MUST:
+- Provide a rigorous, step-by-step mathematical derivation of the concept.
+- Define every variable and constant clearly upon its first introduction.
+- Wrap all mathematical expressions, variables, subscripts, and formulas inside code formatting (e.g. \`V_i(t+1) = \\alpha \\cdot V_i(t)\`) to preserve clarity and formatting.
+- Explain the physical significance or engineering intuition behind each term in the equations.`;
+    }
+
+    // 2. Algorithm and Complexity
+    if (/\b(algorithm|pseudocode|code|complexity|o\(|big-o|time complexity|space complexity|sort|search|implementation|tree|graph|datastructure|data structure)\b/.test(text)) {
+        injection += `\n\n[DYNAMIC RIGOR INJECTION: ALGORITHMIC FOCUS]
+The student is inquiring about algorithms, code implementations, or computational complexity. You MUST:
+- Provide clean, language-agnostic pseudocode or a structural algorithmic step-by-step breakdown.
+- State the Time and Space complexity explicitly using Big-O notation (e.g. \`O(N \\log N)\` or \`O(V + E)\`).
+- Walk through a brief, clear trace example showing how the state changes at each step.
+- Discuss engineering design trade-offs (e.g., space-time tradeoffs, recursion limits, stack depth, or cache friendliness).`;
+    }
+
+    // 3. Academic comparative Research / Advanced Paradigms
+    if (/\b(paper|research|literature|advanced|state of the art|sota|comparison|difference|neural network|fuzzy|colony|ant colony|optimization|architecture|paradigm)\b/.test(text)) {
+        injection += `\n\n[DYNAMIC RIGOR INJECTION: ACADEMIC & RESEARCH FOCUS]
+The student's query relates to advanced engineering paradigms or comparative research. You MUST:
+- Frame your explanation at the level of a senior undergraduate B.Tech engineering student or a graduate technical researcher.
+- Contrast different architectures or optimization methodologies (e.g., comparing Fuzzy Logic's rule-based uncertainty, Neural Networks' weight-based function approximation, and Ant Colony Optimization's probabilistic path exploration).
+- Use precise academic terminology (e.g. membership functions, backpropagation, search convergence, local minima, pheromone evaporation rate).
+- Cite specific engineering use cases or research domains where these are typically deployed (e.g., robotic path planning, control systems, scheduling).`;
+    }
+
+    // 4. Analogy, Visualization, and Diagrams
+    if (/\b(analogy|visualize|diagram|flowchart|mermaid|example|concrete|illustration)\b/.test(text)) {
+        injection += `\n\n[DYNAMIC RIGOR INJECTION: VISUALIZATION & ANALOGY FOCUS]
+The student has requested a visual breakdown or analogy. You MUST:
+- Include a short, well-structured Mermaid.js flowchart or architecture diagram clarifying the concept. Use a fenced code block with \`mermaid\`. Keep it under 8 nodes and verify the syntax.
+- Walk through the diagram sequentially to explain the flow.
+- Offer an engineering-focused analogy (e.g., comparing a network buffer to an airport runway queue) rather than trivial, generic examples.`;
+    }
+
+    return injection;
+}
+
 module.exports = {
     startSocraticSession,
     processTutorResponse,
@@ -1827,5 +2064,6 @@ module.exports = {
     SUPPORT_LEVELS,
     assessStudentResponse,
     determineSupportLevel,
-    generateWithFallback
+    generateWithFallback,
+    generateAndCritiqueSocraticResponse
 };

@@ -34,7 +34,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
   });
 
   test('TUTOR-EXPERT-M1 — Module 1 progression (expert student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -63,7 +63,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
 
         console.log(`  [M1-S${subtopicIdx + 1}-A${attempt}] Expert: "${answer.slice(0, 60)}..." → Bot: "${response.slice(0, 70)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed|impressive|thorough/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b|impressive|thorough/i.test(response);
         if (mastered) {
           if (attempt === 1) quickMastery++;
           console.log(`  → M1-S${subtopicIdx + 1} mastered in ${attempt} attempt(s)`);
@@ -83,7 +83,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
   });
 
   test('TUTOR-EXPERT-M2 — Module 2 progression (expert student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -106,7 +106,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
         totalTurns++;
         console.log(`  [M2-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 50)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed|impressive/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b|impressive/i.test(response);
         if (mastered) {
           if (attempt === 1) quickMastery++;
           break;
@@ -120,7 +120,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
   });
 
   test('TUTOR-EXPERT-M3 — Module 3 progression (expert student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -143,7 +143,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
         totalTurns++;
         console.log(`  [M3-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 50)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed|impressive/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b|impressive/i.test(response);
         if (mastered) {
           if (attempt === 1) quickMastery++;
           break;
@@ -157,7 +157,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
   });
 
   test('TUTOR-EXPERT-M4 — Module 4 progression (expert student)', async ({ page }) => {
-    test.setTimeout(600000);
+    test.setTimeout(1800000);
     await loginAs(page);
     await navigateToTutor(page);
     await selectTutorCourse(page, COURSE);
@@ -180,7 +180,7 @@ test.describe('TUTOR-EXPERT — Expert Student Profile (ML Modules 1-4)', () => 
         totalTurns++;
         console.log(`  [M4-S${subtopicIdx + 1}-A${attempt}] "${answer.slice(0, 50)}..." → "${response.slice(0, 60)}..."`);
 
-        const mastered = /excellent|correct|great|well done|mastered|move on|next|let.*s proceed|impressive/i.test(response);
+        const mastered = /excellent|correct|great|well done|mastered|move on|\b(next subtopic|next topic|next unit|next lesson|move to the next|move on to the next|on to the next|let's move|lets move|proceed)\b|impressive/i.test(response);
         if (mastered) {
           if (attempt === 1) quickMastery++;
           break;

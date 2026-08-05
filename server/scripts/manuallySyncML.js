@@ -34,9 +34,9 @@ async function runManualSync() {
 
         // 4. Verify a few nodes
         const SkillTree = require('../models/SkillTree');
-        const count = await SkillTree.countDocuments({ category: course });
+        const count = await SkillTree.countDocuments({ course: course });
         const withQuestions = await SkillTree.countDocuments({ 
-            category: course, 
+            course: course, 
             'assessmentQuestions.0': { $exists: true } 
         });
         

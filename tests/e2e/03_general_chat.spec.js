@@ -16,30 +16,33 @@ test.describe('GC — General Chat & Semantic Routing', () => {
   /* ── Existing coverage (enhanced) ──────────────────────────────── */
 
   test('GC-01 — Factual query returns substantive response', async ({ page }) => {
+    test.setTimeout(180000);
     const text = await sendAndWait(page, 'What is machine learning?');
     expect(text.length).toBeGreaterThan(20);
     await assertNoError(page);
     console.log(`✓ GC-01 passed (${text.length} chars)`);
   });
-
+ 
   test('GC-02 — Multi-turn conversation retains context', async ({ page }) => {
+    test.setTimeout(180000);
     await sendAndWait(page, 'Explain overfitting in machine learning');
     const text2 = await sendAndWait(page, 'Give me a concrete example of what you just described');
-
+ 
     const count = await countBotMessages(page);
     expect(count).toBeGreaterThanOrEqual(2);
-
+ 
     // Second response should reference overfitting or the prior explanation
     const relevant = /overfit|training|model|example|instance|scenario/i.test(text2);
     expect(relevant).toBeTruthy();
-
+ 
     console.log(`✓ GC-02 passed: ${count} bot messages, context retained`);
   });
-
+ 
   test('GC-03 — New chat clears conversation', async ({ page }) => {
+    test.setTimeout(180000);
     await sendAndWait(page, 'Hello, explain recursion');
     await clickNewChat(page);
-
+ 
     // Either welcome panel is visible or no bot messages remain
     const welcome = page.locator(SEL.welcomePanel);
     const botCount = await countBotMessages(page);

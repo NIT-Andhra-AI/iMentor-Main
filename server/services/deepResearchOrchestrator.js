@@ -30,7 +30,7 @@ const path = require('path');
 const axios = require('axios');
 const { createPerformanceTracker, logPerformance } = require('./performanceDiagnosticsService');
 
-const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL || 'http://rag:8000';
+const RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || process.env.RAG_SERVICE_URL || 'http://localhost:2005';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CrewAI path (feature-flag gated)

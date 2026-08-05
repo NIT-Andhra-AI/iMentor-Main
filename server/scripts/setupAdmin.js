@@ -91,7 +91,6 @@ async function setupAdmin(mongoUri) {
             await adminUser.save();
             log.success('SYSTEM', `Fixed admin created: ${adminEmail}`);
         } else {
-            // log.info('SYSTEM', `Admin verified: ${adminEmail}`);
             if (!adminUser.isAdmin) {
                 adminUser.isAdmin = true;
                 await adminUser.save();
@@ -99,12 +98,33 @@ async function setupAdmin(mongoUri) {
             }
         }
 
+        // Ensure standard student test accounts exist
+        const defaultStudents = [
+            { email: 'student@imentor.edu', username: 'alex_ece', name: 'Alex Rivera', branch: 'ECE' },
+            { email: 'eee.student@imentor.edu', username: 'priya_eee', name: 'Priya Sharma', branch: 'EEE' }
+        ];
+
+        for (const s of defaultStudents) {
+            let st = await User.findOne({ email: s.email });
+            if (!st) {
+                st = new User({
+                    email: s.email,
+                    username: s.username,
+                    password: 'password123',
+                    name: s.name,
+                    profile: { name: s.name, branch: s.branch, college: 'NIT Andhra Pradesh' },
+                    emailVerified: true,
+                    hasCompletedOnboarding: true
+                });
+                await st.save();
+                log.success('SYSTEM', `Default student account created: ${s.email}`);
+            }
+        }
+
     } catch (error) {
         log.error('SYSTEM', 'Admin setup error', error);
     } finally {
-        rl.close();
-        await mongoose.disconnect();
-        // log.info('SYSTEM', 'Admin setup connection closed');
+        if (rl) rl.close();
     }
 }
 

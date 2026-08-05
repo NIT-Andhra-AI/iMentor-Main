@@ -317,6 +317,20 @@ describe('optimizeIncomingMessages()', () => {
 // 4. injectSystemInstruction()  (lines 198-201 — currently 0% covered)
 // ═══════════════════════════════════════════════════════════════════════════════
 describe('injectSystemInstruction()', () => {
+    let originalDisableTokenSaving;
+
+    beforeAll(() => {
+        originalDisableTokenSaving = process.env.DISABLE_TOKEN_SAVING;
+        process.env.DISABLE_TOKEN_SAVING = 'false';
+    });
+
+    afterAll(() => {
+        if (originalDisableTokenSaving !== undefined) {
+            process.env.DISABLE_TOKEN_SAVING = originalDisableTokenSaving;
+        } else {
+            delete process.env.DISABLE_TOKEN_SAVING;
+        }
+    });
 
     it('should append the TOKEN_SAVING_MODE instruction to an existing system prompt', () => {
         const base = 'You are a helpful tutor.';

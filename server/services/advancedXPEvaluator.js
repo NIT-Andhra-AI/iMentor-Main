@@ -2,7 +2,6 @@
 const User = require('../models/User');
 const { selectLLM } = require('./llmRouterService');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
 const groqService = require('./groqService');
 const { analyzeQueryDepth } = require('./bloomScoringService');
 const log = require('../utils/logger');
@@ -65,7 +64,7 @@ Return ONLY a JSON object in this exact format:
             }
         }
         // 2. Groq
-        else if (chosenModel.provider === 'groq' || chosenModel.provider === 'ollama') {
+        else if (chosenModel.provider === 'groq') {
             try {
                 const apiKey = process.env.GROQ_API_KEY;
                 if (apiKey) {

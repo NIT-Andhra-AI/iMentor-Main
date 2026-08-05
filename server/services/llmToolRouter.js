@@ -81,7 +81,7 @@ async function _callGeminiFlash(query) {
         generationConfig: { maxOutputTokens: 80, temperature: 0.0 },
     };
 
-    const resp = await axios.post(url, body, { timeout: 3000 });
+    const resp = await axios.post(url, body, { timeout: 15000 });
     const text = resp.data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
     return text;
 }
@@ -103,16 +103,20 @@ async function _callSGLangRouter(query) {
         max_tokens:  80,
         temperature: 0.0,
         stream:      false,
-    }, { timeout: 2000 });
+    }, { timeout: 30000 });
 
     return resp.data?.choices?.[0]?.message?.content?.trim() || '';
 }
 
-// ── Parse LLM output ──────────────────────────────────────────────────────────
 function _parse(text) {
     try {
-        // Strip any accidental markdown fences
-        const clean = text.replace(/```json?/gi, '').replace(/```/g, '').trim();
+        if (!text || typeof text !== 'string') return null;
+        let clean = text.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').replace(/```json?/gi, '').replace(/```/g, '').trim();
+        const firstBrace = clean.indexOf('{');
+        const lastBrace = clean.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace > firstBrace) {
+            clean = clean.slice(firstBrace, lastBrace + 1);
+        }
         const parsed = JSON.parse(clean);
         if (Array.isArray(parsed.tools)) return parsed;
     } catch (e) { /* fall through */ }

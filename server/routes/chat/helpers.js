@@ -44,6 +44,9 @@ function streamEvent(res, eventData) {
     }
 
     res.write(`data: ${JSON.stringify(outboundEvent)}\n\n`);
+    if (typeof res.flush === 'function') {
+        res.flush();
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

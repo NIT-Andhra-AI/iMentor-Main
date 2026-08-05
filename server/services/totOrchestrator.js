@@ -2,7 +2,8 @@
 
 const { processAgenticRequest } = require('./agentService');
 const geminiService = require('./geminiService');
-const ollamaService = require('./ollamaService');
+const sglangService = require('./sglangService');
+const groqService = require('./groqService');
 const { getProviderChain } = require('./providerPriorityService');
 const { availableTools } = require('./toolRegistry');
 const { PLANNER_PROMPT_TEMPLATE, EVALUATOR_PROMPT_TEMPLATE, createSynthesizerPrompt, CHAT_MAIN_SYSTEM_PROMPT } = require('../config/promptTemplates');
@@ -128,13 +129,39 @@ function calculateStepConfidence(step) {
 function safeJsonParseFromText(text, fallback = null) {
     try {
         if (!text || typeof text !== 'string') return fallback;
-        const fenced = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-        const candidate = fenced ? fenced[1] : text;
-        const objMatch = candidate.match(/\{[\s\S]*\}/);
-        return JSON.parse(objMatch ? objMatch[0] : candidate);
-    } catch {
-        return fallback;
+
+        // 1. Remove thinking tags (<think>...</think> or <thinking>...</thinking>)
+        let cleaned = text
+            .replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '')
+            .trim();
+
+        // 2. Extract content from markdown code fences if present
+        const fencedMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+        if (fencedMatch && fencedMatch[1]) {
+            cleaned = fencedMatch[1].trim();
+        }
+
+        // 3. Direct parse attempt
+        try {
+            return JSON.parse(cleaned);
+        } catch (_) {}
+
+        // 4. Slice between outermost curly braces or square brackets
+        const firstBrace = cleaned.indexOf('{');
+        const lastBrace = cleaned.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace > firstBrace) {
+            return JSON.parse(cleaned.slice(firstBrace, lastBrace + 1));
+        }
+
+        const firstBracket = cleaned.indexOf('[');
+        const lastBracket = cleaned.lastIndexOf(']');
+        if (firstBracket !== -1 && lastBracket > firstBracket) {
+            return JSON.parse(cleaned.slice(firstBracket, lastBracket + 1));
+        }
+    } catch (err) {
+        // Return fallback on failure
     }
+    return fallback;
 }
 
 function clamp(value, min, max) {
@@ -335,7 +362,16 @@ function getSmartLlmService(context) {
                     maxOutputTokens: options.maxOutputTokens || 2048
                 };
 
-                const service = provider === 'ollama' ? ollamaService : geminiService;
+                let service;
+                if (provider === 'ollama') {
+                    service = sglangService;
+                } else if (provider === 'sglang') {
+                    service = sglangService;
+                } else if (provider === 'groq') {
+                    service = groqService;
+                } else {
+                    service = geminiService;
+                }
 
                 if (provider === 'gemini') {
                     providerOptions.model = options.geminiModel || process.env.GEMINI_MODEL || 'gemini-2.0-flash';
@@ -344,6 +380,11 @@ function getSmartLlmService(context) {
                     providerOptions.model = options.ollamaModel || process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b';
                     providerOptions.ollamaUrl = options.ollamaUrl || process.env.OLLAMA_API_BASE_URL;
                     providerOptions.think = true; // qwen3 is a thinking model
+                } else if (provider === 'sglang') {
+                    providerOptions.model = options.sglangModel || process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+                    providerOptions.endpoint = 'reason';
+                } else if (provider === 'groq') {
+                    providerOptions.model = options.groqModel || process.env.GROQ_MODEL || 'llama-3.1-70b-versatile';
                 }
 
                 log.info('AI', `Request -> ${provider.toUpperCase()} (${providerOptions.model || 'default'})`);
@@ -757,7 +798,7 @@ async function synthesizeFinalAnswer(originalQuery, finalContext, chatHistory, r
         originalQuery, finalContext, 'tree_of_thought_synthesis'
     );
 
-    const finalSystemPrompt = CHAT_MAIN_SYSTEM_PROMPT();
+    const finalSystemPrompt = requestContext.systemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
 
     if (onToken && requestContext.llmProvider === 'gemini') {
         const messagesForStreaming = [

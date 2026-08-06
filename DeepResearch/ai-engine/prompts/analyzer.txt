@@ -1,0 +1,13 @@
+Synthesize findings, identify contradictions, and assign confidence scores.
+
+Research Query: {query}
+Raw Findings:
+{findings}
+
+Output JSON with format:
+{{
+  "synthesis": "Overall synthesis...",
+  "key_findings": ["Finding 1", "Finding 2"],
+  "contradictions": [{"claim_a": "", "claim_b": "", "reason": ""}],
+  "confidence_scores": {{"finding_1": 0.9}}
+}}

@@ -1,0 +1,11 @@
+Examine current research findings against original query to identify missing topics or information gaps.
+
+Query: {query}
+Current Findings:
+{findings}
+
+Output JSON:
+{{
+  "gaps": ["Gap 1 description"],
+  "followup_queries": ["query for gap 1"]
+}}

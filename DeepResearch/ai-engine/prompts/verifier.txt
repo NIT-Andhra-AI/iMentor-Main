@@ -1,0 +1,13 @@
+Cross-verify claims in analysis against original source documents to prevent hallucinations.
+
+Claims:
+{claims}
+Original Sources:
+{sources}
+
+Output JSON:
+{{
+  "verified": true,
+  "hallucinations": [],
+  "score": 0.95
+}}

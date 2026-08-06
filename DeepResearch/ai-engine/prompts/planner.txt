@@ -1,0 +1,12 @@
+Deconstruct the research topic into subtopics and specific targeted search queries.
+
+Topic: {query}
+Depth Level: {depth}
+
+Respond in JSON with format:
+{{
+  "subtopics": ["Subtopic 1", "Subtopic 2"],
+  "plan": [
+    {{"phase": 1, "title": "Phase title", "search_queries": ["query 1", "query 2"]}}
+  ]
+}}

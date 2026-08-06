@@ -152,3 +152,38 @@ async def get_research_session(
             detail=f"Research session '{research_id}' not found."
         )
     return session
+
+
+@router.delete("/{research_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_research_session(
+    research_id: str,
+    db: AsyncSession = Depends(get_async_db)
+):
+    """
+    Delete a specific research session.
+    """
+    stmt = select(ResearchSession).where(ResearchSession.id == research_id)
+    res = await db.execute(stmt)
+    session = res.scalars().first()
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Research session '{research_id}' not found."
+        )
+    await db.delete(session)
+    await db.commit()
+    return None
+
+
+@router.delete("", status_code=status.HTTP_204_NO_CONTENT)
+async def clear_all_research_sessions(
+    db: AsyncSession = Depends(get_async_db)
+):
+    """
+    Clear all past research sessions.
+    """
+    from sqlalchemy import delete
+    await db.execute(delete(ResearchSession))
+    await db.commit()
+    return None

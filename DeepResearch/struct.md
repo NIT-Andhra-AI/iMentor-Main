@@ -107,7 +107,7 @@ deep-research/
 │   ├── gap_detector/
 │   ├── prompts/
 │   └── orchestrator.py
-│
+│ 
 ├── crawler/
 │   ├── extractor/
 │   ├── pdf/
@@ -127,13 +127,13 @@ deep-research/
 │   ├── embed_query.py
 │   └── cache.py
 │
-├── vector-db/
+├── vector_db/
 │   ├── qdrant.py
 │   ├── chroma.py
 │   ├── pinecone.py
 │   └── indexing.py
 │
-├── knowledge-graph/
+├── knowledge_graph/
 │   ├── neo4j.py
 │   ├── graph_builder.py
 │   ├── entity_extractor.py

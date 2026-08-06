@@ -6,9 +6,9 @@ from crawler.processors.chunker import RecursiveTextChunker
 from crawler.services.embedding_service import EmbeddingService
 from crawler.storage.filesystem import FileSystemStorage
 from crawler.storage.mongodb import MongoDBStorage
-from crawler.storage.qdrant import QdrantStorage
+from vector_db.qdrant import QdrantStorage
 from crawler.storage.elasticsearch import ElasticsearchStorage
-from crawler.storage.neo4j import Neo4jStorage
+from knowledge_graph.neo4j import Neo4jStorage
 from crawler.logger import setup_logger
 
 logger = setup_logger(__name__)

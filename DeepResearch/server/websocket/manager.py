@@ -41,14 +41,16 @@ class ConnectionManager:
 
         logger.info(f"[ConnectionManager] Client disconnected. Total connections: {len(self.active_connections)}")
 
-    async def send_personal_message(self, message: Dict[str, Any], websocket: WebSocket) -> None:
+    async def send_personal_message(self, message: Dict[str, Any], websocket: WebSocket) -> bool:
         """
         Direct JSON message to specific socket.
         """
         try:
             await websocket.send_json(message)
+            return True
         except Exception as exc:
             logger.error(f"[ConnectionManager] Failed sending personal message: {exc}")
+            return False
 
     async def broadcast_to_research(self, research_id: str, message: Dict[str, Any]) -> None:
         """

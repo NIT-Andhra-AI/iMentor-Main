@@ -19,6 +19,7 @@ const tutorStateMachine = require('../../../services/tutorStateMachine');
 const knowledgeStateService = require('../../../services/knowledgeStateService');
 const socraticService = require('../../../services/socraticService');
 const masteryService = require('../../../services/masteryService');
+const tutorEnhancementService = require('../../../services/tutorEnhancementService');
 const axios = require('axios');
 const { performWebSearch } = require('../../../services/webSearchService');
 const socketService = require('../../../services/socketService');
@@ -295,7 +296,13 @@ async function handleGeneral(res, ctx) {
     const rawQuery = query.trim();
  
     // ── Detect prior knowledge and difficulty intent ──────────────────────────
-    const priorKnowledgeAnalysis = priorKnowledgeDetector.detectPriorKnowledge(rawQuery);
+    const priorKnowledgeAnalysis = {
+    hasPriorKnowledge: false,
+    masteredTopics: [],
+    difficultyLevel: "intermediate",
+    signals: {},
+    confidence: 0
+   };
     const { hasPriorKnowledge, masteredTopics, difficultyLevel, signals } = priorKnowledgeAnalysis;
  
     if (hasPriorKnowledge) {
@@ -1026,7 +1033,13 @@ async function handleStructured(res, ctx) {
  
     // ── Detect prior knowledge and difficulty intent ──────────────────────────
     const rawQuery = query.trim();
-    const priorKnowledgeAnalysis = priorKnowledgeDetector.detectPriorKnowledge(rawQuery);
+    const priorKnowledgeAnalysis = {
+    hasPriorKnowledge: false,
+    masteredTopics: [],
+    difficultyLevel: "intermediate",
+    signals: {},
+    confidence: 0
+   };
     const { hasPriorKnowledge: structHasPriorKnowledge, masteredTopics: structMasteredTopics, difficultyLevel: structDifficultyLevel, signals: structSignals } = priorKnowledgeAnalysis;
  
     if (priorKnowledgeAnalysis.hasPriorKnowledge) {

@@ -311,7 +311,10 @@ async function recordStudentResponse(sessionId, {
         consecutiveCorrect,
         consecutiveWrong,
         hintsGiven,
-        attemptHistory: [...state.attemptHistory, attempt]
+        attemptHistory: [
+    ...(Array.isArray(state.attemptHistory) ? state.attemptHistory : []),
+    attempt
+   ]
     });
 
     if (updated) {

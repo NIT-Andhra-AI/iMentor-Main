@@ -229,7 +229,7 @@ Respond with a JSON object in this exact format (NO deviations):
                     geminiModel: llmConfig.geminiModel
                 }
             });
-            response = fallbackResult.text;
+          const  response = fallbackResult.text;
 
             // Parse JSON response
             const insights = this.parseJSON(response);

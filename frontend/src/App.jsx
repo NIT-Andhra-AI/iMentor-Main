@@ -48,6 +48,7 @@ const CourseExplorerPage   = React.lazy(() => import('./components/course/Course
 const ResearchHistory      = React.lazy(() => import('./components/research/ResearchHistory.jsx'));
 const ResearchDetailView   = React.lazy(() => import('./components/research/ResearchDetailView.jsx'));
 const KnowledgeAssessmentPage = React.lazy(() => import('./components/assessment/KnowledgeAssessmentPage.jsx'));
+const FacultyPortal = React.lazy(() => import('./pages/FacultyPortal.jsx'));
 
 
 
@@ -483,6 +484,7 @@ function App() {
                         <Route path="/gamification/skill-tree/classic" element={<SkillTreeMap />} />
                         <Route path="/gamification/skill-tree/analytics/:treeId" element={<LearningAnalyticsDashboard />} />
                         <Route path="/admin/dashboard" element={<Navigate to="/" replace />} />
+                        <Route path="/faculty/dashboard" element={<FacultyPortal />} />
                         <Route path="/tutor" element={
                             <TutorModePage
                                 orchestratorStatus={orchestratorStatus}

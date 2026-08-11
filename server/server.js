@@ -307,6 +307,7 @@ app.use('/api/quiz', authMiddleware, chatLimiter, quizRoutes); // [Team1] Quiz g
 app.use('/api/question-bank', authMiddleware, require('./routes/questionBank')); // Question Bank CRUD
 app.use('/api/adaptive-profile', authMiddleware, adaptiveProfileRoutes); // [Team8] Student adaptive learning profiles
 app.use('/api/assessment', authMiddleware, require('./routes/knowledgeAssessment')); // Knowledge Assessment Engine
+app.use('/api/faculty', require('./routes/faculty'));
 
 // --- Sentry Error Handler ---
 Sentry.setupExpressErrorHandler(app);

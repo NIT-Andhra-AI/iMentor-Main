@@ -106,6 +106,14 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isFaculty: {
+    type: Boolean,
+    default: false,
+  },
+  department: {
+    type: String,
+    default: "",
+  },
   profile: {
     type: ProfileSchema,
     default: () => ({}),

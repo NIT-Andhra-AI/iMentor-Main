@@ -451,85 +451,10 @@ Available commands:
             });
         }
 
-        // F. DIRECT AGY CLI RUNNER
-        if (/^agy(\s+|$)/i.test(trimmedCmd)) {
-            // Check for unsafe shell characters
-            if (/[;&|><$\(\)`]/.test(trimmedCmd)) {
-                return res.json({ output: 'Error: Unsafe characters detected in agy command.' });
-            }
-            
-            const { exec } = require('child_process');
-            return new Promise((resolve) => {
-                const commandToRun = trimmedCmd.replace(/^agy/i, '/home/sri/.local/bin/agy');
-                log.info('FACULTY', `Executing agy CLI command on host: ${trimmedCmd}`);
-                exec(commandToRun, { cwd: '/home/sri/Downloads/iMentor_march/iMentor-Main' }, (error, stdout, stderr) => {
-                    let runResult = '';
-                    if (stdout) runResult += stdout;
-                    if (stderr) runResult += `\n[Stderr] ${stderr}`;
-                    if (error) runResult += `\n[Exit Code] ${error.code}`;
-                    resolve(res.json({ output: runResult || 'agy command executed successfully with no output.' }));
-                });
-            });
-        }
-
-        // G. AGENT COMPILER / AI PROMPT INTERPRETATION
-        // Prompt is treated as an instruction to update the syllabus
-        const systemPrompt = `
-You are the Faculty Course Architect Agent. Your task is to modify the course syllabus according to the instructor's instructions.
-You must output a valid JSON array of topics matching the existing scheme, representing the updated syllabus structure.
-
-Existing syllabus structure:
-${JSON.stringify(curriculum.topics, null, 2)}
-
-Instructions:
-"${trimmedCmd}"
-
-JSON Schema details:
-An array of objects containing keys:
-- "module": Module name (e.g. "Module 2: Machine Learning")
-- "topic": Topic name
-- "subtopic": Subtopic detail (e.g. "Linear Regression with animated graphs")
-- "difficulty": "easy", "medium", or "hard"
-- "credits": number of credits (e.g. "1" or "2")
-
-Output MUST be valid JSON only. Do not include markdown code block formatting or explanations. Output only the JSON.
-`;
-
-        const llmResult = await getLlmCompletion(
-            systemPrompt,
-            "Analyze and modify the syllabus structure according to the faculty instruction."
-        );
-
-        // Parse JSON output from LLM
-        let updatedTopics;
-        try {
-            const cleanedText = llmResult.replace(/```json/g, '').replace(/```/g, '').trim();
-            updatedTopics = JSON.parse(cleanedText);
-        } catch (parseErr) {
-            log.error('FACULTY', `Failed to parse AI syllabus modification JSON: ${parseErr.message}. Output was: ${llmResult}`);
-            return res.json({
-                output: `Agent Swarm was unable to process changes. LLM Response:\n${llmResult}`
-            });
-        }
-
-        // Save new layout as draft/active curriculum in UploadedCurriculum
-        curriculum.topics = updatedTopics;
-        curriculum.moduleCount = [...new Set(updatedTopics.map(t => t.module))].length;
-        curriculum.topicCount = updatedTopics.length;
-        await curriculum.save();
-
-        let outputText = `=== Agent Swarm: Syllabus Modified (Uncommitted Draft) ===\n`;
-        let currentModule = '';
-        updatedTopics.forEach((t) => {
-            if (t.module !== currentModule) {
-                currentModule = t.module;
-                outputText += `\n📦 ${currentModule}\n`;
-            }
-            outputText += `  ├─ Topic: ${t.topic}\n  │  └─ Subtopic: ${t.subtopic} (${t.difficulty || 'standard'})\n`;
-        });
-        outputText += `\n👉 Type 'commit <message>' to save this draft as a stable version, or 'revert' to restore a previous commit.`;
-
-        return res.json({ output: outputText });
+        // F. CUSTOM DEVELOPER-AGENT CLI PLANNER LOOP (OpenCode / Claude Code style)
+        const { runCliAgent } = require('../services/customCliAgent');
+        const agentOutput = await runCliAgent(trimmedCmd, targetCourseId, userId);
+        return res.json({ output: agentOutput });
 
     } catch (error) {
         log.error('FACULTY', `CLI command execution error: ${error.message}`);

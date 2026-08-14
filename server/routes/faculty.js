@@ -200,7 +200,24 @@ router.post('/materials/fetch-web', authMiddleware, facultyMiddleware, async (re
 // Import CourseVersion model
 const CourseVersion = require('../models/CourseVersion');
 const UploadedCurriculum = require('../models/UploadedCurriculum');
-const { generateContentWithHistory } = require('../services/geminiService');
+const sglangService = require('../services/sglangService');
+const geminiService = require('../services/geminiService');
+
+// Helper to run local LLM (SGLang) first, or fallback to Gemini
+async function getLlmCompletion(systemPrompt, userPrompt) {
+    if (process.env.SGLANG_ENABLED === 'true') {
+        try {
+            log.info('FACULTY', 'Routing CLI generation task to local SGLang service (Qwen)');
+            const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+            return await sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName });
+        } catch (err) {
+            log.warn('FACULTY', `Local SGLang generation failed: ${err.message}. Falling back to Gemini.`);
+        }
+    }
+    // Fallback
+    log.info('FACULTY', 'Routing CLI generation task to external Gemini API');
+    return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.0-flash' });
+}
 
 // ─── 6. Interactive CLI Terminal for Course Management ─────────────────
 // POST /api/faculty/course/cli
@@ -371,22 +388,20 @@ An array of objects containing keys:
 Output MUST be valid JSON only. Do not include markdown code block formatting or explanations. Output only the JSON.
 `;
 
-        const geminiResult = await generateContentWithHistory(
-            [],
-            "Analyze and modify the syllabus structure according to the faculty instruction.",
+        const llmResult = await getLlmCompletion(
             systemPrompt,
-            { model: 'gemini-2.0-flash' }
+            "Analyze and modify the syllabus structure according to the faculty instruction."
         );
 
-        // Parse JSON output from Gemini
+        // Parse JSON output from LLM
         let updatedTopics;
         try {
-            const cleanedText = geminiResult.replace(/```json/g, '').replace(/```/g, '').trim();
+            const cleanedText = llmResult.replace(/```json/g, '').replace(/```/g, '').trim();
             updatedTopics = JSON.parse(cleanedText);
         } catch (parseErr) {
-            log.error('FACULTY', `Failed to parse AI syllabus modification JSON: ${parseErr.message}. Output was: ${geminiResult}`);
+            log.error('FACULTY', `Failed to parse AI syllabus modification JSON: ${parseErr.message}. Output was: ${llmResult}`);
             return res.json({
-                output: `Agent Swarm was unable to process changes. Gemini Response:\n${geminiResult}`
+                output: `Agent Swarm was unable to process changes. LLM Response:\n${llmResult}`
             });
         }
 

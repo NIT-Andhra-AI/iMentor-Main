@@ -43,7 +43,7 @@ function resolveBaseURL() {
   return import.meta.env.VITE_API_BASE_URL || '/api';
 }
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: resolveBaseURL(),
 });
 

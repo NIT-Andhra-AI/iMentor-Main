@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import { apiClient } from '../services/api';
 import { 
   Users, BookOpen, MessageSquare, Network, Brain, 
   Search, Upload, Play, Globe, CheckCircle, AlertCircle, RefreshCw, Send, ChevronRight, Terminal 
@@ -51,7 +51,7 @@ export default function FacultyPortal() {
     setCliHistory(prev => [...prev, { type: 'input', text: currentInput }]);
     setIsCliLoading(true);
     try {
-      const res = await axios.post('/api/faculty/course/cli', { command: currentInput });
+      const res = await apiClient.post('/faculty/course/cli', { command: currentInput });
       setCliHistory(prev => [...prev, { type: 'output', text: res.data.output }]);
     } catch (err) {
       setCliHistory(prev => [...prev, { type: 'output', text: `Error: ${err.response?.data?.output || err.message}` }]);
@@ -71,7 +71,7 @@ export default function FacultyPortal() {
     ],
     edges: [
       { from: 1, to: 2, label: 'Curriculum Schema' },
-      { from: 2, to: 3, label: 'Lecture Milestones' },
+      { from: 2, to: 3, label: 'Lesson Milestones' },
       { from: 3, to: 4, label: 'Generated Material' }
     ]
   });
@@ -83,7 +83,7 @@ export default function FacultyPortal() {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('/api/faculty/students');
+      const response = await apiClient.get('/faculty/students');
       setStudents(response.data);
     } catch (err) {
       console.error("Failed to fetch students:", err);
@@ -95,9 +95,9 @@ export default function FacultyPortal() {
     setSelectedChat(null);
     setChatDetails(null);
     try {
-      const progressRes = await axios.get(`/api/faculty/students/${student._id}/progress`);
+      const progressRes = await apiClient.get(`/faculty/students/${student._id}/progress`);
       setStudentProgress(progressRes.data);
-      const chatsRes = await axios.get(`/api/faculty/students/${student._id}/chats`);
+      const chatsRes = await apiClient.get(`/faculty/students/${student._id}/chats`);
       setStudentChats(chatsRes.data);
     } catch (err) {
       console.error("Failed to load student metrics:", err);
@@ -107,7 +107,7 @@ export default function FacultyPortal() {
   const handleChatSelect = async (chat) => {
     setSelectedChat(chat);
     try {
-      const response = await axios.get(`/api/faculty/students/${selectedStudent._id}/chats/${chat.sessionId}`);
+      const response = await apiClient.get(`/faculty/students/${selectedStudent._id}/chats/${chat.sessionId}`);
       setChatDetails(response.data);
     } catch (err) {
       console.error("Failed to load chat details:", err);
@@ -120,7 +120,7 @@ export default function FacultyPortal() {
     if (!webUrl) return;
     setMaterialsStatus({ type: 'info', text: 'Scraping and embedding reference material in background...' });
     try {
-      await axios.post('/api/faculty/materials/fetch-web', { url: webUrl, title: webTitle });
+      await apiClient.post('/faculty/materials/fetch-web', { url: webUrl, title: webTitle });
       setMaterialsStatus({ type: 'success', text: 'Reference URL successfully queued for agent indexing!' });
       setWebUrl('');
       setWebTitle('');
@@ -170,7 +170,7 @@ export default function FacultyPortal() {
     }, 700);
 
     try {
-      const res = await axios.post('/api/faculty/course/generate', {
+      const res = await apiClient.post('/faculty/course/generate', {
         courseTitle: courseTopic,
         courseCode,
         pastedSyllabus

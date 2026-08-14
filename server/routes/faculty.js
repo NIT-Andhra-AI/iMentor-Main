@@ -451,7 +451,28 @@ Available commands:
             });
         }
 
-        // F. AGENT COMPILER / AI PROMPT INTERPRETATION
+        // F. DIRECT AGY CLI RUNNER
+        if (/^agy(\s+|$)/i.test(trimmedCmd)) {
+            // Check for unsafe shell characters
+            if (/[;&|><$\(\)`]/.test(trimmedCmd)) {
+                return res.json({ output: 'Error: Unsafe characters detected in agy command.' });
+            }
+            
+            const { exec } = require('child_process');
+            return new Promise((resolve) => {
+                const commandToRun = trimmedCmd.replace(/^agy/i, '/home/sri/.local/bin/agy');
+                log.info('FACULTY', `Executing agy CLI command on host: ${trimmedCmd}`);
+                exec(commandToRun, { cwd: '/home/sri/Downloads/iMentor_march/iMentor-Main' }, (error, stdout, stderr) => {
+                    let runResult = '';
+                    if (stdout) runResult += stdout;
+                    if (stderr) runResult += `\n[Stderr] ${stderr}`;
+                    if (error) runResult += `\n[Exit Code] ${error.code}`;
+                    resolve(res.json({ output: runResult || 'agy command executed successfully with no output.' }));
+                });
+            });
+        }
+
+        // G. AGENT COMPILER / AI PROMPT INTERPRETATION
         // Prompt is treated as an instruction to update the syllabus
         const systemPrompt = `
 You are the Faculty Course Architect Agent. Your task is to modify the course syllabus according to the instructor's instructions.

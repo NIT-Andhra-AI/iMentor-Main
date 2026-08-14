@@ -197,10 +197,223 @@ router.post('/materials/fetch-web', authMiddleware, facultyMiddleware, async (re
             }
         });
 
+// Import CourseVersion model
+const CourseVersion = require('../models/CourseVersion');
+const UploadedCurriculum = require('../models/UploadedCurriculum');
+const { generateContentWithHistory } = require('../services/geminiService');
+
+// ─── 6. Interactive CLI Terminal for Course Management ─────────────────
+// POST /api/faculty/course/cli
+router.post('/course/cli', authMiddleware, facultyMiddleware, async (req, res) => {
+    const { command, courseId } = req.body;
+    const userId = req.user._id;
+
+    if (!command || command.trim() === '') {
+        return res.status(400).json({ output: 'Error: Empty command received.' });
+    }
+
+    const trimmedCmd = command.trim();
+    const targetCourseId = courseId || 'machine_learning'; // Fallback course slug
+
+    try {
+        // Fetch or initialize active curriculum record in UploadedCurriculum
+        let curriculum = await UploadedCurriculum.findOne({ 
+            $or: [
+                { _id: targetCourseId },
+                { courseTitle: { $regex: new RegExp(targetCourseId.replace('_', ' '), 'i') } }
+            ]
+        });
+
+        // Fallback: search for any available curriculum if not found
+        if (!curriculum) {
+            curriculum = await UploadedCurriculum.findOne();
+        }
+
+        if (!curriculum) {
+            // Seed a default curriculum if database is completely empty
+            curriculum = new UploadedCurriculum({
+                userId,
+                filename: `${targetCourseId}_syllabus.csv`,
+                hash: `seeded_${targetCourseId}`,
+                courseTitle: targetCourseId.replace('_', ' ').toUpperCase(),
+                topics: [
+                    { module: 'Module 1: Introduction', topic: 'ML Basics', subtopic: 'Supervised vs Unsupervised', difficulty: 'easy', credits: '1' },
+                    { module: 'Module 1: Introduction', topic: 'Performance Metrics', subtopic: 'Precision and Recall', difficulty: 'medium', credits: '1' }
+                ],
+                moduleCount: 1,
+                topicCount: 2,
+                status: 'ready'
+            });
+            await curriculum.save();
+        }
+
+        // --- COMMAND PARSING ---
+        // A. HELP COMMAND
+        if (/^(help|\?|\/help)$/i.test(trimmedCmd)) {
+            const helpText = `
+=== iMentor Faculty CLI (Interactive Swarm Host) ===
+Available commands:
+  help / ?               - Display this help message.
+  list                   - List current modules, topics, and subtopics.
+  history                - Show git-style commit version history.
+  commit <message>       - Save changes as a new stable version.
+  revert <version>       - Rollback to a specific version number.
+  
+  [AI Swarm Prompts]
+  Simply type any instruction to modify the syllabus:
+  e.g., "Add Module 2: Deep Learning basics"
+  e.g., "Modify topic ML Basics to include SVG animations"
+`;
+            return res.json({ output: helpText });
+        }
+
+        // B. LIST CURRICULUM
+        if (/^(list|\/list)$/i.test(trimmedCmd)) {
+            let outputText = `=== Course: ${curriculum.courseTitle} ===\n`;
+            if (!curriculum.topics || curriculum.topics.length === 0) {
+                outputText += `Syllabus is empty.\n`;
+            } else {
+                let currentModule = '';
+                curriculum.topics.forEach((t) => {
+                    if (t.module !== currentModule) {
+                        currentModule = t.module;
+                        outputText += `\n📦 ${currentModule}\n`;
+                    }
+                    outputText += `  ├─ Topic: ${t.topic}\n  │  └─ Subtopic: ${t.subtopic} (${t.difficulty || 'standard'})\n`;
+                });
+            }
+            return res.json({ output: outputText });
+        }
+
+        // C. HISTORY (COMMITS)
+        if (/^(history|\/history)$/i.test(trimmedCmd)) {
+            const versions = await CourseVersion.find({ courseId: targetCourseId })
+                .sort({ versionNumber: -1 })
+                .lean();
+
+            if (versions.length === 0) {
+                return res.json({ output: 'No commit history found for this course.' });
+            }
+
+            let outputText = `=== Version Commit History: ${curriculum.courseTitle} ===\n`;
+            versions.forEach((v) => {
+                outputText += `v${v.versionNumber} | Commit Msg: "${v.commitMessage}" | By: ${v.createdAt.toLocaleDateString()} ${v.createdAt.toLocaleTimeString()}\n`;
+            });
+            return res.json({ output: outputText });
+        }
+
+        // D. COMMIT VERSION
+        const commitMatch = trimmedCmd.match(/^(commit|\/commit)\s+(.+)$/i);
+        if (commitMatch) {
+            const message = commitMatch[2].trim();
+            
+            // Get last version number
+            const lastVer = await CourseVersion.findOne({ courseId: targetCourseId })
+                .sort({ versionNumber: -1 })
+                .lean();
+            const nextVerNum = lastVer ? lastVer.versionNumber + 1 : 1;
+
+            const newVer = new CourseVersion({
+                courseId: targetCourseId,
+                versionNumber: nextVerNum,
+                topics: curriculum.topics,
+                commitMessage: message,
+                createdBy: userId
+            });
+            await newVer.save();
+
+            return res.json({ 
+                output: `Success: Committed v${nextVerNum} ("${message}") containing ${curriculum.topics.length} items.`
+            });
+        }
+
+        // E. REVERT TO VERSION
+        const revertMatch = trimmedCmd.match(/^(revert|\/revert)\s+(\d+)$/i);
+        if (revertMatch) {
+            const verNum = parseInt(revertMatch[2], 10);
+            const targetVer = await CourseVersion.findOne({ courseId: targetCourseId, versionNumber: verNum }).lean();
+
+            if (!targetVer) {
+                return res.status(404).json({ output: `Error: Version ${verNum} not found in commit history.` });
+            }
+
+            // Apply revert to the active curriculum
+            curriculum.topics = targetVer.topics;
+            curriculum.moduleCount = [...new Set(targetVer.topics.map(t => t.module))].length;
+            curriculum.topicCount = targetVer.topics.length;
+            await curriculum.save();
+
+            return res.json({
+                output: `Success: Reverted ${curriculum.courseTitle} to v${verNum} ("${targetVer.commitMessage}").`
+            });
+        }
+
+        // F. AGENT COMPILER / AI PROMPT INTERPRETATION
+        // Prompt is treated as an instruction to update the syllabus
+        const systemPrompt = `
+You are the Faculty Course Architect Agent. Your task is to modify the course syllabus according to the instructor's instructions.
+You must output a valid JSON array of topics matching the existing scheme, representing the updated syllabus structure.
+
+Existing syllabus structure:
+${JSON.stringify(curriculum.topics, null, 2)}
+
+Instructions:
+"${trimmedCmd}"
+
+JSON Schema details:
+An array of objects containing keys:
+- "module": Module name (e.g. "Module 2: Machine Learning")
+- "topic": Topic name
+- "subtopic": Subtopic detail (e.g. "Linear Regression with animated graphs")
+- "difficulty": "easy", "medium", or "hard"
+- "credits": number of credits (e.g. "1" or "2")
+
+Output MUST be valid JSON only. Do not include markdown code block formatting or explanations. Output only the JSON.
+`;
+
+        const geminiResult = await generateContentWithHistory(
+            [],
+            "Analyze and modify the syllabus structure according to the faculty instruction.",
+            systemPrompt,
+            { model: 'gemini-2.0-flash' }
+        );
+
+        // Parse JSON output from Gemini
+        let updatedTopics;
+        try {
+            const cleanedText = geminiResult.replace(/```json/g, '').replace(/```/g, '').trim();
+            updatedTopics = JSON.parse(cleanedText);
+        } catch (parseErr) {
+            log.error('FACULTY', `Failed to parse AI syllabus modification JSON: ${parseErr.message}. Output was: ${geminiResult}`);
+            return res.json({
+                output: `Agent Swarm was unable to process changes. Gemini Response:\n${geminiResult}`
+            });
+        }
+
+        // Save new layout as draft/active curriculum in UploadedCurriculum
+        curriculum.topics = updatedTopics;
+        curriculum.moduleCount = [...new Set(updatedTopics.map(t => t.module))].length;
+        curriculum.topicCount = updatedTopics.length;
+        await curriculum.save();
+
+        let outputText = `=== Agent Swarm: Syllabus Modified (Uncommitted Draft) ===\n`;
+        let currentModule = '';
+        updatedTopics.forEach((t) => {
+            if (t.module !== currentModule) {
+                currentModule = t.module;
+                outputText += `\n📦 ${currentModule}\n`;
+            }
+            outputText += `  ├─ Topic: ${t.topic}\n  │  └─ Subtopic: ${t.subtopic} (${t.difficulty || 'standard'})\n`;
+        });
+        outputText += `\n👉 Type 'commit <message>' to save this draft as a stable version, or 'revert' to restore a previous commit.`;
+
+        return res.json({ output: outputText });
+
     } catch (error) {
-        log.error('FACULTY', `Scrape reference material error: ${error.message}`);
-        res.status(500).json({ message: 'Failed to initiate reference material extraction.' });
+        log.error('FACULTY', `CLI command execution error: ${error.message}`);
+        res.status(500).json({ output: `Internal Error processing command: ${error.message}` });
     }
 });
 
 module.exports = router;
+

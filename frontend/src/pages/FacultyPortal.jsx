@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { 
   Users, BookOpen, MessageSquare, Network, Brain, 
-  Search, Upload, Play, Globe, CheckCircle, AlertCircle, RefreshCw, Send, ChevronRight 
+  Search, Upload, Play, Globe, CheckCircle, AlertCircle, RefreshCw, Send, ChevronRight, Terminal 
 } from 'lucide-react';
 import { Network as VisNetwork } from 'vis-network/standalone';
 
@@ -20,11 +20,43 @@ export default function FacultyPortal() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationLogs, setGenerationLogs] = useState([]);
   
+  // Interactive CLI state
+  const [cliInput, setCliInput] = useState('');
+  const [cliHistory, setCliHistory] = useState([
+    { type: 'output', text: '=== iMentor Faculty Swarm Console v1.0.0 ===\nType "help" or "?" to list available curriculum version control & AI commands.\n' }
+  ]);
+  const [isCliLoading, setIsCliLoading] = useState(false);
+  const cliScrollRef = useRef(null);
+
   // Reference Materials
   const [webUrl, setWebUrl] = useState('');
   const [webTitle, setWebTitle] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
   const [materialsStatus, setMaterialsStatus] = useState({ type: '', text: '' });
+
+  // Scroll to bottom of terminal when history updates
+  useEffect(() => {
+    if (cliScrollRef.current) {
+      cliScrollRef.current.scrollTop = cliScrollRef.current.scrollHeight;
+    }
+  }, [cliHistory]);
+
+  const handleCliSubmit = async (e) => {
+    e.preventDefault();
+    if (!cliInput.trim()) return;
+    const currentInput = cliInput;
+    setCliInput('');
+    setCliHistory(prev => [...prev, { type: 'input', text: currentInput }]);
+    setIsCliLoading(true);
+    try {
+      const res = await axios.post('/api/faculty/course/cli', { command: currentInput });
+      setCliHistory(prev => [...prev, { type: 'output', text: res.data.output }]);
+    } catch (err) {
+      setCliHistory(prev => [...prev, { type: 'output', text: `Error: ${err.response?.data?.output || err.message}` }]);
+    } finally {
+      setIsCliLoading(false);
+    }
+  };
 
   // Memory Palace Vis-network reference
   const visJsRef = useRef(null);
@@ -241,6 +273,55 @@ export default function FacultyPortal() {
                     <span>Spin Swarm</span>
                   </button>
                 </div>
+              </div>
+
+              {/* Interactive Swarm CLI Console */}
+              <div className="p-6 bg-[#090D16] border border-slate-850 rounded-2xl flex flex-col gap-4 shadow-xl">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div className="flex items-center gap-2">
+                    <Terminal className="w-5 h-5 text-emerald-400" />
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300">iMentor Course Swarm Console</h3>
+                  </div>
+                  <span className="text-[10px] text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-md border border-slate-800 font-mono">Connected to SGLang / AutoGen Swarm</span>
+                </div>
+                
+                {/* CLI Output Log Window */}
+                <div 
+                  ref={cliScrollRef}
+                  className="bg-black/90 p-4 rounded-xl min-h-[260px] max-h-[380px] overflow-y-auto font-mono text-xs text-slate-350 border border-slate-850/60 space-y-2 leading-relaxed selection:bg-emerald-500/20"
+                >
+                  {cliHistory.map((item, idx) => (
+                    <div key={idx} className={item.type === 'input' ? 'text-emerald-400 font-bold' : 'text-slate-300 whitespace-pre-wrap'}>
+                      {item.type === 'input' ? `> ${item.text}` : item.text}
+                    </div>
+                  ))}
+                  {isCliLoading && (
+                    <div className="flex items-center gap-2 text-slate-500 font-sans text-xs animate-pulse">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+                      <span>Swarm agents working on syllabus modifications...</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Input form */}
+                <form onSubmit={handleCliSubmit} className="flex gap-2">
+                  <span className="text-emerald-400 font-bold font-mono self-center text-sm ml-1 select-none">&gt;</span>
+                  <input 
+                    type="text"
+                    placeholder="Ask agents to modify topic, add modules, commit, or revert..."
+                    value={cliInput}
+                    onChange={(e) => setCliInput(e.target.value)}
+                    className="flex-1 bg-black/60 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono text-slate-200 focus:outline-none focus:border-emerald-500 placeholder:text-slate-700"
+                    disabled={isCliLoading}
+                  />
+                  <button 
+                    type="submit"
+                    disabled={isCliLoading || !cliInput.trim()}
+                    className="px-4 py-2.5 bg-slate-850 hover:bg-slate-800 rounded-xl font-semibold flex items-center gap-2 text-xs transition duration-200 border border-slate-800 hover:border-slate-700 disabled:opacity-50"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </form>
               </div>
 
               {/* Agent swarm Logs */}

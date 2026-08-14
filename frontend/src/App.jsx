@@ -387,6 +387,14 @@ function App() {
                 setShowAuthModal(false);
                 document.body.classList.remove('landing-page-body');
 
+                // Faculty redirection with Student View bypass
+                if (regularUser.isFaculty && sessionStorage.getItem('viewAsStudent') !== 'true') {
+                    if (!location.pathname.startsWith('/faculty')) {
+                        navigate('/faculty/dashboard', { replace: true });
+                        return;
+                    }
+                }
+
                 // Don't redirect an active admin session away from /admin even if
                 // verifyTokenAndLoadUser also resolved them as a regular user.
                 if (location.pathname.startsWith('/admin') && !isAdminSessionActive) navigate('/', { replace: true });
@@ -410,6 +418,7 @@ function App() {
 
     const handleAuthSuccess = (authData) => {
         setShowAuthModal(false);
+        sessionStorage.removeItem('viewAsStudent'); // Clear student view override on new login
         if (authData?.isAdminLogin) {
             setIsAdminSessionActive(true);
         } else if (authData?.token) {
@@ -419,6 +428,8 @@ function App() {
                     id: authData._id,
                     email: authData.email,
                     username: authData.username,
+                    isFaculty: !!authData.isFaculty,
+                    department: authData.department || '',
                     hasCompletedOnboarding: authData.hasCompletedOnboarding
                 };
                 setRegularUserInAuthContext(userForContext);

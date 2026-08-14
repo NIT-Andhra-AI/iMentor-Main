@@ -215,6 +215,18 @@ export default function FacultyPortal() {
             <p className="text-xs text-slate-400">Department Administration & Multi-Agent Curriculum Suite</p>
           </div>
         </div>
+        
+        {/* Switch to Student Mode Toggle */}
+        <button 
+          onClick={() => {
+            sessionStorage.setItem('viewAsStudent', 'true');
+            window.location.href = '/';
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs font-semibold rounded-xl border border-slate-800 hover:border-slate-700 transition duration-200"
+        >
+          <Users className="w-4 h-4 text-emerald-400" />
+          <span>Switch to Student View</span>
+        </button>
       </header>
 
       {/* Main Container */}

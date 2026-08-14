@@ -219,6 +219,92 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
     return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.0-flash' });
 }
 
+// POST /api/faculty/course/generate
+router.post('/course/generate', authMiddleware, facultyMiddleware, async (req, res) => {
+    const { courseTitle, courseCode, pastedSyllabus } = req.body;
+    const userId = req.user._id;
+
+    if (!courseTitle || !courseCode) {
+        return res.status(400).json({ success: false, message: 'Course Title and Course Code are required.' });
+    }
+
+    try {
+        let systemPrompt, promptUser;
+        if (pastedSyllabus && pastedSyllabus.trim() !== '') {
+            systemPrompt = `
+You are the Faculty Course Planner Swarm. Your task is to take a raw pasted syllabus outline and structure it into a clean, complete course curriculum.
+You must output a valid JSON array of objects representing modules, topics, and subtopics.
+
+Pasted Syllabus:
+"""
+${pastedSyllabus}
+"""
+`;
+            promptUser = `Parse and structure this pasted syllabus for the course "${courseTitle}" (${courseCode}).`;
+        } else {
+            systemPrompt = `
+You are the Faculty Course Planner Swarm. Your task is to generate a comprehensive, modern college-level syllabus for the course topic from scratch.
+You must output a valid JSON array of objects representing modules, topics, and subtopics.
+`;
+            promptUser = `Generate a high-quality 4-module syllabus layout for the course "${courseTitle}" (${courseCode}).`;
+        }
+
+        systemPrompt += `
+JSON Schema details:
+An array of objects containing keys:
+- "module": Module name (e.g. "Module 1: Foundations of Artificial Intelligence")
+- "topic": Specific lecture topic
+- "subtopic": Subtopic details (include hints about animated graphs or visual aids if applicable)
+- "difficulty": "easy", "medium", or "hard"
+- "credits": number of credits (e.g. "1")
+
+Output MUST be valid JSON only. Do not include markdown code block formatting or explanations. Output only the JSON.
+`;
+
+        const responseText = await getLlmCompletion(systemPrompt, promptUser);
+
+        let parsedSyllabus;
+        try {
+            const cleaned = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+            parsedSyllabus = JSON.parse(cleaned);
+        } catch (parseErr) {
+            log.error('FACULTY', `Syllabus generation JSON parsing failed: ${parseErr.message}`);
+            return res.status(500).json({ success: false, message: 'Failed to generate a clean structured JSON syllabus. Please try again.', raw: responseText });
+        }
+
+        // Save/overwrite the curriculum record in UploadedCurriculum
+        const cleanCourseCode = courseCode.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+        let curriculum = await UploadedCurriculum.findOne({ hash: `gen_${cleanCourseCode}` });
+
+        if (!curriculum) {
+            curriculum = new UploadedCurriculum({
+                userId,
+                filename: `${cleanCourseCode}_syllabus.csv`,
+                hash: `gen_${cleanCourseCode}`,
+                courseTitle: `${courseTitle} (${courseCode})`,
+                status: 'ready'
+            });
+        } else {
+            curriculum.courseTitle = `${courseTitle} (${courseCode})`;
+        }
+
+        curriculum.topics = parsedSyllabus;
+        curriculum.moduleCount = [...new Set(parsedSyllabus.map(t => t.module))].length;
+        curriculum.topicCount = parsedSyllabus.length;
+        await curriculum.save();
+
+        res.json({
+            success: true,
+            message: `Syllabus successfully generated and saved for ${courseTitle} (${courseCode})!`,
+            topics: parsedSyllabus
+        });
+
+    } catch (error) {
+        log.error('FACULTY', `Syllabus generation API error: ${error.message}`);
+        res.status(500).json({ success: false, message: `Error generating course syllabus: ${error.message}` });
+    }
+});
+
 // ─── 6. Interactive CLI Terminal for Course Management ─────────────────
 // POST /api/faculty/course/cli
 router.post('/course/cli', authMiddleware, facultyMiddleware, async (req, res) => {

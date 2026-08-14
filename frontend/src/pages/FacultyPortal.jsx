@@ -17,6 +17,8 @@ export default function FacultyPortal() {
 
   // Course Gen state
   const [courseTopic, setCourseTopic] = useState('');
+  const [courseCode, setCourseCode] = useState('');
+  const [pastedSyllabus, setPastedSyllabus] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationLogs, setGenerationLogs] = useState([]);
   
@@ -128,12 +130,16 @@ export default function FacultyPortal() {
   };
 
   // Trigger multi-agent course syllabus/material gen
-  const handleStartGeneration = () => {
-    if (!courseTopic) return;
+  const handleStartGeneration = async () => {
+    if (!courseTopic || !courseCode) {
+      setMaterialsStatus({ type: 'error', text: 'Course Title and Course Code are required.' });
+      return;
+    }
+    
     setIsGenerating(true);
+    setMaterialsStatus({ type: '', text: '' });
     setGenerationLogs(["[System] Spinning up AutoGen & CrewAI instances..."]);
     
-    // Simulate real-time logs from agent communication paths
     const simulatedSteps = [
       "[Syllabus Architect] Analyzing Engineering Subject constraints...",
       "[Syllabus Architect] Fetching standard topics from Qdrant/Web...",
@@ -141,29 +147,52 @@ export default function FacultyPortal() {
       "[Lesson Planner] Allocating milestones for 12-week schedule...",
       "[Content Developer] Writing notes & generating tutoring prompts...",
       "[Multimodal Director] Formatting visual diagrams and audio-video scripts...",
-      "[System] Course generation completed successfully!"
+      "[System] Contacting LLM Swarm Engine for final synthesis..."
     ];
 
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < simulatedSteps.length) {
-        setGenerationLogs(prev => [...prev, simulatedSteps[i]]);
-        
+    let logIdx = 0;
+    const logInterval = setInterval(() => {
+      if (logIdx < simulatedSteps.length) {
+        setGenerationLogs(prev => [...prev, simulatedSteps[logIdx]]);
         // Dynamically add memory nodes to the Palace graph
-        if (i % 2 === 0) {
-          const newId = Date.now() + i;
+        if (logIdx % 2 === 0) {
+          const newId = Date.now() + logIdx;
           setGraphData(prev => {
-            const nextNodes = [...prev.nodes, { id: newId, label: `Memory: ${simulatedSteps[i].substring(0, 20)}...`, group: 'memory', color: '#8B5CF6' }];
-            const nextEdges = [...prev.edges, { from: (i % 4) + 1, to: newId }];
+            const nextNodes = [...prev.nodes, { id: newId, label: `Memory: Node_${logIdx}`, group: 'memory', color: '#8B5CF6' }];
+            const nextEdges = [...prev.edges, { from: (logIdx % 4) + 1, to: newId }];
             return { nodes: nextNodes, edges: nextEdges };
           });
         }
-        i++;
+        logIdx++;
       } else {
-        clearInterval(interval);
-        setIsGenerating(false);
+        clearInterval(logInterval);
       }
-    }, 2000);
+    }, 700);
+
+    try {
+      const res = await axios.post('/api/faculty/course/generate', {
+        courseTitle: courseTopic,
+        courseCode,
+        pastedSyllabus
+      });
+
+      // Wait briefly for logs to finish printing
+      setTimeout(() => {
+        setGenerationLogs(prev => [
+          ...prev, 
+          `[System] Course generated successfully! Created ${res.data.topics.length} syllabus topics in MongoDB.`,
+          `[System] Active course identifier: ${courseCode.toUpperCase()}`
+        ]);
+        setMaterialsStatus({ type: 'success', text: res.data.message });
+        setIsGenerating(false);
+      }, 5000);
+
+    } catch (err) {
+      clearInterval(logInterval);
+      setGenerationLogs(prev => [...prev, `[Error] Swarm execution failed: ${err.response?.data?.message || err.message}`]);
+      setMaterialsStatus({ type: 'error', text: err.response?.data?.message || 'Course generation failed.' });
+      setIsGenerating(false);
+    }
   };
 
   // Render 3D-like Vis Network Graph
@@ -263,23 +292,54 @@ export default function FacultyPortal() {
           {/* TAB 1: COURSE GEN ARCHITECT */}
           {activeTab === 'dashboard' && (
             <div className="max-w-4xl mx-auto space-y-8">
-              <div className="p-6 bg-slate-900/60 border border-slate-850 rounded-2xl backdrop-blur-md">
-                <h3 className="text-lg font-bold mb-2">Generate Course Syllabus & Schedule</h3>
-                <p className="text-sm text-slate-400 mb-6">Enter a topic (e.g. Entrepreneurship or Edge AI) and let the multi-agent swarm generate syllabus milestones and reference files.</p>
+              <div className="p-6 bg-slate-900/60 border border-slate-850 rounded-2xl backdrop-blur-md space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold mb-1">Generate Course Syllabus & Schedule</h3>
+                  <p className="text-xs text-slate-400">Enter a title, code, and optionally paste your syllabus guidelines to initialize the multi-agent planning swarm.</p>
+                </div>
                 
-                <div className="flex gap-4">
-                  <input 
-                    type="text" 
-                    placeholder="Enter engineering or entrepreneurship subject topic..." 
-                    value={courseTopic}
-                    onChange={(e) => setCourseTopic(e.target.value)}
-                    className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 text-slate-100"
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Course Title</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g., Introduction to Neural Networks or Entrepreneurship Basics" 
+                      value={courseTopic}
+                      onChange={(e) => setCourseTopic(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 text-slate-100 text-sm"
+                      disabled={isGenerating}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Course Code</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g., CS101 or ENTR302" 
+                      value={courseCode}
+                      onChange={(e) => setCourseCode(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 text-slate-100 text-sm font-mono"
+                      disabled={isGenerating}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Paste Syllabus Outline (Optional)</label>
+                  <textarea 
+                    placeholder="Optionally paste course chapters, syllabus text, or reference outlines here..."
+                    rows={4}
+                    value={pastedSyllabus}
+                    onChange={(e) => setPastedSyllabus(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 focus:outline-none focus:border-emerald-500 text-slate-100 text-sm font-mono leading-relaxed"
                     disabled={isGenerating}
                   />
+                </div>
+
+                <div className="flex justify-end pt-2">
                   <button 
                     onClick={handleStartGeneration}
-                    disabled={isGenerating || !courseTopic}
-                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-xl font-semibold flex items-center gap-2 disabled:opacity-50 shadow-md shadow-emerald-500/10"
+                    disabled={isGenerating || !courseTopic || !courseCode}
+                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 rounded-xl font-semibold flex items-center gap-2 disabled:opacity-50 shadow-md shadow-emerald-500/10 transition duration-200"
                   >
                     <Play className="w-5 h-5" />
                     <span>Spin Swarm</span>

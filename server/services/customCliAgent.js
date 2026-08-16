@@ -1,4 +1,5 @@
 // server/services/customCliAgent.js
+const mongoose = require('mongoose');
 const { exec } = require('child_process');
 const sglangService = require('./sglangService');
 const geminiService = require('./geminiService');
@@ -11,47 +12,54 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
     if (process.env.SGLANG_ENABLED === 'true') {
         try {
             const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
-            return await sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName });
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('SGLang request timed out after 20s')), 20000)
+            );
+            const apiPromise = sglangService.generateCompletion([
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt }
+            ], { model: modelName });
+            const response = await Promise.race([apiPromise, timeoutPromise]);
+            return response.choices[0].message.content;
         } catch (err) {
-            log.warn('CUSTOM_CLI', `SGLang failed: ${err.message}. Falling back to Gemini.`);
+            log.warn('CUSTOM_CLI', `Local SGLang generation failed: ${err.message}. Falling back to Gemini.`);
         }
     }
-    return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.0-flash' });
+    log.info('CUSTOM_CLI', 'Routing task to external Gemini API');
+    return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.5-flash' });
 }
 
 // Sandbox command execution
-function runCommandOnHost(cmd) {
+function runSandboxCommand(cmd) {
     return new Promise((resolve) => {
-        if (/[;&|><$\(\)`]/.test(cmd) && !cmd.startsWith('agy')) {
-            return resolve({ error: 'Blocked: Unsafe shell characters.' });
-        }
-        // Map direct agy calls to absolute path
-        const commandToRun = cmd.startsWith('agy') ? cmd.replace(/^agy/i, '/home/sri/.local/bin/agy') : cmd;
-        exec(commandToRun, { cwd: '/home/sri/Downloads/iMentor_march/iMentor-Main' }, (error, stdout, stderr) => {
-            resolve({
-                stdout: stdout || '',
-                stderr: stderr || '',
-                code: error ? error.code : 0
-            });
+        exec(cmd, { timeout: 15000 }, (error, stdout, stderr) => {
+            if (error) {
+                resolve({ success: false, output: stderr || error.message });
+            } else {
+                resolve({ success: true, output: stdout || 'Command executed successfully.' });
+            }
         });
     });
 }
 
 /**
- * Custom CLI Agent Loop mimicking Claude Code / OpenCode.
- * Takes user instruction and runs a thought-action-result loop.
+ * Main Autonomous Developer-Agent Loop for Course Modification
  */
 async function runCliAgent(instruction, courseId, userId) {
     let outputLogs = [];
     outputLogs.push(`🚀 Spawning custom Developer-Agent for course workspace [ID: ${courseId}]`);
     outputLogs.push(`🤖 Initializing Local LLM (Qwen2.5-7B-Instruct) engine...`);
 
-    let curriculum = await UploadedCurriculum.findOne({ 
-        $or: [
-            { _id: courseId },
-            { courseTitle: { $regex: new RegExp(courseId.replace('_', ' '), 'i') } }
-        ]
-    });
+    const targetCourseId = courseId || 'machine_learning';
+    const orConditions = [
+        { hash: `gen_${targetCourseId.toUpperCase().replace(/[^A-Z0-9]/g, '_')}` },
+        { courseTitle: { $regex: new RegExp(targetCourseId.replace('_', ' '), 'i') } }
+    ];
+    if (mongoose.Types.ObjectId.isValid(targetCourseId)) {
+        orConditions.unshift({ _id: targetCourseId });
+    }
+
+    let curriculum = await UploadedCurriculum.findOne({ $or: orConditions });
 
     if (!curriculum) {
         curriculum = await UploadedCurriculum.findOne() || new UploadedCurriculum({

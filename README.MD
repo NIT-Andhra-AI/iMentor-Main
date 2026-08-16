@@ -1,150 +1,316 @@
-# Team - 2 Changes
+# iMentor Platform — AI-Powered Adaptive Learning & Curriculum Management System
 
-This branch incorporates the **Token Optimization Framework** alongside existing EE Syllabi Pipeline and startup configuration updates.
-
----
-
-## 1. Token Optimization Framework
-
-We have implemented an end-to-end token optimization pipeline designed to minimize LLM token consumption, reduce latency, and lower API usage costs across both standard text/history prompts and real-time streaming operations.
-
-### Key Optimization Components
-* **Input Minification (`server/utils/tokenOptimizer.js`):**
-  * Automatically removes HTML/markdown comments and collapses unnecessary whitespace/newlines before payloads are sent to LLMs.
-  * Respects code blocks (delimited by ` ``` `), keeping indentation and block content completely intact.
-* **Shorthand Abbreviation System:**
-  * Injects a token-saving directive into system prompts instructing the models to respond using standard, predefined abbreviations (e.g. `w/` for `with`, `db` for `database`, `ctx` for `context`, etc.).
-* **Response Expansion (Standard & Streaming):**
-  * Intercepts outbound model completions and restores all abbreviated terms back to their full, human-readable forms.
-  * Incorporates a stateful `StreamingTokenExpander` in `server/services/llmStreamingService.js` that tracks partial chunk buffers to perform seamless word-boundary-aware expansion during streaming (so words are not fragmented).
-* **Multi-Provider Support:**
-  * Automatically optimizes inputs and expands outputs for **Gemini** (`geminiService.js`), **Groq** (`groqService.js`), and **SGLang** (`sglangService.js`).
+> **Repository:** [NIT-Andhra-AI/imentor](https://github.com/NIT-Andhra-AI/imentor)  
+> **Maintained by:** NIT Andhra Pradesh AI Research (`spkkarri`)
 
 ---
 
-## 2. Model Optimization Framework
+## 1. Overview & Architecture
 
-We have implemented a comprehensive Model Optimization Framework that improves model routing decisions, tunes parameters dynamically on the fly, manages context windows safely, and ensures fault-tolerant provider recovery.
+**iMentor** is an autonomous AI-driven adaptive learning, Socratic tutoring, and course curriculum management platform designed for higher education. It features real-time interactive Socratic dialogue, automated skill tree generation, multimodal visual lesson rendering, knowledge graph integration, and a dedicated Faculty Portal with auto-generated course syllabi and developer-agent swarm tools.
 
-### Key Optimization Components
+### Core Stack
+* **Frontend:** React 18, Vite, Tailwind CSS, Lucide Icons, Mermaid.js
+* **Backend:** Node.js (Express), Socket.io (WebSocket streaming), Nodemon
+* **RAG & Vector Engine:** Python 3.10+, Qdrant (Vector Store), Neo4j (Knowledge Graph), Elasticsearch
+* **AI & LLM Services:** SGLang (Local LLM - `Qwen/Qwen2.5-7B-Instruct-AWQ`), Google Gemini 2.5 Flash / Groq (Provider Fallbacks)
+* **Reverse Proxy & TLS:** Caddy Server (Automatic HTTPS, SSE zero-buffering, WebSockets)
 
-* **Dynamic Context-Aware Parameter Tuning (`server/services/smartModelRouterService.js`):**
-  * **Code & Math Detection:** Analyzes the syntax of queries for specific domain keywords (e.g. `def `, `class`, `const`, `matrix`, `integral`, `eigenvalue`).
-  * **Deterministic Forcing:** Automatically sets a highly precise temperature (`0.2`) for mathematical or code generation tasks to optimize factual correctness and syntactic validity.
-  * **Research-Aware Window Allocation:** Automatically scales `temperature` to `0.2` and allocates up to `8192` output tokens when in Deep Research mode to support elaborate long-form responses.
-  
-* **Hybrid Quality-Cost Routing:**
-  * Minimizes latency and costs by routing simple queries (complexity score `<= 35`) or standard questions to local SLMs/Ollama models.
-  * Automatically shifts high-complexity queries (complexity score `>= 75`) to capable cloud-backed fallback models (e.g., Llama 3.3 70B on Groq, Gemini 2.0 Flash) to prevent the generation of poor or incomplete answers.
-  * Adjusts target cloud providers based on token requirements (routing longer requests to Gemini and shorter requests to Groq).
+---
 
-* **Automatic Context Window Management & History Truncation:**
-  * Prevents upstream API failures (e.g. Groq 8k context length limits returning HTTP 400 bad requests).
-  * Measures context payload length dynamically using characters-to-tokens approximations.
-  * Automatically drops older conversation turns sequentially while strictly preserving developer/system instructions and the active user prompt.
+## 2. Webserver Setup & Execution Instructions
 
-* **Resilient Provider Fallback & Health-Checks (`server/services/llmFallbackService.js`):**
-  * Fixed duplicate variable declarations, duplicate switch cases, and duplicate Set definitions.
-  * Ensured seamless and robust fallback chain processing (`sglang` $\rightarrow$ `groq` $\rightarrow$ `gemini` $\rightarrow$ `ollama`) for both standard generation and chunked streaming modes.
+### Prerequisites
+* **Node.js:** v20.0.0 or higher
+* **Python:** 3.10+ with `pip` and virtual environment support
+* **Databases:** MongoDB (Port `27017`), Redis (Port `6379`), Neo4j (Port `7688`), Qdrant (Port `6335`), Elasticsearch (Port `9200`)
+* **Reverse Proxy:** Caddy v2.x (installed via `apt` or binary)
 
-### Verification of Optimization Features
+---
 
-We have built dedicated verification test suites to ensure both the Token and Model Optimization frameworks perform flawlessly.
+### Step 1: Clone Repository & Setup Environment Files
 
-#### 1. Token Optimizer Tests
-Execute the following command to test minification, response expansion, case-preservation, JSON-safety, and split backtick safety:
 ```bash
-node server/tests/test_token_optimizer.js
+git clone https://github.com/NIT-Andhra-AI/imentor.git
+cd imentor
 ```
 
-#### 2. Model Router Tests
-Execute the following command to verify complexity calculations, domain parameter tuning, hybrid routing logic, and context window truncation:
+Copy the example environment files for both backend and frontend:
+
 ```bash
-node server/tests/test_model_router.js
+# Top-level root environment
+cp .env.example .env
+
+# Server environment
+cp server/.env.example server/.env
+
+# Frontend environment
+cp frontend/.env.example frontend/.env
 ```
 
 ---
 
-## 3. EE Syllabi Pipeline & Startup Configuration Update
+### Step 2: Install Dependencies
 
-This section describes the changes introduced in the `ee-syllabi-generator` branch, the architecture of the new Electrical Engineering (EE) syllabi pipeline, and the test cases/verification steps for the testing team.
+#### A. Backend Dependencies
+```bash
+cd server
+npm install
+cd ..
+```
 
-### 3.1. Summary of Changes
+#### B. Frontend Dependencies
+```bash
+cd frontend
+npm install
+cd ..
+```
 
-### A. Dynamic Startup Configuration (`startup.sh`)
-* **Before:** `PROJECT_DIR` was hardcoded to `/run/media/komeshbathula/New Volume1/NIT Projects/iMentor-Main`.
-* **After:** Updated to determine the project directory dynamically at runtime using bash-native script path resolution:
-  ```bash
-  PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  ```
-  This makes the system environment-agnostic and prevents failures when running on different developer environments or OS paths.
-
-### B. Automated EE Syllabi Generator (`server/scripts/generate_ee_syllabi.py`)
-* A Python script designed to output structured `syllabus.csv` files for all **17 Electrical Engineering (EE)** theory courses listed in the curriculum (e.g., `EE1011`, `EE1021`, `EE2011`, etc.).
-* Outputs CSVs matching the required database schema headers:
-  `Module,Lecture Number,Lecture Topic,Subtopics,Resources`
-* Dynamically creates the corresponding directories under `server/course_bootstrap/` along with an empty `materials/` folder for each course to satisfy the course ingestion scanner.
-
-### C. Batch Course Bootstrapper & STN Pipeline (`bootstrap_ee_courses.py`)
-* A batch-runner script located in the project root that discovers all EE courses generated under `server/course_bootstrap/`.
-* Programmatically invokes the `bootstrap_course` process for each course to:
-  1. Ingest the syllabus into **Neo4j** (mapping Module $\rightarrow$ Topic $\rightarrow$ Subtopic).
-  2. Extract the course **Concept Graph**.
-  3. Build **Qdrant Vector Database Collections**.
-  4. Generate and cache **Subtopic Teaching Notes (STN)** in the background using the LLM's base knowledge.
-
----
-
-### 3.2. Ingestion Architecture Flow
-
-```mermaid
-graph TD
-    A[generate_ee_syllabi.py] -->|1. Generate CSVs & Folders| B[server/course_bootstrap/EExxxx/]
-    B -->|Syllabus CSV + Materials Dir| C[bootstrap_ee_courses.py]
-    C -->|2. Ingest Syllabus| D[(Neo4j Graph Database)]
-    C -->|3. Extract Concept Graph & STN| E[RAG Ingestion Engine]
-    E -->|4. Index Teaching Notes| F[(Qdrant Vector Database)]
-    E -->|5. Precompute Lessons| G[Local cache / lecture_notes]
+#### C. Python RAG Service Dependencies
+```bash
+cd server/rag_service
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cd ../..
 ```
 
 ---
 
-### 3.3. Testing Team Instructions
+### Step 3: Run the Webservers
 
-Please follow the verification steps below to test the dynamic path configuration, syllabus generation, and STN ingestion.
+#### Option A: One-Command Automated Startup (Recommended)
+Use the provided `startup.sh` script to launch all microservices (Node.js server, Frontend, Python RAG, Database health-checks):
+```bash
+bash startup.sh
+```
 
-### Phase 1: Verify Startup script
-1. Run syntax checks on `startup.sh`:
+#### Option B: Manual Service Execution
+
+1. **Start Node.js Express Backend (Port 5005):**
    ```bash
-   bash -n startup.sh
+   cd server
+   npm run dev
    ```
-2. Verify that running `startup.sh` properly activates the Conda environment and starts up Node and Python backends without pointing to a hardcoded path.
 
-### Phase 2: Test Syllabi Generation
-1. Clean up any existing `server/course_bootstrap/EE*` folders (if any).
-2. Execute the generator script:
+2. **Start Python RAG Microservice (Port 2005):**
    ```bash
-   python3 server/scripts/generate_ee_syllabi.py
+   cd server/rag_service
+   bash start_rag.sh
    ```
-3. **Verify Output:**
-   * Ensure 17 new folders starting with `EE` are created under `server/course_bootstrap/`.
-   * Check that each folder contains:
-     * `syllabus.csv` (Verify it has columns: `Module`, `Lecture Number`, `Lecture Topic`, `Subtopics`, `Resources`).
-     * `materials/` directory (Verify it is created).
 
-### Phase 3: Test Batch STN Ingestion Pipeline
-1. Ensure the Python RAG service is running (default port is `2001`).
-2. Run the batch bootstrapper script:
+3. **Start React Vite Frontend (Port 3005):**
    ```bash
-   python3 bootstrap_ee_courses.py
+   cd frontend
+   npm run dev
    ```
-3. **Verify Neo4j Integration:**
-   * Open the Neo4j browser or run a Cypher query to verify that nodes for `EE1011`, `EE1021`, etc. have been created with `Module`, `Topic`, and `Subtopic` relationship linkages.
-4. **Verify Qdrant Ingestion:**
-   * Check Qdrant collection `stn_notes` to verify that teaching notes have been generated, embedded, and successfully indexed for the respective EE subtopics.
-5. **Verify API Endpoints:**
-   * Test querying the backend for a specific subtopic STN:
-     ```bash
-     curl http://localhost:2001/stn/EE1011%20Basic%20Electrical%20Circuits/introduction_to_circuit_elements
-     ```
-   * Confirm that the RAG service returns cached teaching notes with a `success: true` response.
+
+---
+
+## 3. Example Environment Files (`.env`)
+
+Below are sample environment configurations for backend and frontend components.
+
+### A. Root / Backend Environment (`server/.env.example`)
+```ini
+# server/.env.example
+NODE_ENV=development
+PORT=5005                            # Backend Express server port
+
+# Security
+JWT_SECRET=your_32_char_hex_jwt_secret
+JWT_EXPIRATION=7d
+ENCRYPTION_SECRET=your_32_char_hex_encryption_secret
+
+# MongoDB & Redis
+MONGO_URI=mongodb://localhost:27017/imentor
+REDIS_URL=redis://localhost:6379
+REDIS_PORT=6379
+
+# Neo4j Knowledge Graph
+NEO4J_URI=bolt://localhost:7688
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password
+NEO4J_PORT=7688
+
+# Qdrant Vector Store & Elasticsearch
+QDRANT_URL=http://localhost:6335
+QDRANT_PORT=6335
+ELASTICSEARCH_URL=http://localhost:9200
+ELASTICSEARCH_PORT=9200
+
+# Python RAG Microservice
+PYTHON_RAG_SERVICE_URL=http://localhost:2005
+RAG_PORT=2005
+
+# SGLang Local LLM Engine
+SGLANG_ENABLED=true
+SGLANG_CHAT_URL=http://localhost:8000/v1
+SGLANG_CHAT_MODEL=Qwen/Qwen2.5-7B-Instruct-AWQ
+
+# Fallback Cloud LLMs
+GEMINI_API_KEY=your_google_gemini_api_key
+GEMINI_MODEL=gemini-2.5-flash
+GROQ_API_KEY=your_groq_api_key
+```
+
+### B. Frontend Environment (`frontend/.env.example`)
+```ini
+# frontend/.env.example
+# Backend API Base URL
+VITE_API_BASE_URL=https://localhost/api
+
+# WebSocket URL for Real-Time Streaming & Socket.io
+VITE_WS_URL=wss://localhost
+
+# Environment Mode
+VITE_NODE_ENV=development
+```
+
+---
+
+## 4. Reverse Proxy & Webserver Configuration (Caddy)
+
+The **iMentor** platform uses **Caddy** as its primary reverse proxy and webserver in production and staging environments.
+
+### Why Caddy?
+* **Automatic HTTPS / TLS:** Manages self-signed TLS certificates internally or Let's Encrypt certificates automatically out of the box.
+* **Zero-Buffering SSE Support (`flush_interval -1`):** Required for streaming real-time LLM thinking processes and Socratic tutor responses without chunk delays.
+* **WebSocket / Socket.io Support:** Native support for long-lived HTTP upgrading and WebSocket streaming.
+
+### Reverse Proxy Routing Map
+
+```
+                     ┌───────────────────────────────────────────────┐
+                     │           Caddy Reverse Proxy                 │
+                     │    https://localhost / https://<server-ip>   │
+                     └───────────────────────┬───────────────────────┘
+                                             │
+      ┌──────────────────────┬───────────────┴───────────────┬──────────────────────┐
+      │                      │                               │                      │
+┌─────▼──────────────┐ ┌─────▼──────────────┐  ┌─────────────▼──────────────┐ ┌─────▼──────────────┐
+│  Frontend (Vite)   │ │ Node.js Express API│  │   Python RAG Service     │ │ Socket.io WebSockets │
+│   handle /         │ │ handle /api/*      │  │   handle /rag/*          │ │ handle /socket.io/*  │
+│   localhost:3005   │ │ localhost:5005     │  │   localhost:2005         │ │ localhost:5005       │
+└────────────────────┘ └────────────────────┘  └──────────────────────────┘ └────────────────────┘
+```
+
+### Caddy Configuration (`nginx/Caddyfile`)
+
+```caddy
+{
+    admin off
+    email admin@imentor.local
+}
+
+# HTTP to HTTPS Redirect
+http://localhost, http://172.180.14.125 {
+    redir https://{host}{uri} permanent
+}
+
+# Main HTTPS Server Entrypoint
+https://localhost, https://172.180.14.125 {
+    tls internal
+
+    # Security Headers
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Strict-Transport-Security "max-age=63072000; includeSubDomains"
+        Permissions-Policy "geolocation=(), microphone=(self), camera=()"
+    }
+
+    # Node.js Express API Routes
+    handle /api/* {
+        reverse_proxy localhost:5005 {
+            header_up Host              {upstream_hostport}
+            header_up X-Real-IP         {remote_host}
+            header_up X-Forwarded-For   {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+
+            # Disable buffering for SSE (Real-Time LLM Streaming)
+            flush_interval -1
+            transport http {
+                read_timeout  600s
+                write_timeout 600s
+                dial_timeout  60s
+            }
+        }
+    }
+
+    # Python RAG Service Routes
+    handle /rag/* {
+        uri strip_prefix /rag
+        reverse_proxy localhost:2005 {
+            header_up Host              {upstream_hostport}
+            header_up X-Real-IP         {remote_host}
+            header_up X-Forwarded-For   {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+            flush_interval -1
+        }
+    }
+
+    # Socket.io WebSocket Connections
+    handle /socket.io/* {
+        reverse_proxy localhost:5005 {
+            header_up Host              {upstream_hostport}
+            header_up X-Real-IP         {remote_host}
+            header_up Upgrade           {http.request.header.Upgrade}
+            header_up Connection        {http.request.header.Connection}
+        }
+    }
+
+    # React Frontend Single Page App
+    handle {
+        reverse_proxy localhost:3005
+    }
+}
+```
+
+### Running Caddy Reverse Proxy
+
+To switch to Caddy and deploy the reverse proxy automatically:
+
+```bash
+# Automated switch & reload script
+sudo bash nginx/switch-to-caddy.sh
+
+# Or start manually using Caddy CLI
+sudo caddy run --config nginx/Caddyfile
+
+# Reload configuration zero-downtime
+sudo systemctl reload caddy
+```
+
+---
+
+## 5. Token & Model Optimization Framework
+
+iMentor includes an end-to-end token and model optimization framework to lower LLM token consumption and enforce intelligent provider routing:
+
+1. **Input Minification (`server/utils/tokenOptimizer.js`):** Strips comments and collapses superfluous whitespace while preserving code blocks.
+2. **Shorthand Abbreviation & Streaming Token Expander (`server/services/llmStreamingService.js`):** Injects System prompt shorthand definitions and dynamically restores abbreviated terms during chunked streaming.
+3. **Smart Model Routing (`server/services/smartModelRouterService.js`):** Classifies queries by syntactic complexity and routes simple queries to local SGLang models and complex queries to cloud providers.
+
+---
+
+## 6. EE Syllabi Pipeline & Course Bootstrap
+
+Automated scripts are included to bootstrap 17 Electrical Engineering (EE) courses:
+
+```bash
+# 1. Generate structured syllabus CSVs and folder scaffolding
+python3 server/scripts/generate_ee_syllabi.py
+
+# 2. Batch ingest into Neo4j graph & Qdrant vector database
+python3 bootstrap_ee_courses.py
+```
+
+---
+
+## 7. License & Credits
+
+Developed by **NIT Andhra Pradesh AI Team** (`spkkarri`).  
+For contributions, issues, or pull requests, visit [github.com/NIT-Andhra-AI/imentor](https://github.com/NIT-Andhra-AI/imentor).

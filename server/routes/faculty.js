@@ -1,6 +1,7 @@
 // server/routes/faculty.js
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const ChatHistory = require('../models/ChatHistory');
 const KnowledgeSource = require('../models/KnowledgeSource');
@@ -196,6 +197,11 @@ router.post('/materials/fetch-web', authMiddleware, facultyMiddleware, async (re
                 await Job.updateOne({ _id: newJob._id }, { $set: { status: 'failed', error: bgErr.message } });
             }
         });
+    } catch (error) {
+        log.error('FACULTY', `[Fetch Reference] Request error: ${error.message}`);
+        res.status(500).json({ message: 'Failed to initiate reference scraping.' });
+    }
+});
 
 // Import CourseVersion model
 const CourseVersion = require('../models/CourseVersion');
@@ -209,14 +215,22 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
         try {
             log.info('FACULTY', 'Routing CLI generation task to local SGLang service (Qwen)');
             const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
-            return await sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName });
+            
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('SGLang request timed out after 20s')), 20000)
+            );
+            
+            return await Promise.race([
+                sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName }),
+                timeoutPromise
+            ]);
         } catch (err) {
             log.warn('FACULTY', `Local SGLang generation failed: ${err.message}. Falling back to Gemini.`);
         }
     }
     // Fallback
     log.info('FACULTY', 'Routing CLI generation task to external Gemini API');
-    return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.0-flash' });
+    return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.5-flash' });
 }
 
 // POST /api/faculty/course/generate
@@ -251,8 +265,8 @@ You must output a valid JSON array of objects representing modules, topics, and 
 
         systemPrompt += `
 JSON Schema details:
-An array of objects containing keys:
-- "module": Module name (e.g. "Module 1: Foundations of Artificial Intelligence")
+An array of maximum 4 concise module objects containing keys:
+- "module": Module name (e.g. "Module 1: Foundations of DSP")
 - "topic": Specific lecture topic
 - "subtopic": Subtopic details (include hints about animated graphs or visual aids if applicable)
 - "difficulty": "easy", "medium", or "hard"
@@ -319,13 +333,14 @@ router.post('/course/cli', authMiddleware, facultyMiddleware, async (req, res) =
     const targetCourseId = courseId || 'machine_learning'; // Fallback course slug
 
     try {
-        // Fetch or initialize active curriculum record in UploadedCurriculum
-        let curriculum = await UploadedCurriculum.findOne({ 
-            $or: [
-                { _id: targetCourseId },
-                { courseTitle: { $regex: new RegExp(targetCourseId.replace('_', ' '), 'i') } }
-            ]
-        });
+        const orConditions = [
+            { hash: `gen_${targetCourseId.toUpperCase().replace(/[^A-Z0-9]/g, '_')}` },
+            { courseTitle: { $regex: new RegExp(targetCourseId.replace('_', ' '), 'i') } }
+        ];
+        if (mongoose.Types.ObjectId.isValid(targetCourseId)) {
+            orConditions.unshift({ _id: targetCourseId });
+        }
+        let curriculum = await UploadedCurriculum.findOne({ $or: orConditions });
 
         // Fallback: search for any available curriculum if not found
         if (!curriculum) {

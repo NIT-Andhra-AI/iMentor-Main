@@ -1,0 +1,185 @@
+{
+  "config": {
+    "argv": [
+      "/home/sri/.nvm/versions/node/v22.18.0/bin/node",
+      "/home/sri/Downloads/iMentor_march/iMentor-Main/node_modules/.bin/playwright",
+      "test",
+      "tests/e2e/16_faculty_dsp_course.spec.js"
+    ],
+    "configFile": "/home/sri/Downloads/iMentor_march/iMentor-Main/playwright.config.js",
+    "rootDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "tests/reports/playwright-html"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "tests/reports/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "cd frontend && npm run dev",
+      "url": "http://localhost:3005",
+      "timeout": 120000,
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "16_faculty_dsp_course.spec.js",
+      "file": "16_faculty_dsp_course.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Faculty DSP Course Generation & Swarm Agent Execution",
+          "file": "16_faculty_dsp_course.spec.js",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "E2E — Generate Digital Signal Processing (EE3621) Course & Execute Swarm CLI",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 48474,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[1/6] Logging in as Faculty user...\n"
+                        },
+                        {
+                          "text": "[auth.js] ✓ Logged in as faculty@imentor.edu\n"
+                        },
+                        {
+                          "text": "[2/6] ✓ Verified Faculty Portal Dashboard is loaded\n"
+                        },
+                        {
+                          "text": "[3/6] ✓ Filled DSP syllabus inputs\n"
+                        },
+                        {
+                          "text": "[4/6] ✓ Clicked Spin Swarm button\n"
+                        },
+                        {
+                          "text": "[5/6] ✓ Swarm execution logs initialized\n"
+                        },
+                        {
+                          "text": "[5/6] ✓ EE3621 - Digital Signal Processing course syllabus generated and saved to MongoDB\n"
+                        },
+                        {
+                          "text": "[6/6] ✓ Faculty Console listed active course curriculum\n"
+                        },
+                        {
+                          "text": "[6/6] ✓ Custom Developer-Agent loop executed, planned, and saved modifications\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-14T11:19:34.003Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/test-finished-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "861a0f1e6849992ae825-8e00652dbde864191b36",
+              "file": "16_faculty_dsp_course.spec.js",
+              "line": 7,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-14T11:19:33.351Z",
+    "duration": 50713.797000000006,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -176,16 +176,13 @@ export default function FacultyPortal() {
         pastedSyllabus
       });
 
-      // Wait briefly for logs to finish printing
-      setTimeout(() => {
-        setGenerationLogs(prev => [
-          ...prev, 
-          `[System] Course generated successfully! Created ${res.data.topics.length} syllabus topics in MongoDB.`,
-          `[System] Active course identifier: ${courseCode.toUpperCase()}`
-        ]);
-        setMaterialsStatus({ type: 'success', text: res.data.message });
-        setIsGenerating(false);
-      }, 5000);
+      setGenerationLogs(prev => [
+        ...prev, 
+        `[System] Course generated successfully! Created ${res.data.topics.length} syllabus topics in MongoDB.`,
+        `[System] Active course identifier: ${courseCode.toUpperCase()}`
+      ]);
+      setMaterialsStatus({ type: 'success', text: res.data.message });
+      setIsGenerating(false);
 
     } catch (err) {
       clearInterval(logInterval);

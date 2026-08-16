@@ -4,7 +4,7 @@ const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@googl
 const tokenOptimizer = require('../utils/tokenOptimizer');
 
 const SECONDARY_API_KEY = process.env.GEMINI_API_KEY;
-const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 const DEFAULT_MAX_OUTPUT_TOKENS_CHAT = 8192;
 const DEFAULT_MAX_OUTPUT_TOKENS_KG = 8192;
@@ -24,6 +24,9 @@ async function generateContentWithHistory(
 ) {
     const apiKeyToUse = options.apiKey || SECONDARY_API_KEY;
     let modelNameToUse = options.geminiModel || options.model || process.env.GEMINI_MODEL || MODEL_NAME;
+    if (modelNameToUse.includes('gemini-2.0-flash') || modelNameToUse.includes('gemini-1.5-flash')) {
+        modelNameToUse = 'gemini-2.5-flash';
+    }
     const originalName = modelNameToUse; // Keep the original name for potential retry
 
     // Ensure model name is correctly formatted

@@ -199,6 +199,9 @@ export const useChat = ({
                 finalMessage
             ]);
 
+            // Dispatch session-graph-updated event so RealtimeKgPanel auto-refreshes
+            window.dispatchEvent(new CustomEvent('session-graph-updated', { detail: { sessionId: currentSessionId } }));
+
             if (finalBotMessageObject.action && finalBotMessageObject.action.type === 'DOWNLOAD_DOCUMENT') {
                 toast.promise(
                     api.generateDocumentFromTopic(finalBotMessageObject.action.payload),

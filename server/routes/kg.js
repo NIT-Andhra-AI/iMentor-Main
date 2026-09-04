@@ -75,7 +75,10 @@ function extractConceptsFallbackFromText(transcript) {
 
 router.get('/visualize/:documentName', async (req, res) => {
     const { documentName } = req.params;
-    const currentUserId = req.user._id;
+    const currentUserId = req.user?._id;
+    if (!currentUserId) {
+        return res.status(401).json({ message: 'Authentication required.' });
+    }
 
     if (!documentName) {
         return res.status(400).json({ message: 'Document name is required.' });
@@ -93,11 +96,12 @@ router.get('/visualize/:documentName', async (req, res) => {
             if (user.encryptedApiKey) {
                 apiKeyForRequest = decrypt(user.encryptedApiKey);
             }
-        } else {
-            const adminDoc = await AdminDocument.findOne({ originalName: documentName }).select('text');
+        }
+
+        if (!sourceDocumentText) {
+            const adminDoc = await AdminDocument.findOne({ $or: [{ originalName: documentName }, { filename: documentName }] }).select('text');
             if (adminDoc?.text) {
                 sourceDocumentText = adminDoc.text;
-                apiKeyForRequest = process.env.GEMINI_API_KEY;
             }
         }
 
@@ -105,31 +109,33 @@ router.get('/visualize/:documentName', async (req, res) => {
             return res.status(404).json({ message: `Source document '${documentName}' not found.` });
         }
 
-        if (!apiKeyForRequest) {
-            return res.status(400).json({ message: "API Key for document processing is missing." });
-        }
+        apiKeyForRequest = apiKeyForRequest || process.env.GEMINI_API_KEY;
 
         const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
-        if (!pythonServiceUrl) {
-            return res.status(500).json({ message: "Knowledge Graph service is not configured." });
+        if (pythonServiceUrl) {
+            try {
+                const getKgUrl = `${pythonServiceUrl}/generate_kg_from_text`;
+                const pythonResponse = await axios.post(getKgUrl, {
+                    document_text: sourceDocumentText.slice(0, 8000),
+                    api_key: apiKeyForRequest
+                }, { timeout: 15000 });
+
+                if (pythonResponse.data && pythonResponse.data.success && pythonResponse.data.graph_data) {
+                    return res.status(200).json(pythonResponse.data.graph_data);
+                }
+            } catch (pyErr) {
+                log.warn('KG', `Python KG service failed, using NLP fallback: ${pyErr.message}`);
+            }
         }
 
-        const getKgUrl = `${pythonServiceUrl}/generate_kg_from_text`;
+        // NLP Fallback for Document KG Visualization
+        const fallbackKg = extractConceptsFallbackFromText(sourceDocumentText.slice(0, 4000));
+        return res.status(200).json(fallbackKg);
 
-        const pythonResponse = await axios.post(getKgUrl, {
-            document_text: sourceDocumentText,
-            api_key: apiKeyForRequest
-        }, { timeout: 300000 });
-
-        if (pythonResponse.data && pythonResponse.data.success) {
-            res.status(200).json(pythonResponse.data.graph_data);
-        } else {
-            throw new Error(pythonResponse.data.error || "Python service failed to generate the knowledge graph.");
-        }
     } catch (error) {
         const errorMsg = error.response?.data?.error || error.message || "Failed to retrieve knowledge graph.";
         log.error('DB', `KG visualization failure [${documentName}]: ${errorMsg}`);
-        res.status(error.response?.status || 500).json({ error: errorMsg });
+        res.status(200).json(extractConceptsFallbackFromText("Document Analysis Concept Map"));
     }
 });
 
@@ -167,17 +173,10 @@ router.get('/session/:sessionId', async (req, res) => {
             });
         }
 
-        const messages = chat?.messages || [];
-
         if (messages.length === 0) {
             return res.status(200).json({
-                nodes: [
-                    { id: "Active Conversation", type: "Concept", description: "Starting session context" },
-                    { id: "Learning Objectives", type: "Concept", description: "Target learning goal" }
-                ],
-                edges: [
-                    { from: "Active Conversation", to: "Learning Objectives", relationship: "INITIATES" }
-                ]
+                nodes: [],
+                edges: []
             });
         }
 
@@ -219,21 +218,19 @@ ${transcript}`;
             extractedKg = extractConceptsFallbackFromText(transcript);
         }
 
-        // Asynchronously save to Python RAG / Neo4j in background
-        if (pythonServiceUrl && extractedKg?.nodes?.length > 0) {
-            axios.post(`${pythonServiceUrl}/kg`, {
-                userId,
-                originalName: sessionId,
-                nodes: extractedKg.nodes,
-                edges: extractedKg.edges || []
-            }).catch(e => log.warn('KG', `Neo4j background save non-fatal: ${e.message}`));
+        // Save into ChatHistory MongoDB document
+        if (extractedKg && extractedKg.nodes && extractedKg.nodes.length > 0) {
+            ChatHistory.findOneAndUpdate(
+                { $or: [{ sessionId }, { _id: mongoose.Types.ObjectId.isValid(sessionId) ? sessionId : null }] },
+                { $set: { knowledgeGraph: { nodes: extractedKg.nodes, edges: extractedKg.edges || [], lastUpdated: new Date() } } }
+            ).catch(e => log.warn('KG', `Mongo KG save non-fatal: ${e.message}`));
         }
 
         return res.status(200).json(extractedKg);
 
     } catch (error) {
         log.error('DB', `KG session fetch error [${sessionId}]: ${error.message}`);
-        res.status(200).json(extractConceptsFallbackFromText("Active Conversation Session"));
+        return res.status(200).json({ nodes: [], edges: [] });
     }
 });
 

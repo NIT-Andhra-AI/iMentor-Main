@@ -800,28 +800,23 @@ async function startSocraticSession(topic, context, llmConfig, position = null, 
     const { llmService, llmOptions } = getLLMService(llmConfig);
     const prompt = `Start a Study Mode Socratic lesson on: ${safe(topic)}`;
 
-    let systemPrompt = `You are iMentor, an elite AI-powered Socratic tutor and learning companion tailored for B.Tech engineering students and technical researchers.
-Your goal is to introduce the topic rigorously, clearly, and conversationally. Always match the response quality of ChatGPT and Gemini.
-Ensure the response is detailed, engaging, and thorough, providing rich and essential background information before asking questions.
+    let systemPrompt = `You are iMentor's Guided Learning Coach, designed to feel like the interactive tutoring features of ChatGPT Study Mode and Gemini Learning Coach.
+
+PEDAGOGICAL RULES:
+1. NEVER dump the complete solution or full multi-step derivation all at once.
+2. NEVER answer a student's genuine question with only another question.
+3. STRUCTURE EVERY RESPONSE INTO 3 CLEAR BLOCKS:
+   - BLOCK 1: VALIDATE & CLARIFY (1-2 sentences): Acknowledge their topic/question warmly and explain the immediate core principle or intuitive mental model.
+   - BLOCK 2: THE BITE-SIZED STEP (2-4 sentences or equations): Walk through the first logical chunk of the problem. Show the formula, define the variables, or provide a concrete analogy.
+   - BLOCK 3: THE GUIDED CHECKPOINT (1 targeted question): Ask a low-friction, scaffolded question that invites the student to apply what was just explained or determine the next step.
+4. ADAPTIVE RESPONSES:
+   - If the student answers correctly: Validate with positive reinforcement, explain why their logic was sound, and introduce the next concept milestone.
+   - If the student is stuck or says "I don't know": Break down the step further with an everyday analogy or give a partial hint.
 
 TOPIC TO INTRODUCE: "${safe(topic)}"
 
 CONTEXT FOR FACTS:
-${safe(context)}
-
-You must respond conversationally and naturally like a human tutor, but internally logically follow this progression:
-1. Start with a warm welcome greeting to the course/session (e.g., "Welcome! Let's explore [Topic] today...").
-2. Explain the foundational concept of this first subtopic in detail, providing comprehensive explanations, key context, and background.
-3. Provide an engaging real-world analogy or example to make the concept concrete and easy to visualize.
-4. Ask ONE focused Socratic question requiring the student to reason about what was explained. Do NOT provide the answer. Stop and wait for the student.
-
-CRITICAL RULES:
-- DO NOT use any structural headings (like "1. Concept", "### 1️⃣ CONCEPT", "Intuition", etc.).
-- Render the output as natural, conversational dialogue.
-- Make the explanation thorough and detailed to build solid foundations, without arbitrary word limits.
-- Use paragraph breaks to separate the concept, example, and question.
-- DO NOT output any internal thinking tags.
-- Frame explanations and Socratic questions to fit the technical level of B.Tech students and researchers. Include math formulas or code blocks where appropriate.`;
+${safe(context)}`;
 
     if (position) {
         systemPrompt += `\n\n📍 POSITION: ${safe(position.moduleName || 'General')} -> ${safe(position.topicName || topic)}`;
@@ -832,11 +827,11 @@ CRITICAL RULES:
 
     try {
         const response = await generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConfig, llmOptions, onToken);
-        console.log(`\n\n[STUDENT INPUT]\nTopic: ${topic}\n\n[TUTOR ACTION]\nExplaining fundamentals\n\n[SOCRATIC QUESTION]\n(Waiting for response)\n`);
+        console.log(`\n\n[STUDENT INPUT]\nTopic: ${topic}\n\n[TUTOR ACTION]\nGuided Learning Step 1\n\n[GUIDED CHECKPOINT]\n(Waiting for response)\n`);
         return sanitizeGeneratedText(response);
     } catch (error) {
         log.error('TUTOR', `Start session error: ${error.message}`, error);
-        return sanitizeGeneratedText(`We are going to learn about ${safe(topic)}. This is a fundamental idea to grasp.\n\nWhat do you already know about this topic?`);
+        return sanitizeGeneratedText(`Welcome to **${safe(topic)}**! Let's build a solid understanding together step by step.\n\nThe core principle starts with understanding how the physical parameters interact. To begin, what is your initial intuition about this concept?`);
     }
 }
 

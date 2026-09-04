@@ -994,7 +994,8 @@ async function processQueryWithToT_Streaming(query, chatHistory, requestContext,
     const isComplex = await isQueryComplex(query, requestContext);
     emitStep({ stepId: 'complexity_check', status: 'completed', content: `Query detected as ${isComplex ? 'COMPLEX' : 'SIMPLE'}.`, timestamp: Date.now() });
 
-    if (!isComplex && !requestContext.isInternalCorrection) {
+    const userWantsFullToT = requestContext.userRequestedToT || requestContext.criticalThinkingEnabled;
+    if (!isComplex && !requestContext.isInternalCorrection && !userWantsFullToT) {
         sendStatus(`Constructing direct explanation…`);
         const directResponse = await processAgenticRequest(
             query,

@@ -649,7 +649,7 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
         const effectiveUseWebSearch = options.useWebSearch ?? useWebSearch;
         const effectiveUseAcademicSearch = options.useAcademicSearch ?? useAcademicSearch;
         // --- MANDATORY: Disable Thinking in Tutor Mode ---
-        const effectiveCriticalThinking = tutorMode ? false : (options.criticalThinkingEnabled ?? criticalThinkingEnabled);
+        const effectiveCriticalThinking = options.criticalThinkingEnabled ?? criticalThinkingEnabled;
         const effectiveDocumentContext = ragEnabled ? (options.documentContextName ?? selectedSubject ?? selectedDocumentForAnalysis) : null;
 
         console.log('[ToT DEBUG] criticalThinkingEnabled state:', criticalThinkingEnabled);

@@ -2,6 +2,7 @@ const log = require('../utils/logger');
 // server/routes/kg.js
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const axios = require('axios');
 const User = require('../models/User');
 const AdminDocument = require('../models/AdminDocument');
@@ -85,7 +86,7 @@ router.get('/visualize/:documentName', async (req, res) => {
         let apiKeyForRequest = null;
 
         const user = await User.findById(currentUserId).select('uploadedDocuments.filename uploadedDocuments.text +encryptedApiKey');
-        const userDoc = user?.uploadedDocuments.find(doc => doc.filename === documentName);
+        const userDoc = user?.uploadedDocuments ? user.uploadedDocuments.find(doc => doc.filename === documentName) : null;
 
         if (userDoc?.text) {
             sourceDocumentText = userDoc.text;
@@ -157,8 +158,15 @@ router.get('/session/:sessionId', async (req, res) => {
             }
         }
 
-        // 2. Fetch ChatHistory
-        const chat = await ChatHistory.findById(sessionId).lean();
+        // 2. Fetch ChatHistory (support finding by sessionId String or _id)
+        const chat = await ChatHistory.findOne({ $or: [{ sessionId }, { _id: mongoose.Types.ObjectId.isValid(sessionId) ? sessionId : null }] }).lean();
+        if (chat?.knowledgeGraph?.nodes && chat.knowledgeGraph.nodes.length > 0) {
+            return res.status(200).json({
+                nodes: chat.knowledgeGraph.nodes,
+                edges: chat.knowledgeGraph.edges || []
+            });
+        }
+
         const messages = chat?.messages || [];
 
         if (messages.length === 0) {

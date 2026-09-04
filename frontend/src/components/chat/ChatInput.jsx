@@ -165,10 +165,22 @@ function ChatInput({
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [menuRef]);
 
+    useEffect(() => {
+        const savedWeb = localStorage.getItem('im_useWebSearch');
+        const savedAcademic = localStorage.getItem('im_useAcademicSearch');
+        if (savedWeb !== null) setUseWebSearch(savedWeb === 'true');
+        if (savedAcademic !== null) setUseAcademicSearch(savedAcademic === 'true');
+    }, [setUseWebSearch, setUseAcademicSearch]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim() && !isLoading) {
-            onSendMessage(inputValue.trim(), {});
+            onSendMessage(inputValue.trim(), {
+                useWebSearch,
+                useAcademicSearch,
+                criticalThinkingEnabled,
+                documentContextName: selectedDocumentForAnalysis || selectedSubject || null
+            });
             setInputValue('');
         }
     };
@@ -188,7 +200,11 @@ function ChatInput({
     const handleWebSearchToggle = () => {
         const newWebSearchState = !useWebSearch;
         setUseWebSearch(newWebSearchState);
-        if (newWebSearchState) setUseAcademicSearch(false);
+        localStorage.setItem('im_useWebSearch', String(newWebSearchState));
+        if (newWebSearchState) {
+            setUseAcademicSearch(false);
+            localStorage.setItem('im_useAcademicSearch', 'false');
+        }
         toast(newWebSearchState ? "Web Search enabled." : "Web Search disabled.", { icon: newWebSearchState ? "🌐" : "📄" });
         setIsMenuOpen(false);
     };
@@ -196,7 +212,11 @@ function ChatInput({
     const handleAcademicSearchToggle = () => {
         const newState = !useAcademicSearch;
         setUseAcademicSearch(newState);
-        if (newState) setUseWebSearch(false);
+        localStorage.setItem('im_useAcademicSearch', String(newState));
+        if (newState) {
+            setUseWebSearch(false);
+            localStorage.setItem('im_useWebSearch', 'false');
+        }
         toast(newState ? "Academic Search enabled." : "Academic Search disabled.", { icon: newState ? "🎓" : "📄" });
         setIsMenuOpen(false);
     };

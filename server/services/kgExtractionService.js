@@ -189,21 +189,59 @@ async function extractAndStoreKgFromText(text, sessionId, userId, llmConfig, cou
 
     log.info('DB', `Extracted ${graphData.nodes.length} nodes for "${sessionId}"`);
 
-    const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
-    if (!pythonServiceUrl)
-      throw new Error("Python service URL not configured.");
+    // Save/Merge directly into ChatHistory MongoDB document
+    try {
+      const ChatHistory = require("../models/ChatHistory");
+      const chatDoc = await ChatHistory.findOne({ $or: [{ sessionId }, { _id: sessionId }] });
+      if (chatDoc) {
+        const existingNodes = chatDoc.knowledgeGraph?.nodes || [];
+        const existingEdges = chatDoc.knowledgeGraph?.edges || [];
+        const nodeMap = new Map();
+        existingNodes.forEach(n => { if (n?.id) nodeMap.set(n.id.toLowerCase(), n); });
+        (graphData.nodes || []).forEach(n => {
+          if (n && n.id && !nodeMap.has(n.id.toLowerCase())) {
+            nodeMap.set(n.id.toLowerCase(), { id: n.id, type: n.type || 'Concept', description: n.description || '' });
+          }
+        });
 
-    await axios.post(
-      `${pythonServiceUrl}/kg`,
-      {
-        userId: userId.toString(),
-        originalName: sessionId,
-        nodes: graphData.nodes,
-        edges: graphData.edges,
-        ...(courseName ? { courseName } : {}),
-      },
-      { timeout: 60000 }
-    );
+        const edgeSet = new Set(existingEdges.map(e => `${e.from.toLowerCase()}->${e.to.toLowerCase()}:${e.relationship}`));
+        const mergedEdges = [...existingEdges];
+        (graphData.edges || []).forEach(e => {
+          if (e && e.from && e.to) {
+            const key = `${e.from.toLowerCase()}->${e.to.toLowerCase()}:${e.relationship || 'DEPENDS_ON'}`;
+            if (!edgeSet.has(key)) {
+              edgeSet.add(key);
+              mergedEdges.push({ from: e.from, to: e.to, relationship: e.relationship || 'DEPENDS_ON' });
+            }
+          }
+        });
+
+        chatDoc.knowledgeGraph = {
+          nodes: Array.from(nodeMap.values()),
+          edges: mergedEdges,
+          lastUpdated: new Date()
+        };
+        await chatDoc.save();
+        log.info('DB', `Updated ChatHistory KG for "${sessionId}" with ${nodeMap.size} nodes.`);
+      }
+    } catch (dbErr) {
+      log.warn('DB', `Non-fatal Mongo KG merge failed: ${dbErr.message}`);
+    }
+
+    const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
+    if (pythonServiceUrl) {
+      await axios.post(
+        `${pythonServiceUrl}/kg`,
+        {
+          userId: userId.toString(),
+          originalName: sessionId,
+          nodes: graphData.nodes,
+          edges: graphData.edges,
+          ...(courseName ? { courseName } : {}),
+        },
+        { timeout: 60000 }
+      ).catch(e => log.warn('DB', `Python RAG KG ingest non-fatal: ${e.message}`));
+    }
 
     log.success('DB', "KG ingestion from text successful");
   } catch (error) {

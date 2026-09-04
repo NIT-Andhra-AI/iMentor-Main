@@ -10,6 +10,9 @@ const MessageSchema = new mongoose.Schema({
     source_pipeline: { type: String, default: '' },
     confidenceScore: { type: Number, default: null },
     reasoningMeta: { type: mongoose.Schema.Types.Mixed, default: null },
+    guidedStepIndex: { type: Number, default: 0 },
+    currentConcept: { type: String, default: '' },
+    learningStage: { type: String, enum: ['INTRODUCTION', 'EXPLORING', 'PRACTICE', 'MASTERY', ''], default: '' },
     logId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'LLMPerformanceLog',
@@ -31,6 +34,11 @@ const ChatHistorySchema = new mongoose.Schema({
         index: true,
     },
     messages: [MessageSchema],
+    knowledgeGraph: {
+        nodes: [{ id: { type: String }, type: { type: String }, description: { type: String } }],
+        edges: [{ from: { type: String }, to: { type: String }, relationship: { type: String } }],
+        lastUpdated: { type: Date, default: Date.now }
+    },
     summary: {
         type: String,
         default: ''

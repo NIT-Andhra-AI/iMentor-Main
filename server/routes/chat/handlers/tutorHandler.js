@@ -328,11 +328,15 @@ async function handleGeneral(res, ctx) {
     // ── Extract teaching unit ─────────────────────────────────────────────────
     let teachingUnit = rawQuery
         .replace(/^(tell me about|explain|what is|what us|how does|teach me|i want to learn about|describe|what's|who is|let'?s?\s*(start|go|begin|learn)\s*(with)?|start\s*(with)?|begin\s*(with)?)\s*/i, '')
+        .replace(/\,?\s*(and\s+)?(provide|give|show|cite|include|with)\s+.*$/i, '')
         .replace(/\?$/, '')
         .trim();
-    teachingUnit = teachingUnit
-        ? teachingUnit.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
-        : 'General AI Concepts';
+    if (!teachingUnit || teachingUnit.length < 2) teachingUnit = 'General AI Concepts';
+    else if (teachingUnit.length > 60) teachingUnit = teachingUnit.slice(0, 60).replace(/\s+\S*$/, '');
+    teachingUnit = teachingUnit.split(' ').map(word => {
+        if (/^(a|an|the|in|on|of|for|to|and|or|with)$/i.test(word)) return word.toLowerCase();
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
  
     // ── SKIP: prior knowledge detected — jump straight to L2 question ─────────
     if (hasPriorKnowledge && rawQuery.trim().length > 20) {

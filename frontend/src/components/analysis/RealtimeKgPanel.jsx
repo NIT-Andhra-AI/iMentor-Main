@@ -107,6 +107,9 @@ const RealtimeKgPanel = () => {
 
     useEffect(() => {
         fetchAndLayoutGraph();
+        const handleGraphUpdate = () => fetchAndLayoutGraph();
+        window.addEventListener('session-graph-updated', handleGraphUpdate);
+        return () => window.removeEventListener('session-graph-updated', handleGraphUpdate);
     }, [fetchAndLayoutGraph]);
 
     // The component now returns the graph canvas directly, without extra headers or borders.

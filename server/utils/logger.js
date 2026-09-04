@@ -36,6 +36,11 @@ const log = {
     info: (module, message) => {
         console.log(`${formatTime()} | ${colors.fg.cyan}${padModule(module)}${colors.reset} | ${formatMessage(message)}`);
     },
+    debug: (module, message) => {
+        if (process.env.DEBUG || LOG_LEVEL === 'debug') {
+            console.log(`${formatTime()} | ${colors.fg.gray}${padModule(module)}${colors.reset} | ${formatMessage(message)}`);
+        }
+    },
     success: (module, message) => {
         console.log(`${formatTime()} | ${colors.fg.green}${padModule(module)}${colors.reset} | ${formatMessage(message)}`);
     },

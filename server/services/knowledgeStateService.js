@@ -828,29 +828,20 @@ Respond with a JSON object in this exact format (NO deviations):
     }
 
     /**
-     * Process session end
+     * Process session end (Enqueues resource-optimized background task)
      */
     async processSessionEnd(sessionId, userId, llmConfig) {
         try {
-            log.info('SYSTEM', `Finalizing session memory for ${sessionId}`);
-            const chatHistory = await ChatHistory.findOne({ sessionId, userId });
-            if (!chatHistory || chatHistory.messages.length < 2) return;
-
-            const insights = await this.analyzeConversationForInsights(sessionId, userId, chatHistory.messages, llmConfig);
-            if (!insights) return;
-
-            await this.updateKnowledgeStateFromInsights(userId, sessionId, insights);
-
-            // Mark chat history as analyzed
-            await ChatHistory.findOneAndUpdate({ sessionId }, {
-                $set: {
-                    'sessionMetadata.insightsGenerated': true,
-                    summary: insights.summary
-                }
-            });
-
+            log.info('SYSTEM', `Enqueueing session memory & insight generation for ${sessionId} to Resource Task Queue...`);
+            const { resourceTaskQueueService, TASK_TYPES, TASK_PRIORITIES } = require('./resourceTaskQueueService');
+            
+            await resourceTaskQueueService.enqueue(
+                TASK_TYPES.SESSION_INSIGHTS,
+                { sessionId, userId, llmConfig },
+                { priority: TASK_PRIORITIES.NORMAL, dedupKey: `session_insights_${sessionId}` }
+            );
         } catch (error) {
-            log.error('SYSTEM', `Session finalization failed for ${sessionId}`, error);
+            log.error('SYSTEM', `Session finalization queue failed for ${sessionId}`, error);
         }
     }
 

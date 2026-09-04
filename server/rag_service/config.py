@@ -118,7 +118,7 @@ LOGGING_FORMAT     = '%(asctime)s - %(levelname)s - [%(name)s:%(lineno)d] - %(me
 
 # --- API Keys and Service URLs ---
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-GEMINI_MODEL_NAME = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash')
+GEMINI_MODEL_NAME = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
 
 # Gemini is ONLY used when the admin has explicitly validated the key.
 # A key that is the placeholder value 'your_openai_api_key' or similar is
@@ -373,9 +373,12 @@ class FastEmbedder:
     """
     def __init__(self, model_name: str):
         from fastembed import TextEmbedding
-        self._model = TextEmbedding(model_name=model_name)
+        import os
+        cache_dir = os.getenv('FASTEMBED_CACHE_PATH', '/home/sri/.cache/fastembed')
+        os.makedirs(cache_dir, exist_ok=True)
+        self._model = TextEmbedding(model_name=model_name, cache_dir=cache_dir)
         self._model_name = model_name
-        logger.info(f"[FastEmbedder] Initialized → model={model_name}")
+        logger.info(f"[FastEmbedder] Initialized → model={model_name} (cache={cache_dir})")
 
     def encode(self, texts, normalize_embeddings: bool = True,
                show_progress_bar: bool = False, **kwargs):
@@ -456,20 +459,30 @@ def get_sparse_embedding_model():
 def get_embedding_model():
     global _document_embedding_model, EMBEDDING_MODEL_LOADED
     if _document_embedding_model is None:
+        import os
+        os.environ['HF_HUB_DISABLE_XET'] = '1'
+        os.environ['HF_HUB_ENABLE_HF_TRANSFER'] = '0'
+
         if EMBED_PROVIDER == 'fastembed':
             try:
                 _document_embedding_model = FastEmbedder(FASTEMBED_MODEL)
                 EMBEDDING_MODEL_LOADED = True
-                logger.info(f"[Config] Embedding provider=fastembed  model={FASTEMBED_MODEL}")
+                logger.info(f"[Config] Embedding provider=fastembed model={FASTEMBED_MODEL}")
             except Exception as e:
-                logger.warning(f"[Config] FastEmbedder init failed: {e}")
-                EMBEDDING_MODEL_LOADED = False
+                logger.warning(f"[Config] FastEmbedder init failed ({e}), attempting SentenceTransformer fallback...")
+                try:
+                    from sentence_transformers import SentenceTransformer
+                    _document_embedding_model = SentenceTransformer(DOCUMENT_EMBEDDING_MODEL_NAME, device='cpu')
+                    EMBEDDING_MODEL_LOADED = True
+                    logger.info(f"[Config] Fallback SentenceTransformer loaded: {DOCUMENT_EMBEDDING_MODEL_NAME}")
+                except Exception as st_err:
+                    logger.error(f"[Config] Fallback SentenceTransformer failed: {st_err}")
+                    EMBEDDING_MODEL_LOADED = False
         else:
             try:
                 from sentence_transformers import SentenceTransformer
                 logger.info(f"Loading Sentence Transformer: {DOCUMENT_EMBEDDING_MODEL_NAME}...")
-                # Force CPU to avoid competing with SGLang/SGLang for VRAM
-                _document_embedding_model = SentenceTransformer(DOCUMENT_EMBEDDING_MODEL_NAME, device='cpu', local_files_only=True)
+                _document_embedding_model = SentenceTransformer(DOCUMENT_EMBEDDING_MODEL_NAME, device='cpu')
                 EMBEDDING_MODEL_LOADED = True
                 logger.info(f"Successfully loaded embedding model '{DOCUMENT_EMBEDDING_MODEL_NAME}'")
             except Exception as e:

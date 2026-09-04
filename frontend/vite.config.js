@@ -1,4 +1,5 @@
 // vite.config.js
+import process from 'node:process'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -12,19 +13,29 @@ export default defineConfig({
   base: isMobileBuild ? './' : '/',
   // --- API Proxy Configuration ---
   server: {
-    port: 3005,
+    port: 3006,
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://localhost:5005',
+        target: 'http://localhost:5006',
         changeOrigin: true,
         secure: false,
       },
       '/socket.io': {
-        target: 'http://localhost:5005',
+        target: 'http://localhost:5006',
         changeOrigin: true,
         secure: false,
         ws: true,   // proxy WebSocket upgrades
+      },
+      '/rag': {
+        target: 'http://localhost:2006',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/course_bootstrap': {
+        target: 'http://localhost:5006',
+        changeOrigin: true,
+        secure: false,
       },
     },
 

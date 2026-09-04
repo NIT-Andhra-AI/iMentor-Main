@@ -1,0 +1,624 @@
+{
+  "course_code": "EE3721",
+  "course_name": "Electric Vehicle Powertrain Design",
+  "category": "circuits",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 36,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Battery parameters",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Battery parameters concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'Battery parameters concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "battery types-lead acid",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery types-lead acid concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery types-lead acid concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "nickel based",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "nickel based concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'nickel based concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "sodium based",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "sodium based concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'sodium based concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "lithium",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "lithium concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'lithium concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "metal air based batteries",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "metal air based batteries concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'metal air based batteries concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "comparison",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "comparison concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'comparison concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "battery modelling",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery modelling concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery modelling concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "use of batteries in EVs Battery Performance: Battery charging",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "use of batteries in EVs Battery Performance: Battery charging concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'use of batteries in EVs Battery Performance: Battery charging concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "battery fast charging",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery fast charging concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery fast charging concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "battery discharging",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery discharging concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery discharging concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "battery efficiency",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery efficiency concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery efficiency concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "battery performance",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery performance concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery performance concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "battery testing",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery testing concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery testing concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "battery management system – SOC",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery management system – SOC concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery management system – SOC concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "factors affecting failures of battery Wired Charging Station (Static): Electric vehicle supply equipment",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "factors affecting failures of battery Wired Charging Station (Static): Electric vehicle supply equipment concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'factors affecting failures of battery Wired Charging Station (Static): Electric vehicle supply equipment concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "classification of EVSE",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "classification of EVSE concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'classification of EVSE concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "DC charging station-configuration",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "DC charging station-configuration concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'DC charging station-configuration concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "performance",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "performance concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'performance concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "AC charging station-configuration",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "AC charging station-configuration concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'AC charging station-configuration concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "performance",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "performance concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'performance concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "advantages and disadvantages of wired charging station",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "advantages and disadvantages of wired charging station concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'advantages and disadvantages of wired charging station concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "IEC standards Wireless Charging Station (Dynamic): Composition of the wireless charging system",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "IEC standards Wireless Charging Station (Dynamic): Composition of the wireless charging system concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'IEC standards Wireless Charging Station (Dynamic): Composition of the wireless charging system concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "IEC standards on wireless power transfer",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "IEC standards on wireless power transfer concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'IEC standards on wireless power transfer concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "wireless charging challenges",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "wireless charging challenges concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'wireless charging challenges concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "case studies on recent practical deployments",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "case studies on recent practical deployments concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'case studies on recent practical deployments concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "advantages and disadvantages Current Developments in Charging Stations across National and Global: EV charging infrastructure with reference to IEA and EESL",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "advantages and disadvantages Current Developments in Charging Stations across National and Global: EV charging infrastructure with reference to IEA and EESL concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'advantages and disadvantages Current Developments in Charging Stations across National and Global: EV charging infrastructure with reference to IEA and EESL concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "statistical analysis and progress",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "statistical analysis and progress concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'statistical analysis and progress concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Battery parameters",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Battery parameters concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'Battery parameters concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "battery types-lead acid",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery types-lead acid concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery types-lead acid concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "nickel based",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "nickel based concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'nickel based concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "sodium based",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "sodium based concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'sodium based concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "lithium",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "lithium concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'lithium concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "metal air based batteries",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "metal air based batteries concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'metal air based batteries concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "comparison",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "comparison concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'comparison concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "battery modelling",
+      "module": "Introduction to Battery Technology",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "battery modelling concepts in Introduction to Battery Technology",
+          "pedagogical_intuition": "For 'battery modelling concepts in Introduction to Battery Technology', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE3721/ai_reference_textbook.md"
+}

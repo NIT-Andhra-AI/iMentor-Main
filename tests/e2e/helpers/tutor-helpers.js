@@ -1,7 +1,7 @@
 // tests/e2e/helpers/tutor-helpers.js
 // Shared tutor-mode helpers for E2E tests
 
-const BASE_API = 'http://localhost:5005/api';
+const BASE_API = process.env.BASE_API || 'http://localhost:5006/api';
 
 /* ─── Selectors ────────────────────────────────────────────────────── */
 
@@ -79,6 +79,26 @@ export async function selectTutorCourse(page, courseName) {
  * Uses POST /api/progress/update with type='sync' and empty arrays.
  */
 export async function clearTutorProgress(page, courseName) {
+  // Clear localStorage progress keys in browser
+  await page.evaluate((course) => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user.id || user._id || 'guest';
+    const keysToRemove = [
+      `tutorProgress_subtopics_${userId}_${course}`,
+      `tutorProgress_topics_${userId}_${course}`,
+      `tutorProgress_modules_${userId}_${course}`,
+      `quizResults_${userId}_${course}`,
+      `quizResults_snapshot_${userId}`,
+    ];
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (key && (key.includes(course) || key.startsWith('tutorProgress_') || key.startsWith('quizResults_'))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+  }, courseName).catch(() => {});
+
   // Retry reading token until it's available
   let token = '';
   for (let i = 0; i < 10; i++) {
@@ -87,20 +107,22 @@ export async function clearTutorProgress(page, courseName) {
     await page.waitForTimeout(500);
   }
 
-  const response = await page.request.post(`${BASE_API}/progress/update`, {
-    headers: { Authorization: `Bearer ${token}` },
-    data: {
-      courseName,
-      type: 'sync',
-      id: 'bulk',
-      completedTopics: [],
-      completedModules: [],
-      completedSubtopics: []
-    }
-  });
+  if (token) {
+    const response = await page.request.post(`${BASE_API}/progress/update`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        courseName,
+        type: 'sync',
+        id: 'bulk',
+        completedTopics: [],
+        completedModules: [],
+        completedSubtopics: []
+      }
+    });
 
-  if (!response.ok()) {
-    console.warn(`⚠ clearTutorProgress failed: ${response.status()} ${await response.text()}`);
+    if (!response.ok()) {
+      console.warn(`⚠ clearTutorProgress failed: ${response.status()} ${await response.text()}`);
+    }
   }
 }
 
@@ -251,7 +273,13 @@ export async function expandTopic(page, topicName) {
  * Returns a number 0-100 or null if not found.
  */
 export async function getProgressPercentage(page) {
-  const progressText = await page.locator('text=/\\d+%/').first().textContent().catch(() => null);
+  // Target the curriculum panel footer progress specific to Topics
+  const topicsSpan = page.locator('span').filter({ hasText: /Topics:/i }).locator('span');
+  let progressText = await topicsSpan.textContent().catch(() => null);
+  if (!progressText) {
+    const footerStat = page.locator('div').filter({ hasText: /Modules:/i }).locator('text=/\\d+%/').last();
+    progressText = await footerStat.textContent().catch(() => null);
+  }
   if (!progressText) return null;
   const match = progressText.match(/(\d+)%/);
   return match ? parseInt(match[1], 10) : null;

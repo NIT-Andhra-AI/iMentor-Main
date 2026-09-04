@@ -1,0 +1,95 @@
+{
+  "course_code": "CS2101",
+  "course_name": "Data Structures and Applications",
+  "total_questions": 3,
+  "topics": [
+    {
+      "topic_num": 1,
+      "topic_title": "Self-Balancing Binary Search Trees (AVL & Red-Black Trees)",
+      "module": "Module 2: Advanced Non-Linear Data Structures",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "CS2101_L1_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Self-Balancing Binary Search Trees (AVL & Red-Black Trees)?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Self-Balancing Binary Search Trees (AVL & Red-Black Trees), governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "CS2101_L1_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Self-Balancing Binary Search Trees (AVL & Red-Black Trees), given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "CS2101_L1_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Self-Balancing Binary Search Trees (AVL & Red-Black Trees), if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    }
+  ]
+}

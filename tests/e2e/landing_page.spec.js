@@ -296,4 +296,22 @@ test.describe('Landing Page — Chat Interaction Tests', () => {
 
         console.log('✓ LP-11 passed: Full login from landing page to main chat');
     });
+
+    test('LP-12 — Login with wrong password shows error', async ({ page }) => {
+        await page.goto('/');
+
+        const loginBtn = page.getByRole('button', { name: /sign.?in|login/i }).first();
+        await loginBtn.waitFor({ state: 'visible', timeout: 10000 });
+        await loginBtn.click();
+
+        await page.getByPlaceholder(/email/i).fill('student@imentor.edu');
+        await page.getByPlaceholder(/password/i).fill('wrongpassword');
+        await page.locator('form').getByRole('button', { name: /sign.?in|login/i }).click();
+
+        const errorEl = page.getByText(/invalid|incorrect|wrong|error/i).first();
+        await expect(errorEl).toBeVisible({ timeout: 10000 });
+
+        console.log('✓ LP-12 passed: Error shown for wrong password');
+    });
 });
+

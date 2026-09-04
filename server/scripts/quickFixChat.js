@@ -57,20 +57,6 @@ async function quickFix() {
             console.log('   Start it with: cd python-rag-service && python app.py\n');
         }
 
-        // Check Ollama service (if configured)
-        if (process.env.OLLAMA_API_BASE_URL) {
-            try {
-                const response = await fetch(`${process.env.OLLAMA_API_BASE_URL}/api/tags`);
-                if (response.ok) {
-                    console.log('✅ Ollama Service: Running');
-                } else {
-                    console.log('⚠️  Ollama Service: Unhealthy');
-                }
-            } catch (error) {
-                console.log('❌ Ollama Service: NOT RUNNING');
-                console.log('   Start it with: ollama serve\n');
-            }
-        }
 
         // Fix 3: Check API keys
         console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');

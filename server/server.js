@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const path = require('path');
 const fs = require('fs');
 const envPath = path.join(__dirname, '.env');
-dotenv.config({ path: envPath });
+dotenv.config({ path: envPath, override: true });
 
 require('./instrument.js');
 const { register, httpRequestDurationMicroseconds } = require('./utils/metrics');
@@ -67,7 +67,7 @@ const researchRoutes = require('./routes/research');
 const debugRoutes = require('./routes/debug');
 const guestChatRoutes = require('./routes/guestChat');
 const deepResearchRoutes = require('./routes/deepResearch'); // [Team1-6] Deep research
-const tutorRoutes = require('./routes/tutor'); // [Team1-6] Socratic tutor
+const tutorRoutes = require('./routes/tutorRoutes'); // Socratic tutor & curriculum routes
 const socraticRoutes = require('./routes/socratic'); // [Team1-6] Socratic sessions
 const studyModeRoutes = require('./routes/studyMode'); // Study questions + skill tree
 const skillTreeGeneratorRoutes = require('./routes/skillTreeGenerator');
@@ -84,13 +84,11 @@ const { startBossBattleGenerator } = require('./jobs/bossBattleGenerator');
 const { startBountyCleanup } = require('./jobs/bountyCleanup');
 const { startBountyGenerator } = require('./jobs/bountyGenerator');
 const { startSpacedRepetitionScheduler } = require('./jobs/spacedRepetitionScheduler');
-// REMOVED: Nightly session evaluator cron job - now runs via maintenance script
-// const { startNightlySessionEvaluator } = require('./jobs/nightlySessionEvaluator');
 
 const ENABLE_CRON = process.env.ENABLE_CRON !== 'false';
 
 // --- Configuration & Express App Setup ---
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5006;
 const mongoUri = process.env.MONGO_URI;
 const pythonRagUrl = process.env.PYTHON_RAG_SERVICE_URL;
 
@@ -227,13 +225,14 @@ app.use((req, res, next) => {
 
 // --- API Route Mounting ---
 app.get("/", (req, res) => res.send("AI Tutor Backend API is running..."));
-app.get("/health", (req, res) => res.json({ status: "ok", timestamp: new Date().toISOString() }));
+app.use("/api/health", require('./routes/healthRoutes'));
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
 });
 
-// --- Public Routes (No Authentication Required) ---
+// --- Public Routes & Static Course Assets ---
+app.use('/course_bootstrap', express.static(path.join(__dirname, '..', 'course_bootstrap')));
 app.use("/api/network", networkRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/guest", chatLimiter, guestChatRoutes); // [Optimization] Rate-limit unauthenticated chat
@@ -243,6 +242,10 @@ app.use('/api/admin/analytics', adminAuthMiddleware, analyticsRoutes);
 app.use('/api/admin/finetuning', adminAuthMiddleware, finetuningRoutes);
 app.use('/api/admin/gamification', adminAuthMiddleware, require('./routes/adminGamification'));
 app.use("/api/admin", adminAuthMiddleware, adminMasterRouter);
+
+// --- Student Developer & Public API Engine (OpenAI & Claude Compatible) ---
+app.use("/api/developer", authMiddleware, require("./routes/developer"));
+app.use("/api/v1", require("./routes/developerApi"));
 
 // --- Protected User Routes (Requires standard authMiddleware) ---
 // The authMiddleware is now passed as the second argument, applying it specifically to these routers.
@@ -308,6 +311,8 @@ app.use('/api/question-bank', authMiddleware, require('./routes/questionBank'));
 app.use('/api/adaptive-profile', authMiddleware, adaptiveProfileRoutes); // [Team8] Student adaptive learning profiles
 app.use('/api/assessment', authMiddleware, require('./routes/knowledgeAssessment')); // Knowledge Assessment Engine
 app.use('/api/faculty', require('./routes/faculty'));
+app.use('/api/placements', require('./routes/placementRoutes'));
+app.use('/api/knowledge-state', authMiddleware, require('./routes/knowledgeState'));
 
 // --- Sentry Error Handler ---
 Sentry.setupExpressErrorHandler(app);
@@ -327,81 +332,66 @@ app.use((err, req, res, next) => {
 async function startServer() {
   log.info('SYSTEM', "Starting Server Initialization...");
   try {
-    await setupAdmin(mongoUri);
-    await ensureServerDirectories();
-    await connectDB(mongoUri);
-    await checkEmailCredentials();
-    await performAssetCleanup();
-    await checkRagService(pythonRagUrl);
-    await connectRedis();
-    
-    // Check optional services (non-blocking, won't crash server if unavailable)
-    const { checkOptionalServices } = require('./utils/startupServices');
-    await checkOptionalServices();
-    
-    // Bootstrap seed courses from course_bootstrap/ into Neo4j
-    try {
-      await bootstrapCoursesOnStartup({
-        pythonServiceUrl: pythonRagUrl,
-        bootstrapDir: path.join(__dirname, 'course_bootstrap'),
-      });
-    } catch (err) {
-      log.warn('SYSTEM', `Startup bootstrap encountered non-fatal error: ${err.message}`);
-    }
-    
-    await auditRedisUsage();
-
-    // --- Startup health check ---
-    try {
-      const { logHealthSummary } = require('./services/startupHealthCheck');
-      await logHealthSummary();
-    } catch (e) {
-      log.warn('HEALTH', `Health check failed: ${e.message}`);
-    }
-
-    // --- Course material processing disabled on server startup ---
-    // Use offline maintenance jobs (scripts/maintenanceJobs.js) for:
-    //   - Course PDF ingestion (Cpurses/)
-    //   - Material pipeline (course_bootstrap/ → PDF→Markdown→Qdrant→STN)
-    // This prevents redundant processing and keeps server startup fast.
-    
-    // --- Watch course directories for new PDFs ---
-    startCourseFileWatchers();
-
-    // --- Start Gamification Cron Jobs ---
-    if (ENABLE_CRON) {
-      log.info('SYSTEM', 'Starting gamification cron jobs...');
-      startBountyGenerator();
-      startBountyCleanup();
-      startBossBattleGenerator();
-      startBossBattleCleanup();
-      startSpacedRepetitionScheduler();
-      log.success('SYSTEM', 'All gamification cron jobs started successfully');
-
-      // --- MAINTENANCE MODE APPROACH (replaces nightly cron) ---
-      // Heavy offline jobs (KG extraction, XP scoring, skill tree questions, course updates)
-      // are now run via: node scripts/maintenanceJobs.js
-      // Run during daily maintenance window when frontend is offline for users.
-      log.info('SYSTEM', '[MAINTENANCE] For offline jobs, run: node scripts/maintenanceJobs.js');
-    } else {
-      log.warn('SYSTEM', 'Cron jobs are DISABLED (ENABLE_CRON=false)');
-    }
-
+    // Start HTTP server immediately so health checks pass instantly
     const server = app.listen(port, "0.0.0.0", () => {
       log.success('SYSTEM', `Server listening on port ${port}`);
     });
-
-    // --- Initialize Semantic Router ---
-    log.info('SYSTEM', 'Initializing semantic router...');
-    const { initialize: initializeSemanticRouter } = require('./services/semanticRouter');
-    initializeSemanticRouter()
-      .then(() => log.success('SYSTEM', 'Semantic router initialized successfully'))
-      .catch((err) => log.error('SYSTEM', `Semantic router initialization failed: ${err.message}. Will fall back to keyword routing.`));
 
     // --- Initialize Socket.io ---
     const { initSocket } = require("./services/socketService");
     initSocket(server);
     log.success('SYSTEM', 'Socket.io initialized successfully');
+
+    await setupAdmin(mongoUri);
+    await ensureServerDirectories();
+    await connectDB(mongoUri);
+    await checkEmailCredentials();
+    await connectRedis();
+
+    // --- Start Health Revival Agent ---
+    const healthRevivalAgent = require('./services/healthRevivalAgent');
+    healthRevivalAgent.start();
+
+    // Run remaining initializations in background
+    setImmediate(async () => {
+      await performAssetCleanup();
+      await checkRagService(pythonRagUrl);
+      const { checkOptionalServices } = require('./utils/startupServices');
+      await checkOptionalServices();
+
+      try {
+        await bootstrapCoursesOnStartup({
+          pythonServiceUrl: pythonRagUrl,
+          bootstrapDir: path.join(__dirname, 'course_bootstrap'),
+        });
+      } catch (err) {
+        log.warn('SYSTEM', `Startup bootstrap encountered non-fatal error: ${err.message}`);
+      }
+
+      await auditRedisUsage();
+
+      try {
+        const { logHealthSummary } = require('./services/startupHealthCheck');
+        await logHealthSummary();
+      } catch (e) {
+        log.warn('HEALTH', `Health check failed: ${e.message}`);
+      }
+
+      startCourseFileWatchers();
+
+      if (ENABLE_CRON) {
+        startBountyGenerator();
+        startBountyCleanup();
+        startBossBattleGenerator();
+        startBossBattleCleanup();
+        startSpacedRepetitionScheduler();
+      }
+
+      const { initialize: initializeSemanticRouter } = require('./services/semanticRouter');
+      initializeSemanticRouter()
+        .then(() => log.success('SYSTEM', 'Semantic router initialized successfully'))
+        .catch((err) => log.error('SYSTEM', `Semantic router initialization failed: ${err.message}`));
+    });
 
     const gracefulShutdown = async (signal) => {
       log.info('SYSTEM', `${signal} received. Shutting down...`);
@@ -423,15 +413,35 @@ process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 
   // Global production error handlers
   process.on("unhandledRejection", (reason, promise) => {
-    log.error('SYSTEM', 'Unhandled Rejection', { reason: reason?.message || reason, stack: reason?.stack });
-    // Graceful shutdown
-    gracefulShutdown('UNHANDLED_REJECTION');
+    const errorDetails = {
+      timestamp: new Date().toISOString(),
+      type: "UNHANDLED_REJECTION",
+      reason: reason?.message || String(reason),
+      stack: reason?.stack || null
+    };
+    log.error('SYSTEM', 'Unhandled Rejection (Non-fatal, isolating error)', errorDetails);
+    try {
+      fs.writeFileSync('/tmp/imentor_v2_last_unhandled_rejection.json', JSON.stringify(errorDetails, null, 2));
+    } catch (_) {}
   });
 
   process.on("uncaughtException", (err) => {
-    log.error('SYSTEM', 'Uncaught Exception', { message: err.message, stack: err.stack });
-    // Graceful shutdown
-    gracefulShutdown('UNCAUGHT_EXCEPTION');
+    const errorDetails = {
+      timestamp: new Date().toISOString(),
+      type: "UNCAUGHT_EXCEPTION",
+      message: err.message,
+      code: err.code || null,
+      stack: err.stack || null
+    };
+    log.error('SYSTEM', 'Uncaught Exception', errorDetails);
+    try {
+      fs.writeFileSync('/tmp/imentor_v2_last_crash.json', JSON.stringify(errorDetails, null, 2));
+    } catch (_) {}
+
+    const isFatal = err.code === 'EADDRINUSE' || err.code === 'MODULE_NOT_FOUND' || err.message?.includes('ENOMEM');
+    if (isFatal) {
+      gracefulShutdown('UNCAUGHT_EXCEPTION');
+    }
   });
   } catch (error) {
     log.error('SYSTEM', "Failed to start Node.js server", error);

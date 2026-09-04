@@ -156,7 +156,7 @@ class ProviderHealthCache {
         }
         const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
         const baseUrl = sglangUrl.replace(/\/v1\/?$/, '');
-        await axios.get(`${baseUrl}/health`, { timeout: 3000 });
+        await axios.get(`${baseUrl}/health`, { timeout: 10000 });
         this._entry(provider).healthy = true;
         this._entry(provider).checked = true;
         results[provider] = { healthy: true };
@@ -165,7 +165,7 @@ class ProviderHealthCache {
 
       if (provider === 'ollama') {
         const ollamaUrl = process.env.OLLAMA_URL || `http://localhost:${process.env.OLLAMA_PORT || 11434}`;
-        const resp = await axios.get(`${ollamaUrl.replace(/\/+$/, '')}/api/tags`, { timeout: 3000 });
+        const resp = await axios.get(`${ollamaUrl.replace(/\/+$/, '')}/api/tags`, { timeout: 10000 });
         const ok = resp.status === 200 && Array.isArray(resp.data?.models);
         this._entry(provider).healthy = ok;
         this._entry(provider).checked = true;

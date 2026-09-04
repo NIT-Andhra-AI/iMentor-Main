@@ -1,0 +1,624 @@
+{
+  "course_code": "EC1521",
+  "course_name": "Signals and Systems",
+  "category": "dsp",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 36,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Continuous Time and Discrete Time signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous Time and Discrete Time signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous Time and Discrete Time signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Exponential and Sinusoidal Signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Exponential and Sinusoidal Signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Exponential and Sinusoidal Signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Unit Impulse and Unit Step Functions",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Unit Impulse and Unit Step Functions concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Unit Impulse and Unit Step Functions concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Continuous and Discrete Time Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous and Discrete Time Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous and Discrete Time Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Continuous Time LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous Time LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous Time LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "properties of LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "properties of LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'properties of LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Fourier series Representation of CT periodic Signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Fourier series Representation of CT periodic Signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Fourier series Representation of CT periodic Signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "properties of CT Fourier Series",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "properties of CT Fourier Series concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'properties of CT Fourier Series concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Fourier Series representation of DT periodic Signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Fourier Series representation of DT periodic Signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Fourier Series representation of DT periodic Signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "properties of DFS",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "properties of DFS concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'properties of DFS concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Fourier series and LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Fourier series and LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Fourier series and LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Filtering",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Filtering concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Filtering concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Examples of CT filters",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Examples of CT filters concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Examples of CT filters concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Examples of DT filters Continuous Time Fourier Transform: Representation of a periodic Signals by continuous FT",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Examples of DT filters Continuous Time Fourier Transform: Representation of a periodic Signals by continuous FT concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Examples of DT filters Continuous Time Fourier Transform: Representation of a periodic Signals by continuous FT concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "FT of periodic signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "FT of periodic signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'FT of periodic signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "convolution and multiplication property of continuous FT",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "convolution and multiplication property of continuous FT concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'convolution and multiplication property of continuous FT concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "systems characterized by Linear Constant Coefficient Differential Equations Time And Frequency Characterization of Signals and Systems: Magnitude and phase representation of FT",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "systems characterized by Linear Constant Coefficient Differential Equations Time And Frequency Characterization of Signals and Systems: Magnitude and phase representation of FT concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'systems characterized by Linear Constant Coefficient Differential Equations Time And Frequency Characterization of Signals and Systems: Magnitude and phase representation of FT concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Magnitude and phase response of LTI systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Magnitude and phase response of LTI systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Magnitude and phase response of LTI systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Time domain and Frequency domain aspects of ideal and non-ideal filters Discrete Time Fourier Transform (DTFT) convolution property",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Time domain and Frequency domain aspects of ideal and non-ideal filters Discrete Time Fourier Transform (DTFT) convolution property concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Time domain and Frequency domain aspects of ideal and non-ideal filters Discrete Time Fourier Transform (DTFT) convolution property concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "multiplication property",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "multiplication property concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'multiplication property concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Duality",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Duality concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Duality concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Systems characterized by Linear Constant Coefficient Difference Equations Laplace Transforms: Review of Laplace transforms",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Systems characterized by Linear Constant Coefficient Difference Equations Laplace Transforms: Review of Laplace transforms concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Systems characterized by Linear Constant Coefficient Difference Equations Laplace Transforms: Review of Laplace transforms concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Inverse Laplace transform",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Inverse Laplace transform concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Inverse Laplace transform concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Concept of region of convergence (ROC) for Laplace transforms",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Concept of region of convergence (ROC) for Laplace transforms concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Concept of region of convergence (ROC) for Laplace transforms concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Properties of Laplace Transforms relation between Laplace and Fourier transforms",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Properties of Laplace Transforms relation between Laplace and Fourier transforms concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Properties of Laplace Transforms relation between Laplace and Fourier transforms concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Continuous Time and Discrete Time signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous Time and Discrete Time signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous Time and Discrete Time signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Exponential and Sinusoidal Signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Exponential and Sinusoidal Signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Exponential and Sinusoidal Signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Unit Impulse and Unit Step Functions",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Unit Impulse and Unit Step Functions concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Unit Impulse and Unit Step Functions concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Continuous and Discrete Time Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous and Discrete Time Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous and Discrete Time Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'basic System Properties Linear Time Invariant Systems: Discrete Time LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Continuous Time LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Continuous Time LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Continuous Time LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "properties of LTI Systems",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "properties of LTI Systems concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'properties of LTI Systems concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'causal LTI Systems Described by Difference equations Fourier Series Representation of Periodic Signals: Response of LTI systems to Complex Exponentials concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Fourier series Representation of CT periodic Signals",
+      "module": "Basics of Signals and Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Fourier series Representation of CT periodic Signals concepts in Basics of Signals and Systems",
+          "pedagogical_intuition": "For 'Fourier series Representation of CT periodic Signals concepts in Basics of Signals and Systems', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EC1521/ai_reference_textbook.md"
+}

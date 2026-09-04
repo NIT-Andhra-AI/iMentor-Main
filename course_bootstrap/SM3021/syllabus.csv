@@ -1,3 +1,37 @@
-Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites
-SM3021,Design Thinking,Module 1,"Design Thinking Process","Empathize; Define; Ideate; Prototype; Test",None
-SM3021,Design Thinking,Module 2,"Innovation Methods","User-centered design; Rapid prototyping; Design sprint; Iterative development",None
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+SM3021,Design Thinking,Unit I,"Listening and empathizing techniques, observation techniques, structured open-ended","Listening and empathizing techniques, observation techniques, structured open-ended",None,L2_UNDERSTAND
+SM3021,Design Thinking,Unit I,"approaches, overcoming cognitive fixedness, behavior models, innovation heuristics, case-","approaches, overcoming cognitive fixedness, behavior models, innovation heuristics, case-",1,L3_APPLY
+SM3021,Design Thinking,Unit I,based discussions-exercises.,based discussions-exercises.,2,L2_UNDERSTAND
+SM3021,Design Thinking,Unit I,"Use of diagrams and maps in design thinking, empathy map, affinity diagram, mind map,","Use of diagrams and maps in design thinking, empathy map, affinity diagram, mind map,",3,L3_APPLY
+SM3021,Design Thinking,Unit I,"journey map-combining ideas into complex innovation concepts, storytelling and scenario","journey map-combining ideas into complex innovation concepts, storytelling and scenario",4,L2_UNDERSTAND
+SM3021,Design Thinking,Unit I,"planning-improvisation, scenario development, evaluation tools, frog design-prototyping,","planning-improvisation, scenario development, evaluation tools, frog design-prototyping,",5,L3_APPLY
+SM3021,Design Thinking,Unit I,"interactive workshops, case-based discussions.","interactive workshops, case-based discussions.",6,L2_UNDERSTAND
+SM3021,Design Thinking,Unit I,Text Books,,7,L3_APPLY
+SM3021,Design Thinking,Unit I,"1. Roger Martin, The Design of Business",Why Design Thinking is the Next Competitive,8,L2_UNDERSTAND
+SM3021,Design Thinking,Unit I,"Advantage, Harvard Business Press, 2009.","Advantage, Harvard Business Press, 2009.",9,L3_APPLY
+SM3021,Design Thinking,Unit I,"2. Christoph Meinel, Larry Leifer, and Hasso Plattner (eds), Design Thinking",Understand,10,L4_ANALYZE
+SM3021,Design Thinking,Unit I,"– Improve– Apply, Springer, 2011.","– Improve– Apply, Springer, 2011.",11,L4_ANALYZE
+SM3021,Design Thinking,Unit I,"3. Idris Mootee, Design Thinking for Strategic Innovation",What They Can't Teach You at,12,L4_ANALYZE
+SM3021,Design Thinking,Unit I,"Business or Design School, John Wiley & Sons, 2013.","Business or Design School, John Wiley & Sons, 2013.",13,L4_ANALYZE
+SM3021,Design Thinking,Unit I,Scheme and Syllabi 49 | Page,Scheme and Syllabi 49 | Page,14,L4_ANALYZE
+SM3021,Design Thinking,Unit III,"Lead, Lag & Lag-Lead Compensator Frequency-Domain Design","Phase lead margin boost, phase lag steady-state error reduction, lag-lead cascade",15,L5_EVALUATE
+SM3021,Design Thinking,Unit III,State Feedback Pole Placement & Ackermann's Gain Formula,"Full state feedback u = -Kx + r, desired closed-loop pole placement, Ackermann formulation",14,L5_EVALUATE
+SM3021,Design Thinking,Unit III,Full-Order & Reduced-Order Luenberger State Observer Synthesis,"Observer error dynamics, observer gain L design, separation principle theorem",17,L5_EVALUATE
+SM3021,Design Thinking,Unit III,Optimal Control & Linear Quadratic Regulator (LQR) Formulation,"Quadratic cost functional J, Algebraic Riccati Equation (ARE), state weighting Q/R",17,L5_EVALUATE
+SM3021,Design Thinking,Unit III,"Numerical Simulation Solvers (Runge-Kutta, Forward/Backward Euler)","Explicit vs implicit time-marching solvers, numerical stability regions, stiff systems",2,L4_ANALYZE
+SM3021,Design Thinking,Unit III,Constrained Parameter Optimization & Gradient Descent Formulations,"Lagrangian multipliers, KKT conditions, gradient descent with momentum, line search",20,L5_EVALUATE
+SM3021,Design Thinking,Unit III,Discrete-Time State-Space Representation & Sampling Period Selection,"Zero-order hold discretization, discrete A_d and B_d matrices, Shannon sampling rule",13,L4_ANALYZE
+SM3021,Design Thinking,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+SM3021,Design Thinking,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+SM3021,Design Thinking,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+SM3021,Design Thinking,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+SM3021,Design Thinking,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+SM3021,Design Thinking,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+SM3021,Design Thinking,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+SM3021,Design Thinking,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Design Thinking,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+SM3021,Design Thinking,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+SM3021,Design Thinking,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+SM3021,Design Thinking,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+SM3021,Design Thinking,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Design Thinking,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+SM3021,Design Thinking,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+SM3021,Design Thinking,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Design Thinking","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

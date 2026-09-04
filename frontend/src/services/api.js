@@ -24,7 +24,9 @@ function resolveBaseURL() {
 
   // Build-time check — true when built with VITE_BUILD_FOR_CAPACITOR=true
   const isCapacitorBuild =
-    typeof __CAPACITOR_BUILD__ !== 'undefined' && __CAPACITOR_BUILD__;
+    typeof globalThis !== 'undefined' &&
+    typeof globalThis.__CAPACITOR_BUILD__ !== 'undefined' &&
+    Boolean(globalThis.__CAPACITOR_BUILD__);
 
   if (isNative || isCapacitorBuild) {
     // Must be an absolute HTTPS URL — no proxy available in the WebView
@@ -190,7 +192,19 @@ const api = {
     const contentType = res.headers.get('content-type') || '';
     // If server responds with JSON (non-streaming), return directly
     if (contentType.includes('application/json')) {
-      return await res.json();
+      const data = await res.json();
+      if (data && !data.reply) {
+        const textContent = data.response || data.text || data.reply || (typeof data === 'string' ? data : '');
+        data.reply = {
+          sender: 'bot',
+          role: 'model',
+          text: textContent,
+          parts: [{ text: textContent }],
+          timestamp: new Date(),
+          source_pipeline: data.source_pipeline || 'direct_answer',
+        };
+      }
+      return data;
     }
 
     // SSE stream: read through events and return the final_answer payload
@@ -208,19 +222,21 @@ const api = {
       while ((idx = buffer.indexOf('\n\n')) !== -1) {
         const chunk = buffer.slice(0, idx).trim();
         buffer = buffer.slice(idx + 2);
-        if (!chunk.startsWith('data: ')) continue;
+        let event;
         try {
-          const event = JSON.parse(chunk.slice(6));
-          if (event.type === 'final_answer') {
-            finalData = event.content;
-          } else if (event.type === 'error') {
-            const content = event.content || {};
-            const userMsg = content.userMessage || content;
-            const err = new Error(userMsg || 'AI service error during stream');
-            err.aiProviderDetail = content.providerDetail || content.aiError || undefined;
-            throw err;
-          }
-        } catch (e) { throw e; /* propagate error to caller */ }
+          event = JSON.parse(chunk.slice(6));
+        } catch (_) {
+          continue; // skip malformed SSE data chunk
+        }
+        if (event.type === 'final_answer') {
+          finalData = event.content;
+        } else if (event.type === 'error') {
+          const content = event.content || {};
+          const userMsg = content.userMessage || content;
+          const err = new Error(userMsg || 'AI service error during stream');
+          err.aiProviderDetail = content.providerDetail || content.aiError || undefined;
+          throw err;
+        }
       }
     }
 
@@ -839,9 +855,19 @@ const api = {
     return response.data;
   },
 
-  // ===== Tutor Progress =====
+  // ===== Tutor Progress & Active Session Restoration =====
   getTutorProgress: async (course) => {
     const response = await apiClient.get(`/chat/tutor/current-position/${encodeURIComponent(course)}`);
+    return response.data;
+  },
+
+  getActiveTutorSession: async () => {
+    const response = await apiClient.get('/chat/tutor/active-session');
+    return response.data;
+  },
+
+  getLiveMemoryMap: async () => {
+    const response = await apiClient.get('/chat/tutor/live-memory-map');
     return response.data;
   },
 
@@ -899,8 +925,55 @@ const api = {
     const params = topic ? { topic } : {};
     const response = await apiClient.get('/assessment/blooms-taxonomy', { params });
     return response.data;
+  },
+
+  // ===== Student Developer Platform & API Hub =====
+  getDeveloperKeyStatus: async () => {
+    const response = await apiClient.get('/developer/key/status');
+    return response.data;
+  },
+  generateDeveloperKey: async () => {
+    const response = await apiClient.post('/developer/key/generate');
+    return response.data;
+  },
+  refreshDeveloperKey: async () => {
+    const response = await apiClient.post('/developer/key/refresh');
+    return response.data;
+  },
+  revealDeveloperKey: async () => {
+    const response = await apiClient.get('/developer/key/reveal');
+    return response.data;
+  },
+  revokeDeveloperKey: async () => {
+    const response = await apiClient.delete('/developer/key/revoke');
+    return response.data;
+  },
+  getDeveloperLogs: async (page = 1, limit = 15) => {
+    const response = await apiClient.get('/developer/logs', { params: { page, limit } });
+    return response.data;
+  },
+
+  // ===== Placement Readiness & Company Intelligence Hub =====
+  getPlacementStats: async () => {
+    const response = await apiClient.get('/placements/stats');
+    return response.data;
+  },
+  getPlacementCompanies: async (sector = 'all', search = '') => {
+    const response = await apiClient.get('/placements/companies', { params: { sector, search } });
+    return response.data;
+  },
+  getPlacementCompanyDetails: async (companyId) => {
+    const response = await apiClient.get(`/placements/companies/${companyId}`);
+    return response.data;
+  },
+  askPlacementCopilot: async ({ query, companyId, topic }) => {
+    const response = await apiClient.post('/placements/ask-copilot', { query, companyId, topic });
+    return response.data;
+  },
+  getNitApEeeOpportunities: async () => {
+    const response = await apiClient.get('/placements/nitap-eee');
+    return response.data;
   }
 };
-
 
 export default api;

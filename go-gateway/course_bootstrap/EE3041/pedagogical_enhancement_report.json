@@ -1,0 +1,1569 @@
+{
+  "course_code": "EE3041",
+  "course_name": "Electric Power Drives",
+  "category": "machines",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 141,
+  "topic_records": [
+    {
+      "lecture_num": 28,
+      "topic_title": "Basic configuration of pm motors, basic principle and operation of PM motors,",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Basic configuration of pm motors",
+          "pedagogical_intuition": "For 'Basic configuration of pm motors', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "basic principle and operation of PM motors",
+          "pedagogical_intuition": "For 'basic principle and operation of PM motors', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "types",
+          "pedagogical_intuition": "For 'types', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "performance analysis and control of permanent magnet motor drives",
+          "pedagogical_intuition": "For 'performance analysis and control of permanent magnet motor drives', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "advantages and disadvantages",
+          "pedagogical_intuition": "For 'advantages and disadvantages', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit IV: Permanent Magnet Motor Drives",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 1,
+      "topic_title": "Advantages of electric drives, parts of electrical drives, electric motors,",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Advantages of electric drives",
+          "pedagogical_intuition": "For 'Advantages of electric drives', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "parts of electrical drives",
+          "pedagogical_intuition": "For 'parts of electrical drives', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "electric motors",
+          "pedagogical_intuition": "For 'electric motors', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "sources",
+          "pedagogical_intuition": "For 'sources', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "choice of electric drives",
+          "pedagogical_intuition": "For 'choice of electric drives', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "and selection of drives for various applications",
+          "pedagogical_intuition": "For 'and selection of drives for various applications', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit I: Introduction to Electric Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Torque-speed equation of DC motor, speed control of DC motors using single-phase",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Torque-speed equation of DC motor",
+          "pedagogical_intuition": "For 'Torque-speed equation of DC motor', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "speed control of DC motors using single-phase and three-phase fully controlled and half controlled rectifiers in continuous and discontinuous mode of operation",
+          "pedagogical_intuition": "For 'speed control of DC motors using single-phase and three-phase fully controlled and half controlled rectifiers in continuous and discontinuous mode of operation', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "chopper-controlled drives in continuous and discontinuous mode of operation",
+          "pedagogical_intuition": "For 'chopper-controlled drives in continuous and discontinuous mode of operation', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Applications",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Applications",
+          "pedagogical_intuition": "For 'Applications', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit II: DC Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Speed control of induction motor with V/F control, static rotor resistance",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Speed control of induction motor with V/F control",
+          "pedagogical_intuition": "For 'Speed control of induction motor with V/F control', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "static rotor resistance control",
+          "pedagogical_intuition": "For 'static rotor resistance control', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "and slip power recovery scheme",
+          "pedagogical_intuition": "For 'and slip power recovery scheme', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Advanced speed control techniques- field oriented control-direct torque",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Advanced speed control techniques- field oriented control-direct torque control-speed sensorless control techniques",
+          "pedagogical_intuition": "For 'Advanced speed control techniques- field oriented control-direct torque control-speed sensorless control techniques', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "advantages and disadvantages",
+          "pedagogical_intuition": "For 'advantages and disadvantages', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "applications",
+          "pedagogical_intuition": "For 'applications', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit III: Induction Motor Drives",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE3041/ai_reference_textbook.md"
+}

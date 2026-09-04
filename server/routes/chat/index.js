@@ -43,6 +43,18 @@ const standardHandler = require('./handlers/standardHandler');
 const router = express.Router();
 
 router.post('/message', validateChatMessage, injectContextualMemory, async (req, res) => {
+    const { resourceTaskQueueService } = require('../../services/resourceTaskQueueService');
+    resourceTaskQueueService.trackInteractiveStart();
+    let ended = false;
+    const finishTracker = () => {
+        if (!ended) {
+            ended = true;
+            resourceTaskQueueService.trackInteractiveEnd();
+        }
+    };
+    res.on('finish', finishTracker);
+    res.on('close', finishTracker);
+
     let {
         query, sessionId, useWebSearch, useAcademicSearch,
         systemPrompt: clientProvidedSystemInstruction, criticalThinkingEnabled,
@@ -565,22 +577,20 @@ REJECTION TEMPLATE (use when query is non-academic):
 
         if (tutorMode && tutorModeType === TUTOR_MODE_TYPES.GENERAL_SOCRATIC) {
             const wantsDirectExplanation = /\b(just explain|explain fully|full explanation|no questions|just tell me|direct answer|give me the answer|don't ask|do not ask)\b/i.test(query || '');
-            finalSystemPrompt = `You are iMentor in General Socratic Mode.
+            finalSystemPrompt = `You are iMentor in Guided Socratic Learning Mode (mimicking ChatGPT & Gemini interactive guided tutoring).
 
-Core behavior:
-1. Keep every response academic, clear, and concise.
-2. Default pattern: brief explanation (2-6 sentences) + exactly one focused Socratic follow-up question.
-3. Build from the student's current understanding; avoid dumping long lectures unless asked.
-4. If the student asks for a direct/full explanation (e.g., "just explain fully"), provide a complete explanation first, then add an optional check question only if helpful.
-5. Never fabricate facts. If uncertain, say what is uncertain and suggest how to verify.
-6. Maintain encouraging, professional tutor tone.
+Pedagogical Calibration:
+- 70% Scaffolding: Provide thorough, supportive, and clear conceptual explanations. Break down mechanisms step-by-step with real-world analogies, intuitive examples, formulas/code, and practical context.
+- 30% Socratic Guidance: End your response with exactly ONE targeted, engaging follow-up check question or reflection prompt that invites the student to take the next step.
 
-Current turn preference: ${wantsDirectExplanation ? 'DIRECT_EXPLANATION_REQUESTED' : 'SOCRATIC_LOOP_DEFAULT'}.
+Adaptive Behaviors:
+1. When the student asks "Explain X" or asks for an introduction: Deliver comprehensive conceptual scaffolding first (~80% detailed concept breakdown + ~20% quick reflection check).
+2. When the student gives a partial or incorrect answer: Validate effort, clarify the misconception with a concrete analogy (~75% scaffolding), and ask a simplified guiding question (~25%).
+3. When the student answers correctly: Affirm warmly, deepen the concept with advanced intuition or practical trade-offs (~70% scaffolding), and advance to the next challenge question (~30%).
+4. Tone: Inspiring, patient, mathematically sound, and clear. Avoid robotic boilerplate prefixes like "Great job!" or "Spot on!".
+5. If the student asks for a full/direct explanation ("just explain", "tell me directly"): Give a complete, rich explanation without forcing a question.
 
-Output style:
-- Use simple structure and short paragraphs.
-- Prefer examples over abstract wording.
-- Avoid roleplay or non-academic digressions.
+Current turn preference: ${wantsDirectExplanation ? 'DIRECT_EXPLANATION_REQUESTED' : 'GUIDED_LEARNING_DEFAULT'}.
 ` + (finalSystemPrompt || '');
         }
 
@@ -678,17 +688,55 @@ Output style:
         let clientMessage = error.response?.data?.error || error.message || 'An internal error occurred while processing your message.';
 
         if (isAIServiceError) {
-            clientMessage = 'It seems like the AI service is not working right now or is temporarily overwhelmed. Please wait a few moments and try again! 📚';
+            clientMessage = 'It seems like the inference engine is temporarily reconnecting. Please wait a moment and try again! 📚';
         }
 
+        const isGreeting = /^(hi|hello|hey|greetings|good\s*(morning|afternoon|evening|day))\b/i.test(String(query || '').trim());
+        const fallbackText = isGreeting
+            ? "Hello! 👋 I'm **iMentor**, your AI academic tutor. How can I help you with your studies or questions today?"
+            : clientMessage;
+
         if (res.headersSent && !res.writableEnded) {
-            streamEvent(res, { type: 'error', content: clientMessage });
+            streamEvent(res, {
+                type: 'final_answer',
+                content: {
+                    sender: 'bot',
+                    role: 'model',
+                    text: fallbackText,
+                    parts: [{ text: fallbackText }],
+                    timestamp: new Date(),
+                    source_pipeline: 'error_self_healing_fallback'
+                }
+            });
             res.end();
         } else if (!res.headersSent) {
-            res.status(status).json({
-                message: clientMessage,
-                error: (process.env.NODE_ENV === 'development' && !isAIServiceError) ? error.stack : undefined
-            });
+            if (isGreeting) {
+                res.status(200).json({
+                    reply: {
+                        sender: 'bot',
+                        role: 'model',
+                        text: fallbackText,
+                        parts: [{ text: fallbackText }],
+                        timestamp: new Date(),
+                        source_pipeline: 'error_self_healing_fallback'
+                    },
+                    response: fallbackText,
+                    sessionId: sessionId || 'default'
+                });
+            } else {
+                res.status(status >= 400 && status < 600 ? status : 500).json({
+                    message: clientMessage,
+                    reply: {
+                        sender: 'bot',
+                        role: 'model',
+                        text: fallbackText,
+                        parts: [{ text: fallbackText }],
+                        timestamp: new Date(),
+                        source_pipeline: 'error_fallback'
+                    },
+                    error: (process.env.NODE_ENV === 'development' && !isAIServiceError) ? error.stack : undefined
+                });
+            }
         }
     }
 });

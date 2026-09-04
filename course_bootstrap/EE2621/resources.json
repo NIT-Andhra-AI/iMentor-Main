@@ -1,0 +1,76 @@
+{
+  "course_code": "EE2621",
+  "subject_name": "Introduction to Machine Learning",
+  "category": "ml",
+  "textbooks": [
+    {
+      "title": "Pattern Recognition and Machine Learning",
+      "authors": "Christopher M. Bishop",
+      "publisher": "Springer",
+      "edition": "1st Edition",
+      "code": "T1",
+      "relevance": "Foundational mathematical formulations: Bayesian inference, Linear Models, SVMs, Neural Networks, EM Algorithm."
+    },
+    {
+      "title": "Machine Learning: A Probabilistic Perspective",
+      "authors": "Kevin P. Murphy",
+      "publisher": "MIT Press",
+      "edition": "1st Edition",
+      "code": "T2",
+      "relevance": "Probabilistic graphical models, optimization, ensemble methods (AdaBoost, XGBoost), and deep learning."
+    }
+  ],
+  "references": [
+    {
+      "title": "Deep Learning",
+      "authors": "Ian Goodfellow, Yoshua Bengio, Aaron Courville",
+      "publisher": "MIT Press",
+      "edition": "1st Edition",
+      "code": "R1"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Introduction to Machine Learning",
+      "instructor": "Prof. Balaraman Ravindran",
+      "url": "https://nptel.ac.in/courses/106106139",
+      "modules_count": 40
+    },
+    {
+      "platform": "Stanford Online / YouTube",
+      "course_name": "CS229 Machine Learning",
+      "instructor": "Prof. Andrew Ng",
+      "url": "https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU",
+      "modules_count": 20
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Introduction to Machine Learning",
+      "instructor": "Prof. Balaraman Ravindran",
+      "url": "https://nptel.ac.in/courses/106106139",
+      "modules_count": 40
+    },
+    {
+      "platform": "Stanford Online / YouTube",
+      "course_name": "CS229 Machine Learning",
+      "instructor": "Prof. Andrew Ng",
+      "url": "https://www.youtube.com/playlist?list=PLoROMvodv4rMiGQp3WXShtMGgzqpfVfbU",
+      "modules_count": 20
+    }
+  ],
+  "simulation_tools": [
+    "Scikit-Learn",
+    "PyTorch",
+    "TensorFlow",
+    "JAX / NumPy",
+    "iMentor Interactive Visualizer"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

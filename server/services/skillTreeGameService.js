@@ -16,8 +16,8 @@ async function getUserLLMConfig(userId) {
     if (!user) return {};
 
     return {
-        llmProvider: user.preferredLlmProvider || 'gemini',
-        apiKey: user.encryptedApiKey ? decrypt(user.encryptedApiKey) : process.env.GEMINI_API_KEY,
+        llmProvider: user.preferredLlmProvider || 'sglang',
+        apiKey: user.encryptedApiKey ? decrypt(user.encryptedApiKey) : null,
         ollamaModel: user.ollamaModel,
         ollamaUrl: user.ollamaUrl,
         openaiApiKey: user.openaiApiKey,

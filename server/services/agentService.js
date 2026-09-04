@@ -934,9 +934,24 @@ async function processAgenticRequest(
     }
   }
 
-  const toolCatalog = requestContext?.intent === 'research'
-    ? availableTools
-    : Object.fromEntries(Object.entries(availableTools).filter(([name]) => !RESEARCH_ONLY_TOOLS.has(name)));
+  const isRagActive = Boolean(
+    requestContext?.documentContextName ||
+    requestContext?.selectedDocumentForAnalysis ||
+    requestContext?.selectedSubject ||
+    requestContext?.isRagEnabled
+  );
+
+  const excludedTools = new Set();
+  if (requestContext?.intent !== 'research') {
+    RESEARCH_ONLY_TOOLS.forEach(t => excludedTools.add(t));
+  }
+  if (!isRagActive) {
+    excludedTools.add('rag_search');
+  }
+
+  const toolCatalog = Object.fromEntries(
+    Object.entries(availableTools).filter(([name]) => !excludedTools.has(name))
+  );
 
   const modelContext = createModelContext({ availableTools: toolCatalog });
   const agenticContext = createAgenticContext({
@@ -984,6 +999,19 @@ async function processAgenticRequest(
     toolCall = null;
   }
 
+  // --- STRICT EXPLICIT GATING ---
+  // In general chat, activate RAG or ACADEMIC SEARCH only if user explicitly asked or enabled it.
+  const hasAcademicKeyword = /\b(arxiv|paper|papers|scholarly|peer-reviewed|journal|literature review|citation|citations)\b/i.test(userQuery);
+  if (toolCall?.tool_name === 'academic_search' && !requestContext?.isAcademicSearchEnabled && !hasAcademicKeyword) {
+    log.info('AI', `Blocked unsolicited academic_search for general query — reverting to direct answer`);
+    toolCall = null;
+  }
+
+  if (toolCall?.tool_name === 'rag_search' && !requestContext?.documentContextName && !requestContext?.selectedDocumentForAnalysis && !requestContext?.selectedSubject && !requestContext?.isRagEnabled) {
+    log.info('AI', `Blocked unsolicited rag_search for general query — reverting to direct answer`);
+    toolCall = null;
+  }
+
   // --- DETERMINISTIC RAG OVERRIDE ---
   // When a document is selected, the LLM router MUST pick rag_search.
   // Small routing LLMs sometimes pick kg_search or direct_answer instead — override them.
@@ -996,7 +1024,9 @@ async function processAgenticRequest(
   }
 
   // --- INTERCEPT LOGIC FOR DOCUMENT GENERATION ---
-  if (toolCall && toolCall.tool_name === "generate_document") {
+  const isExplicitFileDownload = /\b(pptx|docx|presentation|slides?|powerpoint|word\s+doc(?:ument)?|download\s+file|generate\s+a\s+(?:file|document))\b/i.test(userQuery);
+  const isDiagramOrInlineRequest = /\b(mermaid|flowchart|diagram|table|code|graph|draw|write\s+a\s+function)\b/i.test(userQuery);
+  if (toolCall && toolCall.tool_name === "generate_document" && isExplicitFileDownload && !isDiagramOrInlineRequest) {
     // ... (logic remains same, return immediate action)
     const topicMatch = userQuery.match(/(?:on|about|regarding)\s+(.+)/i);
     const docTypeMatch = userQuery.match(/\b(pptx|docx)\b/i);
@@ -1013,6 +1043,11 @@ async function processAgenticRequest(
       sourcePipeline: `agent-generate_document`,
       action: { type: "DOWNLOAD_DOCUMENT", payload: { topic, docType: doc_type } },
     };
+  }
+
+  if (toolCall && toolCall.tool_name === "generate_document" && (!isExplicitFileDownload || isDiagramOrInlineRequest)) {
+    // Fall back to standard response generation
+    toolCall = null;
   }
 
   if (requestContext.forceSimple === true || !toolCall || !toolCall.tool_name) {

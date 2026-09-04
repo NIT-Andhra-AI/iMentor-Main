@@ -7,7 +7,8 @@
 const log = require('../utils/logger');
 const { formatSocraticStrict } = require('./socraticTutorStrictFormatter'); // [Team3]
 
-const { redisClient } = require('../config/redisClient');
+const redisConfig = require('../config/redisClient');
+const getRedisClient = () => redisConfig.redisClient;
 const geminiService = require('./geminiService');
 const sglangService = require('./sglangService');
 const groqService = require('./groqService');
@@ -27,6 +28,8 @@ const bloomScoringService = require('./bloomScoringService');
 const { decideTeachingAction } = require('./teachingPolicyService');
 const { reflectOnTeaching } = require('./teachingReflectionService');
 const { safe, sanitizeGeneratedText } = require('../utils/promptSanitizer');
+const { getFocusTrackPromptDecoration, normalizeFocusTrack } = require('./focusTrackService');
+const testTimeComputeService = require('./testTimeComputeService');
 
 const ENABLE_TUTOR_REACT_WRAPPER = process.env.ENABLE_TUTOR_REACT_WRAPPER === 'true';
 
@@ -127,12 +130,6 @@ function generateLearningProfile(masteredTopics = []) {
 }
 
 function getPreferredTutorProvider(llmConfig) {
-    if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_VALIDATED === 'true') {
-        return 'gemini';
-    }
-    if (process.env.GROQ_API_KEY) {
-        return 'groq';
-    }
     return llmConfig?.llmProvider || 'sglang';
 }
 
@@ -142,7 +139,7 @@ function getPreferredTutorProvider(llmConfig) {
  */
 async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llmConfig, additionalOptions = {}) {
     const preferredProvider = additionalOptions.preferredProvider || getPreferredTutorProvider(llmConfig);
-    const allProviders = ['sglang', 'groq', 'gemini', 'claude', 'openai', 'ollama'];
+    const allProviders = ['sglang', 'groq', 'gemini', 'claude', 'openai'];
     const providers = [
         preferredProvider,
         ...allProviders.filter(p => p !== preferredProvider)
@@ -158,48 +155,39 @@ async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llm
             let options = { ...additionalOptions };
 
             switch (provider) {
-                case 'sglang': {
-                    const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
-                    if (!SGLANG_ENABLED) {
-                        log.info('TUTOR', `Skipping sglang — SGLANG_ENABLED=false.`);
-                        continue;
-                    }
+                case 'sglang':
+                case 'local_llm': {
                     llmService = require('./sglangService');
-                    options.endpoint = llmConfig.sglangEndpoint || 'chat';
-                    options.model = llmConfig.sglangModel || process.env.SGLANG_CHAT_MODEL || undefined;
+                    options.endpoint = llmConfig?.sglangEndpoint || 'chat';
+                    options.model = llmConfig?.sglangModel || process.env.SGLANG_CHAT_MODEL || undefined;
                     break;
                 }
                 case 'gemini':
                     llmService = geminiService;
-                    options.apiKey = llmConfig.apiKey || process.env.GEMINI_API_KEY;
-                    options.geminiModel = llmConfig.geminiModel || process.env.GEMINI_MODEL || 'gemini-flash-latest';
+                    options.apiKey = llmConfig?.geminiApiKey || llmConfig?.apiKey || null;
+                    options.geminiModel = llmConfig?.geminiModel || 'gemini-2.5-flash';
                     break;
                 case 'groq':
                     llmService = groqService;
-                    options.model = llmConfig.groqModel || process.env.GROQ_MODEL || 'llama-3.1-70b-versatile';
-                    options.apiKey = llmConfig.groqApiKey || llmConfig.apiKey || process.env.GROQ_API_KEY;
+                    options.model = llmConfig?.groqModel || 'llama-3.1-70b-versatile';
+                    options.apiKey = llmConfig?.groqApiKey || llmConfig?.apiKey || null;
                     break;
                 case 'claude':
                     llmService = claudeService;
-                    options.apiKey = llmConfig.claudeApiKey || process.env.ANTHROPIC_API_KEY;
-                    options.model = llmConfig.claudeModel || 'claude-3-sonnet-20240229';
+                    options.apiKey = llmConfig?.claudeApiKey || null;
+                    options.model = llmConfig?.claudeModel || 'claude-3-sonnet-20240229';
                     break;
                 case 'openai':
                     llmService = openaiService;
-                    options.apiKey = llmConfig.openaiApiKey || process.env.OPENAI_API_KEY;
-                    options.model = llmConfig.openaiModel || 'gpt-4o';
-                    break;
-                case 'ollama':
-                    llmService = sglangService;
-                    options.ollamaUrl = llmConfig.ollamaUrl || process.env.OLLAMA_API_BASE_URL;
-                    options.model = llmConfig.ollamaModel || process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b';
+                    options.apiKey = llmConfig?.openaiApiKey || null;
+                    options.model = llmConfig?.openaiModel || 'gpt-4o';
                     break;
                 default:
                     continue;
             }
 
-            if (!options.apiKey && provider !== 'ollama' && provider !== 'sglang') {
-                log.info('TUTOR', `Skipping ${provider} — no API key configured.`);
+            if (!options.apiKey && provider !== 'sglang' && provider !== 'local_llm') {
+                log.info('TUTOR', `Skipping cloud provider ${provider} — user has not configured their own API key.`);
                 continue;
             }
 
@@ -537,7 +525,9 @@ async function getPrecomputedContent(courseName, topicId) {
     if (!courseName || !topicId) return null;
     try {
         const key = `im_cache:socratic_precompute:${courseName.toLowerCase()}:${topicId.toLowerCase()}`;
-        const cached = await redisClient.get(key);
+        const client = getRedisClient();
+        if (!client) return null;
+        const cached = await client.get(key);
         return cached ? JSON.parse(cached) : null;
     } catch (_) {
         return null;
@@ -629,37 +619,78 @@ async function resumeOrStartSession(userId, courseName) {
     };
 }
 
-async function buildInitialLearningPath(courseName, position = null) {
+async function buildInitialLearningPath(courseName, position = null, priorKnowledge = null) {
     const concept = position?.subtopicName || position?.topicName || position?.moduleName || 'general';
+    let learningPath = {
+        concept,
+        steps: fallbackLearningSteps(),
+        currentStep: 0
+    };
     try {
         if (!courseName || courseName === 'General') {
-            return {
+            learningPath = {
                 concept,
                 steps: fallbackLearningSteps(),
                 currentStep: 0
             };
+        } else {
+            const structure = await getCurriculumStructure(courseName);
+            const positionSteps = Array.isArray(position?.steps) && position.steps.length > 0 ? position.steps : null;
+            const steps = positionSteps
+                || (Array.isArray(structure?.learningSteps) && structure.learningSteps.length > 0 ? structure.learningSteps : null)
+                || (Array.isArray(structure?.meta?.learningSteps) && structure.meta.learningSteps.length > 0 ? structure.meta.learningSteps : null)
+                || fallbackLearningSteps();
+
+            learningPath = {
+                concept,
+                steps,
+                currentStep: 0
+            };
         }
-
-        const structure = await getCurriculumStructure(courseName);
-        const positionSteps = Array.isArray(position?.steps) && position.steps.length > 0 ? position.steps : null;
-        const steps = positionSteps
-            || (Array.isArray(structure?.learningSteps) && structure.learningSteps.length > 0 ? structure.learningSteps : null)
-            || (Array.isArray(structure?.meta?.learningSteps) && structure.meta.learningSteps.length > 0 ? structure.meta.learningSteps : null)
-            || fallbackLearningSteps();
-
-        return {
-            concept,
-            steps,
-            currentStep: 0
-        };
     } catch (_error) {
-        return {
+        learningPath = {
             concept,
             steps: fallbackLearningSteps(),
             currentStep: 0
         };
     }
+
+    if (priorKnowledge) {
+        try {
+            const { pruneLearningPathByPriorKnowledge } = require('./priorKnowledgeDetector');
+            learningPath = pruneLearningPathByPriorKnowledge(learningPath, priorKnowledge);
+        } catch (pkErr) {
+            log.warn('TUTOR', `Prior knowledge path pruning non-fatal: ${pkErr.message}`);
+        }
+    }
+
+    return learningPath;
 }
+
+/**
+ * Fetch prerequisite subtopics for a given topic from Neo4j or curriculum hierarchy
+ */
+async function getPrerequisiteSubtopics(courseName, subtopicName) {
+    if (!courseName || courseName === 'General' || !subtopicName) return [];
+    try {
+        const neo4j = require('../config/neo4j');
+        if (neo4j && typeof neo4j.runQuery === 'function') {
+            const query = `
+                MATCH (s:Subtopic {name: $subtopicName})<-[:REQUIRES|PREREQUISITE_OF|DEPENDS_ON]-(pre:Subtopic)
+                RETURN pre.name AS name, pre.id AS id
+                LIMIT 3
+            `;
+            const result = await neo4j.runQuery(query, { subtopicName });
+            if (result?.records?.length > 0) {
+                return result.records.map(r => r.get('name')).filter(Boolean);
+            }
+        }
+    } catch (err) {
+        log.warn('TUTOR', `Neo4j prerequisite query error: ${err.message}`);
+    }
+    return [];
+}
+
 
 /**
  * Multi-agent generator-evaluator strategy for high-quality Socratic responses.
@@ -668,112 +699,81 @@ async function buildInitialLearningPath(courseName, position = null) {
  * 3. Refinement Phase: Refine the draft to address any critique points.
  */
 async function generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConfig, llmOptions, onToken) {
-    log.info('TUTOR', 'Starting multi-agent critique cycle for Socratic question...');
-    
-    // Step 1: Draft Phase (using preferred LLM or fallback, non-streaming)
-    log.info('TUTOR', 'Phase 1: Generating draft response...');
-    const draftResponse = await generateWithFallback(
-        [],
-        prompt,
-        systemPrompt,
-        llmConfig,
-        { ...llmOptions, maxOutputTokens: 1000 }
-    );
-    
-    log.info('TUTOR', `Draft generated:\n${draftResponse}\n`);
+    log.info('TUTOR', 'Generating Guided Socratic Tutor response (70% Scaffolding / 30% Socratic)...');
+    const { cleanResponse, formatSocraticStrict } = require('./socraticTutorStrictFormatter');
 
-    // Step 2: Critique Phase (non-streaming, fast evaluation)
-    log.info('TUTOR', 'Phase 2: Critiquing draft response...');
-    const critiqueSystemPrompt = `You are a Socratic Pedagogy Inspector. Inspect the given Socratic tutor draft response against these rules:
-1. MUST end with exactly ONE clear, focused question.
-2. MUST NOT give away the direct answer to the question.
-3. MUST provide a clear explanation with a concrete analogy or real-world example first.
-4. Tone MUST be warm, patient, and conversational, NOT robotic. Avoid starting with boilerplate like "Great job!", "Spot on!", or similar repetitive phrases.
+    const provider = llmConfig.llmProvider || 'sglang';
+    const finalOptions = {
+        ...llmOptions,
+        maxOutputTokens: llmOptions.maxOutputTokens || 2048,
+        temperature: llmOptions.temperature || 0.6,
+    };
 
-Draft response to inspect:
-"""
-${draftResponse}
-"""
-
-List any violations of the rules. If there are no violations, reply with "PASSED".`;
-
-    const critique = await generateWithFallback(
-        [],
-        "Critique this Socratic draft.",
-        critiqueSystemPrompt,
-        llmConfig,
-        { maxOutputTokens: 300 }
-    );
-    
-    log.info('TUTOR', `Critique results: ${critique}`);
-
-    // If critique passed, we can just return the draft.
-    if (critique.trim().toUpperCase() === 'PASSED') {
-        log.success('TUTOR', 'Critique passed! Streaming draft directly.');
+    try {
         if (onToken) {
-            // Stream the draft response token-by-token
-            const tokens = draftResponse.split(/(\s+)/);
-            for (const token of tokens) {
-                if (token) onToken(token);
-                await new Promise(r => setTimeout(r, 15)); // simulate streaming delay
+            // Streaming path — real-time token delivery to student
+            const messages = [{ role: 'user', content: prompt }];
+            let streamedText = '';
+
+            const tokenCollector = (tokenData) => {
+                const chunk = typeof tokenData === 'string' ? tokenData : tokenData?.content || '';
+                if (chunk) {
+                    streamedText += chunk;
+                    onToken(chunk);
+                }
+            };
+
+            if (provider === 'sglang' && process.env.SGLANG_ENABLED === 'true') {
+                const sglangService = require('./sglangService');
+                const streamResult = await sglangService.streamChat(
+                    [],
+                    prompt,
+                    systemPrompt,
+                    { ...finalOptions, endpoint: 'chat' },
+                    tokenCollector
+                );
+                const rawResult = streamResult?.finalAnswer || streamedText;
+                return formatSocraticStrict(rawResult);
+            } else {
+                const llmStreamingService = require('./llmStreamingService');
+                const rawResult = await llmStreamingService.streamCompletion({
+                    messages,
+                    provider: provider === 'ollama' ? 'sglang' : provider,
+                    model: finalOptions.model || finalOptions.geminiModel || process.env.SGLANG_CHAT_MODEL,
+                    apiKey: finalOptions.apiKey,
+                    systemPrompt,
+                    onToken: tokenCollector,
+                    options: finalOptions,
+                });
+                return formatSocraticStrict(rawResult || streamedText);
             }
+        } else {
+            // Non-streaming fallback path
+            const rawResponse = await generateWithFallback(
+                [],
+                prompt,
+                systemPrompt,
+                llmConfig,
+                finalOptions
+            );
+            return formatSocraticStrict(rawResponse);
         }
-        return draftResponse;
-    }
-
-    // Step 3: Refinement / Synthesis Phase
-    log.info('TUTOR', 'Phase 3: Refining response based on critique...');
-    const refinementSystemPrompt = `You are iMentor, a Senior Socratic Tutor. You have generated a draft response, but it needs refinement to meet quality standards.
-
-CRITIQUE REPORT:
-"""
-${critique}
-"""
-
-ORIGINAL DRAFT:
-"""
-${draftResponse}
-"""
-
-REFINEMENT INSTRUCTIONS:
-- Rewrite the draft response to address all concerns in the critique.
-- Ensure the tone is extremely natural, warm, and highly engaging.
-- Provide a rich explanation of the concept and a real-world analogy.
-- End with exactly ONE focused Socratic question that makes the student reason. Do NOT give the direct answer to the question.
-- Do NOT output any internal thinking or meta-headers. Begin directly with the tutor response.`;
-
-    let refinedResponse = "";
-    if (onToken && (llmConfig.llmProvider === 'gemini' || llmConfig.llmProvider === 'groq')) {
-        // Stream the final refined response directly to the user
-        refinedResponse = await llmStreamingService.streamCompletion({
-            messages: [{ role: 'user', content: 'Provide the refined Socratic response.' }],
-            provider: llmConfig.llmProvider,
-            model: llmOptions.geminiModel || llmOptions.model,
-            apiKey: llmOptions.apiKey,
-            systemPrompt: refinementSystemPrompt,
-            onToken,
-            options: llmOptions
-        });
-    } else {
-        refinedResponse = await generateWithFallback(
-            [],
-            'Provide the refined Socratic response.',
-            refinementSystemPrompt,
-            llmConfig,
-            { ...llmOptions, maxOutputTokens: 1000 }
-        );
-        if (onToken) {
-            // Stream the refined response token-by-token
-            const tokens = refinedResponse.split(/(\s+)/);
-            for (const token of tokens) {
-                if (token) onToken(token);
-                await new Promise(r => setTimeout(r, 15));
-            }
+    } catch (err) {
+        log.warn('TUTOR', `Primary Socratic generation failed: ${err.message}. Falling back through provider chain...`);
+        try {
+            const fallbackRaw = await generateWithFallback(
+                [],
+                prompt,
+                systemPrompt,
+                llmConfig,
+                { ...finalOptions, preferredProvider: 'sglang' }
+            );
+            return formatSocraticStrict(fallbackRaw);
+        } catch (fbErr) {
+            log.error('TUTOR', `All Socratic generation attempts failed: ${fbErr.message}`);
+            return "Let's explore this step by step. What is your initial intuition about this concept?";
         }
     }
-    
-    log.success('TUTOR', 'Socratic response refined successfully!');
-    return refinedResponse;
 }
 
 /**
@@ -1187,8 +1187,9 @@ You MUST:
 ${cognitiveNote}
 ${emotionalNote}
 ${knowledgeNote}
+${getFocusTrackPromptDecoration(metadata?.focusTrack || knowledgeProfile?.learningProfile?.focusTrack || state.focusTrack || 'STANDARD_BTECH')}
 TEACHING POLICY DECISION: ${policyAction}
-REFLECTION ADJUSTMENT: ${reflectionAction || "none"}
+REFLECTIVE ADJUSTMENT: ${reflectionAction || "none"}
 FINAL TEACHING ACTION: ${finalAction}
 TEACHING POLICY INSTRUCTION: ${policyInstruction[finalAction] || policyInstruction.ASK_QUESTION}
 TOPIC: "${safe(topic)}"
@@ -1238,21 +1239,26 @@ The student has struggled twice. You MUST:
    Keep it under 8 nodes. Only include a diagram if it meaningfully clarifies the concept.
 6. Ask ONE simpler, more-guided question (break the original question into a smaller piece)
 ` : `
-ADAPTIVE INSTRUCTION:
-${classification.status === 'CORRECT' ? 'The student answered correctly. Appreciate their success warmly and sincerely. Rearticulate their answer in a sophisticated, clear, and better way to crisply summarize and consolidate their understanding. Then transition smoothly to the next subtopic or level.' : ''}
-${classification.status === 'PARTIAL' ? `The student has partial understanding. First, identify and acknowledge exactly what they got right. Then, explain the missing knowledge in detail to fill their gap. Finally, ask a rearticulated Socratic question stressing the missing knowledge.` : ''}
-${classification.status === 'WRONG' ? `The student answered incorrectly. Be encouraging, but identify any tiny seed of correctness in their response. Explain that part, then explain the core concept in detail to fill the gap. Finally, ask a rearticulated question stressing the missing knowledge.` : ''}
-${classification.status === 'UNKNOWN' ? `The student doesn't know. That's OK! Provide a direct hint and break the concept into the smallest possible sub-question first.` : ''}
+ADAPTIVE INSTRUCTION (70% SCAFFOLDING / 30% SOCRATIC):
+- **70% Conceptual Scaffolding**:
+  ${classification.status === 'CORRECT' ? 'The student answered correctly. Warmly affirm their insight. Rearticulate and elevate their explanation with deeper intuition, real-world engineering context, or trade-offs to consolidate their mental model.' : ''}
+  ${classification.status === 'PARTIAL' ? 'The student has partial understanding. First, highlight the exact part they got right. Then, thoroughly explain the missing mechanism or concept using a concrete analogy or step-by-step example to bridge the gap.' : ''}
+  ${classification.status === 'WRONG' ? 'The student answered incorrectly. Be encouraging and empathetic. Break down why the common misconception happens, explain the actual concept from first principles using an intuitive everyday analogy or visual breakdown.' : ''}
+  ${classification.status === 'UNKNOWN' ? 'The student is unsure or doesn\'t know. Provide supportive, clear conceptual scaffolding from the ground up with an intuitive example.' : ''}
 
-You must respond like a warm, patient human tutor:
-1. Acknowledge and appreciate the student's effort in a natural, engaging, and varied way.
-2. Correct or affirm with a thorough, detailed explanation of the concept, including background context, examples, and/or real-world analogies to ensure deep conceptual coverage.
-3. Ask ONE focused Socratic question requiring reasoning. Stop and wait.
+- **30% Socratic Guidance**:
+  Conclude with exactly ONE focused, engaging check question or application scenario that guides the student to take the next reasoning step.
+
+You must respond like an inspiring, patient human tutor (matching ChatGPT & Gemini quality):
+1. Acknowledge and appreciate the student's effort in a natural, conversational way.
+2. Provide a thorough, well-structured explanation of the concept (70% of response), with real-world analogies, examples, and/or derivations.
+3. Conclude with ONE guiding question (30% of response). Stop and wait.
 `}
 
 CRITICAL RULES:
 - DO NOT use structural headings (like "### Phase 1", "Step 1:", etc.)
-- Write as natural dialogue, NOT a lecture.
+- Maintain 70% Scaffolding (supportive, clear explanation) and 30% Socratic (one guiding check question).
+- Write in natural, fluid paragraphs with clean formatting.
 - Provide comprehensive, proactive, and detailed explanations of essential concepts. Do NOT artificially cap response length.
 - Use paragraph breaks between explanation, analogy, and question.
 - DO NOT output internal thinking tags.
@@ -1375,6 +1381,16 @@ CRITICAL RULES:
     }
     if (precomputedHint) {
         followUpQuestion += precomputedHint;
+    }
+
+    // Karpathy-style Adaptive Test-Time Compute & Boundary Self-Verification
+    try {
+        const verification = testTimeComputeService.verifyEngineeringBoundary(topic, followUpQuestion, { groundTruth: unitContext });
+        if (verification && verification.correctedResponse) {
+            followUpQuestion = verification.correctedResponse;
+        }
+    } catch (ttcErr) {
+        log.warn('TUTOR', `Test-time compute boundary verification non-fatal: ${ttcErr.message}`);
     }
 
     console.log(`[SOCRATIC RESPONSE GENERATED]\n${followUpQuestion}\n`);
@@ -1618,6 +1634,23 @@ What do you know about ${nextTopic}?`
         });
     }
 
+    let interactiveChips = [];
+    try {
+        const { extractInteractiveChips } = require('./socraticTutorStrictFormatter');
+        interactiveChips = extractInteractiveChips(followUpQuestion);
+    } catch (chipErr) {
+        log.warn('TUTOR', `Interactive chips extraction non-fatal: ${chipErr.message}`);
+    }
+
+    let prerequisites = [];
+    if (classification.status === 'UNKNOWN' || consecutiveWrongNow >= 2) {
+        try {
+            prerequisites = await getPrerequisiteSubtopics(position?.courseName, topic);
+        } catch (preErr) {
+            log.warn('TUTOR', `Prerequisite fetch non-fatal: ${preErr.message}`);
+        }
+    }
+
     return {
         followUpQuestion: followUpQuestion,
         classification: classification.status,
@@ -1639,9 +1672,13 @@ What do you know about ${nextTopic}?`
         visualAidNeeded,
         consecutiveWrong: (isStuckProgress || isRepetitive) ? 0 : consecutiveWrongNow,
         topic,
+        interactiveChips,
+        prerequisites,
+        cognitiveLevel: nextCognitiveLevel,
         steps: []
     };
 }
+
 
 /**
  * Fetch topic context from RAG service
@@ -1844,40 +1881,74 @@ async function getCurriculumStructure(courseName) {
         
         // 1. Check Redis Cache First
         try {
-            const cachedData = await redisClient.get(cacheKey);
-            if (cachedData) {
-               // log.info('TUTOR', `Curriculum structure loaded from cache for ${courseName}`);
-               return JSON.parse(cachedData); 
+            const client = getRedisClient();
+            if (client) {
+                const cachedData = await client.get(cacheKey);
+                if (cachedData) {
+                   // log.info('TUTOR', `Curriculum structure loaded from cache for ${courseName}`);
+                   return JSON.parse(cachedData); 
+                }
             }
         } catch(cacheErr) {
             log.warn('TUTOR', `Redis cache read error: ${cacheErr.message}`);
         }
 
-        // 2. Fetch from Python Service if not cached
-        // log.info('TUTOR', `Fetching curriculum structure for ${courseName} from Python backend...`);
+        // 2. Check course_bootstrap on disk directly (Instant <2ms)
+        try {
+            const fs = require('fs');
+            const path = require('path');
+            const bDirs = [
+                path.join(__dirname, '..', '..', 'course_bootstrap'),
+                path.join(__dirname, '..', 'course_bootstrap')
+            ];
+            for (const bDir of bDirs) {
+                const specPath = path.join(bDir, courseName, 'curriculum_spec.json');
+                if (fs.existsSync(specPath)) {
+                    const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+                    if (spec.modules && spec.modules.length > 0) {
+                        return { modules: spec.modules };
+                    }
+                }
+                const csvPath = path.join(bDir, courseName, 'syllabus.csv');
+                if (fs.existsSync(csvPath)) {
+                    const lines = fs.readFileSync(csvPath, 'utf8').trim().split('\n');
+                    const modMap = new Map();
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        const parts = line.split(',');
+                        const modName = parts[2] || `Unit ${Math.ceil(i/8)}`;
+                        const topName = parts[3] || `Topic ${i}`;
+                        const subName = parts[4] || topName;
+                        if (!modMap.has(modName)) {
+                            modMap.set(modName, { id: `mod_${modMap.size+1}`, name: modName, topics: [] });
+                        }
+                        const m = modMap.get(modName);
+                        m.topics.push({ id: `top_${i}`, name: topName, subtopics: [{ id: `${courseName.toLowerCase()}_l${i}`, name: subName }] });
+                    }
+                    if (modMap.size > 0) {
+                        return { modules: Array.from(modMap.values()) };
+                    }
+                }
+            }
+        } catch (diskErr) {
+            log.warn('TUTOR', `Disk curriculum read error: ${diskErr.message}`);
+        }
+
+        // 3. Fetch from Python Service with 2s timeout
         const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
-        if (!pythonServiceUrl) return { modules: [] };
-        const url = `${pythonServiceUrl}/curriculum/${encodeURIComponent(courseName)}/structure`;
-        const response = await axios.get(url, { timeout: 30000 });
-        const structure = response.data.curriculum || response.data;
-        
-        // 3. Save to Redis Cache only when data is non-empty (TTL: 1 hour)
-        if (structure && structure.modules && structure.modules.length > 0) {
-           const hasTopics = structure.modules.some(m => m.topics && m.topics.length > 0);
-           if (hasTopics) {
-               try {
-                   await redisClient.setEx(cacheKey, 3600, JSON.stringify(structure));
-               } catch (saveErr) {
-                   log.warn('TUTOR', `Redis cache write error: ${saveErr.message}`);
-               }
-           } else {
-               log.warn('TUTOR', `Curriculum for '${courseName}' has modules but no topics — skipping cache to prevent stale empty data.`);
-           }
-        } else {
-            log.warn('TUTOR', `Curriculum for '${courseName}' returned empty modules — not caching.`);
+        if (pythonServiceUrl) {
+            try {
+                const url = `${pythonServiceUrl}/curriculum/${encodeURIComponent(courseName)}/structure`;
+                const response = await axios.get(url, { timeout: 10000 });
+                const structure = response.data.curriculum || response.data;
+                if (structure && structure.modules && structure.modules.length > 0) {
+                    return structure;
+                }
+            } catch {}
         }
         
-        return structure;
+        return { modules: [] };
     } catch (error) {
         log.error('TUTOR', `Error fetching curriculum structure: ${error.message}`);
         return { modules: [] };
@@ -1918,13 +1989,32 @@ function normalizeTutorSessionState(state = {}, sessionId = null) {
  */
 async function getTutorSessionState(sessionId) {
     try {
-        const stateStr = await redisClient.get(`tutor:session:${sessionId}`);
-        if (!stateStr) return null;
-        const normalized = normalizeTutorSessionState(JSON.parse(stateStr), sessionId);
-        await redisClient.setEx(`tutor:session:${sessionId}`, TUTOR_STATE_TTL, JSON.stringify(normalized));
-        return normalized;
+        const client = getRedisClient();
+        if (client && (client.isOpen || typeof client.get === 'function')) {
+            const stateStr = await client.get(`tutor:session:${sessionId}`);
+            if (stateStr) {
+                const normalized = normalizeTutorSessionState(JSON.parse(stateStr), sessionId);
+                if (typeof client.setEx === 'function') {
+                    await client.setEx(`tutor:session:${sessionId}`, TUTOR_STATE_TTL, JSON.stringify(normalized)).catch(() => {});
+                }
+                return normalized;
+            }
+        }
+        // Fallback to MongoDB TutorSession model if Redis is cold or session restarted
+        const TutorSession = require('../models/TutorSession');
+        const dbSession = await TutorSession.findOne({ sessionId }).lean();
+        if (dbSession && dbSession.state) {
+            const normalized = normalizeTutorSessionState(dbSession.state, sessionId);
+            if (client && (client.isOpen || typeof client.setEx === 'function')) {
+                if (typeof client.setEx === 'function') {
+                    await client.setEx(`tutor:session:${sessionId}`, TUTOR_STATE_TTL, JSON.stringify(normalized)).catch(() => {});
+                }
+            }
+            return normalized;
+        }
+        return null;
     } catch (e) {
-        log.error('TUTOR', `Redis get state error: ${e.message}`, e);
+        log.error('TUTOR', `Get tutor session state error: ${e.message}`);
         return null;
     }
 }
@@ -1932,20 +2022,50 @@ async function getTutorSessionState(sessionId) {
 async function setTutorSessionState(sessionId, state) {
     try {
         const normalized = normalizeTutorSessionState(state, sessionId);
-        await redisClient.setEx(`tutor:session:${sessionId}`, TUTOR_STATE_TTL, JSON.stringify(normalized));
+        const client = getRedisClient();
+        if (client && (client.isOpen || typeof client.setEx === 'function')) {
+            if (typeof client.setEx === 'function') {
+                await client.setEx(`tutor:session:${sessionId}`, TUTOR_STATE_TTL, JSON.stringify(normalized)).catch(() => {});
+            }
+        }
+        // Dual-write to MongoDB for 100% persistent session retention across restarts
+        const TutorSession = require('../models/TutorSession');
+        await TutorSession.findOneAndUpdate(
+            { sessionId },
+            {
+                $set: {
+                    sessionId,
+                    userId: normalized.userId || null,
+                    topic: normalized.subtopic || normalized.topic || 'General',
+                    cognitiveLevel: normalized.cognitiveLevel || 'L1_CONCEPT',
+                    masteryScore: normalized.masteryScore || 0,
+                    state: normalized,
+                    updatedAt: new Date()
+                }
+            },
+            { upsert: true, setDefaultsOnInsert: true }
+        ).catch(err => log.warn('TUTOR', `MongoDB TutorSession sync warn: ${err.message}`));
+
         return true;
     } catch (e) {
-        log.error('TUTOR', `Redis set state error: ${e.message}`, e);
+        log.error('TUTOR', `Set tutor session state error: ${e.message}`);
         return false;
     }
 }
 
 async function clearTutorSessionState(sessionId) {
     try {
-        await redisClient.del(`tutor:session:${sessionId}`);
+        const client = getRedisClient();
+        if (client && (client.isOpen || typeof client.del === 'function')) {
+            if (typeof client.del === 'function') {
+                await client.del(`tutor:session:${sessionId}`).catch(() => {});
+            }
+        }
+        const TutorSession = require('../models/TutorSession');
+        await TutorSession.deleteOne({ sessionId }).catch(() => {});
         return true;
     } catch (e) {
-        log.error('TUTOR', `Redis clear state error: ${e.message}`, e);
+        log.error('TUTOR', `Clear tutor session state error: ${e.message}`);
         return false;
     }
 }

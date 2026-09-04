@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EE2012: Analog and Digital Circuits Lab - Interactive Learning Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- KaTeX for beautiful math equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>EE2012: Analog and Digital Circuits Lab</h1>
+                <p>B.Tech R24 Curriculum &bull; Interactive Lectures</p>
+            </div>
+            <nav class="lecture-list">
+                
+            <div class="unit-section">
+                <div class="unit-title">Cycle 1</div>
+                <div class="lecture-item active" data-lecture="1" onclick="loadLecture(1)">
+                    <div class="lecture-num">L1</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">PN Junction Diode V-I</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="2" onclick="loadLecture(2)">
+                    <div class="lecture-num">L2</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Zener Diode Characteristics</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="3" onclick="loadLecture(3)">
+                    <div class="lecture-num">L3</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Half-Wave & Full-Wave Rectifiers</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="4" onclick="loadLecture(4)">
+                    <div class="lecture-num">L4</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">BJT Input/Output Characteristics</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="5" onclick="loadLecture(5)">
+                    <div class="lecture-num">L5</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">BJT Biasing & Q-Point</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="6" onclick="loadLecture(6)">
+                    <div class="lecture-num">L6</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">MOSFET Drain/Transfer Curves</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Cycle 2</div>
+                <div class="lecture-item " data-lecture="7" onclick="loadLecture(7)">
+                    <div class="lecture-num">L7</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">BJT CE Amplifier</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="8" onclick="loadLecture(8)">
+                    <div class="lecture-num">L8</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Op-Amp Inverting & Non-Inverting</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="9" onclick="loadLecture(9)">
+                    <div class="lecture-num">L9</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Op-Amp Integrator & Differentiator</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="10" onclick="loadLecture(10)">
+                    <div class="lecture-num">L10</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Active Low-Pass & High-Pass Filters</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="11" onclick="loadLecture(11)">
+                    <div class="lecture-num">L11</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">RC Phase Shift Oscillator</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="12" onclick="loadLecture(12)">
+                    <div class="lecture-num">L12</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Class B Push-Pull Amplifier</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Banner -->
+            <header class="top-nav">
+                <div class="current-lecture-badge" id="currentLecBadge">Lecture 1: Introduction</div>
+                <div class="nav-actions">
+                    <span class="badge badge-accent" id="bloomBadge">L2_UNDERSTAND</span>
+                    <button class="btn btn-secondary" onclick="prevLecture()">← Prev</button>
+                    <button class="btn btn-primary" onclick="nextLecture()">Next →</button>
+                </div>
+            </header>
+
+            <!-- Lecture View Container -->
+            <div class="content-body" id="lectureContentArea">
+                <!-- Overview Card -->
+                <div class="card">
+                    <div class="card-title" id="lectureHeaderTitle">Lecture 1: Theoretical Foundations</div>
+                    <div class="card-desc" id="lectureSubtopics">Loading lecture subtopics and engineering concepts...</div>
+                    <div class="math-box" id="lectureMathFormula">
+                        $$ y(t) = \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\tau \iff Y(s) = X(s) H(s) $$
+                    </div>
+                </div>
+
+                <!-- Interactive Simulation Canvas Card -->
+                <div class="card">
+                    <div class="card-title">⚡ Interactive Signal & Dynamic State Sandbox</div>
+                    <p class="card-desc">Adjust parameters in real time to observe mathematical transformations, dynamic waveforms, and stability trajectories.</p>
+                    
+                    <!-- Controls Bar -->
+                    <div class="controls-bar">
+                        <div class="control-group">
+                            <label>Damping / Parameter &alpha;: <span id="paramValAlpha">0.50</span></label>
+                            <input type="range" id="sliderAlpha" min="0.05" max="1.50" step="0.05" value="0.50" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Frequency &omega; / Scale: <span id="paramValOmega">2.00</span></label>
+                            <input type="range" id="sliderOmega" min="0.5" max="10.0" step="0.5" value="2.0" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <button class="btn btn-accent" onclick="toggleAnimation()">▶ Run Simulation</button>
+                            <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Canvas -->
+                    <div class="canvas-container">
+                        <canvas id="interactiveCanvas" width="900" height="320"></canvas>
+                    </div>
+                    <div class="canvas-caption" id="canvasCaption">Real-time simulation rendered at 60 FPS using HTML5 Canvas & Vector Math.</div>
+                </div>
+
+                <!-- Diagnostic Checkpoint Quiz Card -->
+                <div class="card">
+                    <div class="card-title">🎯 Concept Checkpoint & Self-Assessment</div>
+                    <div id="checkpointQuestion" class="checkpoint-question">Which criterion guarantees that an LTI system is strictly BIBO stable?</div>
+                    <div class="options-grid" id="optionsContainer">
+                        <button class="option-btn" onclick="checkAnswer(0)">A) All poles lie outside |z| &gt; 1</button>
+                        <button class="option-btn" onclick="checkAnswer(1)">B) All poles lie strictly inside the unit circle |z| &lt; 1</button>
+                        <button class="option-btn" onclick="checkAnswer(2)">C) The impulse response is growing exponentially</button>
+                    </div>
+                    <div class="feedback-alert" id="checkpointFeedback" style="display:none;"></div>
+                </div>
+
+                <!-- References & Textbooks Card -->
+                <div class="card">
+                    <div class="card-title">📚 Recommended References & NPTEL Mapping</div>
+                    <ul class="references-list" id="referencesList">
+                        <li><strong>Primary Textbook:</strong> Discrete-Time Signal Processing</li>
+                        <li><strong>NPTEL Course:</strong> Digital Signal Processing</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+{
+  "course_code": "EE2051",
+  "course_name": "AC Rotating Machines",
+  "category": "machines",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 36,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Classification of AC machines",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Classification of AC machines concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'Classification of AC machines concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Construction",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Construction concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'Construction concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "principle of operation",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "principle of operation concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'principle of operation concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "phasor diagram",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "phasor diagram concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'phasor diagram concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "equivalent circuit",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "equivalent circuit concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'equivalent circuit concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "No-load and load characteristics",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "No-load and load characteristics concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'No-load and load characteristics concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "No-load and blocked rotor test",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "No-load and blocked rotor test concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'No-load and blocked rotor test concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "circle diagram",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "circle diagram concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'circle diagram concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "starting and speed control methods",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "starting and speed control methods concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'starting and speed control methods concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "braking methods",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "braking methods concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'braking methods concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "losses \u0026 efficiency and applications Synchronous Generator: Construction",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "losses \u0026 efficiency and applications Synchronous Generator: Construction concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'losses \u0026 efficiency and applications Synchronous Generator: Construction concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "types",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "types concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'types concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "winding factors",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "winding factors concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'winding factors concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "production of emf",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "production of emf concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'production of emf concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "harmonics",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "harmonics concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'harmonics concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "armature reaction",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "armature reaction concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'armature reaction concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "phasor diagram",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "phasor diagram concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'phasor diagram concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "load characteristics",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "load characteristics concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'load characteristics concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "OC and SC tests",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "OC and SC tests concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'OC and SC tests concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "voltage regulation",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "voltage regulation concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'voltage regulation concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "parallel operation",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "parallel operation concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'parallel operation concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "operation on infinite bus Analysis of two reaction theory",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "operation on infinite bus Analysis of two reaction theory concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'operation on infinite bus Analysis of two reaction theory concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "power expressions for cylindrical and salient pole machines",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "power expressions for cylindrical and salient pole machines concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'power expressions for cylindrical and salient pole machines concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "OC \u0026 SC characteristics Synchronous Motor: Principle of operation",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "OC \u0026 SC characteristics Synchronous Motor: Principle of operation concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'OC \u0026 SC characteristics Synchronous Motor: Principle of operation concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "starting methods",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "starting methods concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'starting methods concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "phasor diagram",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "phasor diagram concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'phasor diagram concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "torque angle characteristics",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "torque angle characteristics concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'torque angle characteristics concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "variation of current and power factor with excitation",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "variation of current and power factor with excitation concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'variation of current and power factor with excitation concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "V curves Concept of PM excitation Single Phase Induction Motor: Construction",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "V curves Concept of PM excitation Single Phase Induction Motor: Construction concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'V curves Concept of PM excitation Single Phase Induction Motor: Construction concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "principle and types",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "principle and types concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'principle and types concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "double revolving field theory",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "double revolving field theory concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'double revolving field theory concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "equivalent circuit",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "equivalent circuit concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'equivalent circuit concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "no load \u0026 block rotor tests",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "no load \u0026 block rotor tests concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'no load \u0026 block rotor tests concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "starting methods",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "starting methods concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'starting methods concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Classification of AC machines",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Classification of AC machines concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'Classification of AC machines concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Construction",
+      "module": "Three-Phase Induction Machine",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Construction concepts in Three-Phase Induction Machine",
+          "pedagogical_intuition": "For 'Construction concepts in Three-Phase Induction Machine', spatial rotation of the distributed air-gap magnetomotive force (MMF) produces a rotating flux wave traveling at synchronous speed N_s = 120f/P. The electromechanical torque is proportional to the cross product of stator and rotor magnetic fields.",
+          "mathematical_model": "T_e = \\frac{3}{\\omega_s} \\frac{V_{th}^2 \\frac{R_2'}{s}}{\\left(R_{th} + \\frac{R_2'}{s}\\right)^2 + (X_{th} + X_2')^2}",
+          "interactive_sim_hook": "Dynamic Torque-Speed Kloss Curve: Adjust rotor resistance R_2 and stator voltage V_s to visualize maximum torque T_max invariance and starting torque enhancement.",
+          "industry_relevance": "Industrial traction drives, high-speed rail locomotive traction motors (Siemens Vectron), and permanent magnet synchronous wind turbine generators.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Air gap power P_gap, rotor copper loss s*P_gap, and slip calculation under variable load torque.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE2051/ai_reference_textbook.md"
+}

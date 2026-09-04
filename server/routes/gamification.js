@@ -582,19 +582,43 @@ router.post('/skill-tree/level-questions', async (req, res) => {
 
         let seenQuestions = Array.isArray(reqBodySeen) ? [...reqBodySeen] : [];
 
-        // 1. Try to find pre-computed technical MCQs for this skill
-        // We match by name or skillId, and ensure it belongs to the right course
-        const skillNode = await SkillTree.findOne({
-            $and: [
-                { $or: [{ skillId: levelName }, { name: levelName }] },
-                { course: { $regex: new RegExp(topic, 'i') } }
-            ],
-            isActive: true,
-            'assessmentQuestions.0': { $exists: true }
-        }).lean();
+        // 1. Try to find pre-computed technical MCQs for this skill from SkillTree or ConceptQuestionBank
+        let availableQuestions = [];
+        try {
+            const skillNode = await SkillTree.findOne({
+                $and: [
+                    { $or: [{ skillId: levelName }, { name: levelName }, { skillId: { $regex: new RegExp(String(levelName).replace(/[^a-zA-Z0-9]/g, '.*'), 'i') } }] },
+                    { course: { $regex: new RegExp(topic, 'i') } }
+                ],
+                'assessmentQuestions.0': { $exists: true }
+            }).lean();
 
-        if (skillNode && skillNode.assessmentQuestions && skillNode.assessmentQuestions.length > 0) {
-            log.success('GAMIFICATION', `Serving ${skillNode.assessmentQuestions.length} pre-computed technical MCQs for level "${levelName}" in "${topic}"`);
+            if (skillNode && skillNode.assessmentQuestions && skillNode.assessmentQuestions.length > 0) {
+                availableQuestions = skillNode.assessmentQuestions;
+            } else {
+                // Check ConceptQuestionBank
+                const cqbQuestions = await require('../models/ConceptQuestionBank').find({
+                    $or: [
+                        { course: { $regex: new RegExp(topic, 'i') } },
+                        { courseCode: { $regex: new RegExp(topic, 'i') } }
+                    ]
+                }).limit(50).lean();
+                
+                if (cqbQuestions && cqbQuestions.length > 0) {
+                    availableQuestions = cqbQuestions.map(q => ({
+                        question: q.question,
+                        options: q.options,
+                        correctAnswer: q.options[q.correctIndex] || 'A',
+                        explanation: q.explanation || ''
+                    }));
+                }
+            }
+        } catch (dbErr) {
+            log.warn('GAMIFICATION', `SkillTree/CQB lookup error: ${dbErr.message}`);
+        }
+
+        if (availableQuestions && availableQuestions.length > 0) {
+            log.success('GAMIFICATION', `Serving ${availableQuestions.length} pre-computed technical MCQs for level "${levelName}" in "${topic}"`);
             
             // 1.1 Fetch current game state to track seen questions
             let game = null;
@@ -611,12 +635,12 @@ router.post('/skill-tree/level-questions', async (req, res) => {
             }
 
             // 1.2 Filter out already seen questions
-            const unseenMCQs = skillNode.assessmentQuestions.filter(q => !seenQuestions.includes(q.question));
+            const unseenMCQs = availableQuestions.filter(q => !seenQuestions.includes(q.question));
             
             // 1.3 Select 5 questions (prioritize unseen, fallback to repeats if pool exhausted)
             let selectedPool = unseenMCQs.length >= 5 
                 ? unseenMCQs.sort(() => 0.5 - Math.random()).slice(0, 5)
-                : skillNode.assessmentQuestions.sort(() => 0.5 - Math.random()).slice(0, 5);
+                : (unseenMCQs.length > 0 ? unseenMCQs : availableQuestions.sort(() => 0.5 - Math.random()).slice(0, 5));
 
             // Format questions for frontend
             const questions = selectedPool.map(q => {
@@ -1230,7 +1254,7 @@ Return JSON:
                 temperature: 0.4
             });
         } else {
-            evaluationText = await require('./services/sglangService').generateContent(
+            evaluationText = await require('../services/sglangService').generateContent(
                 evaluationPrompt,
                 chosenModel.modelId,
                 { temperature: 0.4 }

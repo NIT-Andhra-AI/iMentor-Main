@@ -64,4 +64,13 @@ const connectRedis = async () => {
     }
 };
 
-module.exports = { redisClient, connectRedis, MemoryCache };
+module.exports = {
+    get redisClient() {
+        return redisClient;
+    },
+    set redisClient(val) {
+        redisClient = val;
+    },
+    connectRedis,
+    MemoryCache
+};

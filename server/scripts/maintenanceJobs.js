@@ -163,10 +163,10 @@ async function runUserAnalytics() {
     const startTime = Date.now();
     
     const llmConfig = {
-        provider: process.env.SGLANG_ENABLED === 'true' ? 'sglang' : 'ollama',
+        provider: process.env.SGLANG_ENABLED === 'true' ? 'sglang' : 'gemini',
         model: process.env.SGLANG_ENABLED === 'true'
             ? (process.env.SGLANG_HEAVY_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ')
-            : (process.env.OLLAMA_DEFAULT_MODEL || 'qwen2.5:3b'),
+            : (process.env.GEMINI_MODEL || 'gemini-2.0-flash'),
         temperature: 0.3,
         maxTokens: 2048,
     };

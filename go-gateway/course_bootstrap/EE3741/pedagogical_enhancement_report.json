@@ -1,0 +1,1551 @@
+{
+  "course_code": "EE3741",
+  "course_name": "Switched Mode Power Supplies",
+  "category": "power_electronics",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 139,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Forward, and fly-back converters, half and full bridge topologies, push pull",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "forward",
+          "pedagogical_intuition": "Under high-frequency switching for 'forward', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "and fly-back converters",
+          "pedagogical_intuition": "Under high-frequency switching for 'and fly-back converters', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "half and full bridge topologies",
+          "pedagogical_intuition": "Under high-frequency switching for 'half and full bridge topologies', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "push pull converter- operation and analysis",
+          "pedagogical_intuition": "Under high-frequency switching for 'push pull converter- operation and analysis', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit I: Isolated DC-DC Converter Topologies",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Small-signal modelling of buck and boost converters for control Design",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Small-signal modelling of buck and boost converters for control Design",
+          "pedagogical_intuition": "Under high-frequency switching for 'Small-signal modelling of buck and boost converters for control Design', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit II: Converter Modelling",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Design of Type-I, Type-2 and Type-3 compensators for voltage mode control of",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Design of Type-I",
+          "pedagogical_intuition": "Under high-frequency switching for 'Design of Type-I', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Type-2 and Type-3 compensators for voltage mode control of smps based on small-signal transfer functions – realization of these compensators using OPAMPs",
+          "pedagogical_intuition": "Under high-frequency switching for 'Type-2 and Type-3 compensators for voltage mode control of smps based on small-signal transfer functions – realization of these compensators using OPAMPs', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Current Mode Control – Advantages – subharmonic instability – slope",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Current Mode Control – Advantages – subharmonic instability – slope compensation – ideal slope for slope compensation – design of outer voltage control loop in current mode controlled converter",
+          "pedagogical_intuition": "Under high-frequency switching for 'Current Mode Control – Advantages – subharmonic instability – slope compensation – ideal slope for slope compensation – design of outer voltage control loop in current mode controlled converter', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit III: Controller Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Design of filter inductor \u0026 capacitor, and power transformer, ratings for",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Design of filter inductor \u0026 capacitor",
+          "pedagogical_intuition": "Under high-frequency switching for 'Design of filter inductor \u0026 capacitor', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "and power transformer",
+          "pedagogical_intuition": "Under high-frequency switching for 'and power transformer', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "ratings for switching devices",
+          "pedagogical_intuition": "Under high-frequency switching for 'ratings for switching devices', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "current transformer for current sensing",
+          "pedagogical_intuition": "Under high-frequency switching for 'current transformer for current sensing', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "design of drive circuits for switching devices",
+          "pedagogical_intuition": "Under high-frequency switching for 'design of drive circuits for switching devices', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "considerations for PCB layout",
+          "pedagogical_intuition": "Under high-frequency switching for 'considerations for PCB layout', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "techniques to reduce EMI emissions",
+          "pedagogical_intuition": "Under high-frequency switching for 'techniques to reduce EMI emissions', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit IV: Power Converter Design",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "Under high-frequency switching for 'Comprehensive review', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "Under high-frequency switching for 'GATE PYQ practice', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "Under high-frequency switching for 'numerical problem solving', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "Under high-frequency switching for 'concept mapping', continuous energy transfer is governed by volt-second and charge balance. Energy stored in magnetic elements during switch conduction must balance energy discharged into the load during freewheeling to maintain steady-state equilibrium.",
+          "mathematical_model": "\\langle v_L(t) \\rangle = \\frac{1}{T_s}\\int_{0}^{T_s} v_L(t)dt = 0 \\implies D V_{in} + (1-D)(V_{in} - V_o) = 0",
+          "interactive_sim_hook": "60 FPS Canvas Parameter Slider: Modulate duty ratio D in [0.05, 0.95] and observe inductor current ripple Delta I_L and boundary CCM/DCM conduction mode transition.",
+          "industry_relevance": "Used in Tesla Model 3 Silicon Carbide (SiC) traction inverters, Apple MagSafe resonant chargers, and server farm 48V-to-1V point-of-load buck converters.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Inductor current ripple and minimum critical inductance calculation for continuous conduction.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE3741/ai_reference_textbook.md"
+}

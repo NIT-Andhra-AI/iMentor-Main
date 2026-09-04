@@ -99,12 +99,63 @@ function detectSpeculation(step) {
     return clamp(hits * 0.15, 0, 0.7);
 }
 
-function weightedScore({ coherence, evidenceStrength, contradictionPenalty, uncertaintyPenalty }) {
+/**
+ * Process Reward Model (PRM): Engineering & Physical Invariant Verification
+ * Audits step for conservation laws, physical boundary limits, and dimensional consistency.
+ */
+function evaluatePhysicalInvariants(step) {
+    const text = (normalizeText(step.thought) + ' ' + normalizeText(step.observation) + ' ' + normalizeText(step.action));
+    let penalty = 0.0;
+    const violations = [];
+
+    // 1. Efficiency Boundary: > 100% or > 1.0 in passive/closed systems
+    if (/efficiency\s*(?:is|=|:)?\s*(?:1[0-9]{2}|[2-9][0-9]{2})\s*%/i.test(text) ||
+        /efficiency\s*(?:is|=|:)?\s*(?:[1-9]\.[0-9]+)\b/i.test(text)) {
+        if (!text.includes('cop') && !text.includes('coefficient of performance')) {
+            penalty += 0.45;
+            violations.push('efficiency-exceeds-100-percent');
+        }
+    }
+
+    // 2. Absolute Temperature Violation: Negative Kelvin
+    if (/(?:-\s*\d+(?:\.\d+)?\s*(?:k|kelvin))\b/i.test(text)) {
+        penalty += 0.50;
+        violations.push('negative-kelvin-temperature');
+    }
+
+    // 3. Negative Resistance Violation (unless explicitly tunnel/Gunn diode or active source)
+    if (/(?:-\s*\d+(?:\.\d+)?\s*(?:ohm|kiloohm|megaohm|\u03A9))\b/i.test(text) &&
+        !text.includes('negative resistance') && !text.includes('active load')) {
+        penalty += 0.35;
+        violations.push('unjustified-negative-resistance');
+    }
+
+    // 4. Probability Boundary Violation
+    if (/probability\s*(?:is|=|:)?\s*(?:-\d+|[2-9]|\d{2,})\b/i.test(text)) {
+        penalty += 0.40;
+        violations.push('probability-outside-zero-one');
+    }
+
+    // 5. Sampling Rate / Nyquist Aliasing Violation
+    if (/(?:sampling frequency|fs|sampling rate)\s*<\s*2\s*\*\s*f/i.test(text) &&
+        !text.includes('aliasing') && !text.includes('sub-nyquist')) {
+        penalty += 0.30;
+        violations.push('nyquist-criterion-violation');
+    }
+
+    return {
+        penalty: clamp(penalty, 0, 0.85),
+        violations
+    };
+}
+
+function weightedScore({ coherence, evidenceStrength, contradictionPenalty, uncertaintyPenalty, physicalPenalty = 0 }) {
     const base =
-        (coherence * 0.4) +
-        (evidenceStrength * 0.4) -
-        (contradictionPenalty * 0.12) -
-        (uncertaintyPenalty * 0.08);
+        (coherence * 0.35) +
+        (evidenceStrength * 0.35) -
+        (contradictionPenalty * 0.10) -
+        (uncertaintyPenalty * 0.05) -
+        (physicalPenalty * 0.15);
     return Math.round(clamp(base, 0, 1) * 100);
 }
 
@@ -113,16 +164,27 @@ function calculateStepConfidence(step) {
     const evidenceStrength = evaluateEvidence(step);
     const contradictionPenalty = detectContradiction(step);
     const uncertaintyPenalty = detectSpeculation(step);
+    const { penalty: physicalPenalty, violations: physicalViolations } = evaluatePhysicalInvariants(step);
 
-    const stepConfidence = weightedScore({ coherence, evidenceStrength, contradictionPenalty, uncertaintyPenalty });
+    const stepConfidence = weightedScore({
+        coherence,
+        evidenceStrength,
+        contradictionPenalty,
+        uncertaintyPenalty,
+        physicalPenalty
+    });
+
+    const uncertaintyFactors = [
+        contradictionPenalty > 0.25 ? 'possible-contradiction' : null,
+        uncertaintyPenalty > 0.25 ? 'speculative-language' : null,
+        evidenceStrength < 0.4 ? 'weak-evidence' : null,
+        ...physicalViolations
+    ].filter(Boolean);
+
     return {
         stepConfidence,
         reasoningScore: Math.round(((coherence + evidenceStrength) / 2) * 100),
-        uncertaintyFactors: [
-            contradictionPenalty > 0.25 ? 'possible-contradiction' : null,
-            uncertaintyPenalty > 0.25 ? 'speculative-language' : null,
-            evidenceStrength < 0.4 ? 'weak-evidence' : null
-        ].filter(Boolean)
+        uncertaintyFactors
     };
 }
 

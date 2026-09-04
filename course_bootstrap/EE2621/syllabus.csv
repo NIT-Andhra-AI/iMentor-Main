@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE2621,Introduction to Machine Learning,Unit I,Machine Learning Landscape,"Introduction, learning paradigm, machine learning algorithm",None,L2_UNDERSTAND
+EE2621,Introduction to Machine Learning,Unit I,attribution,"inductive learning, online learning, active learning, unsupervised learning, semi-",1,L3_APPLY
+EE2621,Introduction to Machine Learning,Unit I,"supervised learning, active learning, reinforcement learning, metric learning.","supervised learning, active learning, reinforcement learning, metric learning.",2,L2_UNDERSTAND
+EE2621,Introduction to Machine Learning,Unit I,Learning Algorithms,Linear regression; logistic regression; artificial neural networks:,3,L3_APPLY
+EE2621,Introduction to Machine Learning,Unit I,"perceptron, gradient descent and the delta rule, multilayer networks, derivation of","perceptron, gradient descent and the delta rule, multilayer networks, derivation of",4,L2_UNDERSTAND
+EE2621,Introduction to Machine Learning,Unit I,"backpropagation rule, backpropagation algorithm, support vector machine, decision trees;","backpropagation rule, backpropagation algorithm, support vector machine, decision trees;",5,L3_APPLY
+EE2621,Introduction to Machine Learning,Unit I,"random forest; bayes classifier. clustering, principle component analysis, graph based","random forest; bayes classifier. clustering, principle component analysis, graph based",6,L2_UNDERSTAND
+EE2621,Introduction to Machine Learning,Unit I,methods.,methods.,7,L3_APPLY
+EE2621,Introduction to Machine Learning,Unit I,Augmenting Machine Learning,"Convergence, generalization, inductive bias, regularization,",8,L2_UNDERSTAND
+EE2621,Introduction to Machine Learning,Unit I,"loss function, optimizers, feature extraction, subset selection, ensemble learning, data","loss function, optimizers, feature extraction, subset selection, ensemble learning, data",9,L3_APPLY
+EE2621,Introduction to Machine Learning,Unit I,augmentation.,augmentation.,10,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,Electrical Applications of Machine Learning,"Control applications, forecasting pipelines,",11,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,anomaly detection.,anomaly detection.,12,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,Text Books,,13,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,"1. Tom.M.Mitchell, Machine Learning, McGraw Hill International Edition, 2017.","1. Tom.M.Mitchell, Machine Learning, McGraw Hill International Edition, 2017.",14,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,"2. C Bishop – Pattern Recognition and Machine Learning – Springer, 2009.","2. C Bishop – Pattern Recognition and Machine Learning – Springer, 2009.",15,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,References,,16,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,"1. Ian Goodfellow, Yoshua Bengio, AaronCourville – Deep Learning, The MIT Press","1. Ian Goodfellow, Yoshua Bengio, AaronCourville – Deep Learning, The MIT Press",17,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,"Cambridge, Massachusetts, London, England, 2016","Cambridge, Massachusetts, London, England, 2016",18,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit I,Scheme and Syllabi 61 | Page,Scheme and Syllabi 61 | Page,19,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit III,Constrained Parameter Optimization & Gradient Descent Formulations,"Lagrangian multipliers, KKT conditions, gradient descent with momentum, line search",20,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit III,Discrete-Time State-Space Representation & Sampling Period Selection,"Zero-order hold discretization, discrete A_d and B_d matrices, Shannon sampling rule",13,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+EE2621,Introduction to Machine Learning,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Introduction To Machine Learning,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Introduction To Machine Learning,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE2621,Introduction to Machine Learning,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Introduction To Machine Learning","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

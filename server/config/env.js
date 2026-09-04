@@ -3,7 +3,7 @@ const log = require('../utils/logger');
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.preprocess((val) => Number(val), z.number()).default(5005),
+  PORT: z.preprocess((val) => Number(val), z.number()).default(5006),
   JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
   ENCRYPTION_SECRET: z.string().min(32, "ENCRYPTION_SECRET must be at least 32 characters"),
   MONGO_URI: z.string().url("MONGO_URI must be a valid URL"),

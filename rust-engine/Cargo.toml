@@ -1,0 +1,21 @@
+[package]
+name = "imentor-rust-engine"
+version = "0.1.0"
+edition = "2021"
+authors = ["iMentor AI Team"]
+description = "High-Performance Compute Engine for Tree-of-Thought (ToT) Graph Reasoning, Vector Math & STN Synthesis"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rayon = "1.10"
+petgraph = "0.6"
+tokio = { version = "1.38", features = ["full"] }
+anyhow = "1.0"
+thiserror = "1.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

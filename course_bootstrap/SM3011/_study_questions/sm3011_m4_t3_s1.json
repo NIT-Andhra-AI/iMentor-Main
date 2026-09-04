@@ -1,0 +1,158 @@
+{
+  "subtopic_id": "sm3011_m4_t3_s1",
+  "subtopic_name": "EKF linearization, covariance update, measurement noise filtering, state tracking",
+  "mcq": [
+    {
+      "id": "sm3011_m4_t3_s1_q1",
+      "type": "mcq",
+      "bloom": "analyze",
+      "difficulty": "medium",
+      "question": "For an engineering system operating under EKF linearization, covariance update, measurement noise filtering, state tracking, which state condition guarantees asymptotic Lyapunov stability in closed-loop operation?",
+      "options": [
+        "All eigenvalues of the Jacobian matrix strictly reside in the open left-half s-plane (Re(\u03bb) < 0).",
+        "The system possesses at least one pole on the imaginary j\u03c9 axis with multiplicity > 1.",
+        "The state trajectory diverges exponentially towards unbounded boundary orbits.",
+        "The determinant of the transition matrix is identically zero at all time instants."
+      ],
+      "correctIndex": 0,
+      "correctAnswer": "All eigenvalues of the Jacobian matrix strictly reside in the open left-half s-plane (Re(\u03bb) < 0).",
+      "explanation": "According to Lyapunov's indirect stability theorem, a continuous-time linear/linearized system is asymptotically stable if and only if all system poles/eigenvalues have strictly negative real parts."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_q2",
+      "type": "mcq",
+      "bloom": "evaluate",
+      "difficulty": "hard",
+      "question": "In the mathematical formulation of EKF linearization, covariance update, measurement noise filtering, state tracking, if the excitation frequency approaches the natural resonant frequency (\u03c9 \u2192 \u03c9_n) with zero damping ratio (\u03b6 = 0), what is the theoretical steady-state response amplitude?",
+      "options": [
+        "Amplitudes remain strictly bounded by the input voltage amplitude.",
+        "Amplitudes grow linearly with time without bound, producing theoretical infinite resonance.",
+        "The output immediately undergoes phase inversion and collapses to zero.",
+        "The output frequency doubles due to non-linear harmonic distortion."
+      ],
+      "correctIndex": 1,
+      "correctAnswer": "Amplitudes grow linearly with time without bound, producing theoretical infinite resonance.",
+      "explanation": "In an undamped second-order resonator at resonance, the transfer function has a double pole on the j\u03c9-axis under step/sinusoidal excitation, resulting in a ramped sinusoidal envelope that grows without bound."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_q3",
+      "type": "mcq",
+      "bloom": "apply",
+      "difficulty": "easy",
+      "question": "What is the primary governing conservation law applied when setting up the nodal/loop equations in EKF linearization, covariance update, measurement noise filtering, state tracking?",
+      "options": [
+        "Kirchhoff's Laws / Conservation of Energy and Charge",
+        "Heisenberg's Uncertainty Principle",
+        "Carnot Thermodynamic Efficiency Limit",
+        "Hooke's Law of Elastic Deformation"
+      ],
+      "correctIndex": 0,
+      "correctAnswer": "Kirchhoff's Laws / Conservation of Energy and Charge",
+      "explanation": "First-principles analysis in core engineering models relies directly on the conservation of charge (KCL) and conservation of energy (KVL)."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_q4",
+      "type": "mcq",
+      "bloom": "analyze",
+      "difficulty": "hard",
+      "question": "Consider the discrete-time implementation of EKF linearization, covariance update, measurement noise filtering, state tracking. For the system to be strictly causal and minimum phase, where must the transfer function poles and zeros be located?",
+      "options": [
+        "Both poles and zeros must lie strictly inside the unit circle |z| < 1 in the complex Z-plane.",
+        "Poles must be outside the unit circle and zeros must be on the real axis.",
+        "Poles and zeros must cancel each other identically at z = -1.",
+        "Zeros must be located at infinity while poles reside on the unit circle."
+      ],
+      "correctIndex": 0,
+      "correctAnswer": "Both poles and zeros must lie strictly inside the unit circle |z| < 1 in the complex Z-plane.",
+      "explanation": "A minimum-phase discrete-time filter requires all poles (for stability and causality) and all zeros (for stable causal inverse) to lie strictly within the unit circle |z| < 1."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_q5",
+      "type": "mcq",
+      "bloom": "apply",
+      "difficulty": "medium",
+      "question": "When calculating steady-state error under a unit parabolic input for a Type-1 system in EKF linearization, covariance update, measurement noise filtering, state tracking, the resulting error value is:",
+      "options": [
+        "Zero (e_ss = 0)",
+        "Finite and non-zero (e_ss = 1 / Ka)",
+        "Infinite (e_ss = \u221e)",
+        "Indeterminate without knowing the feedback sensor gain"
+      ],
+      "correctIndex": 2,
+      "correctAnswer": "Infinite (e_ss = \u221e)",
+      "explanation": "A Type-1 system has a parabolic error constant Ka = 0. Therefore, the steady-state tracking error for a parabolic acceleration input is ess = 1 / Ka = \u221e."
+    }
+  ],
+  "msq": [
+    {
+      "id": "sm3011_m4_t3_s1_msq1",
+      "type": "msq",
+      "isMultiSelect": true,
+      "bloom": "analyze",
+      "difficulty": "hard",
+      "question": "Which of the following statements regarding EKF linearization, covariance update, measurement noise filtering, state tracking are CORRECT? (Select all that apply)",
+      "options": [
+        "A: Increasing the system gain generally reduces the steady-state error to polynomial inputs.",
+        "B: Increasing the loop gain indefinitely always enhances the stability phase margin.",
+        "C: High loop gain tends to push closed-loop dominant poles closer to the right-half plane, reducing damping.",
+        "D: The bandwidth of the system increases as the gain crossover frequency shifts higher."
+      ],
+      "correctIndices": [
+        0,
+        2,
+        3
+      ],
+      "correctAnswers": [
+        "A",
+        "C",
+        "D"
+      ],
+      "explanation": "Statements A, C, and D are correct. Statement B is false because excessive loop gain reduces phase margin and can lead to instability."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_msq2",
+      "type": "msq",
+      "isMultiSelect": true,
+      "bloom": "evaluate",
+      "difficulty": "hard",
+      "question": "Regarding parameter sensitivity and frequency response in EKF linearization, covariance update, measurement noise filtering, state tracking, which conditions hold true? (Select all that apply)",
+      "options": [
+        "A: Negative feedback reduces the system sensitivity to internal parameter variations by a factor of (1 + G(s)H(s)).",
+        "B: Negative feedback increases the overall closed-loop bandwidth compared to open-loop bandwidth.",
+        "C: The gain margin of a stable minimum-phase system is strictly positive in decibels (dB).",
+        "D: Noise injected at the plant output is completely eliminated by open-loop feedforward controllers."
+      ],
+      "correctIndices": [
+        0,
+        1,
+        2
+      ],
+      "correctAnswers": [
+        "A",
+        "B",
+        "C"
+      ],
+      "explanation": "Statements A, B, and C are fundamental feedback properties in engineering. D is false as open-loop systems cannot eliminate unmodeled output disturbances."
+    }
+  ],
+  "faq": [
+    {
+      "id": "sm3011_m4_t3_s1_faq1",
+      "question": "What is the physical significance of the state transition matrix in EKF linearization, covariance update, measurement noise filtering, state tracking?",
+      "answer": "The state transition matrix \u03a6(t) = exp(At) maps the initial state vector x(0) to the unforced state trajectory x(t) for any time t \u2265 0. It satisfies the matrix differential equation d\u03a6/dt = A \u03a6(t) with \u03a6(0) = I.",
+      "gate_tip": "Frequently tested in GATE EE/EC/IN: Remember \u03a6(t1 - t2) = \u03a6(t1) * \u03a6(-t2) and [\u03a6(t)]^(-1) = \u03a6(-t)."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_faq2",
+      "question": "How do you resolve non-minimum phase zero effects in EKF linearization, covariance update, measurement noise filtering, state tracking?",
+      "answer": "Non-minimum phase zeros (zeros in the right-half s-plane, s > 0) introduce an initial undershoot in the step response and enforce a fundamental limit on achievable closed-loop bandwidth via Poisson's integral theorem.",
+      "gate_tip": "Look for right-half plane zeros in root locus problems; root locus branches will start at poles and terminate on these right-half zeros as gain K \u2192 \u221e."
+    },
+    {
+      "id": "sm3011_m4_t3_s1_faq3",
+      "question": "What is the difference between Nyquist stability criterion and Routh-Hurwitz criterion for EKF linearization, covariance update, measurement noise filtering, state tracking?",
+      "answer": "Routh-Hurwitz is an algebraic method applied to the characteristic polynomial 1 + G(s)H(s) = 0 and works for polynomial models without time delays. Nyquist is a complex-variable frequency contour technique that handles non-rational transfer functions, dead-times (e^(-sT)), and experimental frequency-domain data.",
+      "gate_tip": "Nyquist formula: N = P - Z, where N is clockwise encirclements of (-1, j0), P is open-loop RHP poles, and Z is closed-loop RHP poles (for stability, Z must equal 0, so N must equal P)."
+    }
+  ]
+}

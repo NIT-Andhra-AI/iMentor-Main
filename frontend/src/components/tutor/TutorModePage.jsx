@@ -419,32 +419,32 @@ function TutorModePage({
     const handleQuestionChange = useCallback((question, index, total) => {
         setCurrentQuestion({ question, index, total });
         if (question) {
+            const expectedAns = question.output || question.expectedAnswer || question.answer || question.explanation || question.concept || question.question || "Core concept mastery.";
             setSystemPrompt(
-                `You are a strict and helpful quiz answer evaluator. 
-Evaluate the student's answer strictly against the PROVIDED DOCUMENT ANSWER.
+                `You are an encouraging, expert pedagogical tutor. 
+Evaluate the student's answer against the expected course topic concept.
 
 Question ${index + 1} of ${total}:
 QUESTION: "${question.instruction || question.question || ''}"
-DOCUMENT ANSWER: "${question.output}"
+EXPECTED MODEL ANSWER / CONCEPT: "${expectedAns}"
 
 STRICT OUTPUT FORMAT:
 Evaluation: [✅ Correct] OR [❌ Needs Adjustment]
 
-Analysis: [Provide a clear and detailed explanation of why the answer is correct or incorrect. If incorrect, explicitly state exactly what information from the document was missing or misrepresented in the student's answer.]
+Analysis: [Provide a clear and encouraging explanation of why the answer is correct or what specific detail can be improved.]
 
-Source Fact: "[Insert a direct quote from the DOCUMENT ANSWER that contains the required information]".
+Source Fact: "${expectedAns}"
 
-Correction: [If "Needs Adjustment", provide the complete correct explanation based ONLY on the document. If "Correct", this section should say "Your answer matches the course material perfectly."]
+Correction: [If "Needs Adjustment", provide a concise, clear explanation of the concept. If "Correct", write "Your response demonstrates solid mastery of the material!"]
 
-Reflective Socratic Follow-up: [Provide a brief, open-ended question that prompts the student to think deeper about the concept, apply it to a new scenario, or reflect on why their answer differed from the expected model. This must be a Socratic question that helps them self-discover.]
+Reflective Socratic Follow-up: [Ask one brief open-ended question to help the student deepen their understanding or connect this concept to a practical application.]
 
-Next Step: Click "Next" in the Quiz Panel to continue.
+Next Step: Click "Next" in the Quiz Panel to proceed.
 
 RULES:
-1. ONLY mark "✅ Correct" if all essential concepts from the DOCUMENT ANSWER are present.
-2. If the answer is vague, incomplete, or slightly off, mark "❌ Needs Adjustment".
-3. Accuracy is paramount. Use ONLY the provided DOCUMENT ANSWER.
-4. Always include a "Reflective Socratic Follow-up" question at the end of your analysis to guide the student towards deeper understanding, regardless of whether their answer was correct or needs adjustment.`
+1. Be fair and constructive. If the student demonstrates core understanding of the topic, evaluate positively.
+2. NEVER claim "sufficient information is not available". If model answer text is concise, evaluate based on standard academic knowledge for this question.
+3. Always provide a Socratic follow-up question.`
             );
         }
     }, [setSystemPrompt]);
@@ -675,14 +675,20 @@ RULES:
 
                         {/* Roadmap Session Title */}
                         <div className="flex flex-col">
-                            <h1 className="text-white text-sm font-bold tracking-tight uppercase flex items-center gap-2">
-                                <Target size={14} className="text-teal-400" />
-                                {isCourseStructuredMode ? 'Module Roadmap' : 'General Socratic Mode'}
-                            </h1>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-white text-sm font-bold tracking-tight uppercase flex items-center gap-2">
+                                    <Target size={14} className="text-teal-400" />
+                                    {isCourseStructuredMode ? 'Module Roadmap' : 'General Socratic Mode'}
+                                </h1>
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                    <Sparkles size={10} className="text-emerald-400" />
+                                    Guided Learning
+                                </span>
+                            </div>
                             <p className="text-[10px] text-gray-400 font-medium">
                                 {isCourseStructuredMode
-                                    ? 'Socratic Learning Environment'
-                                    : 'Explore any topic. I’ll guide you Socratically.'}
+                                    ? 'Socratic & Adaptive Scaffolding Environment'
+                                    : 'Explore any topic. Guided step-by-step with progressive scaffolding.'}
                             </p>
                         </div>
                     </div>

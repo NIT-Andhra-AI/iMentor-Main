@@ -1,0 +1,1650 @@
+{
+  "course_code": "EE2041",
+  "course_name": "Digital Electronics",
+  "category": "analog",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 150,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Boolean algebra, minimization of boolean functions using boolean identities and",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Boolean algebra",
+          "pedagogical_intuition": "For 'Boolean algebra', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "minimization of boolean functions using boolean identities and karnaugh map",
+          "pedagogical_intuition": "For 'minimization of boolean functions using boolean identities and karnaugh map', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "logic gates; digital IC families",
+          "pedagogical_intuition": "For 'logic gates; digital IC families', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit I: Digital Electronics",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Combinatorial circuits: arithmetic circuits, code converters, multiplexers,",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Combinatorial circuits: arithmetic circuits",
+          "pedagogical_intuition": "For 'Combinatorial circuits: arithmetic circuits', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "code converters",
+          "pedagogical_intuition": "For 'code converters', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "multiplexers",
+          "pedagogical_intuition": "For 'multiplexers', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "decoders",
+          "pedagogical_intuition": "For 'decoders', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit II: Digital Circuits",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Realization of logic operation using gates, analysis of fundamental properties",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Realization of logic operation using gates",
+          "pedagogical_intuition": "For 'Realization of logic operation using gates', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "analysis of fundamental properties of gates",
+          "pedagogical_intuition": "For 'analysis of fundamental properties of gates', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "adder",
+          "pedagogical_intuition": "For 'adder', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "subtractor",
+          "pedagogical_intuition": "For 'subtractor', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "encoder/decoder",
+          "pedagogical_intuition": "For 'encoder/decoder', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit III: Combinational Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Latches and flip-flops, counters, finite state machines, propagation delay, edge",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Latches and flip-flops",
+          "pedagogical_intuition": "For 'Latches and flip-flops', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "counters",
+          "pedagogical_intuition": "For 'counters', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "finite state machines",
+          "pedagogical_intuition": "For 'finite state machines', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "propagation delay",
+          "pedagogical_intuition": "For 'propagation delay', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "edge triggering",
+          "pedagogical_intuition": "For 'edge triggering', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "asynchronous inputs",
+          "pedagogical_intuition": "For 'asynchronous inputs', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "shift registers",
+          "pedagogical_intuition": "For 'shift registers', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "universal shift register",
+          "pedagogical_intuition": "For 'universal shift register', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "applications. binary counters – synchronous and asynchronous up/down counters",
+          "pedagogical_intuition": "For 'applications. binary counters – synchronous and asynchronous up/down counters', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "mod-n counter",
+          "pedagogical_intuition": "For 'mod-n counter', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "counters for random sequence",
+          "pedagogical_intuition": "For 'counters for random sequence', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "setup and hold time",
+          "pedagogical_intuition": "For 'setup and hold time', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "critical path delay",
+          "pedagogical_intuition": "For 'critical path delay', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "sample and hold circuits",
+          "pedagogical_intuition": "For 'sample and hold circuits', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "ADCs",
+          "pedagogical_intuition": "For 'ADCs', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "DACs",
+          "pedagogical_intuition": "For 'DACs', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Semiconductor memories",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Semiconductor memories",
+          "pedagogical_intuition": "For 'Semiconductor memories', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit IV: Sequential Logic",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Look-up table design, programmable logic device and programmable logic array",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Look-up table design",
+          "pedagogical_intuition": "For 'Look-up table design', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "programmable logic device and programmable logic array",
+          "pedagogical_intuition": "For 'programmable logic device and programmable logic array', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Introduction to Verilog HDL, structural, dataflow and behavioral modelling of",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Introduction to Verilog HDL",
+          "pedagogical_intuition": "For 'Introduction to Verilog HDL', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "structural",
+          "pedagogical_intuition": "For 'structural', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "dataflow and behavioral modelling of combinational and sequential logic circuits",
+          "pedagogical_intuition": "For 'dataflow and behavioral modelling of combinational and sequential logic circuits', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit V: Programmable Logic",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', network responses combine natural homogeneous transient decay with forced sinusoidal steady-state oscillations, satisfying Kirchhoff's conservation laws.",
+          "mathematical_model": "v(t) = V_{max}e^{-\\alpha t}\\cos(\\omega_d t + \\phi), \\quad \\omega_0 = \\frac{1}{\\sqrt{LC}}",
+          "interactive_sim_hook": "Rotating Phasor \u0026 Resonance Vector Visualizer: Sweep excitation frequency omega through series resonance omega_0 and inspect impedance collapse to R.",
+          "industry_relevance": "High-speed PCB signal integrity, RF antenna matching networks, and decoupling capacitor network design in ultra-dense SoCs.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Maximum Power Transfer for complex load impedances Z_L = Z_s*.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE2041/ai_reference_textbook.md"
+}

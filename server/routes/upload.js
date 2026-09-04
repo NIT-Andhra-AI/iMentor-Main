@@ -23,9 +23,13 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024; // Increased to 50MB for media
 const allowedMimeTypes = {
     // Documents
     'application/pdf': { type: 'document', processor: 'ai_core' },
+    'application/x-pdf': { type: 'document', processor: 'ai_core' },
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': { type: 'document', processor: 'ai_core' },
     'text/plain': { type: 'document', processor: 'ai_core' },
     'text/markdown': { type: 'document', processor: 'ai_core' },
+    'text/x-markdown': { type: 'document', processor: 'ai_core' },
+    'application/x-markdown': { type: 'document', processor: 'ai_core' },
+    'application/octet-stream': { type: 'document', processor: 'ai_core' },
     // Media
     'audio/mpeg': { type: 'audio', processor: 'media' },
     'audio/wav': { type: 'audio', processor: 'media' },
@@ -34,18 +38,15 @@ const allowedMimeTypes = {
     'image/png': { type: 'image', processor: 'media' },
     'image/jpeg': { type: 'image', processor: 'media' },
 };
-const allowedExtensions = Object.keys(allowedMimeTypes).flatMap(mime => {
-    const extMap = { 'application/pdf': '.pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx', /* etc */ };
-    return extMap[mime] || []; // Simplified, a full map would be needed
-}); // This part can be improved if needed
+const allowedExtensions = ['.pdf', '.docx', '.txt', '.md', '.markdown', '.mp3', '.wav', '.mp4', '.mov', '.png', '.jpg', '.jpeg'];
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (!req.user || !req.user.email) {
             return cb(new Error("Authentication error: User context not found for upload destination."));
         }
-        const sanitizedUsername = req.user.email.split('@')[0].replace(/[^a-zA-Z0-9_-]/g, '_');
-        const fileMimeType = file.mimetype.toLowerCase();
+        const sanitizedUsername = req.user.email.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const fileMimeType = (file.mimetype || '').toLowerCase();
         const fileTypeSubfolder = allowedMimeTypes[fileMimeType]?.type || 'others';
         const destinationPath = path.join(UPLOAD_DIR, sanitizedUsername, fileTypeSubfolder);
         fs.mkdir(destinationPath, { recursive: true }).then(() => cb(null, destinationPath)).catch(cb);
@@ -105,9 +106,20 @@ router.post('/', upload.single('file'), validateFileUploadMeta, async (req, res)
     
     let newSource;
     try {
-        const { type, processor } = allowedMimeTypes[mimetype.toLowerCase()] || {};
+        const ext = path.extname(originalName).toLowerCase();
+        let mimeInfo = allowedMimeTypes[mimetype.toLowerCase()];
+
+        // Extension fallback if MIME type is custom or generic
+        if (!mimeInfo || mimetype.toLowerCase() === 'application/octet-stream') {
+            if (ext === '.pdf') mimeInfo = { type: 'document', processor: 'ai_core' };
+            else if (ext === '.md' || ext === '.markdown') mimeInfo = { type: 'document', processor: 'ai_core' };
+            else if (ext === '.txt') mimeInfo = { type: 'document', processor: 'ai_core' };
+            else if (ext === '.docx') mimeInfo = { type: 'document', processor: 'ai_core' };
+        }
+
+        const { type, processor } = mimeInfo || {};
         if (!type || !processor) {
-            throw new Error(`Unsupported file type: ${mimetype}`);
+            throw new Error(`Unsupported file type: ${mimetype} (${ext})`);
         }
 
         newSource = new KnowledgeSource({

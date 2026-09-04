@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3621,Digital Signal Processing,Unit I,Discrete-Time Signals & Systems Classification,"Standard DT sequences, linearity, time-invariance, causality, stability",None,L2_UNDERSTAND
+EE3621,Digital Signal Processing,Unit I,Linear Convolution Sum & Interconnected LTI Systems,"Convolution sum derivation, graphical computation, properties, parallel/cascade systems",1,L3_APPLY
+EE3621,Digital Signal Processing,Unit I,Difference Equations & Dynamic System Impulse Response,"Constant coefficient linear difference equations, homogeneous/particular solutions",2,L3_APPLY
+EE3621,Digital Signal Processing,Unit I,Discrete-Time Fourier Transform (DTFT) Foundations,"DTFT analysis/synthesis pairs, convergence conditions, energy spectral density",2,L3_APPLY
+EE3621,Digital Signal Processing,Unit I,DTFT Symmetry & Operational Properties,"Time-shifting, frequency-shifting, modulation, convolution and multiplication theorems",4,L3_APPLY
+EE3621,Digital Signal Processing,Unit I,Frequency Response of LTI Systems & Distortionless Transmission,"Magnitude and phase response, group delay, phase delay, linear phase conditions",5,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit I,Z-Transform Theory & Region of Convergence (ROC),"Bilateral Z-transform, ROC properties for causal/anti-causal sequences, pole-zero plots",1,L3_APPLY
+EE3621,Digital Signal Processing,Unit II,Inverse Z-Transform & Rational Transfer Functions,"Partial fraction expansion, power series method, contour integration inversion",7,L3_APPLY
+EE3621,Digital Signal Processing,Unit II,System Stability & Causality Analysis in Z-Domain,"Poles inside unit circle, minimum-phase vs all-pass decomposition",8,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit II,Discrete Fourier Transform (DFT) & Frequency Sampling,"Sampling the DTFT, DFT and IDFT definition, relation between DTFT and DFT",4,L3_APPLY
+EE3621,Digital Signal Processing,Unit II,Mathematical Properties of the Discrete Fourier Transform,"Periodicity, linearity, circular shift, circular time-reversal, Parseval's theorem",10,L3_APPLY
+EE3621,Digital Signal Processing,Unit II,Circular Convolution & Linear Convolution Equivalence,"Matrix form of circular convolution, zero-padding requirements for linear filtering",11,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit II,Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT),"Cooley-Tukey decomposition, butterfly computation structure, in-place bit reversal",10,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit II,Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT),"DIF butterfly derivation, comparison with DIT, computational complexity O(N log N)",13,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,High-Throughput Block Convolution: Overlap-Add & Overlap-Save,"Sectioned convolution for continuous streaming signals, real-time filtering trade-offs",12,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,Analog Filter Approximation: Butterworth Prototype,"Maximally flat passband response, filter order determination, pole placement in s-plane",6,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,Analog Filter Approximation: Chebyshev Type I & II,"Equiripple passband / stopband characteristics, elliptic and Bessel approximations",16,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,IIR Filter Design: Bilinear Transformation Method,"s-to-z plane conformal mapping, algebraic pre-warping formula, stability preservation",16,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,IIR Filter Design: Impulse Invariance Method,"Impulse response discretization, frequency aliasing effects, comparison with Bilinear",18,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,Digital Frequency Transformations for IIR Filters,"Low-pass to high-pass, band-pass, and band-stop transformations in discrete domain",18,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,Linear Phase FIR Filter Fundamentals & 4 Filter Types,"Symmetric/anti-symmetric impulse responses, Type 1-4 zero locations, linear phase proofs",6,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit III,FIR Filter Design: Windowing Method & Gibbs Phenomenon,"Rectangular, Hanning, Hamming, Blackman, and Kaiser windows, mainlobe vs sidelobe trade-offs",21,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit IV,FIR Filter Design: Frequency Sampling & Optimal Equiripple,"Frequency sampling synthesis, Parks-McClellan Remez exchange algorithm formulation",22,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit IV,IIR Digital Filter Realization Structures,"Direct Form I, Direct Form II, Cascade, Parallel, and Transposed canonical forms",18,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit IV,FIR Digital Filter Realization & Lattice Structures,"Direct form FIR, Cascade FIR, Linear Phase FIR structures, Lattice/Ladder realizations",21,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit IV,Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats,"Two's complement arithmetic, sign-magnitude, fixed-point scaling, dynamic range",24,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit IV,ADC Quantization Noise Analysis & SNR Degradation,"Uniform quantizer model, quantization noise variance sigma_e^2 = Delta^2 / 12, 6 dB/bit rule",26,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit IV,Coefficient Quantization & Pole-Zero Sensitivity,"Impact of finite precision on pole locations, high-order sensitivity and cascade mitigation",26,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit IV,"Product Quantization, Roundoff Noise & Overflow Limit Cycles","Roundoff noise model in IIR filters, zero-input limit cycles, overflow oscillations",28,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit V,Multirate Signal Processing: Decimation & Downsampling,"Sampling rate reduction, spectral aliasing, anti-aliasing decimation filter requirements",10,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit V,Multirate Signal Processing: Interpolation & Upsampling,"Sampling rate expansion, imaging artifacts, anti-imaging interpolation filter design",30,L4_ANALYZE
+EE3621,Digital Signal Processing,Unit V,Polyphase Filter Decompositions & Efficient Sample Rate Converters,"Noble identities, polyphase decimators and interpolators, computational savings",31,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit V,Subband Coding & Quadrature Mirror Filter (QMF) Banks,"Two-channel QMF bank, alias-free condition, perfect reconstruction formulation",32,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit V,Adaptive Digital Filtering: LMS & RLS Algorithms,"Wiener filter theory, Least Mean Squares (LMS) stochastic gradient, echo cancellation",4,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit V,Spectral Estimation: Parametric & Non-Parametric Methods,"Periodogram, Welch's method, Autoregressive (AR) Yule-Walker model spectral estimation",10,L5_EVALUATE
+EE3621,Digital Signal Processing,Unit V,Comprehensive DSP System Architecture Defense & Capstone Review,"End-to-end audio/radar streaming pipeline, FPGA realization, latency closure defense",34,L6_CREATE

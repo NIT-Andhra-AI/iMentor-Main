@@ -340,17 +340,17 @@ addTest('Parameter Tuning - Complex Reasoning vs High Complexity', () => {
 // -------------------------------------------------------------
 // Test Section 3: Smart Model Router (`selectModel`)
 // -------------------------------------------------------------
-addAsyncTest('selectModel - Local Mode Ollama bypass', async () => {
+addAsyncTest('selectModel - Local Mode SGLang bypass', async () => {
     process.env.GROQ_API_KEY = 'mock_groq_key';
     const decision = await selectModel({
         query: 'write me code',
         complexityScore: 80,
         localMode: true,
-        isOllamaActive: true,
+        isSglangActive: true,
         catalog: []
     });
-    assert.strictEqual(decision.provider, 'ollama');
-    assert.strictEqual(decision.strategy, 'local_mode_ollama');
+    assert.strictEqual(decision.provider, 'sglang');
+    assert.strictEqual(decision.strategy, 'local_mode_sglang');
 });
 
 addAsyncTest('selectModel - Hybrid complex query shift to Cloud (Groq/Gemini)', async () => {
@@ -361,7 +361,7 @@ addAsyncTest('selectModel - Hybrid complex query shift to Cloud (Groq/Gemini)', 
         query: 'complex query analytics',
         complexityScore: 85,
         tokenEstimate: 500,
-        isOllamaActive: true,
+        isSglangActive: true,
     });
     assert.strictEqual(decision.provider, 'groq');
     assert.strictEqual(decision.strategy, 'high_complexity_hybrid_cloud_fallback');
@@ -370,7 +370,7 @@ addAsyncTest('selectModel - Hybrid complex query shift to Cloud (Groq/Gemini)', 
         query: 'complex query analytics',
         complexityScore: 85,
         tokenEstimate: 6000,
-        isOllamaActive: true,
+        isSglangActive: true,
     });
     assert.strictEqual(decisionGemini.provider, 'gemini');
 });
@@ -382,10 +382,10 @@ addAsyncTest('selectModel - Default fallback budget strategy', async () => {
     const decision = await selectModel({
         query: 'simple hello',
         complexityScore: 10,
-        isOllamaActive: false
+        isSglangActive: false
     });
-    assert.strictEqual(decision.provider, 'ollama');
-    assert.strictEqual(decision.strategy, 'simple_query_groq_fallback');
+    assert.strictEqual(decision.provider, 'sglang');
+    assert.strictEqual(decision.strategy, 'simple_query_fallback');
 });
 
 // -------------------------------------------------------------
@@ -415,10 +415,10 @@ addTest('History Truncation - Preserves system message and final user prompt', (
 // -------------------------------------------------------------
 addTest('Fallback chain priority resolver list', () => {
     const chainL = buildFallbackChain('sglang', true);
-    assert.deepStrictEqual(chainL, ['sglang']);
+    assert.deepStrictEqual(chainL, ['sglang', 'gemini', 'groq']);
 
     const chainC = buildFallbackChain('gemini', false);
-    assert.deepStrictEqual(chainC, ['gemini', 'sglang']);
+    assert.deepStrictEqual(chainC, ['gemini', 'groq', 'sglang']);
 });
 
 addTest('Thinking Model Detection', () => {

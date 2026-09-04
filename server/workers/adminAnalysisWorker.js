@@ -19,7 +19,7 @@ async function callLLM(systemPrompt, userMessage, apiKey) {
         const sglangService = require('../services/sglangService');
         const result = await sglangService.generateContentWithHistory([], userMessage, systemPrompt, {
             model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
-            ollamaUrl: process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1',
+            sglangUrl: process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1',
         });
         return result?.content || result?.message || result;
     }

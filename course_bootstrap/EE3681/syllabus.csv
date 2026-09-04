@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3681,HVDC and FACTS,Unit I,Advanced Converters,"Drawbacks of conventional converters & Inverters, multi-",None,L2_UNDERSTAND
+EE3681,HVDC and FACTS,Unit I,"pulse converters & Inverters, Improved power quality AC-DC converters such as","pulse converters & Inverters, Improved power quality AC-DC converters such as",1,L3_APPLY
+EE3681,HVDC and FACTS,Unit I,"single-phase buck, boost, buck-boost AC-DC converters, PWM based single- phase,","single-phase buck, boost, buck-boost AC-DC converters, PWM based single- phase,",2,L2_UNDERSTAND
+EE3681,HVDC and FACTS,Unit I,"three-phase voltage source converters, current source inverters.","three-phase voltage source converters, current source inverters.",3,L3_APPLY
+EE3681,HVDC and FACTS,Unit I,Multilevel Converters/ Inverters,Advance converter topologies for PEE –,4,L2_UNDERSTAND
+EE3681,HVDC and FACTS,Unit I,"Interleaved converters, multilevel converters","cascaded H-bridge, diode clamped,",5,L3_APPLY
+EE3681,HVDC and FACTS,Unit I,"NPC, flying capacitor, multi pulse PWM current source converters, advanced control","NPC, flying capacitor, multi pulse PWM current source converters, advanced control",6,L2_UNDERSTAND
+EE3681,HVDC and FACTS,Unit I,"schemes, capacitor unbalance.","schemes, capacitor unbalance.",7,L3_APPLY
+EE3681,HVDC and FACTS,Unit I,PWM Schemes,"Conventional PWM schemes & their performance, multilevel PWM",8,L2_UNDERSTAND
+EE3681,HVDC and FACTS,Unit I,"schemes, hybrid PWM schemes, power converter topologies for solar and wind–","schemes, hybrid PWM schemes, power converter topologies for solar and wind–",9,L3_APPLY
+EE3681,HVDC and FACTS,Unit I,"control of DC-DC converter, inverters and relevant.","control of DC-DC converter, inverters and relevant.",10,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,Case Studies,"Literature- MLI applications in drives and power quality, hybrid",11,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,converters- inverters- closed loop renewable energy conversion systems- PV power,converters- inverters- closed loop renewable energy conversion systems- PV power,12,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,conversion using MLIs.,conversion using MLIs.,13,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,Text Books,,14,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"1. N. Mohan, T. M. Undeland and W. P. Robbins, Power Electronics Converter Application","1. N. Mohan, T. M. Undeland and W. P. Robbins, Power Electronics Converter Application",15,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"and Design, ThirdEdition, John Willey & Sons, 2004.","and Design, ThirdEdition, John Willey & Sons, 2004.",16,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"2. M. H. Rashid, Power Electronics, Circuits, Devices and Applications, Pearson, 2002,","2. M. H. Rashid, Power Electronics, Circuits, Devices and Applications, Pearson, 2002,",17,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,India.,India.,18,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"3. K. Billings, Switch Mode Power Supply Handbook, McGraw-Hill, 1999, Boston.","3. K. Billings, Switch Mode Power Supply Handbook, McGraw-Hill, 1999, Boston.",19,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"4. Bin Wu, High-Power Converters and AC Drives, IEEE Press, A John Wiley & Sons, Inc","4. Bin Wu, High-Power Converters and AC Drives, IEEE Press, A John Wiley & Sons, Inc",20,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,"Publication, New York,2006.","Publication, New York,2006.",21,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,5. Relevant literature review for case studies and course applications.,5. Relevant literature review for case studies and course applications.,22,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit I,Scheme and Syllabi 70 | Page,Scheme and Syllabi 70 | Page,23,L4_ANALYZE
+EE3681,HVDC and FACTS,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Hvdc And Facts,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Hvdc And Facts,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3681,HVDC and FACTS,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Hvdc And Facts","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

@@ -12,27 +12,37 @@ import rehypeRaw from 'rehype-raw';
 import 'katex/dist/katex.min.css';
 import mermaid from 'mermaid';
 import api from '../../services/api.js';
+import { useAuth } from '../../hooks/useAuth.jsx';
 import { useAppState } from '../../contexts/AppStateContext.jsx';
 import { normalizeCurriculumTree } from '../../utils/normalizeCurriculumTree.js';
 import {
     ArrowLeft, GraduationCap, BookOpen, Layers, Hash,
     ChevronDown, ChevronRight, Loader2, AlertTriangle,
     RefreshCw, FileText, MessageSquare, BookMarked,
-    Search, X, Menu, Brain
+    Search, X, Menu, Brain, Building2, Calendar,
+    Filter, Sparkles, CheckCircle2, RotateCcw,
+    SlidersHorizontal, ExternalLink, UserCheck, Check
 } from 'lucide-react';
 import CourseQuizModal from './CourseQuizModal.jsx';
 
-// Initialise Mermaid once (dark theme to match UI)
+// Initialise Mermaid once (dark theme with transparent block fills & white borders)
 mermaid.initialize({
     startOnLoad: false,
     theme: 'dark',
     themeVariables: {
-        background:       '#0e1117',
-        primaryColor:     '#1e2a3a',
-        primaryTextColor: '#e2e8f0',
-        lineColor:        '#4f6a8a',
-        secondaryColor:   '#14202e',
-        tertiaryColor:    '#0a0f18',
+        background:           'transparent',
+        primaryColor:         'transparent',
+        primaryBorderColor:   '#ffffff',
+        primaryTextColor:     '#f8fafc',
+        lineColor:            '#ffffff',
+        secondaryColor:       'transparent',
+        secondaryBorderColor: '#ffffff',
+        tertiaryColor:        'transparent',
+        nodeBorder:           '#ffffff',
+        clusterBkg:           'transparent',
+        clusterBorder:        '#ffffff',
+        defaultLinkColor:     '#ffffff',
+        titleColor:           '#ffffff'
     },
     fontFamily: 'inherit',
     fontSize:   14,
@@ -230,22 +240,70 @@ function MermaidDiagram({ code }) {
     );
 }
 
+function preprocessMermaidContent(text) {
+    if (!text || typeof text !== 'string') return text || '';
+
+    // Auto-wrap unfenced 'graph TD...', 'flowchart TD...' or 'Diagram\ngraph TD...' blocks into ```mermaid fences
+    const unfencedRegex = /(?:^|\n)(?:Diagram\s*\n+)?((?:graph|flowchart|sequenceDiagram|stateDiagram|classDiagram|gantt|mindmap|erDiagram)\s+(?:TD|TB|BT|RL|LR)?[\s\S]*?)(?=\n\s*\n\s*[A-Z\#]|\n\s*\n\s*$|$)/gi;
+
+    let processed = text.replace(unfencedRegex, (match, diagramCode) => {
+        if (match.includes('```')) return match;
+        return '\n\n```mermaid\n' + diagramCode.trim() + '\n```\n\n';
+    });
+
+    processed = processed.replace(/```(?:diagram|flowchart|graph)\b/gi, '```mermaid');
+
+    return processed;
+}
+
 // ─── Markdown + LaTeX + Mermaid renderer ─────────────────────────────────────
 function LectureMermaidMarkdown({ content }) {
-    // Intercept at <pre> level — this way MermaidDiagram is NOT wrapped in <pre>
-    // (intercepting only at <code> level leaves the prose-styled <pre> wrapper in place)
+    const processedContent = React.useMemo(() => preprocessMermaidContent(content), [content]);
+
     const components = {
         pre({ node, children, ...props }) {
             const kids = React.Children.toArray(children);
-            const codeEl = kids.find(c => c?.props?.className?.includes('language-mermaid'));
-            if (codeEl) {
-                const raw = Array.isArray(codeEl.props.children)
-                    ? codeEl.props.children.join('')
-                    : String(codeEl.props.children ?? '');
-                return <MermaidDiagram code={raw.trim()} />;
+            for (const child of kids) {
+                const rawText = (typeof child?.props?.children === 'string'
+                    ? child.props.children
+                    : Array.isArray(child?.props?.children)
+                        ? child.props.children.join('')
+                        : '').trim();
+
+                const isMermaidClass = child?.props?.className?.includes('language-mermaid');
+                const isMermaidSyntax = /^(?:graph|flowchart|sequenceDiagram|gantt|classDiagram|stateDiagram|mindmap|erDiagram|gitGraph)\b/i.test(rawText);
+
+                if (isMermaidClass || isMermaidSyntax) {
+                    return <MermaidDiagram code={rawText} />;
+                }
             }
             return <pre {...props}>{children}</pre>;
         },
+        code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            const rawText = String(children || '').trim();
+            const isMermaidSyntax = /^(?:graph|flowchart|sequenceDiagram|gantt|classDiagram|stateDiagram|mindmap|erDiagram|gitGraph)\b/i.test(rawText);
+
+            if ((match && match[1] === 'mermaid') || isMermaidSyntax) {
+                return <MermaidDiagram code={rawText} />;
+            }
+            if (!inline && match && match[1] === 'interactive') {
+                return (
+                    <div className="my-6 border border-white/20 rounded-xl overflow-hidden bg-white">
+                        <div className="bg-gray-200 px-3 py-1.5 text-xs text-gray-700 font-semibold border-b flex justify-between items-center">
+                            <span>Interactive Explanation Playground</span>
+                        </div>
+                        <iframe 
+                            srcDoc={rawText} 
+                            sandbox="allow-scripts allow-same-origin" 
+                            className="w-full h-[400px] border-none"
+                            title="Interactive Widget"
+                        />
+                    </div>
+                );
+            }
+            return <code className={className} {...props}>{children}</code>;
+        }
     };
 
     return (
@@ -270,7 +328,7 @@ function LectureMermaidMarkdown({ content }) {
                 rehypePlugins={[rehypeRaw, [rehypeKatex, { strict: false, throwOnError: false }]]}
                 components={components}
             >
-                {content}
+                {processedContent}
             </ReactMarkdown>
         </div>
     );
@@ -718,13 +776,109 @@ function ContentPane({ courseName, activeSubtopic, onAskAI, sidebarOpen, setSide
     );
 }
 
-// ─── Course Selection Grid ─────────────────────────────────────────────────────
+// ─── Constants for Curriculum Filters ──────────────────────────────────────────
+const DEPARTMENTS = [
+    { id: 'ALL', name: 'All Departments' },
+    { id: 'EE', name: 'Electrical Engineering (EE)' },
+    { id: 'CS', name: 'Computer Science & Eng (CS)' },
+    { id: 'EC', name: 'Electronics & Communication (EC)' },
+    { id: 'ME', name: 'Mechanical Engineering (ME)' },
+    { id: 'MA', name: 'Mathematics & Basic Sciences (MA)' },
+    { id: 'PH', name: 'Physics (PH)' },
+    { id: 'CY', name: 'Chemistry (CY)' },
+    { id: 'HS', name: 'Humanities & Social Sciences (HS)' },
+    { id: 'SM', name: 'Management & Entrepreneurship (SM)' },
+    { id: 'PE', name: 'Physical Education & Sports (PE)' },
+];
+
+const YEARS = [
+    { id: 'ALL', name: 'All Years (1–4)' },
+    { id: '1', name: 'Year 1 (I B.Tech)' },
+    { id: '2', name: 'Year 2 (II B.Tech)' },
+    { id: '3', name: 'Year 3 (III B.Tech)' },
+    { id: '4', name: 'Year 4 (IV B.Tech)' },
+];
+
+const ALL_SEMESTERS = [
+    { id: 'ALL', name: 'All Semesters', year: 'ALL' },
+    { id: 'I-I', name: 'Semester 1 (I-I)', year: '1' },
+    { id: 'I-II', name: 'Semester 2 (I-II)', year: '1' },
+    { id: 'II-I', name: 'Semester 3 (II-I)', year: '2' },
+    { id: 'II-II', name: 'Semester 4 (II-II)', year: '2' },
+    { id: 'III-I', name: 'Semester 5 (III-I)', year: '3' },
+    { id: 'III-II', name: 'Semester 6 (III-II)', year: '3' },
+    { id: 'IV-I', name: 'Semester 7 (IV-I)', year: '4' },
+    { id: 'IV-II', name: 'Semester 8 (IV-II)', year: '4' },
+];
+
+function getProfileDefaults(user) {
+    const profile = user?.profile || {};
+    const branchStr = (profile.branch || profile.department || user?.branch || '').toLowerCase();
+    let defaultDept = 'EE';
+    if (branchStr.includes('comp') || branchStr.includes('cse') || branchStr.includes('cs') || branchStr.includes('it')) {
+        defaultDept = 'CS';
+    } else if (branchStr.includes('electr') && (branchStr.includes('comm') || branchStr.includes('ece') || branchStr.includes('ec'))) {
+        defaultDept = 'EC';
+    } else if (branchStr.includes('electr') || branchStr.includes('eee') || branchStr.includes('ee')) {
+        defaultDept = 'EE';
+    } else if (branchStr.includes('mech') || branchStr.includes('me')) {
+        defaultDept = 'ME';
+    } else if (branchStr.includes('civil') || branchStr.includes('ce')) {
+        defaultDept = 'CE';
+    }
+
+    let defaultYear = 'ALL';
+    const yearStr = String(profile.year || user?.year || '').trim();
+    if (yearStr === '1' || yearStr.toUpperCase() === 'I' || yearStr.toLowerCase().includes('freshman') || yearStr.toLowerCase().includes('1st')) {
+        defaultYear = '1';
+    } else if (yearStr === '2' || yearStr.toUpperCase() === 'II' || yearStr.toLowerCase().includes('sophomore') || yearStr.toLowerCase().includes('2nd')) {
+        defaultYear = '2';
+    } else if (yearStr === '3' || yearStr.toUpperCase() === 'III' || yearStr.toLowerCase().includes('junior') || yearStr.toLowerCase().includes('3rd')) {
+        defaultYear = '3';
+    } else if (yearStr === '4' || yearStr.toUpperCase() === 'IV' || yearStr.toLowerCase().includes('senior') || yearStr.toLowerCase().includes('4th')) {
+        defaultYear = '4';
+    }
+
+    let defaultSem = 'ALL';
+    const semStr = String(profile.semester || user?.semester || '').trim().toUpperCase();
+    if (semStr.includes('I-I') || semStr === '1') defaultSem = 'I-I';
+    else if (semStr.includes('I-II') || semStr === '2') defaultSem = 'I-II';
+    else if (semStr.includes('II-I') || semStr === '3') defaultSem = 'II-I';
+    else if (semStr.includes('II-II') || semStr === '4') defaultSem = 'II-II';
+    else if (semStr.includes('III-I') || semStr === '5') defaultSem = 'III-I';
+    else if (semStr.includes('III-II') || semStr === '6') defaultSem = 'III-II';
+    else if (semStr.includes('IV-I') || semStr === '7') defaultSem = 'IV-I';
+    else if (semStr.includes('IV-II') || semStr === '8') defaultSem = 'IV-II';
+
+    return { defaultDept, defaultYear, defaultSem, branchName: profile.branch || 'Electrical Engineering' };
+}
+
+// ─── Course Selection Grid with Profile Defaults & Dynamic Filters ─────────────
 function CourseGrid({ onSelectCourse }) {
+    const { user } = useAuth();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
+
+    // Profile defaults
+    const profileDefaults = React.useMemo(() => getProfileDefaults(user), [user]);
+
+    const [selectedDept, setSelectedDept] = useState(profileDefaults.defaultDept);
+    const [selectedYear, setSelectedYear] = useState(profileDefaults.defaultYear);
+    const [selectedSem, setSelectedSem]   = useState(profileDefaults.defaultSem);
+    const [onlyContentReady, setOnlyContentReady] = useState(false);
+
+    // Synchronize default filters when user profile loads
+    useEffect(() => {
+        if (user?.profile?.branch || user?.branch) {
+            const defs = getProfileDefaults(user);
+            setSelectedDept(defs.defaultDept);
+            if (defs.defaultYear !== 'ALL') setSelectedYear(defs.defaultYear);
+            if (defs.defaultSem !== 'ALL') setSelectedSem(defs.defaultSem);
+        }
+    }, [user]);
 
     useEffect(() => {
         api.getSubjects()
@@ -733,18 +887,119 @@ function CourseGrid({ onSelectCourse }) {
             .finally(() => setLoading(false));
     }, []);
 
-    const filtered = courses.filter(c =>
-        (c.name || c.code || '').toLowerCase().includes(search.toLowerCase())
-    );
+    // Filter semesters available for the selected year
+    const visibleSemesters = React.useMemo(() => {
+        if (selectedYear === 'ALL') return ALL_SEMESTERS;
+        return ALL_SEMESTERS.filter(s => s.id === 'ALL' || s.year === selectedYear);
+    }, [selectedYear]);
+
+    // Handle Year change (reset semester if out of scope)
+    const handleYearChange = (newYear) => {
+        setSelectedYear(newYear);
+        if (newYear !== 'ALL') {
+            const valid = ALL_SEMESTERS.filter(s => s.year === newYear).map(s => s.id);
+            if (selectedSem !== 'ALL' && !valid.includes(selectedSem)) {
+                setSelectedSem('ALL');
+            }
+        }
+    };
+
+    // Handle Semester change (auto-sync year)
+    const handleSemChange = (newSem) => {
+        setSelectedSem(newSem);
+        if (newSem !== 'ALL') {
+            const found = ALL_SEMESTERS.find(s => s.id === newSem);
+            if (found && found.year !== 'ALL') {
+                setSelectedYear(found.year);
+            }
+        }
+    };
+
+    const handleResetToProfile = () => {
+        setSelectedDept(profileDefaults.defaultDept);
+        setSelectedYear(profileDefaults.defaultYear);
+        setSelectedSem(profileDefaults.defaultSem);
+        setOnlyContentReady(false);
+        setSearch('');
+    };
+
+    const handleClearFilters = () => {
+        setSelectedDept('ALL');
+        setSelectedYear('ALL');
+        setSelectedSem('ALL');
+        setOnlyContentReady(false);
+        setSearch('');
+    };
+
+    // Filter courses based on department, year, semester, readiness, and search
+    const filtered = React.useMemo(() => {
+        return courses.filter(c => {
+            // Department filter
+            if (selectedDept !== 'ALL') {
+                const cDept = (c.dept || '').toUpperCase();
+                const cCode = (c.code || '').toUpperCase();
+                const matchDept = cDept === selectedDept.toUpperCase() || cCode.startsWith(selectedDept.toUpperCase());
+                if (!matchDept) return false;
+            }
+
+            // Year filter
+            if (selectedYear !== 'ALL') {
+                const cYear = String(c.year || '');
+                const cSem = String(c.semester || '').toUpperCase();
+                const cCode = String(c.code || '');
+                const matchYear = cYear === String(selectedYear) ||
+                    (selectedYear === '1' && (cSem.includes('I-I') || cSem.includes('I-II') || cCode.match(/^[A-Z]+1/))) ||
+                    (selectedYear === '2' && (cSem.includes('II-I') || cSem.includes('II-II') || cCode.match(/^[A-Z]+2/))) ||
+                    (selectedYear === '3' && (cSem.includes('III-I') || cSem.includes('III-II') || cCode.match(/^[A-Z]+3/))) ||
+                    (selectedYear === '4' && (cSem.includes('IV-I') || cSem.includes('IV-II') || cCode.match(/^[A-Z]+4/)));
+                if (!matchYear) return false;
+            }
+
+            // Semester filter
+            if (selectedSem !== 'ALL') {
+                const cSem = (c.semester || '').replace(/\s+/g, '').toUpperCase();
+                const targetSem = selectedSem.replace(/\s+/g, '').toUpperCase();
+                if (cSem !== targetSem) return false;
+            }
+
+            // Content ready filter
+            if (onlyContentReady) {
+                const hasReadyContent = c.hasContent === true || (c.lectureCount && c.lectureCount > 0);
+                if (!hasReadyContent) return false;
+            }
+
+            // Search query
+            if (search.trim()) {
+                const q = search.toLowerCase();
+                const matchSearch =
+                    (c.name || '').toLowerCase().includes(q) ||
+                    (c.code || '').toLowerCase().includes(q) ||
+                    (c.category || '').toLowerCase().includes(q) ||
+                    (c.dept || '').toLowerCase().includes(q);
+                if (!matchSearch) return false;
+            }
+
+            return true;
+        });
+    }, [courses, selectedDept, selectedYear, selectedSem, onlyContentReady, search]);
+
+    const isProfileDefaultActive =
+        selectedDept === profileDefaults.defaultDept &&
+        selectedYear === profileDefaults.defaultYear &&
+        selectedSem === profileDefaults.defaultSem &&
+        !onlyContentReady &&
+        !search;
+
+    const readyCoursesCount = courses.filter(c => c.hasContent || c.lectureCount > 0).length;
 
     // Palette: cycle through accent colors for variety
     const ACCENTS = [
-        { bg: 'from-indigo-500/20 to-indigo-500/5', border: 'border-indigo-500/30', icon: 'text-indigo-400', badge: 'bg-indigo-500/20 text-indigo-300' },
-        { bg: 'from-cyan-500/20 to-cyan-500/5',     border: 'border-cyan-500/30',   icon: 'text-cyan-400',   badge: 'bg-cyan-500/20 text-cyan-300' },
-        { bg: 'from-violet-500/20 to-violet-500/5', border: 'border-violet-500/30', icon: 'text-violet-400', badge: 'bg-violet-500/20 text-violet-300' },
-        { bg: 'from-emerald-500/20 to-emerald-500/5', border: 'border-emerald-500/30', icon: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-300' },
-        { bg: 'from-amber-500/20 to-amber-500/5',   border: 'border-amber-500/30',  icon: 'text-amber-400',  badge: 'bg-amber-500/20 text-amber-300' },
-        { bg: 'from-rose-500/20 to-rose-500/5',     border: 'border-rose-500/30',   icon: 'text-rose-400',   badge: 'bg-rose-500/20 text-rose-300' },
+        { bg: 'from-indigo-500/15 via-[#0d101a] to-[#080a0e]', border: 'border-indigo-500/30', icon: 'text-indigo-400', badge: 'bg-indigo-500/20 text-indigo-300' },
+        { bg: 'from-cyan-500/15 via-[#0d101a] to-[#080a0e]',     border: 'border-cyan-500/30',   icon: 'text-cyan-400',   badge: 'bg-cyan-500/20 text-cyan-300' },
+        { bg: 'from-violet-500/15 via-[#0d101a] to-[#080a0e]', border: 'border-violet-500/30', icon: 'text-violet-400', badge: 'bg-violet-500/20 text-violet-300' },
+        { bg: 'from-emerald-500/15 via-[#0d101a] to-[#080a0e]', border: 'border-emerald-500/30', icon: 'text-emerald-400', badge: 'bg-emerald-500/20 text-emerald-300' },
+        { bg: 'from-amber-500/15 via-[#0d101a] to-[#080a0e]',   border: 'border-amber-500/30',  icon: 'text-amber-400',  badge: 'bg-amber-500/20 text-amber-300' },
+        { bg: 'from-rose-500/15 via-[#0d101a] to-[#080a0e]',     border: 'border-rose-500/30',   icon: 'text-rose-400',   badge: 'bg-rose-500/20 text-rose-300' },
     ];
 
     return (
@@ -760,62 +1015,217 @@ function CourseGrid({ onSelectCourse }) {
                 <ArrowLeft size={14} /> Dashboard
             </button>
 
-            {/* Hero */}
-            <div className="flex flex-col items-center justify-center pt-20 pb-10 px-6 text-center">
-                <div className="inline-block px-3 py-1 mb-6 border border-[#1e2030] rounded-full text-[10px] uppercase tracking-widest text-gray-500 font-bold bg-[#0d0f18]">
-                    Course Library
+            {/* Hero Section */}
+            <div className="flex flex-col items-center justify-center pt-16 pb-6 px-6 text-center max-w-4xl mx-auto w-full">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 border border-[#1e2030] rounded-full text-[11px] uppercase tracking-widest text-indigo-400 font-semibold bg-[#0d0f18]">
+                    <Sparkles size={12} className="text-indigo-400" />
+                    Curriculum & Course Repository (EED R24)
                 </div>
-                <h1 className="text-5xl font-serif font-medium text-white mb-4 tracking-tight">
-                    Courses
+                <h1 className="text-4xl sm:text-5xl font-serif font-medium text-white mb-3 tracking-tight">
+                    Course Catalog
                 </h1>
-                <p className="text-gray-400 text-base max-w-md leading-relaxed mb-8">
-                    Browse admin-curated course content. Select a course to explore its complete lecture notes with AI-powered search.
+                <p className="text-gray-400 text-sm sm:text-base max-w-2xl leading-relaxed mb-6">
+                    Explore curated courses, structured lecture notes, and interactive demonstrations. Filter by department, academic year, and semester.
                 </p>
 
-                {/* Search */}
-                <div className="relative w-full max-w-md">
-                    <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
-                    <input
-                        type="text"
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                        placeholder="Search courses…"
-                        className="w-full bg-[#0f1117] border border-[#1e2030] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
-                    />
-                    {search && (
-                        <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-white">
-                            <X size={13} />
+                {/* Profile Defaults Banner */}
+                <div className="w-full bg-[#0e111a] border border-indigo-500/20 rounded-2xl p-3 sm:p-4 mb-6 shadow-lg shadow-black/40 flex flex-wrap items-center justify-between gap-3 text-left">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 flex-shrink-0">
+                            <UserCheck size={16} />
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-xs font-semibold text-white truncate">
+                                Student Profile: <span className="text-indigo-300">{user?.profile?.branch || 'Electrical Engineering'}</span>
+                            </p>
+                            <p className="text-[11px] text-gray-400">
+                                Defaulted to your department & academic curriculum. Change filters below anytime.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        {!isProfileDefaultActive && (
+                            <button
+                                onClick={handleResetToProfile}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 transition-all cursor-pointer"
+                            >
+                                <RotateCcw size={12} /> Reset to Profile
+                            </button>
+                        )}
+                        <button
+                            onClick={handleClearFilters}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer"
+                        >
+                            Show All Courses ({courses.length})
                         </button>
-                    )}
+                    </div>
+                </div>
+
+                {/* ── Filter Controls Bar ────────────────────────────────────────── */}
+                <div className="w-full bg-[#0d0f18] border border-[#1e2030] rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        {/* Department Select */}
+                        <div className="space-y-1.5 text-left">
+                            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <Building2 size={13} className="text-indigo-400" />
+                                Department
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={selectedDept}
+                                    onChange={e => setSelectedDept(e.target.value)}
+                                    className="w-full bg-[#121520] border border-[#262a3d] hover:border-indigo-500/40 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white appearance-none cursor-pointer focus:outline-none transition-colors"
+                                >
+                                    {DEPARTMENTS.map(d => (
+                                        <option key={d.id} value={d.id} className="bg-[#121520] text-white">
+                                            {d.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                            </div>
+                        </div>
+
+                        {/* Year Select */}
+                        <div className="space-y-1.5 text-left">
+                            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <Calendar size={13} className="text-indigo-400" />
+                                Academic Year
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={selectedYear}
+                                    onChange={e => handleYearChange(e.target.value)}
+                                    className="w-full bg-[#121520] border border-[#262a3d] hover:border-indigo-500/40 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white appearance-none cursor-pointer focus:outline-none transition-colors"
+                                >
+                                    {YEARS.map(y => (
+                                        <option key={y.id} value={y.id} className="bg-[#121520] text-white">
+                                            {y.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                            </div>
+                        </div>
+
+                        {/* Semester Select */}
+                        <div className="space-y-1.5 text-left">
+                            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <Layers size={13} className="text-indigo-400" />
+                                Semester
+                            </label>
+                            <div className="relative">
+                                <select
+                                    value={selectedSem}
+                                    onChange={e => handleSemChange(e.target.value)}
+                                    className="w-full bg-[#121520] border border-[#262a3d] hover:border-indigo-500/40 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white appearance-none cursor-pointer focus:outline-none transition-colors"
+                                >
+                                    {visibleSemesters.map(s => (
+                                        <option key={s.id} value={s.id} className="bg-[#121520] text-white">
+                                            {s.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                            </div>
+                        </div>
+
+                        {/* Search Input */}
+                        <div className="space-y-1.5 text-left">
+                            <label className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <Search size={13} className="text-indigo-400" />
+                                Search Course
+                            </label>
+                            <div className="relative">
+                                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                                <input
+                                    type="text"
+                                    value={search}
+                                    onChange={e => setSearch(e.target.value)}
+                                    placeholder="e.g. EE3621, DSP..."
+                                    className="w-full bg-[#121520] border border-[#262a3d] hover:border-indigo-500/40 focus:border-indigo-500 rounded-xl pl-9 pr-8 py-2.5 text-xs sm:text-sm text-white placeholder:text-gray-600 focus:outline-none transition-colors"
+                                />
+                                {search && (
+                                    <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white p-1">
+                                        <X size={12} />
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Secondary Filters: Content Ready Toggle & Active Stats */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06] text-xs">
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setOnlyContentReady(p => !p)}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border font-medium transition-all cursor-pointer ${
+                                    onlyContentReady
+                                        ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 ring-1 ring-emerald-500/30'
+                                        : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:bg-white/8'
+                                }`}
+                            >
+                                <CheckCircle2 size={13} className={onlyContentReady ? 'text-emerald-400' : 'text-gray-500'} />
+                                <span>Show Content Ready Only</span>
+                                <span className="ml-1 px-1.5 py-0.2 rounded bg-black/40 text-[10px] text-gray-300 font-mono">
+                                    {readyCoursesCount}
+                                </span>
+                            </button>
+                        </div>
+
+                        <div className="text-[12px] text-gray-400">
+                            Showing <span className="font-bold text-white">{filtered.length}</span> of <span className="text-gray-300">{courses.length}</span> courses
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Course cards */}
-            <div className="flex-1 px-6 pb-16 max-w-5xl mx-auto w-full">
+            {/* Course cards grid */}
+            <div className="flex-1 px-6 pb-20 max-w-6xl mx-auto w-full">
                 {loading && (
-                    <div className="flex items-center justify-center py-20 gap-3 text-gray-500">
-                        <Loader2 size={22} className="animate-spin text-indigo-400" />
-                        <span className="text-sm">Loading courses…</span>
+                    <div className="flex items-center justify-center py-24 gap-3 text-gray-500">
+                        <Loader2 size={24} className="animate-spin text-indigo-400" />
+                        <span className="text-sm">Loading courses from curriculum database…</span>
                     </div>
                 )}
 
                 {error && !loading && (
                     <div className="flex flex-col items-center justify-center py-20 gap-3 text-red-400">
-                        <AlertTriangle size={24} />
+                        <AlertTriangle size={28} />
                         <p className="text-sm">{error}</p>
                         <button
-                            onClick={() => { setError(null); setLoading(true); api.getSubjects().then(d => setCourses(Array.isArray(d.subjects) ? d.subjects : [])).catch(e => setError(e.message)).finally(() => setLoading(false)); }}
-                            className="flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300"
+                            onClick={() => {
+                                setError(null);
+                                setLoading(true);
+                                api.getSubjects()
+                                    .then(d => setCourses(Array.isArray(d.subjects) ? d.subjects : []))
+                                    .catch(e => setError(e.message))
+                                    .finally(() => setLoading(false));
+                            }}
+                            className="flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20"
                         >
-                            <RefreshCw size={12} /> Retry
+                            <RefreshCw size={12} /> Retry Loading
                         </button>
                     </div>
                 )}
 
                 {!loading && !error && filtered.length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-20 gap-3 text-gray-600">
-                        <BookOpen size={32} className="opacity-20" />
-                        <p className="text-sm">{courses.length === 0 ? 'No courses available yet.' : 'No courses match your search.'}</p>
+                    <div className="flex flex-col items-center justify-center py-20 gap-4 text-center max-w-md mx-auto">
+                        <div className="p-4 rounded-2xl bg-white/3 border border-white/6 text-gray-500">
+                            <BookOpen size={36} className="opacity-30" />
+                        </div>
+                        <div>
+                            <h3 className="text-base font-semibold text-white mb-1">No courses match selected filters</h3>
+                            <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                                There are no courses matching Department: <strong>{selectedDept}</strong>, Year: <strong>{selectedYear}</strong>, Semester: <strong>{selectedSem}</strong>.
+                            </p>
+                            <button
+                                onClick={handleClearFilters}
+                                className="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 text-indigo-200 transition-all cursor-pointer"
+                            >
+                                Clear Filters & View All ({courses.length})
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -824,28 +1234,97 @@ function CourseGrid({ onSelectCourse }) {
                         {filtered.map((course, i) => {
                             const accent = ACCENTS[i % ACCENTS.length];
                             const cname = course.name || course.code;
+                            const isDSP = course.code === 'EE3621';
+                            const hasContent = course.hasContent || course.lectureCount > 0 || isDSP;
+
                             return (
-                                <button
+                                <div
                                     key={course.code}
-                                    onClick={() => onSelectCourse(course.code, course.name)}
-                                    className={`group relative flex flex-col items-start p-6 rounded-2xl border ${accent.border} bg-gradient-to-br ${accent.bg} hover:scale-[1.02] hover:shadow-xl hover:shadow-black/40 transition-all duration-200 text-left`}
+                                    className={`group relative flex flex-col items-start p-6 rounded-2xl border ${accent.border} bg-gradient-to-b ${accent.bg} hover:border-indigo-500/60 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-200 text-left`}
                                 >
-                                    <div className={`p-3 rounded-xl bg-white/5 mb-4 ${accent.icon}`}>
-                                        <GraduationCap size={22} />
+                                    {/* Top Header Tags */}
+                                    <div className="flex items-center justify-between w-full mb-3 gap-2">
+                                        <div className="flex items-center gap-1.5 flex-wrap">
+                                            <span className="px-2 py-0.5 rounded-md bg-white/8 text-[11px] font-bold text-white font-mono border border-white/10">
+                                                {course.code}
+                                            </span>
+                                            {course.dept && (
+                                                <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 text-[10px] font-semibold">
+                                                    {course.dept}
+                                                </span>
+                                            )}
+                                            {course.category && (
+                                                <span className="px-2 py-0.5 rounded-md bg-white/5 text-gray-400 text-[10px] font-medium">
+                                                    {course.category}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {course.credits != null && (
+                                            <span className="text-[11px] font-medium text-gray-400 flex-shrink-0">
+                                                {typeof course.credits === 'object' ? `${course.credits.low}${course.credits.high ? '-' + course.credits.high : ''}` : course.credits} cr
+                                            </span>
+                                        )}
                                     </div>
-                                    <h3 className="text-base font-bold text-white mb-1 leading-tight">{cname}</h3>
-                                    <p className="text-[12px] text-gray-500 leading-snug flex-1">
-                                        {course.code}
-                                        {course.semester && <span className="ml-2 text-gray-600">{course.semester}</span>}
-                                        {course.credits != null && <span className="ml-2 text-gray-600">{typeof course.credits === 'object' ? `${course.credits.low}${course.credits.high ? '-' + course.credits.high : ''}` : course.credits} cr</span>}
-                                    </p>
-                                    <div className={`mt-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${accent.badge}`}>
-                                        <BookOpen size={10} /> Open Course
+
+                                    {/* Course Title */}
+                                    <h3
+                                        onClick={() => onSelectCourse(course.code, course.name)}
+                                        className="text-base font-bold text-white mb-2 leading-snug group-hover:text-indigo-200 transition-colors cursor-pointer flex-1"
+                                    >
+                                        {cname}
+                                    </h3>
+
+                                    {/* Semester info */}
+                                    <div className="flex items-center gap-2 text-[12px] text-gray-400 mb-4">
+                                        <Calendar size={12} className="text-gray-500" />
+                                        <span>
+                                            {course.semester ? `Semester ${course.semester}` : 'Academic Course'}
+                                            {course.year ? ` · Year ${course.year}` : ''}
+                                        </span>
                                     </div>
-                                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <ChevronRight size={16} className={accent.icon} />
+
+                                    {/* Content Readiness Pill */}
+                                    <div className="w-full mb-4">
+                                        {hasContent ? (
+                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-medium">
+                                                <CheckCircle2 size={12} className="text-emerald-400 flex-shrink-0" />
+                                                <span>
+                                                    {isDSP ? '30 Lectures & Interactive Demos' : course.lectureCount ? `${course.lectureCount} Lectures Available` : 'Content Ready'}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/4 border border-white/8 text-gray-400 text-[11px]">
+                                                <BookOpen size={12} className="text-gray-500 flex-shrink-0" />
+                                                <span>Syllabus Active · AI Notes on Demand</span>
+                                            </div>
+                                        )}
                                     </div>
-                                </button>
+
+                                    {/* Action Buttons */}
+                                    <div className="w-full pt-3 border-t border-white/[0.06] flex items-center justify-between gap-2">
+                                        <button
+                                            onClick={() => onSelectCourse(course.code, course.name)}
+                                            className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-200 border border-indigo-500/30 transition-all cursor-pointer"
+                                        >
+                                            <BookOpen size={13} />
+                                            <span>Open Course</span>
+                                            <ChevronRight size={13} className="ml-auto opacity-70" />
+                                        </button>
+
+                                        {isDSP && (
+                                            <a
+                                                href="/course_bootstrap/EE3621/interactive_portal/index.html"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                title="Launch Interactive DSP Demos"
+                                                className="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 transition-all"
+                                            >
+                                                <ExternalLink size={14} />
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
                             );
                         })}
                     </div>

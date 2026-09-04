@@ -2,12 +2,13 @@
   "config": {
     "argv": [
       "/home/sri/.nvm/versions/node/v22.18.0/bin/node",
-      "/home/sri/Downloads/iMentor_march/iMentor-Main/node_modules/.bin/playwright",
+      "/home/sri/Downloads/iMentor_march/iMentorV2/node_modules/.bin/playwright",
       "test",
-      "tests/e2e/16_faculty_dsp_course.spec.js"
+      "tests/e2e/16_faculty_dsp_course.spec.js",
+      "tests/e2e/imentor_full_e2e.spec.js"
     ],
-    "configFile": "/home/sri/Downloads/iMentor_march/iMentor-Main/playwright.config.js",
-    "rootDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/tests/e2e",
+    "configFile": "/home/sri/Downloads/iMentor_march/iMentorV2/playwright.config.js",
+    "rootDir": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e",
     "failOnFlakyTests": false,
     "forbidOnly": false,
     "fullyParallel": false,
@@ -23,7 +24,7 @@
     "preserveOutput": "always",
     "projects": [
       {
-        "outputDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results",
+        "outputDir": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
@@ -31,7 +32,7 @@
         },
         "id": "chromium",
         "name": "chromium",
-        "testDir": "/home/sri/Downloads/iMentor_march/iMentor-Main/tests/e2e",
+        "testDir": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -106,7 +107,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 48474,
+                      "duration": 9436,
                       "errors": [],
                       "stdout": [
                         {
@@ -131,6 +132,9 @@
                           "text": "[5/6] ✓ EE3621 - Digital Signal Processing course syllabus generated and saved to MongoDB\n"
                         },
                         {
+                          "text": "[5/6] ✓ Verified 36-lecture breakdown and 100/100 Quality Score\n"
+                        },
+                        {
                           "text": "[6/6] ✓ Faculty Console listed active course curriculum\n"
                         },
                         {
@@ -139,25 +143,9 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-08-14T11:19:34.003Z",
+                      "startTime": "2026-08-24T07:31:17.269Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/test-finished-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/video.webm"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "/home/sri/Downloads/iMentor_march/iMentor-Main/test-results/16_faculty_dsp_course-Facu-3d38b-21-Course-Execute-Swarm-CLI-chromium/trace.zip"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
                   "status": "expected"
@@ -171,15 +159,1223 @@
           ]
         }
       ]
+    },
+    {
+      "title": "imentor_full_e2e.spec.js",
+      "file": "imentor_full_e2e.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "1 — Authentication",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 143,
+          "column": 6,
+          "specs": [
+            {
+              "title": "AUTH-01: Landing page loads correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2112,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Landing page loaded\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:31:26.927Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-7b618d769d0f42eabf27",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 145,
+              "column": 7
+            },
+            {
+              "title": "AUTH-02: Student login flow works",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8017,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  ✓ Student is authenticated and in the app\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:31:29.048Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-0688f48eceab29414289",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 154,
+              "column": 7
+            },
+            {
+              "title": "AUTH-03: Profile info is populated correctly",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8519,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:171:29",
+                        "location": {
+                          "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                          "column": 29,
+                          "line": 171
+                        },
+                        "snippet": "  169 |       headers: { Authorization: `Bearer ${token}` },\n  170 |     });\n> 171 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  172 |     const profile = await profileRes.json();\n  173 |     console.log(`  ✓ Profile: ${profile.username} | ${profile.email} | Branch: ${profile.branch}`);\n  174 |     expect(profile.email).toBe(STUDENT.email);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                            "column": 29,
+                            "line": 171
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  169 |       headers: { Authorization: `Bearer ${token}` },\n  170 |     });\n> 171 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  172 |     const profile = await profileRes.json();\n  173 |     console.log(`  ✓ Profile: ${profile.username} | ${profile.email} | Branch: ${profile.branch}`);\n  174 |     expect(profile.email).toBe(STUDENT.email);\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:171:29"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:31:37.072Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-1-—-Authe-d1c3e-info-is-populated-correctly-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-1-—-Authe-d1c3e-info-is-populated-correctly-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-1-—-Authe-d1c3e-info-is-populated-correctly-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-1-—-Authe-d1c3e-info-is-populated-correctly-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                        "column": 29,
+                        "line": 171
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-fa5757c325e859b566ef",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 163,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "2 — General Chat",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 182,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CHAT-01: Ask a simple ECE concept question",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 56912,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Response (first 150 chars): \"In operating systems, both processes and threads are fundamental units of computation, but they have distinct characteristics and functionalities.Proc\"\n"
+                        },
+                        {
+                          "text": "  ✓ General chat responded with relevant content\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:31:46.295Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-bb3c8e44c0df5c19322c",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 187,
+              "column": 7
+            },
+            {
+              "title": "CHAT-02: Follow-up question maintains context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 121483,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Follow-up (first 150 chars): \"A mutex and a semaphore are both synchronization objects used in concurrent programming, but they serve different purposes and have distinct character\"\n"
+                        },
+                        {
+                          "text": "  ✓ Follow-up context maintained\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:32:43.389Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-d2c74d8b4ee4553b31ae",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 202,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "3 — Socratic Tutor Mode (Average Student)",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 217,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TUTOR-01: Navigate to tutor mode and select course",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14053,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Available courses: General, Problem Solving through Computer Programming, Problem Solving through Computer Programming Lab, Data Structures and Applications, Data Structures and Applications Lab, Chemistry of Energy Systems, Signals and Systems for Electrical Engineers, Basic Electrical Circuits, Analog Electronics, Electrical Network Analysis, Basics of Electrical Engineering (for Civil Engineering), Introduction to Electrical & Electronics Engineering (for Mechanical Engg.), Minor Project (Audit Course) - I, Measurements and Instrumentation, Analog and Digital Circuits Lab, DC Machines and Transformers, Circuits and Measurements Lab, Power System Generation and Transmission, DC Machines and Transformers Lab, Digital Electronics, Control Systems Lab, AC Rotating Machines, AC Rotating Machines Lab, Control Systems, Power Systems & Renewable Energy Lab, Power Systems Analysis, Basics of Internet of Things, Renewable Power Generation, Introduction to Machine Learning, Minor Project (Audit Course)-II, Power Electronics, Power Electronics Lab, Power System Protection and Control, Embedded Systems Lab, Embedded Systems, Electric Power Drives Lab, Electric Power Drives, Advanced Control Systems, Wind and Solar Electrical Systems, Digital Signal Processing, Soft Computing Techniques, Introduction to Electric Vehicles, Advanced Computer Methods in Power Systems, Advanced Power Electronics, Industrial Instrumentation and Automation, Converters for Renewable Energy Systems, Deep Learning Algorithms, Electrical Machine Design, Introduction to Smart Grid, Battery Energy Storage and EV Charging Systems, Power System Security and Reliability, Switched Mode Power Supplies, Professional Major Work, Semester-Long Internship, Energy Management and Audit, Power Quality Improvement, Distribution System Planning and Automation, Special Machines, English for Engineers-I, Personality Development, NCC/Social Services, English for Engineers II, German/Other Foreign Languages, Vedic Maths, Principles of Differential and Integral Calculus, Matrices and Differential Equations, Complex Variables and Mathematical Methods, Numerical Methods Lab, Engineering Graphics with CAD, Basics of Mechanical Engineering, Machine Learning, Operating Systems, Physical Education I, Physical Education II, Yoga, Physics for Electrical Engineering, Introduction to Entrepreneurship, Design Thinking\n"
+                        },
+                        {
+                          "text": "  → Selected: Operating Systems\n"
+                        },
+                        {
+                          "text": "  ✓ TUTOR-01: Course selection complete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:34:44.884Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-0706fc20cbe4730ad550",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 222,
+              "column": 7
+            },
+            {
+              "title": "TUTOR-02: Curriculum structure visible in sidebar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14053,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Modules visible in sidebar: 0\n"
+                        },
+                        {
+                          "text": "  ✓ TUTOR-02: Curriculum structure verified\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:34:58.951Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-3783940ef3efc189e0f6",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 253,
+              "column": 7
+            },
+            {
+              "title": "TUTOR-03: Average student sends first message — Socratic response expected",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 66466,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Student says: \"I think it involves controlling access to shared resources between processes.\"\n"
+                        },
+                        {
+                          "text": "  → Tutor responds: \"Welcome! Let's explore the historical perspective of computers today. Understanding the evolution of computing can provide us with valuable insights into the current landscape and future trends. Compu\"\n"
+                        },
+                        {
+                          "text": "  → Has question mark: true | Has Socratic keywords: true\n"
+                        },
+                        {
+                          "text": "  ✓ TUTOR-03: First Socratic exchange complete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:35:13.018Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-1cd16cd8d75f91cb2848",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 293,
+              "column": 7
+            },
+            {
+              "title": "TUTOR-04: Multi-turn Socratic dialogue simulating average student (3 turns)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 177881,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  [Turn 1] Student: \"I believe it is related to managing how multiple programs run simultaneously on ...\"\n"
+                        },
+                        {
+                          "text": "  [Turn 1] Tutor: \"Welcome! Let's explore the historical perspective of computers today. Understanding the evolution of technology can prov...\"\n"
+                        },
+                        {
+                          "text": "    Socratic quality: question=true, keywords=true\n"
+                        },
+                        {
+                          "text": "  [Turn 2] Student: \"A mutex is a binary semaphore — it allows only one thread to enter the critical ...\"\n"
+                        },
+                        {
+                          "text": "  [Turn 2] Tutor: \"You're getting there — this concept takes a bit of practice. Here's a nudge in the right direction:Thank you for sharing...\"\n"
+                        },
+                        {
+                          "text": "    Socratic quality: question=true, keywords=true\n"
+                        },
+                        {
+                          "text": "  [Turn 3] Student: \"Right, and Peterson's solution uses a flag array and a turn variable to guarante...\"\n"
+                        },
+                        {
+                          "text": "  [Turn 3] Tutor: \"No worries at all — this is genuinely one of the trickier ideas. Let me break it down a different way:Thank you for your...\"\n"
+                        },
+                        {
+                          "text": "    Socratic quality: question=true, keywords=true\n"
+                        },
+                        {
+                          "text": "  ✓ TUTOR-04: Multi-turn dialogue complete\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:36:19.501Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-1653aefba9507f821c85",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 323,
+              "column": 7
+            },
+            {
+              "title": "TUTOR-05: Module progression — verify current position advances via API",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 26264,
+                      "error": {
+                        "message": "TimeoutError: locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /^Sign In$/ }).first() to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /^Sign In$/ }).first() to be visible\u001b[22m\n\n    at loginAsStudent (/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:43:19)\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:363:5",
+                        "location": {
+                          "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                          "column": 19,
+                          "line": 43
+                        },
+                        "snippet": "  41 |   // Click \"Sign In\" nav button (exact text match, not Sign Up)\n  42 |   const signInBtn = page.locator('button').filter({ hasText: /^Sign In$/ }).first();\n> 43 |   await signInBtn.waitFor({ state: 'visible', timeout: 15000 });\n     |                   ^\n  44 |   await signInBtn.click();\n  45 |   await page.waitForTimeout(1500); // modal open animation and state initialization\n  46 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                            "column": 19,
+                            "line": 43
+                          },
+                          "message": "TimeoutError: locator.waitFor: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /^Sign In$/ }).first() to be visible\u001b[22m\n\n\n  41 |   // Click \"Sign In\" nav button (exact text match, not Sign Up)\n  42 |   const signInBtn = page.locator('button').filter({ hasText: /^Sign In$/ }).first();\n> 43 |   await signInBtn.waitFor({ state: 'visible', timeout: 15000 });\n     |                   ^\n  44 |   await signInBtn.click();\n  45 |   await page.waitForTimeout(1500); // modal open animation and state initialization\n  46 |\n    at loginAsStudent (/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:43:19)\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:363:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:39:17.400Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-3-—-Socra-c59a0-t-position-advances-via-API-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-3-—-Socra-c59a0-t-position-advances-via-API-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-3-—-Socra-c59a0-t-position-advances-via-API-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-3-—-Socra-c59a0-t-position-advances-via-API-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                        "column": 19,
+                        "line": 43
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-32585ab8208e0771c693",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 361,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "4 — Skill Tree Gamification",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 406,
+          "column": 6,
+          "specs": [
+            {
+              "title": "ST-01: Navigate to skill tree page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11019,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  ✓ ST-01: Skill tree page accessible\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:39:44.630Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-da30dd9066f2da2e32dc",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 411,
+              "column": 7
+            },
+            {
+              "title": "ST-02: Question deduplication verified via API (Attempt 1 vs 2)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8266,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Attempt 1: 5 questions from source: precomputed\n"
+                        },
+                        {
+                          "text": "    Sample: \"In a neural network, what do the 'weights' primarily represent?...\"\n"
+                        },
+                        {
+                          "text": "  → Attempt 2: 5 questions from source: precomputed\n"
+                        },
+                        {
+                          "text": "  → Duplicates: 0/5 | Novelty rate: 100%\n"
+                        },
+                        {
+                          "text": "  ✓ ST-02: Deduplication test complete (novelty 100%)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:39:55.862Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-71e13fbdd2f679c73aae",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 419,
+              "column": 7
+            },
+            {
+              "title": "ST-03: Play skill tree level in UI",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 15000,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Clicked play/continue on existing game\n"
+                        },
+                        {
+                          "text": "  ✓ ST-03: Skill tree play attempted\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:04.150Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-447162be9bda8a372182",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 455,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "5 — Guided Learning (Study Mode)",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 489,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GL-01: Access study/guided learning mode",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8870,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Study mode toggle not found in UI, testing via direct chat with mode flag\n"
+                        },
+                        {
+                          "text": "  ✓ GL-01: Study mode navigation attempted\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:19.175Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-e6e5a513a4fa19720cb7",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 494,
+              "column": 7
+            },
+            {
+              "title": "GL-02: Guided learning API responds with document context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8176,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Guided learning API response: HTTP 404\n"
+                        },
+                        {
+                          "text": "  → Error: <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot POST /api/chat</pre>\n</body>\n</html>\n\n"
+                        },
+                        {
+                          "text": "  ✓ GL-02: Guided learning API tested\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:28.065Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-2b868c53edc5b77e1a45",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 515,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "6 — Backend Quality Assertions",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 552,
+          "column": 6,
+          "specs": [
+            {
+              "title": "BQ-01: SGLang health check passes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 507,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ BQ-01: SGLang healthy — model: Qwen/Qwen2.5-7B-Instruct-AWQ\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:36.255Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-cf3c9de2025eafff617d",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 554,
+              "column": 7
+            },
+            {
+              "title": "BQ-02: Backend /health endpoint passes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 292,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  → /health HTTP: 200\n"
+                        },
+                        {
+                          "text": "  ✓ BQ-02: Backend reachable\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:36.771Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-577858fe8944ab717780",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 562,
+              "column": 7
+            },
+            {
+              "title": "BQ-03: Auth token is valid for protected routes",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8216,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:577:29",
+                        "location": {
+                          "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                          "column": 29,
+                          "line": 577
+                        },
+                        "snippet": "  575 |       headers: { Authorization: `Bearer ${token}` },\n  576 |     });\n> 577 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  578 |\n  579 |     // Test progress endpoint\n  580 |     const progressRes = await page.request.get(`${BASE_API}/progress/Operating%20Systems`, {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                            "column": 29,
+                            "line": 577
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  575 |       headers: { Authorization: `Bearer ${token}` },\n  576 |     });\n> 577 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  578 |\n  579 |     // Test progress endpoint\n  580 |     const progressRes = await page.request.get(`${BASE_API}/progress/Operating%20Systems`, {\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:577:29"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:37.071Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-6-—-Backe-305d0--valid-for-protected-routes-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-6-—-Backe-305d0--valid-for-protected-routes-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-6-—-Backe-305d0--valid-for-protected-routes-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-6-—-Backe-305d0--valid-for-protected-routes-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                        "column": 29,
+                        "line": 577
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-0db36c0e38591c24a5f5",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 570,
+              "column": 7
+            },
+            {
+              "title": "BQ-04: Curriculum API returns structured data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8136,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Curriculum modules: 7\n"
+                        },
+                        {
+                          "text": "    [1] Module 1 — 2 topics\n"
+                        },
+                        {
+                          "text": "    [2] Module 2 — 2 topics\n"
+                        },
+                        {
+                          "text": "    [3] Module 3 — 2 topics\n"
+                        },
+                        {
+                          "text": "  ✓ BQ-04: Curriculum structure verified\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:45.938Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-fe9bc5f66c8864b7763d",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 587,
+              "column": 7
+            },
+            {
+              "title": "BQ-05: Tutor progress save and resolve cycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7942,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "  → Clear progress: HTTP 200\n"
+                        },
+                        {
+                          "text": "  → Current position: HTTP 200\n"
+                        },
+                        {
+                          "text": "  → Position: module=\"Module 1\", topic=\"Introduction to Operating Systems\", unit=\"OS objectives\"\n"
+                        },
+                        {
+                          "text": "  ✓ BQ-05: Progress save/resolve cycle confirmed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:40:54.256Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-c86017605d624a90d407",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 610,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "7 — Full Average Student Journey",
+          "file": "imentor_full_e2e.spec.js",
+          "line": 651,
+          "column": 6,
+          "specs": [
+            {
+              "title": "JOURNEY-01: Complete session — login, ask, tutor, skill tree",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 600000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 105231,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:707:29",
+                        "location": {
+                          "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                          "column": 29,
+                          "line": 707
+                        },
+                        "snippet": "  705 |       headers: { Authorization: `Bearer ${token}` }\n  706 |     });\n> 707 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  708 |     console.log('  Step 7: Session persisted across navigation ✓');\n  709 |\n  710 |     console.log('\\n  ✓ JOURNEY-01: Full student journey complete!');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                            "column": 29,
+                            "line": 707
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  705 |       headers: { Authorization: `Bearer ${token}` }\n  706 |     });\n> 707 |     expect(profileRes.ok()).toBeTruthy();\n      |                             ^\n  708 |     console.log('  Step 7: Session persisted across navigation ✓');\n  709 |\n  710 |     console.log('\\n  ✓ JOURNEY-01: Full student journey complete!');\n    at /home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js:707:29"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "  ✓ Logged in as student@imentor.edu\n"
+                        },
+                        {
+                          "text": "\n  === STUDENT JOURNEY ===\n"
+                        },
+                        {
+                          "text": "  Step 1: Logged in ✓\n"
+                        },
+                        {
+                          "text": "  Step 2: General chat → \"I remember you found synchronization challenging before, so let me explain it differently...Certainly! Process synchroni\"\n"
+                        },
+                        {
+                          "text": "  Step 3: Navigated to tutor mode\n"
+                        },
+                        {
+                          "text": "  Step 4: Selected course: Operating Systems\n"
+                        },
+                        {
+                          "text": "  Step 5: Sending tutor message...\n"
+                        },
+                        {
+                          "text": "  Step 5: Tutor responded: \"Welcome! Let's explore the objectives of an Operating System (OS) today. The OS is the backbone of any computing system, acting as a bridge between th\"\n"
+                        },
+                        {
+                          "text": "  Step 6: Navigated to skill tree\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-08-24T07:41:02.212Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-7-—-Full--edd10--login-ask-tutor-skill-tree-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-7-—-Full--edd10--login-ask-tutor-skill-tree-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-7-—-Full--edd10--login-ask-tutor-skill-tree-chromium/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/sri/Downloads/iMentor_march/iMentorV2/test-results/imentor_full_e2e-7-—-Full--edd10--login-ask-tutor-skill-tree-chromium/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/sri/Downloads/iMentor_march/iMentorV2/tests/e2e/imentor_full_e2e.spec.js",
+                        "column": 29,
+                        "line": 707
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ac6282918b4f4834e8ab-5f3dfb6d97a98c4047c7",
+              "file": "imentor_full_e2e.spec.js",
+              "line": 653,
+              "column": 7
+            }
+          ]
+        }
+      ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-08-14T11:19:33.351Z",
-    "duration": 50713.797000000006,
-    "expected": 1,
+    "startTime": "2026-08-24T07:31:16.591Z",
+    "duration": 693326.398,
+    "expected": 18,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 4,
     "flaky": 0
   }
 }

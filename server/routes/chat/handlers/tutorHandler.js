@@ -28,6 +28,7 @@ const { streamEvent, TUTOR_MODE_TYPES, emitTutorKnowledgeEvents } = require('../
 const { computeTurnXp, awardTurnXpAsync, scheduleQualityBonusAsync } = require('../../../services/tutorXpService');
 const guidedLearningOrchestrator = require('../../../services/guidedLearningOrchestrator');
 const priorKnowledgeDetector = require('../../../services/priorKnowledgeDetector');
+const liveMemoryMapService = require('../../../services/liveMemoryMapService');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -260,7 +261,10 @@ async function handleGeneral(res, ctx) {
             masteryProgress: tutorResult.masteryProgress || _masteryProgress || null,
             steps: tutorResult.steps || [],
             confidenceScore: 85,
-            xpDelta: genXpResult
+            xpDelta: genXpResult,
+            interactiveChips: tutorResult.interactiveChips || [],
+            cognitiveLevel: _genCogLvl,
+            prerequisites: tutorResult.prerequisites || []
         };
         streamEvent(res, { type: 'final_answer', content: socraticReply });
         res.end();
@@ -278,6 +282,18 @@ async function handleGeneral(res, ctx) {
                 );
                 const messageCount = (chatSession?.messages?.length || 0) + 2;
                 triggerPeriodicAnalysis(sessionId, userId, messageCount, llmConfig);
+
+                // Live Memory Map background update
+                const concept = tutorState?.teachingUnit || tutorState?.moduleTitle || 'General';
+                liveMemoryMapService.updateLiveMemoryMapAsync(userId, sessionId, {
+                    topic: concept,
+                    conceptName: concept,
+                    pedagogicalMove: tutorResult.pedagogicalMove,
+                    masteryScore: tutorResult.masteryProgress?.current || tutorState?.masteryScore || 0,
+                    cognitiveLevel: tutorState?.cognitiveLevel || 'L1_CONCEPT',
+                    userQuery: query.trim(),
+                    botResponse: tutorResult.followUpQuestion,
+                });
             } catch (err) {
                 log.error('TUTOR', `Deferred DB write failed: ${err.message}`);
             }
@@ -839,6 +855,9 @@ async function handleStructured(res, ctx) {
             steps: tutorResult.steps || [],
             confidenceScore: 85,
             xpDelta: xpResult,
+            interactiveChips: tutorResult.interactiveChips || [],
+            cognitiveLevel: _strCogLvl,
+            prerequisites: tutorResult.prerequisites || [],
             currentPosition: {
                 subtopicId: tutorState.subtopicId,
                 subtopicName: tutorState.subtopicName,

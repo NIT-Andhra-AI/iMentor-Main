@@ -1,0 +1,75 @@
+{
+  "course_code": "EE3661",
+  "subject_name": "Advanced Power Electronics",
+  "category": "power_electronics",
+  "textbooks": [
+    {
+      "title": "Power Electronics: Converters, Applications, and Design",
+      "authors": "Ned Mohan, Tore M. Undeland, William P. Robbins",
+      "publisher": "Wiley",
+      "edition": "3rd Edition",
+      "code": "T1",
+      "relevance": "Thyristor/IGBT/MOSFET physics, DC-DC Buck/Boost converters, PWM inverters, and AC voltage controllers."
+    },
+    {
+      "title": "Fundamentals of Power Electronics",
+      "authors": "Robert W. Erickson, Dragan Maksimovic",
+      "publisher": "Springer",
+      "edition": "3rd Edition",
+      "code": "T2",
+      "relevance": "State-space averaging, circuit equivalent modeling, and magnetics design."
+    }
+  ],
+  "references": [
+    {
+      "title": "Power Electronics: Circuits, Devices and Applications",
+      "authors": "Muhammad H. Rashid",
+      "publisher": "Pearson",
+      "edition": "4th Edition",
+      "code": "R1"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Delhi / IISc)",
+      "course_name": "Power Electronics",
+      "instructor": "Prof. G. Bhuvaneswari",
+      "url": "https://nptel.ac.in/courses/108101038",
+      "modules_count": 40
+    },
+    {
+      "platform": "University of Colorado Boulder / Coursera",
+      "course_name": "Introduction to Power Electronics",
+      "instructor": "Prof. Robert Erickson",
+      "url": "https://www.coursera.org/learn/power-electronics",
+      "modules_count": 16
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Delhi / IISc)",
+      "course_name": "Power Electronics",
+      "instructor": "Prof. G. Bhuvaneswari",
+      "url": "https://nptel.ac.in/courses/108101038",
+      "modules_count": 40
+    },
+    {
+      "platform": "University of Colorado Boulder / Coursera",
+      "course_name": "Introduction to Power Electronics",
+      "instructor": "Prof. Robert Erickson",
+      "url": "https://www.coursera.org/learn/power-electronics",
+      "modules_count": 16
+    }
+  ],
+  "simulation_tools": [
+    "PLECS",
+    "PSIM",
+    "MATLAB Simscape Power Systems",
+    "LTSpice XVII"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

@@ -66,8 +66,8 @@ async function _callGeminiFlash(query) {
     const key = process.env.GEMINI_API_KEY;
     if (!key) throw new Error('No GEMINI_API_KEY');
 
-    // Prefer gemini-2.0-flash-lite (fastest/cheapest), fall back to 1.5-flash
-    const model = process.env.LLM_ROUTER_MODEL || 'gemini-2.0-flash-lite';
+    // Prefer gemini-2.0-flash (fastest), fall back to 1.5-flash
+    const model = process.env.LLM_ROUTER_MODEL || 'gemini-2.0-flash';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
 
     const messages = [

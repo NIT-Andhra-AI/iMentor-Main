@@ -526,19 +526,32 @@ async function ensureQuestionsForConcept({ course, concept, topic, moduleName, f
         return existing;
       }
 
+      if (existing.length >= 5) {
+        incrementProgress('dbHits');
+        incrementProgress('reusedConcepts');
+        log.info('CONCEPT_QB', `Instant DB hit: ${course}/${concept} (${existing.length} questions available)`);
+        const redisStart = Date.now();
+        await setRedis(cacheKey, existing);
+        addTiming('redisUpdateMs', Date.now() - redisStart);
+        // Dispatch asynchronous top-up in background if below target
+        if (existing.length < TARGET_QUESTIONS_PER_CONCEPT) {
+          setImmediate(() => {
+            completeConceptQuestions(existing).catch(err => log.warn('CONCEPT_QB', `Background top-up failed: ${err.message}`));
+          });
+        }
+        return existing;
+      }
+
       if (existing.length > 0) {
         incrementProgress('partialConcepts');
         const missingCalcStart = Date.now();
         const missingCount = Math.max(TARGET_QUESTIONS_PER_CONCEPT - existing.length, 0);
         addTiming('missingQuestionCalculationMs', Date.now() - missingCalcStart);
         if (missingCount > 0) {
-          log.info('CONCEPT_QB', `Top-up needed: ${course}/${concept} has ${existing.length}/${TARGET_QUESTIONS_PER_CONCEPT}; generating ${missingCount} missing questions`);
-          const lockWaitStart = Date.now();
-          const lock = await acquireGenerationLock(lockKey, 180);
-          addTiming('queueWaitMs', Date.now() - lockWaitStart);
+          log.info('CONCEPT_QB', `Top-up needed: ${course}/${concept} has ${existing.length}/${TARGET_QUESTIONS_PER_CONCEPT}; generating missing questions`);
+          const lock = await acquireGenerationLock(lockKey, 30);
           if (!lock.acquired) {
-            const warmed = await waitForConceptCompletion(course, concept, 10000);
-            if (warmed && warmed.length > 0) return warmed;
+            return existing;
           } else {
             try {
               const filled = await completeConceptQuestions(existing);
@@ -1027,6 +1040,7 @@ function escapeRegex(str) {
 }
 
 module.exports = {
+  fetchConceptQuestionBank,
   ensureQuestionsForConcept,
   generateConceptQuestions,
   saveQuestionsToBank,

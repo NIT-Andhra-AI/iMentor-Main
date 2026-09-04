@@ -1,0 +1,43 @@
+{
+  "course_code": "EE2071",
+  "subject_name": "Power Systems Analysis",
+  "category": "math",
+  "textbooks": [
+    {
+      "title": "Advanced Engineering Mathematics",
+      "authors": "Erwin Kreyszig",
+      "publisher": "Wiley",
+      "edition": "10th Edition",
+      "code": "T1",
+      "relevance": "Authoritative reference for ODEs, PDEs, complex analysis, and vector calculus."
+    },
+    {
+      "title": "Introduction to Linear Algebra",
+      "authors": "Gilbert Strang",
+      "publisher": "Wellesley-Cambridge Press",
+      "edition": "5th Edition",
+      "code": "T2",
+      "relevance": "Matrix eigendecomposition, SVD, vector spaces, and linear transformations."
+    }
+  ],
+  "references": null,
+  "nptel_courses": [
+    {
+      "course_name": "Linear Algebra \u0026 Differential Equations",
+      "instructor": "Prof. K. C. Sivakumar",
+      "institute": "IIT Madras",
+      "url": "https://nptel.ac.in/courses/111106051",
+      "modules_count": 40
+    }
+  ],
+  "simulation_tools": [
+    "SymPy",
+    "Mathematica",
+    "NumPy / SciPy"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

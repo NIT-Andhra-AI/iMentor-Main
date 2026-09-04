@@ -49,6 +49,7 @@ const ResearchHistory      = React.lazy(() => import('./components/research/Rese
 const ResearchDetailView   = React.lazy(() => import('./components/research/ResearchDetailView.jsx'));
 const KnowledgeAssessmentPage = React.lazy(() => import('./components/assessment/KnowledgeAssessmentPage.jsx'));
 const FacultyPortal = React.lazy(() => import('./pages/FacultyPortal.jsx'));
+const PlacementsPage = React.lazy(() => import('./components/placements/PlacementsPage.jsx'));
 
 
 
@@ -216,6 +217,10 @@ function App() {
         tutorMode,
         setTutorMode,
         setTutorModeType,
+        setSelectedSubject,
+        selectDocumentForAnalysis,
+        setCourseViewerOpen,
+        setLearningMode,
         setLastGeneralSessionId,
         setLastTutorSessionId
     } = useAppState();
@@ -242,8 +247,13 @@ function App() {
             if (actualCallback) actualCallback(currentSessionId);
             return;
         }
-        // --- MANDATORY: Clear state for isolation ---
+        // --- MANDATORY: Clear state for clean isolation ---
         setAppStateMessages([]);
+        if (typeof setSelectedSubject === 'function') setSelectedSubject(null);
+        if (typeof selectDocumentForAnalysis === 'function') selectDocumentForAnalysis(null);
+        if (typeof setCourseViewerOpen === 'function') setCourseViewerOpen(false);
+        if (typeof setLearningMode === 'function') setLearningMode(false);
+        localStorage.removeItem('aiTutorSelectedSubject');
 
         // Only reset tutor mode if we're not currently on the tutor page
         if (!location.pathname.startsWith('/tutor')) {
@@ -252,7 +262,7 @@ function App() {
         }
         setIsSessionLoading(true);
         try {
-            const data = await api.startNewSession(currentSessionId, skipSessionAnalysis);
+            const data = await api.startNewSession(currentSessionId, skipSessionAnalysis, null, forceNewChat);
             if (data && data.newSessionId) {
                 setGlobalSessionId(data.newSessionId);
                 if (data.studyPlanSuggestion) {
@@ -298,7 +308,7 @@ function App() {
         } finally {
             setIsSessionLoading(false);
         }
-    }, [currentSessionId, setGlobalSessionId, navigate, appStateMessages]);
+    }, [currentSessionId, setGlobalSessionId, navigate, appStateMessages, setSelectedSubject, selectDocumentForAnalysis, setCourseViewerOpen, setLearningMode, setTutorMode, setTutorModeType, location.pathname]);
 
     const fetchChatHistory = useCallback(async (sid) => {
         if (!sid || !regularUserToken) {
@@ -480,6 +490,7 @@ function App() {
                         <Route path="/tools/deep-research/history" element={<ResearchHistory />} />
                         <Route path="/tools/deep-research/view/:id" element={<ResearchDetailView />} />
                         <Route path="/courses" element={<CourseExplorerPage />} />
+                        <Route path="/placements" element={<PlacementsPage />} />
                         <Route path="/assessment" element={<KnowledgeAssessmentPage />} />
                         {/* Gamification Routes */}
                         <Route path="/gamification/bounties" element={<BountyCreditsPage />} />

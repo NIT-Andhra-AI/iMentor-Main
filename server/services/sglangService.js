@@ -24,8 +24,10 @@
 const log         = require('../utils/logger');
 const OpenAI      = require('openai');
 const sglangCaps  = require('./sglangCapabilities');
+const http        = require('http');
 
-const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
+const SGLANG_ENABLED = process.env.SGLANG_ENABLED !== 'false';
+const _sglangHttpAgent = new http.Agent({ keepAlive: true, maxSockets: 250, keepAliveMsecs: 60000 });
 
 // ── Lazy-initialized clients per endpoint ────────────────────────────────────
 let _chatClient   = null;
@@ -34,19 +36,19 @@ let _heavyClient  = null;
 
 function _getClient(type = 'chat') {
     if (!SGLANG_ENABLED) {
-        throw new Error('[SGLang] SGLANG_ENABLED=false. Set SGLANG_ENABLED=true in .env when SGLang is deployed.');
+        throw new Error('[SGLang] SGLANG_ENABLED is set to false in environment.');
     }
 
     const urlMap = {
-        chat:   process.env.SGLANG_CHAT_URL   || 'http://localhost:8000/v1',
-        reason: process.env.SGLANG_REASON_URL || 'http://localhost:8000/v1',
-        heavy:  process.env.SGLANG_HEAVY_URL  || 'http://localhost:8000/v1',
+        chat:   process.env.SGLANG_CHAT_URL   || 'http://127.0.0.1:8000/v1',
+        reason: process.env.SGLANG_REASON_URL || 'http://127.0.0.1:8000/v1',
+        heavy:  process.env.SGLANG_HEAVY_URL  || 'http://127.0.0.1:8000/v1',
     };
 
     const baseURL = urlMap[type] || urlMap.chat;
 
     // SGLang doesn't require an API key but the OpenAI SDK mandates one — use dummy
-    const opts = { baseURL, apiKey: 'sglang-no-auth', timeout: 300_000 };
+    const opts = { baseURL, apiKey: 'sglang-no-auth', timeout: 120_000, httpAgent: _sglangHttpAgent };
 
     if (type === 'chat')   return _chatClient   || (_chatClient   = new OpenAI(opts));
     if (type === 'reason') return _reasonClient || (_reasonClient = new OpenAI(opts));
@@ -55,11 +57,15 @@ function _getClient(type = 'chat') {
     return new OpenAI(opts);
 }
 
-// ── Format history for OpenAI messages array ─────────────────────────────────
+// ── Format history for OpenAI messages array with Radix prefix canonicalization ──
 function _formatHistory(chatHistory = [], systemPrompt = null) {
     const messages = [];
     if (systemPrompt) {
-        messages.push({ role: 'system', content: systemPrompt });
+        // Canonicalize system prompt (normalize line endings and trim) to maximize SGLang Radix-tree cache hits
+        const canonicalSystemPrompt = typeof systemPrompt === 'string'
+            ? systemPrompt.replace(/\r\n/g, '\n').trim()
+            : systemPrompt;
+        messages.push({ role: 'system', content: canonicalSystemPrompt });
     }
     for (const msg of chatHistory) {
         messages.push({
@@ -71,12 +77,42 @@ function _formatHistory(chatHistory = [], systemPrompt = null) {
 }
 
 /**
+ * Helper to retry transient network/server glitches with exponential backoff.
+ */
+async function _retryWithBackoff(fn, maxRetries = 2, baseDelayMs = 400) {
+    let lastError = null;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            return await fn();
+        } catch (err) {
+            lastError = err;
+            const isRetryable = err.code === 'ECONNRESET' ||
+                                err.code === 'ECONNREFUSED' ||
+                                err.code === 'ETIMEDOUT' ||
+                                err.code === 'ENOTFOUND' ||
+                                err.status === 502 ||
+                                err.status === 503 ||
+                                err.status === 504 ||
+                                err.status === 429;
+            if (attempt < maxRetries && isRetryable) {
+                const delay = baseDelayMs * Math.pow(2, attempt);
+                log.warn('AI', `[SGLang] Transient error (${err.message}). Retrying in ${delay}ms (attempt ${attempt + 1}/${maxRetries})...`);
+                await new Promise(r => setTimeout(r, delay));
+            } else {
+                throw err;
+            }
+        }
+    }
+    throw lastError;
+}
+
+/**
  * Generate a response (non-streaming).
- * Interface matches sglangService.generateContentWithHistory.
+ * Interface matches OpenAI / standard LLM service.
  *
- * @param {Array}   chatHistory     - Message history [{ role, parts[{text}] }]
+ * @param {Array}   chatHistory     - [{ role, parts: [{ text }] }]
  * @param {string}  userQuery       - Current user message
- * @param {string}  systemPrompt    - System prompt (optional)
+ * @param {string}  systemPrompt    - Optional system instruction
  * @param {object}  options         - { model, maxTokens, temperature, endpoint: 'chat'|'reason'|'heavy' }
  * @returns {Promise<string>} The assistant's response text
  */
@@ -86,7 +122,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
         || (endpoint === 'heavy'  ? process.env.SGLANG_HEAVY_MODEL  : null)
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-14B-Instruct-AWQ';
+        || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
@@ -120,7 +156,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
         if (options.tools) body.tools = options.tools;
         if (options.tool_choice) body.tool_choice = options.tool_choice;
 
-        const completion = await client.chat.completions.create(body);
+        const completion = await _retryWithBackoff(() => client.chat.completions.create(body));
 
         const text = completion.choices?.[0]?.message?.content?.trim() || '';
         log.success('AI', `[SGLang] response received (${text.length} chars)`);
@@ -136,7 +172,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
 
 /**
  * Streaming generation.
- * Yields tokens via onToken callback, same interface as sglangService.streamChat.
+ * Yields tokens via onToken callback.
  *
  * @param {Array}    chatHistory
  * @param {string}   userQuery
@@ -150,7 +186,7 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
     const model    = options.model
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-14B-Instruct-AWQ';
+        || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
@@ -164,12 +200,11 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
     log.info('AI', `[SGLang] stream → endpoint=${endpoint} model=${model}`);
 
     // Compute safe token budget using live SGLang model capabilities
-    const sglangCaps = require('./sglangCapabilities');
     const allText = messages.map(m => m.content).join(' ');
     const estimatedInputTokens = Math.ceil(allText.length / 3.5);
     const modelMaxContext = sglangCaps.getModelMaxContext(16384);
     const safetyBuffer = 256;
-    const availableForCompletion = Math.max(2048, modelMaxContext - estimatedInputTokens - safetyBuffer);
+    const availableForCompletion = Math.max(1024, modelMaxContext - estimatedInputTokens - safetyBuffer);
     const maxTokensForStream = Math.min(options.maxTokens || 8192, availableForCompletion);
 
     const chunks   = [];
@@ -186,28 +221,41 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
 
     const streamStart = Date.now();
     let firstTokenTime = null;
-    const stream   = await client.chat.completions.create(body);
 
-    for await (const chunk of stream) {
-        const delta = chunk.choices?.[0]?.delta?.content;
-        if (delta) {
-            if (firstTokenTime === null) {
-                firstTokenTime = Date.now() - streamStart;
-                log.info('AI', `[SGLang] TTFT (Time To First Token): ${firstTokenTime}ms`);
-            }
-            chunks.push(delta);
-            if (typeof onToken === 'function') {
-                onToken({ type: 'token', content: delta });
+    try {
+        const stream = await _retryWithBackoff(() => client.chat.completions.create(body));
+
+        for await (const chunk of stream) {
+            const delta = chunk.choices?.[0]?.delta?.content;
+            if (delta) {
+                if (firstTokenTime === null) {
+                    firstTokenTime = Date.now() - streamStart;
+                    log.info('AI', `[SGLang] TTFT (Time To First Token): ${firstTokenTime}ms`);
+                }
+                chunks.push(delta);
+                if (typeof onToken === 'function') {
+                    onToken({ type: 'token', content: delta });
+                }
             }
         }
-    }
 
-    const totalStreamTime = Date.now() - streamStart;
-    const tokensCount = chunks.length;
-    const speed = totalStreamTime > 0 ? ((tokensCount / totalStreamTime) * 1000).toFixed(2) : 0;
-    const finalAnswer = chunks.join('');
-    log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars) | Total Time: ${totalStreamTime}ms | TTFT: ${firstTokenTime}ms | Speed: ${speed} tok/s`);
-    return { finalAnswer };
+        const totalStreamTime = Date.now() - streamStart;
+        const tokensCount = chunks.length;
+        const speed = totalStreamTime > 0 ? ((tokensCount / totalStreamTime) * 1000).toFixed(2) : 0;
+        const rawAnswer = chunks.join('');
+        const finalAnswer = tokenOptimizer.expandOutgoingResponse(rawAnswer);
+        log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars) | Total Time: ${totalStreamTime}ms | TTFT: ${firstTokenTime || totalStreamTime}ms | Speed: ${speed} tok/s`);
+        return { finalAnswer };
+    } catch (err) {
+        log.error('AI', `[SGLang] stream error: ${err.message}`);
+        if (chunks.length > 0) {
+            // Self-healing: return what we got so far instead of losing complete output
+            const partial = chunks.join('');
+            log.warn('AI', `[SGLang] Recovered partial stream (${partial.length} chars) before failure`);
+            return { finalAnswer: partial };
+        }
+        throw err;
+    }
 }
 
 /**

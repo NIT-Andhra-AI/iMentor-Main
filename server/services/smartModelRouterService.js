@@ -73,40 +73,42 @@ async function selectModel({
   userPreference,
   latencyBudget,
   localMode = false,
+  isSglangActive = false,
   isOllamaActive = false,
   catalog = []
 }) {
+  const isLocalActive = isSglangActive || isOllamaActive;
   const score = Number.isFinite(complexityScore)
     ? complexityScore
     : calculateComplexityScore({ query, tokenEstimate, reasoningMode });
 
-  let provider = userPreference || 'ollama';
+  let provider = (userPreference === 'ollama' || userPreference === 'local_llm') ? 'sglang' : (userPreference || 'sglang');
   let strategy = 'manual_provider_default';
 
   const GROQ_ENABLED = Boolean(process.env.GROQ_API_KEY);
   const GEMINI_ENABLED = Boolean(process.env.GEMINI_API_KEY);
 
-  // Global priority: ollama > groq > gemini
-  if (isOllamaActive) {
-    provider = 'ollama';
+  // Global priority: sglang > groq > gemini
+  if (isLocalActive) {
+    provider = 'sglang';
     if (localMode) {
-      strategy = 'local_mode_ollama';
+      strategy = 'local_mode_sglang';
     } else if (reasoningMode === 'deep_research') {
       if (GROQ_ENABLED || GEMINI_ENABLED) {
         provider = tokenEstimate > 5000 && GEMINI_ENABLED ? 'gemini' : (GROQ_ENABLED ? 'groq' : 'gemini');
         strategy = 'deep_research_hybrid_cloud_fallback';
       } else {
-        strategy = 'deep_research_ollama';
+        strategy = 'deep_research_sglang';
       }
     } else if (score >= 75) {
       if (GROQ_ENABLED || GEMINI_ENABLED) {
         provider = tokenEstimate > 5000 && GEMINI_ENABLED ? 'gemini' : (GROQ_ENABLED ? 'groq' : 'gemini');
         strategy = 'high_complexity_hybrid_cloud_fallback';
       } else {
-        strategy = 'complex_reasoning_ollama';
+        strategy = 'complex_reasoning_sglang';
       }
     } else {
-      strategy = 'ollama_default';
+      strategy = 'sglang_default';
     }
   } else if (reasoningMode === 'deep_research') {
     if (tokenEstimate > 5000 && GEMINI_ENABLED) {
@@ -116,7 +118,7 @@ async function selectModel({
       provider = 'groq';
       strategy = 'deep_research_groq_fallback';
     } else {
-      provider = GEMINI_ENABLED ? 'gemini' : 'ollama';
+      provider = GEMINI_ENABLED ? 'gemini' : 'sglang';
       strategy = 'deep_research_no_groq_fallback';
     }
   } else if (score >= 70) {
@@ -127,15 +129,15 @@ async function selectModel({
       provider = 'groq';
       strategy = 'complex_reasoning_groq_fallback';
     } else {
-      provider = GEMINI_ENABLED ? 'gemini' : 'ollama';
+      provider = GEMINI_ENABLED ? 'gemini' : 'sglang';
       strategy = 'complex_no_groq_fallback';
     }
   } else if (score <= 35 || latencyBudget === 'low') {
-    provider = GROQ_ENABLED ? 'groq' : (GEMINI_ENABLED ? 'gemini' : 'ollama');
-    strategy = 'simple_query_groq_fallback';
+    provider = GROQ_ENABLED ? 'groq' : (GEMINI_ENABLED ? 'gemini' : 'sglang');
+    strategy = 'simple_query_fallback';
   } else {
-    provider = GROQ_ENABLED ? 'groq' : (GEMINI_ENABLED ? 'gemini' : 'ollama');
-    strategy = 'standard_groq_fallback';
+    provider = GROQ_ENABLED ? 'groq' : (GEMINI_ENABLED ? 'gemini' : 'sglang');
+    strategy = 'standard_fallback';
   }
 
   const selected = pickModelFromCatalog(catalog, provider)

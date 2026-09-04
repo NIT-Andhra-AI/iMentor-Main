@@ -127,13 +127,36 @@ const UserSchema = new mongoose.Schema({
     enum: ["none", "pending", "approved", "rejected"],
     default: "none",
   },
+  developerApiKey: {
+    type: String,
+    unique: true,
+    sparse: true,
+    index: true,
+  },
+  developerApiKeyCreatedAt: {
+    type: Date,
+    default: null,
+  },
+  developerKeyStatus: {
+    type: String,
+    enum: ['active', 'revoked', 'disabled'],
+    default: 'active',
+  },
+  apiRateLimitTier: {
+    type: String,
+    default: 'standard',
+  },
+  totalApiRequests: {
+    type: Number,
+    default: 0,
+  },
   encryptedApiKey: {
     type: String,
     select: false,
   },
   preferredLlmProvider: {
     type: String,
-    enum: ["local_llm", "gemini", "ollama", "groq"],
+    enum: ["local_llm", "sglang", "gemini", "ollama", "groq"],
     default: "local_llm",
   },
   modelRoutingMode: {

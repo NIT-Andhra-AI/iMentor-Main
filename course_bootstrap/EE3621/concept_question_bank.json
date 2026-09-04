@@ -1,0 +1,3175 @@
+{
+  "course_code": "EE3621",
+  "course_name": "Digital Signal Processing",
+  "total_questions": 108,
+  "topics": [
+    {
+      "topic_num": 1,
+      "topic_title": "Discrete-Time Signals & Systems Classification",
+      "module": "Unit I",
+      "bloom": "L2_UNDERSTAND",
+      "questions": [
+        {
+          "id": "EE3621_L1_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Discrete-Time Signals & Systems Classification?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Discrete-Time Signals & Systems Classification, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L1_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Discrete-Time Signals & Systems Classification, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L1_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Discrete-Time Signals & Systems Classification, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 2,
+      "topic_title": "Linear Convolution Sum & Interconnected LTI Systems",
+      "module": "Unit I",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L2_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Linear Convolution Sum & Interconnected LTI Systems?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Linear Convolution Sum & Interconnected LTI Systems, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L2_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Linear Convolution Sum & Interconnected LTI Systems, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L2_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Linear Convolution Sum & Interconnected LTI Systems, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 3,
+      "topic_title": "Difference Equations & Dynamic System Impulse Response",
+      "module": "Unit I",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L3_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Difference Equations & Dynamic System Impulse Response?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Difference Equations & Dynamic System Impulse Response, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L3_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Difference Equations & Dynamic System Impulse Response, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L3_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Difference Equations & Dynamic System Impulse Response, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 4,
+      "topic_title": "Discrete-Time Fourier Transform (DTFT) Foundations",
+      "module": "Unit I",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L4_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Discrete-Time Fourier Transform (DTFT) Foundations?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Discrete-Time Fourier Transform (DTFT) Foundations, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L4_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Discrete-Time Fourier Transform (DTFT) Foundations, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L4_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Discrete-Time Fourier Transform (DTFT) Foundations, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 5,
+      "topic_title": "DTFT Symmetry & Operational Properties",
+      "module": "Unit I",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L5_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins DTFT Symmetry & Operational Properties?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In DTFT Symmetry & Operational Properties, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L5_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in DTFT Symmetry & Operational Properties, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L5_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of DTFT Symmetry & Operational Properties, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 6,
+      "topic_title": "Frequency Response of LTI Systems & Distortionless Transmission",
+      "module": "Unit I",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L6_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Frequency Response of LTI Systems & Distortionless Transmission?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Frequency Response of LTI Systems & Distortionless Transmission, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L6_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Frequency Response of LTI Systems & Distortionless Transmission, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L6_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Frequency Response of LTI Systems & Distortionless Transmission, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 7,
+      "topic_title": "Z-Transform Theory & Region of Convergence (ROC)",
+      "module": "Unit I",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L7_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Z-Transform Theory & Region of Convergence (ROC)?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Z-Transform Theory & Region of Convergence (ROC), governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L7_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Z-Transform Theory & Region of Convergence (ROC), given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L7_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Z-Transform Theory & Region of Convergence (ROC), if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 8,
+      "topic_title": "Inverse Z-Transform & Rational Transfer Functions",
+      "module": "Unit II",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L8_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Inverse Z-Transform & Rational Transfer Functions?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Inverse Z-Transform & Rational Transfer Functions, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L8_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Inverse Z-Transform & Rational Transfer Functions, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L8_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Inverse Z-Transform & Rational Transfer Functions, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 9,
+      "topic_title": "System Stability & Causality Analysis in Z-Domain",
+      "module": "Unit II",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L9_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins System Stability & Causality Analysis in Z-Domain?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In System Stability & Causality Analysis in Z-Domain, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L9_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in System Stability & Causality Analysis in Z-Domain, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L9_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of System Stability & Causality Analysis in Z-Domain, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 10,
+      "topic_title": "Discrete Fourier Transform (DFT) & Frequency Sampling",
+      "module": "Unit II",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L10_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Discrete Fourier Transform (DFT) & Frequency Sampling?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Discrete Fourier Transform (DFT) & Frequency Sampling, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L10_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Discrete Fourier Transform (DFT) & Frequency Sampling, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L10_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Discrete Fourier Transform (DFT) & Frequency Sampling, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 11,
+      "topic_title": "Mathematical Properties of the Discrete Fourier Transform",
+      "module": "Unit II",
+      "bloom": "L3_APPLY",
+      "questions": [
+        {
+          "id": "EE3621_L11_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Mathematical Properties of the Discrete Fourier Transform?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Mathematical Properties of the Discrete Fourier Transform, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L11_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Mathematical Properties of the Discrete Fourier Transform, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L11_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Mathematical Properties of the Discrete Fourier Transform, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 12,
+      "topic_title": "Circular Convolution & Linear Convolution Equivalence",
+      "module": "Unit II",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L12_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Circular Convolution & Linear Convolution Equivalence?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Circular Convolution & Linear Convolution Equivalence, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L12_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Circular Convolution & Linear Convolution Equivalence, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L12_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Circular Convolution & Linear Convolution Equivalence, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 13,
+      "topic_title": "Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT)",
+      "module": "Unit II",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L13_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT)?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT), governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L13_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT), given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L13_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Fast Fourier Transform: Radix-2 Decimation-in-Time (DIT-FFT), if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 14,
+      "topic_title": "Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT)",
+      "module": "Unit II",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L14_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT)?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT), governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L14_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT), given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L14_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Fast Fourier Transform: Radix-2 Decimation-in-Frequency (DIF-FFT), if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 15,
+      "topic_title": "High-Throughput Block Convolution: Overlap-Add & Overlap-Save",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L15_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins High-Throughput Block Convolution: Overlap-Add & Overlap-Save?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In High-Throughput Block Convolution: Overlap-Add & Overlap-Save, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L15_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in High-Throughput Block Convolution: Overlap-Add & Overlap-Save, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L15_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of High-Throughput Block Convolution: Overlap-Add & Overlap-Save, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 16,
+      "topic_title": "Analog Filter Approximation: Butterworth Prototype",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L16_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Analog Filter Approximation: Butterworth Prototype?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Analog Filter Approximation: Butterworth Prototype, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L16_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Analog Filter Approximation: Butterworth Prototype, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L16_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Analog Filter Approximation: Butterworth Prototype, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 17,
+      "topic_title": "Analog Filter Approximation: Chebyshev Type I & II",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L17_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Analog Filter Approximation: Chebyshev Type I & II?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Analog Filter Approximation: Chebyshev Type I & II, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L17_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Analog Filter Approximation: Chebyshev Type I & II, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L17_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Analog Filter Approximation: Chebyshev Type I & II, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 18,
+      "topic_title": "IIR Filter Design: Bilinear Transformation Method",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L18_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins IIR Filter Design: Bilinear Transformation Method?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In IIR Filter Design: Bilinear Transformation Method, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L18_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in IIR Filter Design: Bilinear Transformation Method, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L18_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of IIR Filter Design: Bilinear Transformation Method, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 19,
+      "topic_title": "IIR Filter Design: Impulse Invariance Method",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L19_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins IIR Filter Design: Impulse Invariance Method?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In IIR Filter Design: Impulse Invariance Method, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L19_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in IIR Filter Design: Impulse Invariance Method, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L19_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of IIR Filter Design: Impulse Invariance Method, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 20,
+      "topic_title": "Digital Frequency Transformations for IIR Filters",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L20_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Digital Frequency Transformations for IIR Filters?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Digital Frequency Transformations for IIR Filters, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L20_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Digital Frequency Transformations for IIR Filters, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L20_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Digital Frequency Transformations for IIR Filters, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 21,
+      "topic_title": "Linear Phase FIR Filter Fundamentals & 4 Filter Types",
+      "module": "Unit III",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L21_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Linear Phase FIR Filter Fundamentals & 4 Filter Types?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Linear Phase FIR Filter Fundamentals & 4 Filter Types, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L21_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Linear Phase FIR Filter Fundamentals & 4 Filter Types, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L21_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Linear Phase FIR Filter Fundamentals & 4 Filter Types, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 22,
+      "topic_title": "FIR Filter Design: Windowing Method & Gibbs Phenomenon",
+      "module": "Unit III",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L22_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins FIR Filter Design: Windowing Method & Gibbs Phenomenon?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In FIR Filter Design: Windowing Method & Gibbs Phenomenon, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L22_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in FIR Filter Design: Windowing Method & Gibbs Phenomenon, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L22_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of FIR Filter Design: Windowing Method & Gibbs Phenomenon, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 23,
+      "topic_title": "FIR Filter Design: Frequency Sampling & Optimal Equiripple",
+      "module": "Unit IV",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L23_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins FIR Filter Design: Frequency Sampling & Optimal Equiripple?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In FIR Filter Design: Frequency Sampling & Optimal Equiripple, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L23_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in FIR Filter Design: Frequency Sampling & Optimal Equiripple, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L23_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of FIR Filter Design: Frequency Sampling & Optimal Equiripple, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 24,
+      "topic_title": "IIR Digital Filter Realization Structures",
+      "module": "Unit IV",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L24_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins IIR Digital Filter Realization Structures?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In IIR Digital Filter Realization Structures, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L24_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in IIR Digital Filter Realization Structures, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L24_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of IIR Digital Filter Realization Structures, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 25,
+      "topic_title": "FIR Digital Filter Realization & Lattice Structures",
+      "module": "Unit IV",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L25_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins FIR Digital Filter Realization & Lattice Structures?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In FIR Digital Filter Realization & Lattice Structures, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L25_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in FIR Digital Filter Realization & Lattice Structures, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L25_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of FIR Digital Filter Realization & Lattice Structures, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 26,
+      "topic_title": "Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats",
+      "module": "Unit IV",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L26_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L26_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L26_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Finite Wordlength Effects: Fixed-Point vs Floating-Point Formats, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 27,
+      "topic_title": "ADC Quantization Noise Analysis & SNR Degradation",
+      "module": "Unit IV",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L27_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins ADC Quantization Noise Analysis & SNR Degradation?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In ADC Quantization Noise Analysis & SNR Degradation, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L27_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in ADC Quantization Noise Analysis & SNR Degradation, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L27_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of ADC Quantization Noise Analysis & SNR Degradation, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 28,
+      "topic_title": "Coefficient Quantization & Pole-Zero Sensitivity",
+      "module": "Unit IV",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L28_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Coefficient Quantization & Pole-Zero Sensitivity?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Coefficient Quantization & Pole-Zero Sensitivity, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L28_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Coefficient Quantization & Pole-Zero Sensitivity, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L28_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Coefficient Quantization & Pole-Zero Sensitivity, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 29,
+      "topic_title": "Product Quantization, Roundoff Noise & Overflow Limit Cycles",
+      "module": "Unit IV",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L29_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Product Quantization, Roundoff Noise & Overflow Limit Cycles?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Product Quantization, Roundoff Noise & Overflow Limit Cycles, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L29_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Product Quantization, Roundoff Noise & Overflow Limit Cycles, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L29_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Product Quantization, Roundoff Noise & Overflow Limit Cycles, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 30,
+      "topic_title": "Multirate Signal Processing: Decimation & Downsampling",
+      "module": "Unit V",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L30_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Multirate Signal Processing: Decimation & Downsampling?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Multirate Signal Processing: Decimation & Downsampling, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L30_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Multirate Signal Processing: Decimation & Downsampling, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L30_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Multirate Signal Processing: Decimation & Downsampling, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 31,
+      "topic_title": "Multirate Signal Processing: Interpolation & Upsampling",
+      "module": "Unit V",
+      "bloom": "L4_ANALYZE",
+      "questions": [
+        {
+          "id": "EE3621_L31_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Multirate Signal Processing: Interpolation & Upsampling?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Multirate Signal Processing: Interpolation & Upsampling, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L31_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Multirate Signal Processing: Interpolation & Upsampling, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L31_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Multirate Signal Processing: Interpolation & Upsampling, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 32,
+      "topic_title": "Polyphase Filter Decompositions & Efficient Sample Rate Converters",
+      "module": "Unit V",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L32_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Polyphase Filter Decompositions & Efficient Sample Rate Converters?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Polyphase Filter Decompositions & Efficient Sample Rate Converters, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L32_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Polyphase Filter Decompositions & Efficient Sample Rate Converters, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L32_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Polyphase Filter Decompositions & Efficient Sample Rate Converters, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 33,
+      "topic_title": "Subband Coding & Quadrature Mirror Filter (QMF) Banks",
+      "module": "Unit V",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L33_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Subband Coding & Quadrature Mirror Filter (QMF) Banks?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Subband Coding & Quadrature Mirror Filter (QMF) Banks, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L33_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Subband Coding & Quadrature Mirror Filter (QMF) Banks, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L33_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Subband Coding & Quadrature Mirror Filter (QMF) Banks, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 34,
+      "topic_title": "Adaptive Digital Filtering: LMS & RLS Algorithms",
+      "module": "Unit V",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L34_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Adaptive Digital Filtering: LMS & RLS Algorithms?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Adaptive Digital Filtering: LMS & RLS Algorithms, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L34_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Adaptive Digital Filtering: LMS & RLS Algorithms, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L34_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Adaptive Digital Filtering: LMS & RLS Algorithms, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 35,
+      "topic_title": "Spectral Estimation: Parametric & Non-Parametric Methods",
+      "module": "Unit V",
+      "bloom": "L5_EVALUATE",
+      "questions": [
+        {
+          "id": "EE3621_L35_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Spectral Estimation: Parametric & Non-Parametric Methods?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Spectral Estimation: Parametric & Non-Parametric Methods, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L35_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Spectral Estimation: Parametric & Non-Parametric Methods, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L35_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Spectral Estimation: Parametric & Non-Parametric Methods, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    },
+    {
+      "topic_num": 36,
+      "topic_title": "Comprehensive DSP System Architecture Defense & Capstone Review",
+      "module": "Unit V",
+      "bloom": "L6_CREATE",
+      "questions": [
+        {
+          "id": "EE3621_L36_Q1",
+          "type": "multiple_choice",
+          "bloom_level": "L2_UNDERSTAND",
+          "question": "Which fundamental physical/mathematical principle directly underpins Comprehensive DSP System Architecture Defense & Capstone Review?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Conservation of energy and continuous state differentiability"
+            },
+            {
+              "key": "B",
+              "text": "Unbounded positive exponential divergence in open loop"
+            },
+            {
+              "key": "C",
+              "text": "Strict static linearity without dynamical evolution"
+            },
+            {
+              "key": "D",
+              "text": "Zero-order hold with infinite sampling latency"
+            }
+          ],
+          "correct_answer": "A",
+          "explanation": "In Comprehensive DSP System Architecture Defense & Capstone Review, governing equations are derived from physical conservation laws and boundary continuity.",
+          "distractor_analysis": {
+            "B": "Unbounded divergence indicates instability, not the governing principle.",
+            "C": "Most real systems exhibit dynamical time-evolution.",
+            "D": "Zero-order hold is a sampling artifact, not a foundational law."
+          }
+        },
+        {
+          "id": "EE3621_L36_Q2",
+          "type": "numerical_problem",
+          "bloom_level": "L3_APPLY",
+          "question": "For a system configured as in Comprehensive DSP System Architecture Defense & Capstone Review, given operating parameter alpha = 2.0 and input step u(t) = 5.0, calculate the steady-state equilibrium value.",
+          "given_data": {
+            "alpha": 2.0,
+            "step_input": 5.0
+          },
+          "formula": "y_ss = step_input / alpha",
+          "steps": [
+            "Step 1: Set time derivatives to zero in steady state: dx/dt = 0",
+            "Step 2: Substitute parameters: 0 = -2.0 * y_ss + 5.0",
+            "Step 3: Solve for y_ss: y_ss = 5.0 / 2.0 = 2.50"
+          ],
+          "correct_value": 2.5,
+          "unit": "units"
+        },
+        {
+          "id": "EE3621_L36_Q3",
+          "type": "hots_challenge",
+          "bloom_level": "L4_ANALYZE",
+          "question": "In a safety-critical deployment of Comprehensive DSP System Architecture Defense & Capstone Review, if feedback noise variance increases by 10 dB, what compensator adjustment is necessary to prevent actuator saturation while preserving stability?",
+          "options": [
+            {
+              "key": "A",
+              "text": "Increase high-frequency loop gain to track noise"
+            },
+            {
+              "key": "B",
+              "text": "Introduce high-frequency roll-off (low-pass filtering) in the feedback path"
+            },
+            {
+              "key": "C",
+              "text": "Eliminate the integral term and reduce phase margin to 0 degrees"
+            },
+            {
+              "key": "D",
+              "text": "Double the sampling rate without anti-aliasing filtering"
+            }
+          ],
+          "correct_answer": "B",
+          "explanation": "Adding high-frequency roll-off attenuates noise amplification outside the control bandwidth, preventing actuator saturation.",
+          "distractor_analysis": {
+            "A": "Increasing high-frequency gain amplifies noise and causes saturation.",
+            "C": "Zero phase margin results in marginal instability and oscillation.",
+            "D": "Doubling sampling without anti-aliasing causes aliasing foldover."
+          }
+        }
+      ]
+    }
+  ]
+}

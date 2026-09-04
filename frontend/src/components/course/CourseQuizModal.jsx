@@ -98,13 +98,33 @@ export default function CourseQuizModal({ isOpen, onClose, courseName, moduleId,
         }));
     };
 
-    // Normalize question fields (support both `question` and `instruction`)
-    const normQ = (q) => ({
-        ...q,
-        instruction: q.instruction || q.question || '',
-    });
-    const questionsNorm = questions.map(normQ);
-    const currentQuestion = normQ(questions[currentIndex]);
+    // Normalize question fields safely (support both `question` and `instruction`)
+    const normQ = (q) => {
+        if (!q || typeof q !== 'object') {
+            return {
+                instruction: '',
+                question: '',
+                options: [],
+                correctIndex: 0,
+                output: '',
+                topic: 'General',
+                difficulty: 'Adaptive',
+                type: 'MCQ'
+            };
+        }
+        return {
+            ...q,
+            instruction: q.instruction || q.question || '',
+            options: Array.isArray(q.options) ? q.options : [],
+            topic: q.topic || 'General',
+            difficulty: q.difficulty || 'Adaptive',
+            output: q.output || q.explanation || '',
+            correctIndex: typeof q.correctIndex === 'number' ? q.correctIndex : 0,
+            type: q.type || (Array.isArray(q.options) && q.options.length > 0 ? 'MCQ' : 'Descriptive')
+        };
+    };
+    const questionsNorm = Array.isArray(questions) ? questions.map(normQ) : [];
+    const currentQuestion = questionsNorm[currentIndex] || normQ(null);
     const cleanCourseName = courseName ? courseName.replace(/\.[^.]+$/, '') : '';
 
     return (
@@ -124,13 +144,14 @@ export default function CourseQuizModal({ isOpen, onClose, courseName, moduleId,
                                 {moduleName ? `Module Quiz · ${moduleName}` : `Course Assessment`}
                             </span>
                             <h3 className="text-sm font-bold text-white leading-tight">
-                                {cleanCourseName}
+                                {cleanCourseName || 'Academic Course'}
                             </h3>
                         </div>
                     </div>
                     <button 
                         onClick={onClose}
                         className="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-all"
+                        title="Close Quiz"
                     >
                         <X size={16} />
                     </button>
@@ -145,6 +166,18 @@ export default function CourseQuizModal({ isOpen, onClose, courseName, moduleId,
                                 <p className="text-sm text-gray-300 font-semibold">Generating Socratic Quiz…</p>
                                 <p className="text-xs text-gray-600 mt-1">Analyzing course materials and preparing personalized questions.</p>
                             </div>
+                        </div>
+                    ) : questionsNorm.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
+                            <HelpCircle size={32} className="text-gray-500" />
+                            <p className="text-sm font-semibold text-gray-300">No quiz questions available for this module yet.</p>
+                            <p className="text-xs text-gray-500">Please try selecting another module or retry in a moment.</p>
+                            <button
+                                onClick={onClose}
+                                className="mt-2 px-4 py-2 rounded-xl bg-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-all"
+                            >
+                                Close
+                            </button>
                         </div>
                     ) : evaluationResult ? (
                         /* Scorecard view */
@@ -333,7 +366,16 @@ export default function CourseQuizModal({ isOpen, onClose, courseName, moduleId,
 
                 {/* Footer Controls */}
                 <div className="px-6 py-4 border-t border-white/5 bg-white/2 flex items-center justify-between flex-shrink-0">
-                    {evaluationResult ? (
+                    {questionsNorm.length === 0 ? (
+                        <div className="w-full flex justify-end">
+                            <button
+                                onClick={onClose}
+                                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold transition-all"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    ) : evaluationResult ? (
                         <>
                             <button
                                 onClick={() => setEvaluationResult(null)}
@@ -358,7 +400,7 @@ export default function CourseQuizModal({ isOpen, onClose, courseName, moduleId,
                                 <ChevronLeft size={14} /> Back
                             </button>
 
-                            {currentIndex < questions.length - 1 ? (
+                            {currentIndex < questionsNorm.length - 1 ? (
                                 <button
                                     onClick={goNext}
                                     className="px-4 py-2.5 flex items-center gap-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-gray-200 hover:text-white text-xs font-semibold transition-all"

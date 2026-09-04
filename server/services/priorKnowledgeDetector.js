@@ -267,6 +267,41 @@ function detectPriorKnowledge(studentQuery) {
     };
 }
 
+/**
+ * Prune or adapt the learning path based on detected prior knowledge and difficulty level.
+ * @param {Object} learningPath - { concept, steps, currentStep }
+ * @param {Object} priorKnowledge - Output from detectPriorKnowledge()
+ * @returns {Object} Adapted learning path
+ */
+function pruneLearningPathByPriorKnowledge(learningPath, priorKnowledge) {
+    if (!learningPath) return learningPath;
+    if (!priorKnowledge) return learningPath;
+
+    const { hasPriorKnowledge, difficultyLevel, masteredTopics = [] } = priorKnowledge;
+    const steps = Array.isArray(learningPath.steps) && learningPath.steps.length > 0
+        ? [...learningPath.steps]
+        : ['definition', 'core idea', 'example', 'application'];
+    let currentStep = learningPath.currentStep || 0;
+
+    if (difficultyLevel === 'advanced') {
+        // Fast-forward past introductory definitions directly to advanced application / design
+        currentStep = Math.max(0, steps.length - 1);
+        log.info('PRIOR_KNOWLEDGE', `⚡ Path pruned for ADVANCED learner: jumping to step ${currentStep} (${steps[currentStep]})`);
+    } else if (hasPriorKnowledge && difficultyLevel === 'intermediate') {
+        // Skip basic definition, start at example/application
+        currentStep = Math.min(2, Math.max(0, steps.length - 1));
+        log.info('PRIOR_KNOWLEDGE', `⏩ Path pruned for INTERMEDIATE learner: starting at step ${currentStep} (${steps[currentStep]})`);
+    }
+
+    return {
+        ...learningPath,
+        steps,
+        currentStep,
+        prunedByPriorKnowledge: hasPriorKnowledge || difficultyLevel === 'advanced',
+        masteredTopics
+    };
+}
+
 // ─── EXPORT ───────────────────────────────────────────────────────────────
 
 module.exports = {
@@ -274,5 +309,7 @@ module.exports = {
     hasPriorKnowledgeStatement,
     extractMasteredTopics,
     detectDifficultyLevel,
+    pruneLearningPathByPriorKnowledge,
     PATTERNS
 };
+

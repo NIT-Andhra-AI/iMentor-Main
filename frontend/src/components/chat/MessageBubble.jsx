@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import Prism from 'prismjs';
 import toast from 'react-hot-toast';
 import Animate from '../core/Animate.jsx';
-import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react'; // Added AlertCircle
+import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle, Sparkles } from 'lucide-react';
 import ThinkingDropdown from './ThinkingDropdown.jsx';
 import TypingIndicator from './TypingIndicator.jsx';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech.js';
@@ -218,7 +218,7 @@ const CriticalThinkingCue = ({ icon: Icon, label, text, color, onClick }) => {
 
 
 
-function MessageBubble({ sender, text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, onCueClick, messageId, logId, status, onAnalyze, steps, confidenceScore, historyVersions, isLastAiMessage, onTryAgain, isError, xpDelta }) {
+function MessageBubble({ sender, text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, onCueClick, messageId, logId, status, onAnalyze, steps, confidenceScore, historyVersions, isLastAiMessage, onTryAgain, isError, xpDelta, interactiveChips, cognitiveLevel }) {
     const isUser = sender === 'user';
     const [currentVersionIndex, setCurrentVersionIndex] = useState(historyVersions ? historyVersions.length - 1 : 0);
 
@@ -230,7 +230,7 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
     }, [historyVersions?.length]);
 
     const hasVersions = historyVersions && historyVersions.length > 0;
-    const activeMessage = hasVersions ? historyVersions[currentVersionIndex] : { text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, logId, status, steps, confidenceScore, isError };
+    const activeMessage = hasVersions ? historyVersions[currentVersionIndex] : { text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, logId, status, steps, confidenceScore, isError, xpDelta, interactiveChips, cognitiveLevel };
 
     // Destructure active properties to be used in rendering
     const {
@@ -245,7 +245,10 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
         status: activeStatus,
         steps: activeSteps,
         confidenceScore: activeConfidenceScore,
-        isError: activeIsError
+        isError: activeIsError,
+        xpDelta: activeXpDelta,
+        interactiveChips: activeInteractiveChips,
+        cognitiveLevel: activeCognitiveLevel
     } = activeMessage;
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -405,29 +408,58 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                     </div>
 
 
-                    {/* XP Delta Badge — visible on tutor bot responses only */}
-                    {isTutor && !isUser && !activeIsStreaming && xpDelta && (
-                        <div
-                            className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full text-[11px] font-bold select-none"
-                            style={{
-                                background: xpDelta.type === 'gain'
-                                    ? 'rgba(107, 207, 127, 0.15)'
-                                    : xpDelta.type === 'loss'
-                                        ? 'rgba(255, 107, 107, 0.15)'
-                                        : 'rgba(150, 150, 150, 0.12)',
-                                color: xpDelta.type === 'gain' ? '#6bcf7f'
-                                    : xpDelta.type === 'loss' ? '#ff6b6b'
-                                    : '#aaa',
-                                border: `1px solid ${xpDelta.type === 'gain'
-                                    ? 'rgba(107, 207, 127, 0.35)'
-                                    : xpDelta.type === 'loss'
-                                        ? 'rgba(255, 107, 107, 0.35)'
-                                        : 'rgba(150,150,150,0.25)'}`,
-                                animation: 'xpPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both',
-                            }}
-                            title={`${xpDelta.label} (${xpDelta.classification || ''} at ${xpDelta.cognitiveLevel || ''})`}
-                        >
-                            &#9889; {xpDelta.label}
+                    {/* Interactive Response / Hypothesis Chips (ChatGPT & Gemini Guided Learning standard) */}
+                    {!activeIsStreaming && !isUser && activeInteractiveChips && activeInteractiveChips.length > 0 && (
+                        <div className="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap gap-2">
+                            {activeInteractiveChips.map((chip, idx) => {
+                                const chipLabel = typeof chip === 'string' ? chip : (chip.label || chip.value);
+                                const chipValue = typeof chip === 'string' ? chip : (chip.value || chip.label);
+                                return (
+                                    <button
+                                        key={idx}
+                                        onClick={() => onCueClick && onCueClick(chipValue)}
+                                        className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm hover:scale-[1.02]"
+                                    >
+                                        <Sparkles size={12} className="text-blue-400" />
+                                        <span>{chipLabel}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {/* Cognitive Level & XP Delta Badges — visible on tutor bot responses */}
+                    {isTutor && !isUser && !activeIsStreaming && (
+                        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                            {activeCognitiveLevel && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                                    🎓 {String(activeCognitiveLevel).replace(/_/g, ' ')}
+                                </span>
+                            )}
+                            {xpDelta && (
+                                <div
+                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold select-none"
+                                    style={{
+                                        background: xpDelta.type === 'gain'
+                                            ? 'rgba(107, 207, 127, 0.15)'
+                                            : xpDelta.type === 'loss'
+                                                ? 'rgba(255, 107, 107, 0.15)'
+                                                : 'rgba(150, 150, 150, 0.12)',
+                                        color: xpDelta.type === 'gain' ? '#6bcf7f'
+                                            : xpDelta.type === 'loss' ? '#ff6b6b'
+                                            : '#aaa',
+                                        border: `1px solid ${xpDelta.type === 'gain'
+                                            ? 'rgba(107, 207, 127, 0.35)'
+                                            : xpDelta.type === 'loss'
+                                                ? 'rgba(255, 107, 107, 0.35)'
+                                                : 'rgba(150,150,150,0.25)'}`,
+                                        animation: 'xpPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both',
+                                    }}
+                                    title={`${xpDelta.label} (${xpDelta.classification || ''} at ${xpDelta.cognitiveLevel || ''})`}
+                                >
+                                    &#9889; {xpDelta.label}
+                                </div>
+                            )}
                         </div>
                     )}
 

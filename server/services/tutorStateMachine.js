@@ -329,7 +329,11 @@ async function advanceCognitiveLevel(sessionId) {
     if (!state) throw new Error(`Session not found: ${sessionId}`);
     
     const levels = Object.values(COGNITIVE_LEVELS);
-    let newIndex = Math.min(state.cognitiveLevelIndex + 1, levels.length - 1);
+    const currentLevel = state.cognitiveLevelName || state.cognitiveLevel || COGNITIVE_LEVELS.L1_CONCEPT;
+    const currentIndex = typeof state.cognitiveLevelIndex === 'number' && !isNaN(state.cognitiveLevelIndex)
+        ? state.cognitiveLevelIndex
+        : Math.max(0, levels.indexOf(currentLevel));
+    let newIndex = Math.min(currentIndex + 1, levels.length - 1);
     const newLevel = levels[newIndex];
     
     const updatedState = await updateSessionState(sessionId, {
@@ -341,6 +345,9 @@ async function advanceCognitiveLevel(sessionId) {
     });
     
     // Track level progression
+    if (!Array.isArray(updatedState.levelsVisited)) {
+        updatedState.levelsVisited = [];
+    }
     if (!updatedState.levelsVisited.includes(newLevel)) {
         updatedState.levelsVisited.push(newLevel);
     }

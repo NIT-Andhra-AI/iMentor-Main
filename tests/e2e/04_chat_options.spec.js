@@ -30,10 +30,10 @@ test.describe('OPT — Chat Option Toggles & Routing', () => {
   });
 
   test('OPT-02 — Academic Search returns scholarly references', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(360000);
     await toggleAcademicSearch(page);
 
-    const text = await sendAndWait(page, 'Recent papers on transformer efficiency improvements', 120000);
+    const text = await sendAndWait(page, 'Recent papers on transformer efficiency improvements', 360000);
 
     expect(text.length).toBeGreaterThan(50);
     // Academic responses should reference papers/journals
@@ -172,4 +172,34 @@ test.describe('OPT — Chat Option Toggles & Routing', () => {
     }
   });
 
+  test('OPT-08 — Code Executor page loads', async ({ page }) => {
+    await page.goto('/tools/code-executor');
+    await page.waitForTimeout(2000);
+    const heading = page.getByText(/secure code executor/i).or(page.getByText(/code executor/i)).first();
+    await expect(heading).toBeVisible({ timeout: 15000 });
+    console.log('✓ OPT-08 passed: Code Executor page loaded');
+  });
+
+  test('OPT-09 — Quiz Generator page loads', async ({ page }) => {
+    await page.goto('/tools/quiz-generator');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✓ OPT-09 passed: Quiz Generator page loaded');
+  });
+
+  test('OPT-10 — Academic Integrity page loads', async ({ page }) => {
+    await page.goto('/tools/integrity-checker');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✓ OPT-10 passed: Integrity Checker page loaded');
+  });
+
+  test('OPT-11 — Deep Research history page loads', async ({ page }) => {
+    await page.goto('/tools/deep-research/history');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✓ OPT-11 passed: Deep Research history page loaded');
+  });
+
 });
+

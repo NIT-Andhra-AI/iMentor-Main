@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MA2051: Complex Variables and Transform Techniques - Interactive Learning Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- KaTeX for beautiful math equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>MA2051: Complex Variables and Transform Techniques</h1>
+                <p>B.Tech R24 Curriculum &bull; Interactive Lectures</p>
+            </div>
+            <nav class="lecture-list">
+                
+            <div class="unit-section">
+                <div class="unit-title">Unit I</div>
+                <div class="lecture-item active" data-lecture="1" onclick="loadLecture(1)">
+                    <div class="lecture-num">L1</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Complex Variables</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="2" onclick="loadLecture(2)">
+                    <div class="lecture-num">L2</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">-Conjugate functions - complex integration - line integrals in complex plane - Cauchy’s</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="3" onclick="loadLecture(3)">
+                    <div class="lecture-num">L3</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">theorem (simple proof only), Cauchy’s integral formula - Taylor’s and Laurent’s series</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="4" onclick="loadLecture(4)">
+                    <div class="lecture-num">L4</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">expansions -zeros and singularities - Residues - residue theorem, use of residue theorem to</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="5" onclick="loadLecture(5)">
+                    <div class="lecture-num">L5</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">evaluate the real integrals without poles on the x-axis, Bilinear transformations, Conformal</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="6" onclick="loadLecture(6)">
+                    <div class="lecture-num">L6</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">mapping.</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="7" onclick="loadLecture(7)">
+                    <div class="lecture-num">L7</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Fourier Series</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="8" onclick="loadLecture(8)">
+                    <div class="lecture-num">L8</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Fourier series - Half range sine and cosine expansions.</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="9" onclick="loadLecture(9)">
+                    <div class="lecture-num">L9</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Fourier Transforms</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="10" onclick="loadLecture(10)">
+                    <div class="lecture-num">L10</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">transformations and inverse transforms - simple illustrations.</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="11" onclick="loadLecture(11)">
+                    <div class="lecture-num">L11</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Partial Differential Equations</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="12" onclick="loadLecture(12)">
+                    <div class="lecture-num">L12</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Equations, D'alembert's solution of wave equation, Method of separation of variables -</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="13" onclick="loadLecture(13)">
+                    <div class="lecture-num">L13</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Solution of one dimensional wave equation, one dimensional heat conduction equation and</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="14" onclick="loadLecture(14)">
+                    <div class="lecture-num">L14</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">two dimensional steady state heat conduction equation with illustrations.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="15" onclick="loadLecture(15)">
+                    <div class="lecture-num">L15</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Methods</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="16" onclick="loadLecture(16)">
+                    <div class="lecture-num">L16</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">point iteration scheme, Gaussian elimination, Jacobi, Gauss Seidel methods, Trapezoidal rule,</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="17" onclick="loadLecture(17)">
+                    <div class="lecture-num">L17</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Simpson’s 1/3, and 3/8-rules, Taylor series, Euler’s method, Modified Euler’s method, Runge-</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="18" onclick="loadLecture(18)">
+                    <div class="lecture-num">L18</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Kutta method.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="19" onclick="loadLecture(19)">
+                    <div class="lecture-num">L19</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Text Books</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="20" onclick="loadLecture(20)">
+                    <div class="lecture-num">L20</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">1. R.K. Jain and S.R.K. Iyengar, Advanced Engineering Mathematics, Narosa</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="21" onclick="loadLecture(21)">
+                    <div class="lecture-num">L21</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">th</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="22" onclick="loadLecture(22)">
+                    <div class="lecture-num">L22</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Publishing House, 5 edition, 2016.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="23" onclick="loadLecture(23)">
+                    <div class="lecture-num">L23</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">2. E. Kreyszig, Advanced Engineering Mathematics, John Wiley and Sons, 8thedition,</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="24" onclick="loadLecture(24)">
+                    <div class="lecture-num">L24</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">2008.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="25" onclick="loadLecture(25)">
+                    <div class="lecture-num">L25</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">th</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="26" onclick="loadLecture(26)">
+                    <div class="lecture-num">L26</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">3. B.S. Grewal, Higher Engineering Mathematics, Khanna Publications,44 edition,</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="27" onclick="loadLecture(27)">
+                    <div class="lecture-num">L27</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">2017.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="28" onclick="loadLecture(28)">
+                    <div class="lecture-num">L28</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Reference Books</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="29" onclick="loadLecture(29)">
+                    <div class="lecture-num">L29</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">1. M. Spiegel, S. Lipschutz , J. Schiller, and D. Spellman, Complex Variable (Schaum's</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="30" onclick="loadLecture(30)">
+                    <div class="lecture-num">L30</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Outlines), Revised 2nd edition, 2017.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="31" onclick="loadLecture(31)">
+                    <div class="lecture-num">L31</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">2. R.V. Churchill and J.W. Brown, Complex variables and its applications, McGraw Hill,</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="32" onclick="loadLecture(32)">
+                    <div class="lecture-num">L32</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">2009.</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="33" onclick="loadLecture(33)">
+                    <div class="lecture-num">L33</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Scheme and Syllabi 36 | Page</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit V</div>
+                <div class="lecture-item " data-lecture="34" onclick="loadLecture(34)">
+                    <div class="lecture-num">L34</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Deep Industrial Case Study: Safety-Critical Deployment of Complex Variables And Transform Techniques</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="35" onclick="loadLecture(35)">
+                    <div class="lecture-num">L35</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="36" onclick="loadLecture(36)">
+                    <div class="lecture-num">L36</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">End-to-End System Design Verification, Synthesis Defense & Capstone Review in Complex Variables And Transform Techniques</div>
+                        <div class="lecture-meta">L6_CREATE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Banner -->
+            <header class="top-nav">
+                <div class="current-lecture-badge" id="currentLecBadge">Lecture 1: Introduction</div>
+                <div class="nav-actions">
+                    <span class="badge badge-accent" id="bloomBadge">L2_UNDERSTAND</span>
+                    <button class="btn btn-secondary" onclick="prevLecture()">← Prev</button>
+                    <button class="btn btn-primary" onclick="nextLecture()">Next →</button>
+                </div>
+            </header>
+
+            <!-- Lecture View Container -->
+            <div class="content-body" id="lectureContentArea">
+                <!-- Overview Card -->
+                <div class="card">
+                    <div class="card-title" id="lectureHeaderTitle">Lecture 1: Theoretical Foundations</div>
+                    <div class="card-desc" id="lectureSubtopics">Loading lecture subtopics and engineering concepts...</div>
+                    <div class="math-box" id="lectureMathFormula">
+                        $$ y(t) = \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\tau \iff Y(s) = X(s) H(s) $$
+                    </div>
+                </div>
+
+                <!-- Interactive Simulation Canvas Card -->
+                <div class="card">
+                    <div class="card-title">⚡ Interactive RLC Resonance & Phasor Visualizer</div>
+                    <p class="card-desc">Adjust parameters in real time to observe mathematical transformations, dynamic waveforms, and stability trajectories.</p>
+                    
+                    <!-- Controls Bar -->
+                    <div class="controls-bar">
+                        <div class="control-group">
+                            <label>Damping / Parameter &alpha;: <span id="paramValAlpha">0.50</span></label>
+                            <input type="range" id="sliderAlpha" min="0.05" max="1.50" step="0.05" value="0.50" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Frequency &omega; / Scale: <span id="paramValOmega">2.00</span></label>
+                            <input type="range" id="sliderOmega" min="0.5" max="10.0" step="0.5" value="2.0" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <button class="btn btn-accent" onclick="toggleAnimation()">▶ Run Simulation</button>
+                            <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Canvas -->
+                    <div class="canvas-container">
+                        <canvas id="interactiveCanvas" width="900" height="320"></canvas>
+                    </div>
+                    <div class="canvas-caption" id="canvasCaption">Real-time simulation rendered at 60 FPS using HTML5 Canvas & Vector Math.</div>
+                </div>
+
+                <!-- Diagnostic Checkpoint Quiz Card -->
+                <div class="card">
+                    <div class="card-title">🎯 Concept Checkpoint & Self-Assessment</div>
+                    <div id="checkpointQuestion" class="checkpoint-question">Which criterion guarantees that an LTI system is strictly BIBO stable?</div>
+                    <div class="options-grid" id="optionsContainer">
+                        <button class="option-btn" onclick="checkAnswer(0)">A) All poles lie outside |z| &gt; 1</button>
+                        <button class="option-btn" onclick="checkAnswer(1)">B) All poles lie strictly inside the unit circle |z| &lt; 1</button>
+                        <button class="option-btn" onclick="checkAnswer(2)">C) The impulse response is growing exponentially</button>
+                    </div>
+                    <div class="feedback-alert" id="checkpointFeedback" style="display:none;"></div>
+                </div>
+
+                <!-- References & Textbooks Card -->
+                <div class="card">
+                    <div class="card-title">📚 Recommended References & NPTEL Mapping</div>
+                    <ul class="references-list" id="referencesList">
+                        <li><strong>Primary Textbook:</strong> Fundamentals of Electric Circuits</li>
+                        <li><strong>NPTEL Course:</strong> Basic Electrical Circuits</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

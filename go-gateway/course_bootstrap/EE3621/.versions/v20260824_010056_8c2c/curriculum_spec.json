@@ -1,0 +1,47 @@
+{
+  "CourseCode": "EE3621",
+  "CourseName": "Digital Signal Processing",
+  "Credits": "3-0-0 3 Credits",
+  "Prerequisites": "Differential and integral calculus, matrices and differential equations, complex",
+  "CourseOutcomes": [
+    "CO1: Understand the characteristics of signals and systems in time domain and",
+    "CO2: Understand the transforms and their properties.",
+    "CO3: Analyze systems in fourier domain.",
+    "CO4: Synthesis of FIR and IIR filter structures.",
+    "CO5: Design FIR and IIR type digital filters."
+  ],
+  "SyllabusText": "Basic Elements of Digital Signal Processing: Review of signals \u0026 systems, DTFT, Z\ntransform, DFT, DFT properties.\nFast Fourier Transforms: Efficient computation of DFT, FFT algorithms: radix-2 and radix-4\nFFT algorithms, decimation in time and decimation in frequency algorithms, use of FFT\nalgorithms in linear filtering, reconstruction and aliasing in time and frequency domains.\nDigital Filter Synthesis: FIR and IIR filters - direct form realization, cascade form, and linear\nphase realization. IIR filter - direct form I, direct form II, cascade form, parallel form, Lattice\nform realization.\nDigital Filters Design: Linear phase FIR filter, characteristic response, location of zeros,\ndesign of FIR filter - windowing, frequency sampling, FIR Filters- moving average filters,\nwindowing method, design of IIR filters from analog filters - Impulse invariance, bilinear\ntransformation, matched z-transform. IIR filters: simple design example. equalization and\nnoise cancellation and adaptive FIR filter.",
+  "UnitTexts": [
+    "Review of signals \u0026 systems, DTFT, Z\ntransform, DFT, DFT properties.",
+    "Efficient computation of DFT, FFT algorithms: radix-2 and radix-4\nFFT algorithms, decimation in time and decimation in frequency algorithms, use of FFT\nalgorithms in linear filtering, reconstruction and aliasing in time and frequency domains.",
+    "FIR and IIR filters - direct form realization, cascade form, and linear\nphase realization. IIR filter - direct form I, direct form II, cascade form, parallel form, Lattice\nform realization.",
+    "Linear phase FIR filter, characteristic response, location of zeros,\ndesign of FIR filter - windowing, frequency sampling, FIR Filters- moving average filters,\nwindowing method, design of IIR filters from analog filters - Impulse invariance, bilinear\ntransformation, matched z-transform. IIR filters: simple design example. equalization and\nnoise cancellation and adaptive FIR filter."
+  ],
+  "UnitTitles": [
+    "Basic Elements of Digital Signal Processing",
+    "Fast Fourier Transforms",
+    "Digital Filter Synthesis",
+    "Digital Filters Design"
+  ],
+  "Textbooks": [
+    "Alan V. Oppenheim, Ronald W. Schafer – “Discrete Time Signal Processing”, Pearson",
+    "Education, 2013.",
+    "Sanjit K. Mitra, “Digital Signal Processing – A computer based approach”, Mc Graw Hill",
+    "International Edition, Fourth Edition, 2011.",
+    "Sanjit K. Mitra, “Digital Signal Processing Laboratory using MATLAB”, Mc Graw Hill",
+    "International Edition, 2001.",
+    "David J. De Fatta, Joseph G. Lucas, William S. Hodgkiss, “Digital Signal Processing- A",
+    "System Design Approach”, John Wiley and Sons, Inc. Pte. Ltd., Singapore.",
+    "Monson H. Hayes, Schaum’s Outlines of Theory and Problems of Digital Signal",
+    "Processing, Mc Graw Hill Publishing Company, (c 1999)."
+  ],
+  "References": [
+    "Proakis and Manolakis: Digital signal processing principles –algorithms and applications-",
+    "Lawrence R. Rabiner, Bernard Gold, “Theory and application of Digital Signal",
+    "Processing”, Prentice Hall of India Private Limited, New Delhi – 110 001, 1993, Eastern",
+    "Economy Edition.",
+    "Thomas J. Cavicchi, “Digital Signal Processing”, John Wiley and Sons (Pte.)",
+    "Jonathan (Y) Stein, “Digital Signal Processing – A Computer Science Perspective”,",
+    "Wiley Student Edition, John Wiley and Sons (Asia) Pte Ltd."
+  ]
+}

@@ -36,9 +36,13 @@ router.post('/toggle-feature', (req, res) => {
       message: 'enabled must be a boolean.',
     });
   }
-
   const flags = setFeatureFlag(feature, enabled);
   return res.json({ success: true, flags });
+});
+
+router.get('/resource-queue', (req, res) => {
+  const { resourceTaskQueueService } = require('../services/resourceTaskQueueService');
+  res.json({ success: true, stats: resourceTaskQueueService.getStats() });
 });
 
 module.exports = router;

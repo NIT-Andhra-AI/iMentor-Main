@@ -1,0 +1,52 @@
+{
+  "course_code": "EE4611",
+  "subject_name": "Power Quality",
+  "category": "dsp",
+  "textbooks": [
+    {
+      "title": "Discrete-Time Signal Processing",
+      "authors": "Alan V. Oppenheim, Ronald W. Schafer",
+      "publisher": "Pearson",
+      "edition": "3rd Edition",
+      "code": "T1",
+      "relevance": "Definitive textbook for DTFT, Z-Transform, DFT/FFT, and IIR/FIR filter design."
+    },
+    {
+      "title": "Digital Signal Processing: Principles, Algorithms, and Applications",
+      "authors": "John G. Proakis, Dimitris G. Manolakis",
+      "publisher": "Pearson",
+      "edition": "4th Edition",
+      "code": "T2",
+      "relevance": "Formulation of fast algorithms and finite wordlength analysis."
+    }
+  ],
+  "references": [
+    {
+      "title": "Digital Signal Processing: A Computer-Based Approach",
+      "authors": "Sanjit K. Mitra",
+      "publisher": "McGraw-Hill",
+      "edition": "4th Edition",
+      "code": "R1",
+      "relevance": ""
+    }
+  ],
+  "nptel_courses": [
+    {
+      "course_name": "Digital Signal Processing",
+      "instructor": "Prof. S. C. Dutta Roy",
+      "institute": "IIT Delhi",
+      "url": "https://nptel.ac.in/courses/117102060",
+      "modules_count": 40
+    }
+  ],
+  "simulation_tools": [
+    "SciPy Signal",
+    "MATLAB DSP Toolbox",
+    "KaTeX / WebAudio DSP Sandbox"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

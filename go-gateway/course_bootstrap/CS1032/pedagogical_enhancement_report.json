@@ -1,0 +1,1641 @@
+{
+  "course_code": "CS1032",
+  "course_name": "ESC",
+  "category": "cs",
+  "generated_at": "2026-08-24T01:14:43+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 149,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Familiarization with Python installation, basic syntax and running scripts in",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Familiarization with Python installation",
+          "pedagogical_intuition": "For 'Familiarization with Python installation', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "basic syntax and running scripts in the shell",
+          "pedagogical_intuition": "For 'basic syntax and running scripts in the shell', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "conditional control constructs",
+          "pedagogical_intuition": "For 'conditional control constructs', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "iterative constructs. (While",
+          "pedagogical_intuition": "For 'iterative constructs. (While', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "do-while",
+          "pedagogical_intuition": "For 'do-while', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "for)",
+          "pedagogical_intuition": "For 'for)', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "user defined functions and in-built function calls",
+          "pedagogical_intuition": "For 'user defined functions and in-built function calls', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "Recursion",
+          "pedagogical_intuition": "For 'Recursion', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "in-built data structures like List",
+          "pedagogical_intuition": "For 'in-built data structures like List', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "Tuples and Dictionaries",
+          "pedagogical_intuition": "For 'Tuples and Dictionaries', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "String processing",
+          "pedagogical_intuition": "For 'String processing', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "Files and I/O",
+          "pedagogical_intuition": "For 'Files and I/O', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Implementation of Factoring methods, sorting, searching and selection as",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Implementation of Factoring methods",
+          "pedagogical_intuition": "For 'Implementation of Factoring methods', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "sorting",
+          "pedagogical_intuition": "For 'sorting', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "searching and selection as sub-routines",
+          "pedagogical_intuition": "For 'searching and selection as sub-routines', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "simple 2D graphics",
+          "pedagogical_intuition": "For 'simple 2D graphics', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Implementation of a capstone application to unify the concepts learnt in the",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Implementation of a capstone application to unify the concepts learnt in the course",
+          "pedagogical_intuition": "For 'Implementation of a capstone application to unify the concepts learnt in the course', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 9)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 10)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 11)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 12)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 13)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 14)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 15)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 16)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 17)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 18)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 19)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 20)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 21)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 22)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 23)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 24)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 25)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 26)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 27)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 28)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 29)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 30)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 31)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 32)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 33)",
+      "module": "Unit I: Unit 1",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', computational efficiency is quantified through asymptotic recurrence relations and spatial memory layout. Optimal substructure and non-overlapping subproblems govern divide-and-conquer and dynamic programming paradigms.",
+          "mathematical_model": "T(n) = a T(n/b) + f(n) \\implies T(n) = \\Theta(n^{\\log_b a}) \\quad \\text{if } f(n) = O(n^{\\log_b a - \\epsilon})",
+          "interactive_sim_hook": "Interactive Tree Partition Visualizer: Step through recursive partition boundaries, comparison counters, and tree rebalancing rotations.",
+          "industry_relevance": "Distributed cache indexing (Redis), high-concurrency database B+ trees, and graph routing engines (Google Maps Dijkstra).",
+          "gate_pyq_mapping": "GATE CS 2-Mark NAT: Master theorem recurrence evaluation and worst-case comparison bounds for randomized QuickSort.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/CS1032/ai_reference_textbook.md"
+}

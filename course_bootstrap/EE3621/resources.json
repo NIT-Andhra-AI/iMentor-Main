@@ -1,0 +1,83 @@
+{
+  "course_code": "EE3621",
+  "subject_name": "Digital Signal Processing",
+  "category": "vlsi",
+  "textbooks": [
+    {
+      "title": "CMOS VLSI Design: A Circuits and Systems Perspective",
+      "authors": "Neil H. E. Weste, David Money Harris",
+      "publisher": "Pearson",
+      "edition": "4th Edition",
+      "code": "T1",
+      "relevance": "Primary authoritative textbook for MOS transistor physics, dynamic logic, logical effort, static timing analysis (STA), and datapath design."
+    },
+    {
+      "title": "Digital Integrated Circuits: A Design Perspective",
+      "authors": "Jan M. Rabaey, Anantha Chandrakasan, Borivoje Nikolic",
+      "publisher": "Pearson",
+      "edition": "2nd Edition",
+      "code": "T2",
+      "relevance": "In-depth coverage of CMOS inverter characteristics, propagation delay metrics, dynamic logic, and 6T SRAM/DRAM memory architectures."
+    }
+  ],
+  "references": [
+    {
+      "title": "CMOS Digital Integrated Circuits: Analysis and Design",
+      "authors": "Sung-Mo Kang, Yusuf Leblebici",
+      "publisher": "McGraw-Hill",
+      "edition": "4th Edition",
+      "code": "R1"
+    },
+    {
+      "title": "Static Timing Analysis for Nanometer Designs: A Practical Approach",
+      "authors": "J. Bhasker, Rakesh Chadha",
+      "publisher": "Springer",
+      "edition": "1st Edition",
+      "code": "R2"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "VLSI Design & Digital IC Architecture",
+      "instructor": "Prof. Nandita Dasgupta & Prof. S. Srinivasan",
+      "url": "https://nptel.ac.in/courses/117106092",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.374 Analysis and Design of Digital Integrated Circuits",
+      "instructor": "Prof. Anantha Chandrakasan",
+      "url": "https://ocw.mit.edu/courses/6-374-analysis-and-design-of-digital-integrated-circuits-fall-2003/",
+      "modules_count": 24
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "VLSI Design & Digital IC Architecture",
+      "instructor": "Prof. Nandita Dasgupta & Prof. S. Srinivasan",
+      "url": "https://nptel.ac.in/courses/117106092",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.374 Analysis and Design of Digital Integrated Circuits",
+      "instructor": "Prof. Anantha Chandrakasan",
+      "url": "https://ocw.mit.edu/courses/6-374-analysis-and-design-of-digital-integrated-circuits-fall-2003/",
+      "modules_count": 24
+    }
+  ],
+  "simulation_tools": [
+    "Cadence Virtuoso / Innovus",
+    "Synopsys Design Compiler / PrimeTime",
+    "OpenROAD / Yosys Open-Source EDA",
+    "ModelSim / Icarus Verilog",
+    "Magic VLSI / NGSPICE"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

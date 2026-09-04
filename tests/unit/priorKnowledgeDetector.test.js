@@ -281,6 +281,46 @@ describe('Prior Knowledge Detector', () => {
             expect(typeof result.hasPriorKnowledge).toBe('boolean');
         });
     });
+
+    describe('pruneLearningPathByPriorKnowledge()', () => {
+        const { pruneLearningPathByPriorKnowledge } = require('../../server/services/priorKnowledgeDetector');
+
+        it('should jump to the advanced step when difficulty is advanced', () => {
+            const path = {
+                concept: 'Graph Algorithms',
+                steps: ['definition', 'core idea', 'example', 'application'],
+                currentStep: 0
+            };
+            const prior = { hasPriorKnowledge: true, difficultyLevel: 'advanced', masteredTopics: ['graphs'] };
+            const adapted = pruneLearningPathByPriorKnowledge(path, prior);
+            expect(adapted.currentStep).toBe(3);
+            expect(adapted.prunedByPriorKnowledge).toBe(true);
+        });
+
+        it('should skip to step 2 when prior knowledge is present for intermediate learner', () => {
+            const path = {
+                concept: 'Linked Lists',
+                steps: ['definition', 'core idea', 'example', 'application'],
+                currentStep: 0
+            };
+            const prior = { hasPriorKnowledge: true, difficultyLevel: 'intermediate', masteredTopics: ['arrays'] };
+            const adapted = pruneLearningPathByPriorKnowledge(path, prior);
+            expect(adapted.currentStep).toBe(2);
+            expect(adapted.prunedByPriorKnowledge).toBe(true);
+        });
+
+        it('should keep step 0 for beginner without prior knowledge', () => {
+            const path = {
+                concept: 'Recursion',
+                steps: ['definition', 'core idea', 'example', 'application'],
+                currentStep: 0
+            };
+            const prior = { hasPriorKnowledge: false, difficultyLevel: 'beginner', masteredTopics: [] };
+            const adapted = pruneLearningPathByPriorKnowledge(path, prior);
+            expect(adapted.currentStep).toBe(0);
+            expect(adapted.prunedByPriorKnowledge).toBe(false);
+        });
+    });
 });
 
 module.exports = {
@@ -289,3 +329,4 @@ module.exports = {
     extractMasteredTopics,
     detectDifficultyLevel
 };
+

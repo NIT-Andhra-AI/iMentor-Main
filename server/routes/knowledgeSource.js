@@ -174,26 +174,28 @@ router.post('/', async (req, res) => {
 });
 
 // @route   GET /api/knowledge-sources
-// @desc    Get all knowledge sources for the user (files, urls) and admin (subjects)
+// @desc    Get user's custom knowledge sources (files, urls, custom uploads)
 // @access  Private
 router.get('/', async (req, res) => {
     try {
         const userId = req.user._id;
+        const includeAdmin = req.query.includeAdmin === 'true';
 
-        const userSourcesPromise = KnowledgeSource.find({ userId }).sort({ createdAt: -1 }).lean();
-        const adminSubjectsPromise = AdminDocument.find().sort({ originalName: 1 }).select('originalName createdAt').lean();
+        const userSources = await KnowledgeSource.find({ userId }).sort({ createdAt: -1 }).lean();
 
-        const [userSources, adminSubjects] = await Promise.all([userSourcesPromise, adminSubjectsPromise]);
+        if (includeAdmin) {
+            const adminSubjects = await AdminDocument.find().sort({ originalName: 1 }).select('originalName createdAt').lean();
+            const formattedAdminSubjects = adminSubjects.map(doc => ({
+                _id: `admin_${doc._id}`,
+                sourceType: 'subject',
+                title: doc.originalName,
+                status: 'completed',
+                createdAt: doc.createdAt
+            }));
+            return res.json([...formattedAdminSubjects, ...userSources]);
+        }
 
-        const formattedAdminSubjects = adminSubjects.map(doc => ({
-            _id: `admin_${doc._id}`,
-            sourceType: 'subject',
-            title: doc.originalName,
-            status: 'completed',
-            createdAt: doc.createdAt
-        }));
-
-        res.json([...formattedAdminSubjects, ...userSources]);
+        res.json(userSources);
     } catch (error) {
         log.error('DB', `Failed to fetch knowledge sources: ${error.message}`);
         res.status(500).json({ message: "Server error while fetching knowledge sources." });

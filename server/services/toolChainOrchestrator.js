@@ -280,9 +280,14 @@ async function executeToolChain(chain, context, onStepComplete = null) {
 
     const totalDuration = chainTimings.reduce((sum, t) => sum + t.duration, 0);
 
+    const combinedOutput = results
+        .filter(r => r.success && r.output)
+        .map(r => typeof r.output === 'string' ? r.output : (r.output?.toolOutput || JSON.stringify(r.output)))
+        .join('\n\n');
+
     return {
         results: results.sort((a, b) => a.step - b.step),
-        finalOutput: previousOutput?.toolOutput || results.map(r => r.output).join('\n\n'),
+        finalOutput: combinedOutput || (typeof previousOutput?.toolOutput === 'string' ? previousOutput.toolOutput : (previousOutput?.toolOutput?.toolOutput || '')) || '',
         allReferences: Array.from(uniqueRefs.values()).map((ref, i) => ({ ...ref, number: i + 1 })),
         chainTimings,
         totalDuration,

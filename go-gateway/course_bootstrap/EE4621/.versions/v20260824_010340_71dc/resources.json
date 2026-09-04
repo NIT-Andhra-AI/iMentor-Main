@@ -1,0 +1,52 @@
+{
+  "course_code": "EE4621",
+  "subject_name": "Smart Grid Technologies",
+  "category": "control",
+  "textbooks": [
+    {
+      "title": "Modern Control Engineering",
+      "authors": "Katsuhiko Ogata",
+      "publisher": "Pearson",
+      "edition": "5th Edition",
+      "code": "T1",
+      "relevance": "Standard curriculum text for Root Locus, Bode plots, Nyquist stability, and State-Space."
+    },
+    {
+      "title": "Control Systems Engineering",
+      "authors": "Norman S. Nise",
+      "publisher": "Wiley",
+      "edition": "8th Edition",
+      "code": "T2",
+      "relevance": "Practical control design, time-domain specs, and compensator placement."
+    }
+  ],
+  "references": [
+    {
+      "title": "Automatic Control Systems",
+      "authors": "Farid Golnaraghi, Benjamin C. Kuo",
+      "publisher": "McGraw-Hill",
+      "edition": "10th Edition",
+      "code": "R1",
+      "relevance": ""
+    }
+  ],
+  "nptel_courses": [
+    {
+      "course_name": "Control Engineering",
+      "instructor": "Prof. Ramkrishna Pasumarthy",
+      "institute": "IIT Madras",
+      "url": "https://nptel.ac.in/courses/108106098",
+      "modules_count": 12
+    }
+  ],
+  "simulation_tools": [
+    "Python Control Systems Library",
+    "MATLAB Simulink",
+    "GNU Octave Control Package"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

@@ -80,6 +80,13 @@ const StudentProfileSchema = new mongoose.Schema({
         default: 'L1_RECALL'
     },
 
+    // Focus Track (5 mutually exclusive career & learning tracks)
+    focusTrack: {
+        type: String,
+        enum: ['STANDARD_BTECH', 'GATE_ASPIRANT', 'PLACEMENT_PREP', 'ENTREPRENEURSHIP', 'RESEARCHER'],
+        default: 'STANDARD_BTECH'
+    },
+
     // Learning speed (how quickly mastery increases)
     learningSpeed: {
         type: String,

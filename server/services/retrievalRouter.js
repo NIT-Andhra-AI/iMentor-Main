@@ -2,7 +2,7 @@ const { getCachedRoute, setCachedRoute } = require('./routingCache');
 const axios = require('axios');
 const geminiService = require('./geminiService');
 
-const RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:5002';
+const RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2005';
 
 /**
  * Route Retrieval
@@ -24,8 +24,6 @@ async function routeRetrieval(query, context) {
 
     console.log(`[RetrievalRouter] Strategy selected via Semantic ML: ${decision}`);
 
-    console.log(`[RetrievalRouter] Strategy selected: ${decision}`);
-
     // 2. Cache and Execute
     await setCachedRoute(query, decision);
     return await executeStrategy(decision, query, context);
@@ -45,16 +43,16 @@ async function executeStrategy(decision, query, context) {
             const res = await axios.post(`${RAG_SERVICE_URL}/web_search`, { query });
             results.web = res.data;
         } else if (decision === 'GRAPH') {
-            const res = await axios.post(`${RAG_SERVICE_URL}/graph_rag/search`, {
+            const res = await axios.post(`${RAG_SERVICE_URL}/graph/search`, {
                 query,
-                user_id: context.user.id,
+                user_id: context.user?.id || context.userId,
                 documentContextName: _docCtx
             });
             results.graph = res.data.facts;
         } else if (decision === 'VECTOR') {
             const res = await axios.post(`${RAG_SERVICE_URL}/query`, {
                 query,
-                user_id: context.user.id,
+                user_id: context.user?.id || context.userId,
                 k: 3,
                 documentContextName: _docCtx,
                 source_type: _sourceType
@@ -62,21 +60,21 @@ async function executeStrategy(decision, query, context) {
             results.vector = res.data.retrieved_documents_list;
         } else { // HYBRID
             const [graphRes, vectorRes] = await Promise.all([
-                axios.post(`${RAG_SERVICE_URL}/graph_rag/search`, {
+                axios.post(`${RAG_SERVICE_URL}/graph/search`, {
                     query,
-                    user_id: context.user.id,
+                    user_id: context.user?.id || context.userId,
                     documentContextName: _docCtx
                 }).catch(e => ({ data: { facts: [] } })),
                 axios.post(`${RAG_SERVICE_URL}/query`, {
                     query,
-                    user_id: context.user.id,
+                    user_id: context.user?.id || context.userId,
                     k: 3,
                     documentContextName: _docCtx,
                     source_type: _sourceType
                 }).catch(e => ({ data: { retrieved_documents_list: [] } }))
             ]);
-            results.graph = graphRes.data.facts;
-            results.vector = vectorRes.data.retrieved_documents_list;
+            results.graph = graphRes.data?.facts || [];
+            results.vector = vectorRes.data?.retrieved_documents_list || [];
         }
     } catch (error) {
         console.error(`[RetrievalRouter] Execution failed: ${error.message}`);

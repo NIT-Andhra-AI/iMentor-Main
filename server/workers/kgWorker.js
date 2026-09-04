@@ -11,7 +11,7 @@ const { checkAndUpdateJobCompletion } = require('../utils/jobTracker');
 
 async function runKgGeneration() {
     // --- REFACTORED DESTRUCTURING ---
-    const { chunksForKg, userId, originalName, llmProvider, ollamaModel, sourceId } = workerData;
+    const { chunksForKg, userId, originalName, llmProvider, sourceId } = workerData;
     let dbConnected = false;
     let overallSuccess = false;
     let finalMessage = "KG processing encountered an issue.";
@@ -37,7 +37,7 @@ async function runKgGeneration() {
             overallSuccess = true;
         } else {
             // NOTE: The `userId` and `originalName` are still passed to kgService for populating metadata in Neo4j.
-            const kgExtractionResult = await kgService.generateAndStoreKg(chunksForKg, userId, originalName, llmProvider, ollamaModel);
+            const kgExtractionResult = await kgService.generateAndStoreKg(chunksForKg, userId, originalName, llmProvider);
 
             if (kgExtractionResult && kgExtractionResult.success) {
                 await KnowledgeSource.updateOne(

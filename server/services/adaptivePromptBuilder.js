@@ -15,6 +15,7 @@
 
 const log = require('../utils/logger');
 const StudentKnowledgeState = require('../models/StudentKnowledgeState');
+const { getFocusTrackPromptDecoration, normalizeFocusTrack } = require('./focusTrackService');
 
 class AdaptivePromptBuilder {
     /**
@@ -28,6 +29,8 @@ class AdaptivePromptBuilder {
     async buildPrompt(userId, topic, action, options = {}) {
         try {
             const knowledgeState = await StudentKnowledgeState.findOne({ userId });
+            const focusTrack = options.focusTrack || knowledgeState?.learningProfile?.focusTrack || 'STANDARD_BTECH';
+            const focusTrackDecoration = getFocusTrackPromptDecoration(focusTrack);
             
             // Build prompt based on action
             let prompt = '';
@@ -55,7 +58,7 @@ class AdaptivePromptBuilder {
                     prompt = await this._buildTeachPrompt(topic, options, knowledgeState);
             }
 
-            return prompt;
+            return `${prompt}\n\n${focusTrackDecoration}`;
         } catch (error) {
             log.warn('PROMPT_BUILDER', `Failed to build prompt: ${error.message}`);
             return this._buildFallbackPrompt(topic, action);

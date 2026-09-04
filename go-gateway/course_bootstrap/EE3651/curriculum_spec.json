@@ -1,0 +1,39 @@
+{
+  "CourseCode": "EE3651",
+  "CourseName": "DEC",
+  "Credits": "3-0-0 3 Credits",
+  "Prerequisites": "Power system generation and transmission and power systems analysis.",
+  "CourseOutcomes": [
+    "CO1: Design mathematical models for power system components.",
+    "CO2: Analyze and pick the best algorithm for a selected power system problem.",
+    "CO3: Understand the importance of spasticity technique for load flow analysis.",
+    "CO4: Understand the concepts contingency problems in power systems.",
+    "CO5: Analyze state estimation concept in transmission system."
+  ],
+  "SyllabusText": "Incidence and Network Matrices: Introduction, graphs, incidence matrices, primitive\nmatrices, types of network matrices, formation of network matrix, PI-representation of off-\nnominal tap transformers, Y-bus by singular transformation, examples of formation of\nincidence matrices, formation of Y-bus by inspection.\nAlgorithms for Formation of Z-bus Matrix: Step by step algorithm for formation of Z-bus.\nmodification of Z-bus matrix for changes in the network, example of formation and modification\nof Z-bus matrix.\nShort Circuit Calculations: Introduction, short circuit calculations using matrices for various\nfaults, example of short circuit calculations using Zbus102 for L-L-L and L-G faults.\nSparsity Technique in Load Flow Studies: Introduction, sparsity technique for Y-bus and\ngauss-seidel method.\nContingency Analysis in Power Systems: Contingency calculations using ZBUS and YBUS\ntable of factors. state estimation – least square and weighted least square estimation methods\nfor linear systems.",
+  "UnitTexts": [
+    "Introduction, graphs, incidence matrices, primitive\nmatrices, types of network matrices, formation of network matrix, PI-representation of off-\nnominal tap transformers, Y-bus by singular transformation, examples of formation of\nincidence matrices, formation of Y-bus by inspection.",
+    "Step by step algorithm for formation of Z-bus.\nmodification of Z-bus matrix for changes in the network, example of formation and modification\nof Z-bus matrix.",
+    "Introduction, short circuit calculations using matrices for various\nfaults, example of short circuit calculations using Zbus102 for L-L-L and L-G faults.",
+    "Introduction, sparsity technique for Y-bus and\ngauss-seidel method.",
+    "Contingency calculations using ZBUS and YBUS\ntable of factors. state estimation – least square and weighted least square estimation methods\nfor linear systems."
+  ],
+  "UnitTitles": [
+    "Incidence and Network Matrices",
+    "Algorithms for Formation of Z-bus Matrix",
+    "Short Circuit Calculations",
+    "Sparsity Technique in Load Flow Studies",
+    "Contingency Analysis in Power Systems"
+  ],
+  "Textbooks": [
+    "Stagg and ElAbiad, Computer Methods in Power Systems Analysis, McGrawHill ISE,",
+    "M.A. Pai, Computer Techniques in Power System Analysis, Tata McGraw-Hill",
+    "Education, 2017, 3rd Edition."
+  ],
+  "References": [
+    "Hadi Saadat, Power System Analysis, PSA Publishing, 2010.",
+    "William Stevenson and John Grainger, Power System Analysis, McGraw Hill Education,",
+    "Allen J. Wood and Bruce F. Wollenberg, Power Generation, Operation, and Control,",
+    "Wiley Blackwell, 1996."
+  ]
+}

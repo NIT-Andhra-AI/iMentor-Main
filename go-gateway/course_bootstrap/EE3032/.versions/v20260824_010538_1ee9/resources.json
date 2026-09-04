@@ -1,0 +1,43 @@
+{
+  "course_code": "EE3032",
+  "subject_name": "Electric Power Drives Lab",
+  "category": "power_electronics",
+  "textbooks": [
+    {
+      "title": "Power Electronics: Converters, Applications, and Design",
+      "authors": "Ned Mohan, Tore M. Undeland, William P. Robbins",
+      "publisher": "Wiley",
+      "edition": "3rd Edition",
+      "code": "T1",
+      "relevance": "Canonical text for switched-mode DC-DC converters, PWM inverters, and resonant topologies."
+    },
+    {
+      "title": "Power Electronics: Circuits, Devices, and Applications",
+      "authors": "Muhammad H. Rashid",
+      "publisher": "Pearson",
+      "edition": "4th Edition",
+      "code": "T2",
+      "relevance": "Phase-controlled rectifiers, thyristor firing schemes, and thermal design."
+    }
+  ],
+  "references": null,
+  "nptel_courses": [
+    {
+      "course_name": "Power Electronics",
+      "instructor": "Prof. G. Bhuvaneswari",
+      "institute": "IIT Delhi",
+      "url": "https://nptel.ac.in/courses/108102145",
+      "modules_count": 40
+    }
+  ],
+  "simulation_tools": [
+    "PSIM",
+    "MATLAB Simscape Power Systems",
+    "PLECS"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

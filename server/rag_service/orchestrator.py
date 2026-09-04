@@ -130,40 +130,39 @@ async def chat_bridge_stream(user_prompt: str, user_id: str, course_id: str, doc
     thought_process = ""
     public_success = False
     
+    # Initial Thought
+    yield f"event: thought\ndata: {json.dumps({'content': 'Thought: I need to analyze the student question and retrieved context. I will also parallel-fetch academic data from arXiv and OpenAlex for higher complexity.', 'confidence_score': 0.95})}\n\n"
+    
+    # Action
+    yield f"event: thought\ndata: {json.dumps({'content': 'Action: Initiated Parallel Academic Fetch (arXiv/OpenAlex) + Hybrid Local Search.', 'confidence_score': 0.98})}\n\n"
+    
+    # Final Thinking Path (Using Failover Reasoning Model)
+    yield "event: status\ndata: [ReAct] Synthesizing insights with specialized Reasoning Model... [Confidence: 0.93]\n\n"
+    
     try:
-        # Initial Thought
-        yield f"event: thought\ndata: {json.dumps({'content': 'Thought: I need to analyze the student question and retrieved context. I will also parallel-fetch academic data from arXiv and OpenAlex for higher complexity.', 'confidence_score': 0.95})}\n\n"
-        
-        # Action
-        yield f"event: thought\ndata: {json.dumps({'content': 'Action: Initiated Parallel Academic Fetch (arXiv/OpenAlex) + Hybrid Local Search.', 'confidence_score': 0.98})}\n\n"
-        
-        # Final Thinking Path (Using Failover Reasoning Model)
-        yield "event: status\ndata: [ReAct] Synthesizing insights with specialized Reasoning Model... [Confidence: 0.93]\n\n"
-        
-        try:
-            async with call_ollama(
-                payload={
-                    "model": config.PUBLIC_OLLAMA_REASONING_MODEL, 
-                    "prompt": f"Context: {final_context}\n\nUser Question: {user_prompt}\n\nPlease provide a deep reasoning trace. Mention if you need academic data."
-                },
-                is_stream=True,
-                timeout=60.0
-            ) as resp:
-                if resp.status_code == 200:
-                    public_success = True
-                    async for line in resp.aiter_lines():
-                        if not line: continue
-                        try:
-                            chunk = json.loads(line)
-                            response_text = chunk.get('response', '')
-                            thought_process += response_text
-                            yield f"event: thought\ndata: {json.dumps({'content': response_text, 'confidence_score': 0.92})}\n\n"
-                        except json.JSONDecodeError:
-                            continue
-                else:
-                    logger.warning(f"SGLang reasoning failover failed with status {resp.status_code}")
-        except Exception as e:
-            logger.error(f"Resilient reasoning connection failed: {e}")
+        async with call_ollama(
+            payload={
+                "model": config.PUBLIC_OLLAMA_REASONING_MODEL, 
+                "prompt": f"Context: {final_context}\n\nUser Question: {user_prompt}\n\nPlease provide a deep reasoning trace. Mention if you need academic data."
+            },
+            is_stream=True,
+            timeout=60.0
+        ) as resp:
+            if resp.status_code == 200:
+                public_success = True
+                async for line in resp.aiter_lines():
+                    if not line: continue
+                    try:
+                        chunk = json.loads(line)
+                        response_text = chunk.get('response', '')
+                        thought_process += response_text
+                        yield f"event: thought\ndata: {json.dumps({'content': response_text, 'confidence_score': 0.92})}\n\n"
+                    except json.JSONDecodeError:
+                        continue
+            else:
+                logger.warning(f"SGLang reasoning failover failed with status {resp.status_code}")
+    except Exception as e:
+        logger.error(f"Resilient reasoning connection failed: {e}")
 
     # WAIT FOR ACADEMIC RESEARCH TO FINISH (IF NOT DONE)
     yield "event: status\ndata: Finalizing Academic Synthesis & Re-ranking... [Confidence: 0.90]\n\n"

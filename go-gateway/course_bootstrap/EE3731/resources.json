@@ -1,0 +1,43 @@
+{
+  "course_code": "EE3731",
+  "subject_name": "High Voltage Engineering",
+  "category": "power_systems",
+  "textbooks": [
+    {
+      "title": "Power System Analysis",
+      "authors": "John J. Grainger, William D. Stevenson Jr.",
+      "publisher": "McGraw-Hill",
+      "edition": "1st Edition",
+      "code": "T1",
+      "relevance": "Transmission line modeling, symmetrical components, and fault calculation."
+    },
+    {
+      "title": "Modern Power System Analysis",
+      "authors": "I. J. Nagrath, D. P. Kothari",
+      "publisher": "McGraw-Hill",
+      "edition": "4th Edition",
+      "code": "T2",
+      "relevance": "Load flow Newton-Raphson methods, economic dispatch, and transient stability."
+    }
+  ],
+  "references": null,
+  "nptel_courses": [
+    {
+      "course_name": "Power System Analysis",
+      "instructor": "Prof. Debapriya Das",
+      "institute": "IIT Kharagpur",
+      "url": "https://nptel.ac.in/courses/108105067",
+      "modules_count": 40
+    }
+  ],
+  "simulation_tools": [
+    "ETAP",
+    "PowerWorld Simulator",
+    "MATLAB MATPOWER"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

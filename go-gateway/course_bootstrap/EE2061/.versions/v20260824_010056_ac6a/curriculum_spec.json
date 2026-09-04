@@ -1,0 +1,43 @@
+{
+  "CourseCode": "EE2061",
+  "CourseName": "Control Systems",
+  "Credits": "3-0-0 3 Credits",
+  "Prerequisites": "Differential and integral calculus, matrices and differential equations,",
+  "CourseOutcomes": [
+    "CO1: Understand the control system components and their modelling.",
+    "CO2: Analyze the control systems in the time domain.",
+    "CO3: Analyze the control systems in the frequency domain.",
+    "CO4: Understand the concepts of state space analysis.",
+    "CO5: Design of controllers and compensators."
+  ],
+  "SyllabusText": "Control system terminology, examples of simple control systems, open loop and closed loop\ncontrol systems, Types of control systems.\nMathematical Models of Physical Systems: Analogy with mechanical systems, formulation\nof differential equations for electrical systems transfer functions of open and closed loop\nsystems, DC \u0026 AC servomotors, synchro pair as error detector, block diagram representation\nof control systems: block diagram algebra, signal flow graph, Mason’s gain formula.\nTime Domain Analysis: Standard test signals – step, ramp, parabolic, and impulse; impulse\nresponse, characteristic equation of feedback systems, transient response of first order and\nsecond order systems to standard test signals, time domain specifications, steady-state error\nand error constants, introduction to P, PI, PID controllers.\nStability Analysis: Concept of stability and conditions for stability, Routh – Hurwitz criterion,\ndominant poles of transfer function.\nRoot Locus Technique: The root locus concept, basic properties, magnitude and angle\nconditions, properties and construction of the complex root loci, effects of adding poles and\nzeros to G(s) H(s) on the root loci.\nFrequency Response Analysis: Introduction, frequency response specifications, correlation\nbetween time and frequency response, specifications, stability analysis from Bode plot,\nNyquist plot, effect of adding poles \u0026 zeros to G(s) H(s) on the shape of polar plots.\nIntroduction to lead, lag, lead-lag compensation techniques.\nState Space Analysis: State variables, State equations, converting a transfer function to state\nspace, converting from state space to a transfer function, Laplace transform solution of state\nequations, time-domain solution of state equations, concept of controllability and observability.",
+  "UnitTexts": [
+    "Analogy with mechanical systems, formulation\nof differential equations for electrical systems transfer functions of open and closed loop\nsystems, DC \u0026 AC servomotors, synchro pair as error detector, block diagram representation\nof control systems: block diagram algebra, signal flow graph, Mason’s gain formula.",
+    "Standard test signals – step, ramp, parabolic, and impulse; impulse\nresponse, characteristic equation of feedback systems, transient response of first order and\nsecond order systems to standard test signals, time domain specifications, steady-state error\nand error constants, introduction to P, PI, PID controllers.",
+    "Concept of stability and conditions for stability, Routh – Hurwitz criterion,\ndominant poles of transfer function.",
+    "The root locus concept, basic properties, magnitude and angle\nconditions, properties and construction of the complex root loci, effects of adding poles and\nzeros to G(s) H(s) on the root loci.",
+    "Introduction, frequency response specifications, correlation\nbetween time and frequency response, specifications, stability analysis from Bode plot,\nNyquist plot, effect of adding poles \u0026 zeros to G(s) H(s) on the shape of polar plots.\nIntroduction to lead, lag, lead-lag compensation techniques.",
+    "State variables, State equations, converting a transfer function to state\nspace, converting from state space to a transfer function, Laplace transform solution of state\nequations, time-domain solution of state equations, concept of controllability and observability."
+  ],
+  "UnitTitles": [
+    "Mathematical Models of Physical Systems",
+    "Time Domain Analysis",
+    "Stability Analysis",
+    "Root Locus Technique",
+    "Frequency Response Analysis",
+    "State Space Analysis"
+  ],
+  "Textbooks": [
+    "J Nagrath \u0026 M Gopal, “Control System Engineering”, 7th Edition New Age International",
+    "Publication, New Delhi 2021.",
+    "B.C. Kuo,” Automatic Control Systems”, Prentice Hall India Publications, NewDelhi,",
+    "Eighth Edition,2014."
+  ],
+  "References": [
+    "Norman S. Nise “Control Systems Engineering”, 7th edition, Wiley, 2018",
+    "William Bolton “Control Systems” Newnes, 2002",
+    "William S. Levine “Control System Fundamentals” CRC Press, 2010",
+    "K. Warwick “Control systems: an introduction” Prentice Hall, 1989",
+    "M. Gopal “Control Systems: Principles and Design” Tata McGraw-Hill Education, 2002"
+  ]
+}

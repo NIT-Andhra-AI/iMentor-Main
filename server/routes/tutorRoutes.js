@@ -285,4 +285,59 @@ router.post('/reviews/complete', async (req, res) => {
     }
 });
 
+// GET /api/chat/tutor/active-session — Restore active session progress & state
+router.get('/active-session', async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const TutorSession = require('../models/TutorSession');
+        const ChatHistory = require('../models/ChatHistory');
+
+        // Find latest active tutor session for this user
+        const latestSession = await TutorSession.findOne({ userId }).sort({ updatedAt: -1 }).lean();
+        if (!latestSession) {
+            return res.json({ success: true, active: false });
+        }
+
+        const chatHistory = await ChatHistory.findOne({ sessionId: latestSession.sessionId, userId }).lean();
+
+        res.json({
+            success: true,
+            active: true,
+            sessionId: latestSession.sessionId,
+            topic: latestSession.topic,
+            cognitiveLevel: latestSession.cognitiveLevel,
+            masteryScore: latestSession.masteryScore,
+            updatedAt: latestSession.updatedAt,
+            messages: chatHistory?.messages || [],
+            state: latestSession.state || {}
+        });
+    } catch (error) {
+        log.error('TUTOR', 'Failed to fetch active tutor session', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch active tutor session' });
+    }
+});
+
+// GET /api/chat/tutor/live-memory-map — Get real-time student concept memory map
+router.get('/live-memory-map', async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const StudentKnowledgeState = require('../models/StudentKnowledgeState');
+        const liveMemoryMapService = require('../services/liveMemoryMapService');
+
+        const knowledgeState = await StudentKnowledgeState.findOne({ userId }).lean();
+        if (!knowledgeState) {
+            return res.json({
+                success: true,
+                liveMap: { nodes: [], links: [], summary: { totalConcepts: 0, overallMastery: 0 } }
+            });
+        }
+
+        const liveMap = liveMemoryMapService.buildMemoryMapGraph(knowledgeState);
+        res.json({ success: true, liveMap });
+    } catch (error) {
+        log.error('TUTOR', 'Failed to fetch live memory map', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch live memory map' });
+    }
+});
+
 module.exports = router;

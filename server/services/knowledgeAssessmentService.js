@@ -38,52 +38,61 @@ async function reuseOrGenerateQuestions({ course, module, topic, count = 5 }) {
 
   try {
     const escapeTerm = escapeRegex(searchTerm);
+    const keywords = searchTerm.split(/[\s,]+/).filter(w => w.length > 3).map(escapeRegex);
+    const keywordRegexes = keywords.map(k => new RegExp(k, 'i'));
+
     const qbFilter = {
       $or: [
-        { course: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
-        { topic: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } }
+        { course: { $regex: new RegExp(escapeTerm, 'i') } },
+        { topic: { $regex: new RegExp(escapeTerm, 'i') } },
+        ...(keywordRegexes.length > 0 ? [{ topic: { $in: keywordRegexes } }] : []),
       ]
     };
     
     // Query legacy QuestionBank
-    const qbExisting = await QuestionBank.find(qbFilter).lean();
+    const qbExisting = await QuestionBank.find(qbFilter).limit(20).lean();
     
     // Query ConceptQuestionBank
     const ConceptQuestionBank = require('../models/ConceptQuestionBank');
     const cqbFilter = {
       $or: [
-        { course: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
-        { concept: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } },
-        { topic: { $regex: new RegExp(`^${escapeTerm}$`, 'i') } }
+        { course: { $regex: new RegExp(escapeTerm, 'i') } },
+        { concept: { $regex: new RegExp(escapeTerm, 'i') } },
+        { topic: { $regex: new RegExp(escapeTerm, 'i') } },
+        ...(keywordRegexes.length > 0 ? [{ concept: { $in: keywordRegexes } }] : []),
       ]
     };
-    const cqbExisting = await ConceptQuestionBank.find(cqbFilter).lean();
+    const cqbExisting = await ConceptQuestionBank.find(cqbFilter).limit(20).lean();
 
-    // Map legacy QuestionBank questions
-    const mappedQb = qbExisting.map((q, i) => ({
-      id: `qb_${i}_${Date.now()}`,
-      question: q.question,
-      type: q.type || 'mcq',
-      options: q.options || [],
-      bloomLevel: q.bloomLevel || 'understand',
-      difficulty: q.difficulty || 'medium',
-      concepts: q.tags || q.concepts || [q.topic || searchTerm],
-      correctAnswer: q.correctAnswer || (q.options && q.options[q.correctIndex || 0]) || '',
-      modelAnswer: q.explanation || '',
-    }));
+    // Map legacy QuestionBank questions (ensure valid options exist)
+    const mappedQb = qbExisting
+      .filter(q => Array.isArray(q.options) && q.options.length >= 2)
+      .map((q, i) => ({
+        id: `qb_${i}_${Date.now()}`,
+        question: q.question,
+        type: 'mcq',
+        options: q.options.map((opt, optIdx) => /^[A-D]\.\s*/i.test(opt) ? opt : `${String.fromCharCode(65 + optIdx)}. ${opt}`),
+        bloomLevel: q.bloomLevel || 'understand',
+        difficulty: q.difficulty || 'medium',
+        concepts: q.tags || q.concepts || [q.topic || searchTerm],
+        correctAnswer: q.correctAnswer || (q.options && q.options[q.correctIndex || 0]) || 'A',
+        modelAnswer: q.explanation || '',
+      }));
 
-    // Map ConceptQuestionBank questions
-    const mappedCqb = cqbExisting.map((q, i) => ({
-      id: `cqb_${i}_${Date.now()}`,
-      question: q.question,
-      type: 'mcq',
-      options: q.options || [],
-      bloomLevel: q.bloomLevel || 'understand',
-      difficulty: q.difficulty || 'medium',
-      concepts: q.conceptTags || [q.concept || searchTerm],
-      correctAnswer: (q.options && q.options[q.correctIndex !== undefined ? q.correctIndex : 0]) || '',
-      modelAnswer: q.explanation || '',
-    }));
+    // Map ConceptQuestionBank questions (ensure valid options exist)
+    const mappedCqb = cqbExisting
+      .filter(q => Array.isArray(q.options) && q.options.length >= 2)
+      .map((q, i) => ({
+        id: `cqb_${i}_${Date.now()}`,
+        question: q.question,
+        type: 'mcq',
+        options: q.options.map((opt, optIdx) => /^[A-D]\.\s*/i.test(opt) ? opt : `${String.fromCharCode(65 + optIdx)}. ${opt}`),
+        bloomLevel: q.bloomLevel || 'understand',
+        difficulty: q.difficulty || 'medium',
+        concepts: q.conceptTags || [q.concept || searchTerm],
+        correctAnswer: (q.options && q.options[q.correctIndex !== undefined ? q.correctIndex : 0]) || 'A',
+        modelAnswer: q.explanation || '',
+      }));
 
     const combined = [...mappedQb, ...mappedCqb];
     if (combined.length >= count) {
@@ -188,7 +197,7 @@ ${module ? `Module: ${module}` : ''}
 ${topic ? `Topic: ${topic}` : ''}
 Key concepts to cover: ${conceptList}
 
-Generate exactly 5 questions that span Bloom's Taxonomy levels:
+Generate exactly 5 Multiple Choice Questions (MCQs) that span Bloom's Taxonomy levels:
 - 1 Remember (recall facts, definitions)
 - 1 Understand (explain concepts in own words)
 - 1 Apply (use knowledge in a practical context)
@@ -198,40 +207,38 @@ Generate exactly 5 questions that span Bloom's Taxonomy levels:
 Rules:
 - Each question must test a DIFFERENT concept from the key concepts list
 - Questions must be about actual subject matter, NOT about course codes or course names
-- Mix of MCQ and descriptive types (at least 2 MCQ, at least 1 descriptive)
-- MCQs: provide 4 options (A, B, C, D), mark correctAnswer as the letter
-- Descriptive: provide a modelAnswer for grading reference
+- ALL 5 questions MUST be Multiple Choice Questions (type: "mcq") with exactly 4 options labeled "A. ...", "B. ...", "C. ...", "D. ..."
+- Provide "correctAnswer" as the letter "A", "B", "C", or "D"
+- Provide "modelAnswer" as a concise explanation of why the correct option is right
 - Tag each question with its bloomLevel and difficulty (easy/medium/hard)
 
 Return valid JSON only:
 {
   "questions": [
     {
-      "question": "...",
-      "type": "mcq" or "descriptive",
-      "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+      "question": "Clear question text testing the concept...",
+      "type": "mcq",
+      "options": ["A. First choice", "B. Second choice", "C. Third choice", "D. Fourth choice"],
       "correctAnswer": "A",
-      "modelAnswer": "...",
+      "modelAnswer": "Detailed explanation of why A is the correct answer.",
       "bloomLevel": "remember",
       "difficulty": "easy",
-      "concepts": ["concept1", "concept2"]
+      "concepts": ["concept1"]
     }
   ]
 }`;
 
   try {
     const providerHealth = require('./providerHealthCache');
-    const healthyProviders = providerHealth.getHealthyProviders(['groq', 'sglang', 'gemini', 'openai', 'ollama']);
-    const preferredProvider = healthyProviders.includes('groq')
-      ? 'groq'
-      : (healthyProviders[0] || 'groq');
+    const healthyProviders = providerHealth.getHealthyProviders(['sglang', 'gemini', 'groq', 'openai', 'ollama']);
+    const preferredProvider = healthyProviders[0] || 'sglang';
     const responseText = await callWithFallback({
       userQuery: prompt,
-      systemPrompt: 'You are an educational assessment generator. Respond with valid JSON only.',
+      systemPrompt: 'You are an educational assessment generator. Respond with valid JSON only. Every question MUST be a multiple choice question with 4 options in an array.',
       chatHistory: [],
       preferredProvider,
-      preferLocalFirst: false,
-      options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.35, maxOutputTokens: 4096, timeout: 30000 },
+      preferLocalFirst: true,
+      options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.2, maxOutputTokens: 1200, timeout: 20000 },
     });
 
     const raw = typeof responseText === 'string' ? responseText : (responseText.text || JSON.stringify(responseText));
@@ -245,17 +252,33 @@ Return valid JSON only:
       else throw new Error('Could not parse LLM response as JSON');
     }
 
-    const questions = (parsed.questions || []).slice(0, 5).map((q, i) => ({
-      id: `diag_${i}_${Date.now()}`,
-      question: q.question,
-      type: q.type || 'mcq',
-      options: q.options || [],
-      bloomLevel: q.bloomLevel || 'understand',
-      difficulty: q.difficulty || 'medium',
-      concepts: q.concepts || [],
-      correctAnswer: q.correctAnswer || '',
-      modelAnswer: q.modelAnswer || '',
-    }));
+    const questions = (parsed.questions || []).slice(0, 5).map((q, i) => {
+      let rawOptions = Array.isArray(q.options) && q.options.length > 0 ? q.options : [];
+      if (rawOptions.length < 4) {
+        const fallbacks = [
+          `Primary mechanism of ${q.concepts?.[0] || 'the concept'}`,
+          `Secondary auxiliary application`,
+          `Inverse / opposite operational mode`,
+          `General boundary condition limitation`
+        ];
+        rawOptions = fallbacks;
+      }
+      const formattedOptions = rawOptions.map((opt, optIdx) => 
+        /^[A-D]\.\s*/i.test(opt) ? opt : `${String.fromCharCode(65 + optIdx)}. ${opt}`
+      );
+
+      return {
+        id: `diag_${i}_${Date.now()}`,
+        question: q.question,
+        type: 'mcq',
+        options: formattedOptions,
+        bloomLevel: q.bloomLevel || 'understand',
+        difficulty: q.difficulty || 'medium',
+        concepts: q.concepts || [topic || course || 'general'],
+        correctAnswer: (q.correctAnswer || 'A').trim().charAt(0).toUpperCase(),
+        modelAnswer: q.modelAnswer || q.explanation || '',
+      };
+    });
 
     const provider = typeof responseText === 'object' && responseText?.provider ? responseText.provider : 'unknown';
     const model = typeof responseText === 'object' && responseText?.model ? responseText.model : 'unknown';
@@ -283,41 +306,76 @@ function generateOfflineAssessment({ course, topic, concepts = [], courseTitle =
       bloomLevel: 'remember',
       difficulty: 'easy',
       question: allConcepts[0]
-        ? `What is the definition of "${allConcepts[0]}" and why is it important in this field?`
-        : `Describe a fundamental principle in this subject area and explain its significance.`,
-      modelAnswer: `The student should define the core concept and explain its role within the subject domain.`,
+        ? `Which statement best defines "${allConcepts[0]}" in the context of this domain?`
+        : `Which statement represents a core fundamental principle in this subject area?`,
+      options: [
+        `A. A foundational construct governing operational integrity and definitions.`,
+        `B. A deprecated secondary utility with no current production relevance.`,
+        `C. An external network protocol solely used in unrelated legacy hardware.`,
+        `D. A compilation warning that does not affect runtime semantics.`
+      ],
+      correctAnswer: 'A',
+      modelAnswer: `Option A correctly identifies the foundational nature and purpose of the concept.`,
       concepts: [allConcepts[0] || 'fundamentals'],
     },
     {
       bloomLevel: 'understand',
       difficulty: 'easy',
       question: allConcepts[1]
-        ? `Explain how "${allConcepts[1]}" relates to "${allConcepts[0] || 'other core concepts'}". What is the relationship?`
-        : `Describe the relationship between two major concepts in this subject. How do they interact?`,
-      modelAnswer: `The student should explain the conceptual relationship and how concepts build upon each other.`,
+        ? `How does "${allConcepts[1]}" directly interact with or build upon "${allConcepts[0] || 'core concepts'}"?`
+        : `How do foundational components interact to maintain consistency in this system?`,
+      options: [
+        `A. It provides higher-level abstraction and orchestrates underlying operations.`,
+        `B. It completely bypasses all prerequisite data structures without safety.`,
+        `C. It serves only as a static documentation comment.`,
+        `D. It disables execution caching across all layers.`
+      ],
+      correctAnswer: 'A',
+      modelAnswer: `Option A accurately captures how higher-level modules build upon foundational structures.`,
       concepts: [allConcepts[1] || 'relationships', allConcepts[0] || 'foundations'],
     },
     {
       bloomLevel: 'apply',
       difficulty: 'medium',
       question: allConcepts[2]
-        ? `Describe a practical scenario where "${allConcepts[2]}" would be applied. What steps are involved?`
-        : `Provide a real-world application of the key principles in this subject. Outline the process.`,
-      modelAnswer: `The student should describe a concrete application scenario with appropriate methodology.`,
+        ? `In a real-world scenario requiring optimal efficiency, how should "${allConcepts[2]}" be applied?`
+        : `When applying key architectural patterns to solve a problem, what is the best practice?`,
+      options: [
+        `A. Implement appropriate data partitioning and minimize redundant operations.`,
+        `B. Reallocate unbounded memory buffers unconditionally on every transaction.`,
+        `C. Ignore synchronization constraints during concurrent state mutations.`,
+        `D. Replace deterministic algorithms with unverified heuristic randomizers.`
+      ],
+      correctAnswer: 'A',
+      modelAnswer: `Option A represents the optimal engineering practice for applying this concept.`,
       concepts: [allConcepts[2] || 'application'],
     },
     {
       bloomLevel: 'analyze',
       difficulty: 'medium',
-      question: `Compare and contrast two different approaches or methods within this subject. What are their relative strengths in different contexts?`,
-      modelAnswer: `The student should analyze multiple approaches, comparing their trade-offs and appropriate use cases.`,
+      question: `When analyzing trade-offs between competing strategies in this domain, which factor is most critical?`,
+      options: [
+        `A. Algorithmic complexity, resource contention, and throughput guarantees.`,
+        `B. The alphabetical ordering of internal function identifiers.`,
+        `C. The date the source repository was cloned locally.`,
+        `D. The operating system UI color theme.`
+      ],
+      correctAnswer: 'A',
+      modelAnswer: `Option A details the genuine technical metrics used to analyze competing strategies.`,
       concepts: ['analysis', 'comparison'],
     },
     {
       bloomLevel: 'evaluate',
       difficulty: 'hard',
-      question: `Evaluate a design or implementation decision in this field. What trade-offs must be considered, and how would you justify your choice?`,
-      modelAnswer: `The student should critically evaluate options, weighing pros and cons and justifying their recommendation.`,
+      question: `To evaluate whether a proposed architectural overhaul is justified, what primary criterion must be verified?`,
+      options: [
+        `A. Measurable improvements in fault tolerance, latency, and system scalability.`,
+        `B. Immediate elimination of all test suites to accelerate release.`,
+        `C. Using the maximum possible number of third-party dependencies.`,
+        `D. Hardcoding runtime configurations into static global constants.`
+      ],
+      correctAnswer: 'A',
+      modelAnswer: `Option A provides the rigorous engineering criteria for evaluating an architectural redesign.`,
       concepts: ['evaluation', 'trade-offs'],
     },
   ];
@@ -325,12 +383,12 @@ function generateOfflineAssessment({ course, topic, concepts = [], courseTitle =
   const questions = questionTemplates.map((t, i) => ({
     id: `offline_${i}_${Date.now()}`,
     question: t.question,
-    type: 'descriptive',
-    options: [],
+    type: 'mcq',
+    options: t.options,
     bloomLevel: t.bloomLevel,
     difficulty: t.difficulty,
     concepts: t.concepts,
-    correctAnswer: '',
+    correctAnswer: t.correctAnswer,
     modelAnswer: t.modelAnswer,
   }));
 

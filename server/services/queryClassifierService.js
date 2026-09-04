@@ -45,7 +45,7 @@ const ZSC_ROUTE_TO_STRENGTH = {
 // Calls POST /classify_intent on the Python RAG service.
 // The endpoint runs a local cross-encoder/nli-deberta-v3-small model (~184 MB, CPU).
 // Falls through silently on any error (network down, model not loaded yet, etc.)
-const ZSC_TIMEOUT_MS = parseInt(process.env.ZSC_TIMEOUT_MS || '800', 10);
+const ZSC_TIMEOUT_MS = parseInt(process.env.ZSC_TIMEOUT_MS || '2500', 10);
 const ZSC_MIN_CONFIDENCE = parseFloat(process.env.ZSC_MIN_CONFIDENCE || '0.55');
 
 async function zeroShotClassify(query) {

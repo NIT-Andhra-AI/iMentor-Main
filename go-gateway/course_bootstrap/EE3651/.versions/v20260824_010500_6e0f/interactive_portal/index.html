@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EE3651: DEC - Interactive GATE & B.Tech Learning Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- KaTeX for high-performance LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>EE3651: DEC</h1>
+                <p>IIT / B.Tech R24 Curriculum &bull; Interactive Lectures</p>
+            </div>
+            <nav class="lecture-list">
+                
+            <div class="unit-section">
+                <div class="unit-title">Unit I: Incidence and Network Matrices</div>
+                <div class="lecture-item active" data-lecture="1" onclick="loadLecture(1)">
+                    <div class="lecture-num">L1</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Introduction, graphs, incidence matrices, primitive matrices, types of network</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="2" onclick="loadLecture(2)">
+                    <div class="lecture-num">L2</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 1)</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="3" onclick="loadLecture(3)">
+                    <div class="lecture-num">L3</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 2)</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="4" onclick="loadLecture(4)">
+                    <div class="lecture-num">L4</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 3)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="5" onclick="loadLecture(5)">
+                    <div class="lecture-num">L5</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 4)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="6" onclick="loadLecture(6)">
+                    <div class="lecture-num">L6</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 5)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="7" onclick="loadLecture(7)">
+                    <div class="lecture-num">L7</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 6)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="8" onclick="loadLecture(8)">
+                    <div class="lecture-num">L8</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 7)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit II: Algorithms for Formation of Z-bus Matrix</div>
+                <div class="lecture-item " data-lecture="9" onclick="loadLecture(9)">
+                    <div class="lecture-num">L9</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Step by step algorithm for formation of Z-bus. modification of Z-bus matrix for</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="10" onclick="loadLecture(10)">
+                    <div class="lecture-num">L10</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 1)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="11" onclick="loadLecture(11)">
+                    <div class="lecture-num">L11</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 2)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="12" onclick="loadLecture(12)">
+                    <div class="lecture-num">L12</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 3)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="13" onclick="loadLecture(13)">
+                    <div class="lecture-num">L13</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 4)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="14" onclick="loadLecture(14)">
+                    <div class="lecture-num">L14</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 5)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="15" onclick="loadLecture(15)">
+                    <div class="lecture-num">L15</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 6)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit III: Short Circuit Calculations</div>
+                <div class="lecture-item " data-lecture="16" onclick="loadLecture(16)">
+                    <div class="lecture-num">L16</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Introduction, short circuit calculations using matrices for various faults,</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="17" onclick="loadLecture(17)">
+                    <div class="lecture-num">L17</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 1)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="18" onclick="loadLecture(18)">
+                    <div class="lecture-num">L18</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 2)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="19" onclick="loadLecture(19)">
+                    <div class="lecture-num">L19</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 3)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="20" onclick="loadLecture(20)">
+                    <div class="lecture-num">L20</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 4)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="21" onclick="loadLecture(21)">
+                    <div class="lecture-num">L21</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 5)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="22" onclick="loadLecture(22)">
+                    <div class="lecture-num">L22</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 6)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit IV: Sparsity Technique in Load Flow Studies</div>
+                <div class="lecture-item " data-lecture="23" onclick="loadLecture(23)">
+                    <div class="lecture-num">L23</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Introduction, sparsity technique for Y-bus and gauss-seidel method</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="24" onclick="loadLecture(24)">
+                    <div class="lecture-num">L24</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 1)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="25" onclick="loadLecture(25)">
+                    <div class="lecture-num">L25</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 2)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="26" onclick="loadLecture(26)">
+                    <div class="lecture-num">L26</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 3)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="27" onclick="loadLecture(27)">
+                    <div class="lecture-num">L27</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 4)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="28" onclick="loadLecture(28)">
+                    <div class="lecture-num">L28</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 5)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="29" onclick="loadLecture(29)">
+                    <div class="lecture-num">L29</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 6)</div>
+                        <div class="lecture-meta">L6_CREATE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit V: Contingency Analysis in Power Systems</div>
+                <div class="lecture-item " data-lecture="30" onclick="loadLecture(30)">
+                    <div class="lecture-num">L30</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Contingency calculations using ZBUS and YBUS table of factors. state estimation</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="31" onclick="loadLecture(31)">
+                    <div class="lecture-num">L31</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 1)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="32" onclick="loadLecture(32)">
+                    <div class="lecture-num">L32</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 2)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="33" onclick="loadLecture(33)">
+                    <div class="lecture-num">L33</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 3)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="34" onclick="loadLecture(34)">
+                    <div class="lecture-num">L34</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 4)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="35" onclick="loadLecture(35)">
+                    <div class="lecture-num">L35</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 5)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 40 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="36" onclick="loadLecture(36)">
+                    <div class="lecture-num">L36</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Problem Solving & GATE Practice (Session 6)</div>
+                        <div class="lecture-meta">L6_CREATE &bull; 40 mins</div>
+                    </div>
+                </div>
+            </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Banner -->
+            <header class="top-nav">
+                <div class="current-lecture-badge" id="currentLecBadge">Lecture 1: Introduction</div>
+                <div class="nav-actions">
+                    <span class="badge badge-accent" id="bloomBadge">L2_UNDERSTAND</span>
+                    <button class="btn btn-secondary" onclick="prevLecture()">← Prev</button>
+                    <button class="btn btn-primary" onclick="nextLecture()">Next →</button>
+                </div>
+            </header>
+
+            <!-- Lecture View Container -->
+            <div class="content-body" id="lectureContentArea">
+                <!-- Overview Card -->
+                <div class="card">
+                    <div class="card-title" id="lectureHeaderTitle">Lecture 1: Theoretical Foundations</div>
+                    <div class="card-desc" id="lectureSubtopics">Loading lecture subtopics and engineering concepts...</div>
+                    <div class="math-box" id="lectureMathFormula">
+                        $$ \mathbf{A}\mathbf{v} = \lambda\mathbf{v}, \quad \det(\mathbf{A} - \lambda\mathbf{I}) = 0, \quad \mathbf{x}(t) = c_1 e^{\lambda_1 t}\mathbf{v}_1 + c_2 e^{\lambda_2 t}\mathbf{v}_2 $$
+                    </div>
+                </div>
+
+                <!-- Interactive Simulation Canvas Card -->
+                <div class="card">
+                    <div class="card-title">📐 Interactive 2D Vector Field Matrix Transformation & Eigenspace Visualizer</div>
+                    <p class="card-desc">Adjust governing physical parameters in real time to observe mathematical transformations, dynamic waveforms, frequency responses, and stability trajectories.</p>
+                    
+                    <!-- Controls Bar -->
+                    <div class="controls-bar">
+                        <div class="control-group">
+                            <label>Eigenvalue Scale λ1: <span id="paramValAlpha">1.50</span></label>
+                            <input type="range" id="sliderAlpha" min="-2.00" max="3.00" step="0.10" value="1.50" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Eigenvector Rotation θ (rad): <span id="paramValOmega">0.78</span></label>
+                            <input type="range" id="sliderOmega" min="0.00" max="3.14" step="0.05" value="0.78" oninput="updateSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <button class="btn btn-accent" onclick="toggleAnimation()">▶ Run Simulation</button>
+                            <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Canvas -->
+                    <div class="canvas-container">
+                        <canvas id="interactiveCanvas" width="900" height="340"></canvas>
+                    </div>
+                    <div class="canvas-caption" id="canvasCaption">Real-time simulation rendered at 60 FPS using HTML5 Canvas vector graphics & mathematical models.</div>
+                </div>
+
+                <!-- Diagnostic Checkpoint Quiz Card -->
+                <div class="card">
+                    <div class="card-title">🎯 GATE / Higher Education Concept Checkpoint</div>
+                    <div id="checkpointQuestion" class="checkpoint-question">If a 2x2 state matrix A has distinct real eigenvalues λ1 < 0 and λ2 > 0, the equilibrium origin (0,0) is classified as:</div>
+                    <div class="options-grid" id="optionsContainer">
+                        <button class="option-btn" onclick="checkAnswer(0)">A) A stable node attractor</button>
+                        <button class="option-btn" onclick="checkAnswer(1)">B) An unstable saddle point with stable and unstable manifolds</button>
+                        <button class="option-btn" onclick="checkAnswer(2)">C) A marginal center orbit</button>
+                    </div>
+                    <div class="feedback-alert" id="checkpointFeedback" style="display:none;"></div>
+                </div>
+
+                <!-- References & Textbooks Card -->
+                <div class="card">
+                    <div class="card-title">📚 Recommended Authoritative References & NPTEL Mapping</div>
+                    <ul class="references-list" id="referencesList">
+                        <li><strong>Canonical Reference:</strong> Advanced Engineering Mathematics (Erwin Kreyszig)</li>
+                        <li><strong>National Curricular Link:</strong> Linear Algebra & Differential Equations</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

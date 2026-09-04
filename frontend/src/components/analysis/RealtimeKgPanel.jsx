@@ -73,7 +73,18 @@ const RealtimeKgPanel = () => {
                 const reactFlowNodes = graphData.nodes.map(n => ({
                     id: n.id,
                     data: { label: n.id },
-                    position: { x: 0, y: 0 }
+                    position: { x: 0, y: 0 },
+                    style: {
+                        background: 'rgba(15, 23, 42, 0.9)',
+                        color: '#f8fafc',
+                        border: '1.5px solid rgba(255, 255, 255, 0.85)',
+                        borderRadius: '10px',
+                        padding: '8px 14px',
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.15)',
+                        backdropFilter: 'blur(8px)'
+                    }
                 }));
                 const reactFlowEdges = graphData.edges.map((e, i) => ({
                     id: `e${i}-${e.from}-${e.to}`,

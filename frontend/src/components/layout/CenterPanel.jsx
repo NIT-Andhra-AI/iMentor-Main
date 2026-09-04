@@ -119,13 +119,22 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
     const [useWebSearch, setUseWebSearch] = useState(false);
     const [useAcademicSearch, setUseAcademicSearch] = useState(false);
     const [criticalThinkingEnabled, setCriticalThinkingEnabled] = useState(false);
-    const [ragEnabled, setRagEnabled] = useState(true);
+    const [ragEnabled, setRagEnabled] = useState(Boolean(selectedSubject || selectedDocumentForAnalysis));
 
     useEffect(() => {
         if (selectedSubject || selectedDocumentForAnalysis) {
             setRagEnabled(true);
+        } else {
+            setRagEnabled(false);
         }
     }, [selectedSubject, selectedDocumentForAnalysis]);
+
+    // Reset assistant toggles (ToT, Web Search, Academic Search) to clean defaults on new session
+    useEffect(() => {
+        setCriticalThinkingEnabled(false);
+        setUseWebSearch(false);
+        setUseAcademicSearch(false);
+    }, [currentSessionId]);
     const [isActuallySendingAPI, setIsActuallySendingAPI] = useState(false);
     const abortControllerRef = useRef(null);
     const [recommendations, setRecommendations] = useState([]);
@@ -254,109 +263,159 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
             throw new Error(errorData.message || `Server error: ${response.status}`);
         }
 
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
+        const contentType = response.headers.get('content-type') || '';
         let finalBotMessageObject = null;
         let streamErrorMessage = null;
         let accumulatedThinking = '';
         let currentStatusRef = null; // Track the latest status update
         let accumulatedSteps = []; // Track structured reasoning steps
         let currentConfidenceScore = null; // Track confidence score
-
         let streamBuffer = '';
         let tokenBuffer = '';
-        const BUFFER_SIZE = 1;
-        const STALL_TIMEOUT_MS = options?.criticalThinkingEnabled ? 180000 : 120000;
 
-        // Stall Watchdog: abort only after a long silence window.
-        let stallTimer = null;
-        const resetStallTimer = () => {
-            if (stallTimer) clearTimeout(stallTimer);
-            stallTimer = setTimeout(() => {
-                console.warn(`Stream stalled: no data for ${Math.round(STALL_TIMEOUT_MS / 1000)}s`);
-                abortControllerRef.current?.abort();
-            }, STALL_TIMEOUT_MS);
-        };
-
-        resetStallTimer();
-
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            resetStallTimer();
-            streamBuffer += decoder.decode(value, { stream: true });
-
-            let eventEndIndex;
-            while ((eventEndIndex = streamBuffer.indexOf('\n\n')) !== -1) {
-                const eventChunk = streamBuffer.slice(0, eventEndIndex).trim();
-                streamBuffer = streamBuffer.slice(eventEndIndex + 2);
-
-                if (!eventChunk.startsWith('data: ')) continue;
-
-                const jsonString = eventChunk.replace('data: ', '');
-                try {
-                    const eventData = JSON.parse(jsonString);
-                    if (eventData.type === 'token') {
-                        const tokenText = normalizeStreamText(eventData.content);
-                        if (!tokenText) continue;
-                        tokenBuffer += tokenText;
-                        if (tokenBuffer.length >= BUFFER_SIZE || tokenText.includes('\n')) {
-                            const capturedBuffer = tokenBuffer;
-                            tokenBuffer = '';
-                            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, text: (msg.text || '') + capturedBuffer } : msg));
-                        }
-                    } else if (eventData.type === 'thought') {
-                        const thoughtText = normalizeStreamText(eventData.content);
-                        if (!thoughtText) continue;
-                        accumulatedThinking += thoughtText;
-                        setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, thinking: accumulatedThinking, _accumulatedContent: accumulatedThinking } : msg));
-                    } else if (eventData.type === 'step_update') {
-                        // Upsert step by stepId
-                        const stepData = eventData.content;
-                        const existingIndex = accumulatedSteps.findIndex(s => s.stepId === stepData.stepId);
-                        if (existingIndex >= 0) {
-                            accumulatedSteps[existingIndex] = { ...accumulatedSteps[existingIndex], ...stepData };
-                        } else {
-                            accumulatedSteps.push(stepData);
-                        }
-                        setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, steps: [...accumulatedSteps] } : msg));
-                    } else if (eventData.type === 'confidence_score') {
-                        currentConfidenceScore = eventData.content;
-                        setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, confidenceScore: currentConfidenceScore } : msg));
-                    } else if (eventData.type === 'status_update') {
-                        const statusText = normalizeStreamText(eventData.content);
-                        if (!statusText) continue;
-                        currentStatusRef = statusText; // Store the latest status
-                        setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, status: statusText } : msg));
-                    } else if (eventData.type === 'progress_update') {
-                        // Emit custom event for TutorModePage to handle
-                        window.dispatchEvent(new CustomEvent('tutor-progress-update', {
-                            detail: eventData.content
-                        }));
-                    } else if (eventData.type === 'final_answer') {
-                        finalBotMessageObject = eventData.content;
-                        if (eventData?.content?.debug) {
-                            setLatestDebugData(eventData.content.debug);
-                            if (eventData.content.debug.featureFlags) {
-                                setDebugFeatureFlags(eventData.content.debug.featureFlags);
-                            }
-                        }
-                    } else if (eventData.type === 'error') {
-                        const errorText = normalizeStreamText(eventData.content);
-                        streamErrorMessage = errorText || 'AI service error';
-                    }
-                } catch (e) {
-                    console.error("Error parsing SSE chunk:", jsonString, e);
+        if (contentType.includes('application/json')) {
+            const jsonData = await response.json();
+            const replyObj = jsonData.reply || jsonData;
+            const responseText = replyObj.finalAnswer || replyObj.text || replyObj.response || jsonData.response || jsonData.text || '';
+            finalBotMessageObject = {
+                ...replyObj,
+                id: replyObj.id || placeholderId,
+                sender: 'bot',
+                text: responseText,
+                finalAnswer: responseText,
+                isStreaming: false,
+            };
+            if (jsonData.debug) {
+                setLatestDebugData(jsonData.debug);
+                if (jsonData.debug.featureFlags) {
+                    setDebugFeatureFlags(jsonData.debug.featureFlags);
                 }
             }
-        }
+        } else {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            const BUFFER_SIZE = 1;
+            const STALL_TIMEOUT_MS = options?.criticalThinkingEnabled ? 180000 : 120000;
 
-        if (stallTimer) clearTimeout(stallTimer);
+            // Stall Watchdog: abort only after a long silence window.
+            let stallTimer = null;
+            const resetStallTimer = () => {
+                if (stallTimer) clearTimeout(stallTimer);
+                stallTimer = setTimeout(() => {
+                    console.warn(`Stream stalled: no data for ${Math.round(STALL_TIMEOUT_MS / 1000)}s`);
+                    abortControllerRef.current?.abort();
+                }, STALL_TIMEOUT_MS);
+            };
 
-        // Flush remaining token buffer
-        if (tokenBuffer.length > 0) {
-            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, text: (msg.text || '') + tokenBuffer } : msg));
+            resetStallTimer();
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                resetStallTimer();
+                streamBuffer += decoder.decode(value, { stream: true });
+
+                let eventEndIndex;
+                while ((eventEndIndex = streamBuffer.indexOf('\n\n')) !== -1) {
+                    const eventChunk = streamBuffer.slice(0, eventEndIndex).trim();
+                    streamBuffer = streamBuffer.slice(eventEndIndex + 2);
+
+                    if (!eventChunk.startsWith('data: ')) continue;
+
+                    const jsonString = eventChunk.replace('data: ', '');
+                    try {
+                        const eventData = JSON.parse(jsonString);
+                        if (eventData.type === 'token') {
+                            const tokenText = normalizeStreamText(eventData.content);
+                            if (!tokenText) continue;
+                            tokenBuffer += tokenText;
+                            if (tokenBuffer.length >= BUFFER_SIZE || tokenText.includes('\n')) {
+                                const capturedBuffer = tokenBuffer;
+                                tokenBuffer = '';
+                                setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, text: (msg.text || '') + capturedBuffer } : msg));
+                            }
+                        } else if (eventData.type === 'thought') {
+                            const thoughtText = normalizeStreamText(eventData.content);
+                            if (!thoughtText) continue;
+                            accumulatedThinking += thoughtText;
+                            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, thinking: accumulatedThinking, _accumulatedContent: accumulatedThinking } : msg));
+                        } else if (eventData.type === 'step_update') {
+                            // Upsert step by stepId
+                            const stepData = eventData.content;
+                            const existingIndex = accumulatedSteps.findIndex(s => s.stepId === stepData.stepId);
+                            if (existingIndex >= 0) {
+                                accumulatedSteps[existingIndex] = { ...accumulatedSteps[existingIndex], ...stepData };
+                            } else {
+                                accumulatedSteps.push(stepData);
+                            }
+                            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, steps: [...accumulatedSteps] } : msg));
+                        } else if (eventData.type === 'confidence_score') {
+                            currentConfidenceScore = eventData.content;
+                            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, confidenceScore: currentConfidenceScore } : msg));
+                        } else if (eventData.type === 'status_update') {
+                            const statusText = normalizeStreamText(eventData.content);
+                            if (!statusText) continue;
+                            currentStatusRef = statusText; // Store the latest status
+                            setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, status: statusText } : msg));
+                        } else if (eventData.type === 'progress_update') {
+                            // Emit custom event for TutorModePage to handle
+                            window.dispatchEvent(new CustomEvent('tutor-progress-update', {
+                                detail: eventData.content
+                            }));
+                        } else if (eventData.type === 'final_answer') {
+                            finalBotMessageObject = eventData.content;
+                            if (eventData?.content?.debug) {
+                                setLatestDebugData(eventData.content.debug);
+                                if (eventData.content.debug.featureFlags) {
+                                    setDebugFeatureFlags(eventData.content.debug.featureFlags);
+                                }
+                            }
+                        } else if (eventData.type === 'error') {
+                            const errorText = normalizeStreamText(eventData.content);
+                            streamErrorMessage = errorText || 'AI service error';
+                        }
+                    } catch (e) {
+                        console.error("Error parsing SSE chunk:", jsonString, e);
+                    }
+                }
+            }
+
+            if (stallTimer) clearTimeout(stallTimer);
+
+            // Flush remaining token buffer
+            if (tokenBuffer.length > 0) {
+                setMessages(prev => prev.map(msg => msg.id === placeholderId ? { ...msg, text: (msg.text || '') + tokenBuffer } : msg));
+            }
+
+            // Fallback: parse raw streamBuffer or tokenBuffer if final_answer event wasn't sent
+            if (!finalBotMessageObject && streamBuffer.trim()) {
+                try {
+                    const parsed = JSON.parse(streamBuffer.trim());
+                    const replyObj = parsed.reply || parsed;
+                    const responseText = replyObj.finalAnswer || replyObj.text || replyObj.response || parsed.response || parsed.text || '';
+                    if (responseText) {
+                        finalBotMessageObject = {
+                            ...replyObj,
+                            id: replyObj.id || placeholderId,
+                            sender: 'bot',
+                            text: responseText,
+                            finalAnswer: responseText,
+                            isStreaming: false,
+                        };
+                    }
+                } catch {
+                    if (streamBuffer.trim().length > 0 && !streamBuffer.includes('data: ')) {
+                        finalBotMessageObject = {
+                            id: placeholderId,
+                            sender: 'bot',
+                            text: streamBuffer.trim(),
+                            finalAnswer: streamBuffer.trim(),
+                            isStreaming: false,
+                        };
+                    }
+                }
+            }
         }
 
         if (finalBotMessageObject) {

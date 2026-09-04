@@ -4,7 +4,7 @@ import { useAppState } from '../../contexts/AppStateContext.jsx';
 import {
     PanelLeftClose, ChevronDown, ChevronUp, FilePlus,
     Library, History, GraduationCap, Zap, Brain,
-    BookMarked, Loader2, MessageSquareText, Plus
+    BookMarked, Loader2, MessageSquareText, Plus, Briefcase
 } from 'lucide-react';
 import Animate from '../core/Animate.jsx';
 import IconButton from '../core/IconButton.jsx';
@@ -154,6 +154,21 @@ function LeftPanel({ isChatProcessing, currentSessionId, handleSelectSessionFrom
                 </button>
             </div>
 
+            {/* Study Plan Section */}
+            <div className="mb-4">
+                <button
+                    onClick={() => navigate('/study-plan')}
+                    className={`w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-all duration-200 rounded-xl shadow-sm border ${
+                        location.pathname === '/study-plan'
+                            ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400 ring-1 ring-emerald-500/20'
+                            : 'bg-gray-50 dark:bg-gray-800 border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                >
+                    <GraduationCap size={16} className={location.pathname === '/study-plan' ? 'text-emerald-400' : 'text-emerald-500'} />
+                    <span className="flex-1">Study Plan</span>
+                </button>
+            </div>
+
             {/* Tutor Mode (Selectable Option) */}
             <div className="mb-4">
                 <button
@@ -178,6 +193,24 @@ function LeftPanel({ isChatProcessing, currentSessionId, handleSelectSessionFrom
                             className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_theme(colors.primary.DEFAULT)]"
                         />
                     )}
+                </button>
+            </div>
+
+            {/* Placements Section (Beneath Courses & Tutor Mode) */}
+            <div className="mb-4">
+                <button
+                    onClick={() => navigate('/placements')}
+                    className={`w-full flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-all duration-200 rounded-xl shadow-sm border ${
+                        location.pathname === '/placements'
+                            ? 'bg-primary/10 border-primary text-primary dark:text-primary-light ring-1 ring-primary/20'
+                            : 'bg-gray-50 dark:bg-gray-800 border-border-light dark:border-border-dark text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                >
+                    <Briefcase size={16} className={location.pathname === '/placements' ? 'text-primary' : 'text-primary dark:text-primary-light'} />
+                    <span className="flex-1">Placements</span>
+                    <span className="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-medium">
+                        Core & IT
+                    </span>
                 </button>
             </div>
 
@@ -338,7 +371,7 @@ function LeftPanel({ isChatProcessing, currentSessionId, handleSelectSessionFrom
                         <div className="mt-2 max-h-64 overflow-y-auto custom-scrollbar">
                             <KnowledgeSourceList
                                 key={kbRefreshKey}
-                                showSubjects={true}
+                                showSubjects={false}
                                 selectedSource={selectedDocumentForAnalysis || selectedSubject}
                                 onSelectSource={handleSourceSelect}
                                 onRefreshNeeded={kbRefreshKey}

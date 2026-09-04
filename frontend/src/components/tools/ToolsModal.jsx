@@ -2,9 +2,17 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../core/Modal';
-import { Code, TreePine } from 'lucide-react';
+import { Code, TreePine, GraduationCap, Sparkles } from 'lucide-react';
 
 const availableTools = [
+    {
+        title: 'Study Plan Builder',
+        description: 'Create and track customized, step-by-step learning paths tailored to your engineering goals and knowledge gaps.',
+        icon: GraduationCap,
+        path: '/study-plan',
+        status: 'active',
+        category: 'learning'
+    },
     {
         title: 'Secure Code Executor',
         description: 'Write, compile, and run code in a sandboxed environment with AI assistance.',

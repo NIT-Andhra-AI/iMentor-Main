@@ -113,9 +113,10 @@ export const AppStateProvider = ({ children }) => {
         }
         setSelectedSubjectState(newSubject);
 
-        setSelectedDocumentForAnalysisState(newSubject);
-        if (!newSubject && selectedDocumentForAnalysis === subjectName) {
+        if (!newSubject) {
             setSelectedDocumentForAnalysisState(null);
+        } else {
+            setSelectedDocumentForAnalysisState(newSubject);
         }
     };
 

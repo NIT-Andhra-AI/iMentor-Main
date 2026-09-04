@@ -36,8 +36,8 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         if (typeof mermaid !== 'undefined') {
-          mermaid.initialize({ startOnLoad: false, theme: 'neutral' }); 
-          console.log("Mermaid.js initialized globally with 'neutral' theme via index.html.");
+          mermaid.initialize({ startOnLoad: false, theme: 'dark' }); 
+          console.log("Mermaid.js initialized globally with 'dark' theme via index.html.");
         } else {
           console.error("Mermaid.js not found on window after script load. Mermaid diagrams may not render.");
         }

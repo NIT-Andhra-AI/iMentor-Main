@@ -7,78 +7,75 @@
 @layer base {
 
   /* ─────────────────────────────────────────────────────────────────────────
-   * DESIGN SYSTEM — VS Code Dark Mode (monochromatic, colorblind-safe)
+   * DESIGN SYSTEM — Executive Obsidian & Slate Design Tokens
    *
-   * Palette is intentionally gray-only. No hue-based status colors in the
-   * shell — only the content layer (code highlighting, badges) uses hue.
-   *
-   * Font scale: controlled via --font-base on <html>. All Tailwind rem sizes
-   * inherit this, so every component scales with zero code changes.
-   * Four levels: 13 (compact) · 15 (default) · 17 (large) · 20 (xl/low-vision)
+   * Premium enterprise palette tailored for B.Tech engineering & research:
+   * - Deep obsidian background surfaces (#0b0f19, #0f172a, #131d31)
+   * - Precision slate hairline dividers (rgba(148, 163, 184, 0.18))
+   * - Crisp high-contrast typographic hierarchy (#f8fafc, #cbd5e1)
+   * - Executive micro-accents: Sapphire (#38bdf8), Emerald (#10b981), Warm Amber (#f59e0b)
+   * - Universal fluid font scaler (--font-base on <html>)
    * ───────────────────────────────────────────────────────────────────────── */
 
   :root {
-    /* Shell backgrounds — richer surfaces for executive look */
-    --vs-bg:          #121212;   /* editor / main canvas          */
-    --vs-sidebar:     #1a1a1a;   /* sidebar, left/right panels    */
-    --vs-panel:       #1e1e1e;   /* activity bar, terminal bg     */
-    --vs-surface:     #242424;   /* card / raised surface         */
-    --vs-surface-hi:  #2e2e2e;   /* hover state on surface        */
+    /* Shell backgrounds — executive obsidian and deep slate */
+    --vs-bg:          #0b0f19;   /* primary editor / canvas canvas */
+    --vs-sidebar:     #0f172a;   /* sidebar & left/right rails      */
+    --vs-panel:       #131d31;   /* activity bar, nav, tool panels */
+    --vs-surface:     #182337;   /* elevated card / content surface */
+    --vs-surface-hi:  #202e46;   /* hover / active elevated card   */
 
-    /* Borders — sharper edges for executive look */
-    --vs-border-lo:   #383838;   /* hairline dividers             */
-    --vs-border:      #4a4a4a;   /* default border                */
-    --vs-border-hi:   #666666;   /* focused / active border       */
+    /* Borders — crisp precision hairline edges */
+    --vs-border-lo:   rgba(148, 163, 184, 0.12);
+    --vs-border:      rgba(148, 163, 184, 0.22);
+    --vs-border-hi:   rgba(148, 163, 184, 0.42);
 
-    /* Text — full-white for maximum brightness & readability */
-    --vs-text:        #ffffff;   /* primary text — full white      */
-    --vs-text-lo:     #b0b0b0;   /* secondary / muted             */
-    --vs-text-dim:    #777777;   /* placeholders, disabled        */
-    --vs-text-inv:    #0d0d0d;   /* text on light surfaces        */
+    /* Text — maximum clarity & readability */
+    --vs-text:        #f8fafc;   /* primary text — crisp off-white */
+    --vs-text-lo:     #cbd5e1;   /* secondary text — silver slate  */
+    --vs-text-dim:    #64748b;   /* muted text / placeholders      */
+    --vs-text-inv:    #0f172a;   /* text on light badges/surfaces  */
+
+    /* Executive Highlights & Status */
+    --vs-accent:          #38bdf8;   /* executive cyan/sapphire        */
+    --vs-accent-hover:    #0ea5e9;
+    --vs-accent-gold:     #f59e0b;   /* intellectual gold/amber        */
+    --vs-accent-emerald:  #10b981;   /* mastery/success emerald        */
+    --vs-accent-rose:     #f43f5e;   /* gap/attention rose             */
 
     /* Interactive */
-    --vs-hover:       rgba(255,255,255,0.08);
-    --vs-active:      rgba(255,255,255,0.14);
-    --vs-focus-ring:  rgba(255,255,255,0.22);
+    --vs-hover:       rgba(255, 255, 255, 0.06);
+    --vs-active:      rgba(255, 255, 255, 0.12);
+    --vs-focus-ring:  rgba(56, 189, 248, 0.35);
 
-    /* Code block background (separate from shell) */
-    --vs-code-bg:     #282c34;
-    --vs-code-text:   #abb2bf;
+    /* Code block background */
+    --vs-code-bg:     #0d131f;
+    --vs-code-text:   #e2e8f0;
 
-    /* Font scale — JS writes user preference to --font-base on <html>
-     * --vp-scale then multiplies it so the result is appropriate for the
-     * screen size without requiring any JS media-query listeners. */
+    /* Font scale — user selectable (13px to 25px) with responsive scale factor */
     --font-base: 17px;
-    --vp-scale:  1;      /* desktop default — 17 × 1.0 = 17px */
+    --vp-scale:  1;
 
-    /* Legacy: keep vscode-* vars for backward compat with existing components */
+    /* Backward compatibility mapping */
     --vscode-bg:          var(--vs-bg);
     --vscode-sidebar:     var(--vs-sidebar);
     --vscode-panel:       var(--vs-panel);
-    --vscode-selection:   #264f78;
+    --vscode-selection:   rgba(56, 189, 248, 0.22);
     --vscode-border:      var(--vs-border);
-    --vscode-blue:        #569cd6;
-    --vscode-cyan:        #4ec9b0;
-    --vscode-green:       #6a9955;
-    --vscode-orange:      #ce9178;
-    --vscode-purple:      #c586c0;
-    --vscode-yellow:      #dcdcaa;
-    --vscode-red:         #f48771;
+    --vscode-blue:        #38bdf8;
+    --vscode-cyan:        #38bdf8;
+    --vscode-green:       #10b981;
+    --vscode-orange:      #fb923c;
+    --vscode-purple:      #818cf8;
+    --vscode-yellow:      #f59e0b;
+    --vscode-red:         #f43f5e;
     --vscode-text:        var(--vs-text);
     --vscode-text-muted:  var(--vs-text-lo);
   }
 
-  /* ─── Viewport-responsive font scaling ─────────────────────────────────────
-   * --vp-scale automatically reduces font size on smaller screens so every
-   * rem-based Tailwind size scales correctly with zero JS changes.
-   *   Mobile  (<640 px)    0.82  → 17px default ≈ 14 px
-   *   Tablet (640-1023 px) 0.90  → 17px default ≈ 15 px
-   *   Desktop (≥1024 px)   1.00  → 17px default = 17 px
-   * The user's manual font-size preference (--font-base, set by TopNav) still
-   * applies — it is just proportionally scaled down on smaller screens.
-   * ────────────────────────────────────────────────────────────────────────── */
-  @media (max-width: 639px)                          { :root { --vp-scale: 0.82; } }
-  @media (min-width: 640px) and (max-width: 1023px)  { :root { --vp-scale: 0.90; } }
+  /* ─── Viewport-responsive font scaling ───────────────────────────────────── */
+  @media (max-width: 639px)                          { :root { --vp-scale: 0.84; } }
+  @media (min-width: 640px) and (max-width: 1023px)  { :root { --vp-scale: 0.92; } }
 
   /* Apply font scale — all rem units inherit this */
   html {
@@ -100,8 +97,8 @@
   body {
     background-color: var(--vs-bg);
     color: var(--vs-text);
-    font-family: theme('fontFamily.sans');
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   html.dark body {
@@ -110,8 +107,19 @@
   }
 
   html.light body {
-    background-color: #f5f5f5;
-    color: #1e1e1e;
+    background-color: #f8fafc;
+    color: #0f172a;
+    --vs-bg:         #f8fafc;
+    --vs-sidebar:    #ffffff;
+    --vs-panel:      #f1f5f9;
+    --vs-surface:    #ffffff;
+    --vs-surface-hi: #f8fafc;
+    --vs-border-lo:  rgba(15, 23, 42, 0.08);
+    --vs-border:     rgba(15, 23, 42, 0.15);
+    --vs-border-hi:  rgba(15, 23, 42, 0.30);
+    --vs-text:       #0f172a;
+    --vs-text-lo:    #475569;
+    --vs-text-dim:   #94a3b8;
   }
 
   #root {
@@ -637,3 +645,146 @@
   65%  { transform: scale(1.18) translateY(-2px); opacity: 1; }
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
+
+/* ── Global Dark Transparent Graph Boxes with Crisp White Borders ────────── */
+/* 1. ReactFlow Nodes (Live Concept Map) */
+.react-flow__node {
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: #f8fafc !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px) !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.react-flow__node-default,
+.react-flow__node-input,
+.react-flow__node-output {
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: #f8fafc !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.85) !important;
+}
+
+.react-flow__edge-path {
+  stroke: rgba(255, 255, 255, 0.75) !important;
+  stroke-width: 2px !important;
+}
+
+.react-flow__edge-text {
+  fill: #f1f5f9 !important;
+  font-weight: 600 !important;
+}
+
+.react-flow__edge-textbg {
+  fill: rgba(15, 23, 42, 0.9) !important;
+  rx: 4px !important;
+}
+
+/* 2. Mermaid & Course Explorer SVG Block Diagrams & Lecture Illustrations */
+.mermaid svg .node rect,
+.mermaid svg .node circle,
+.mermaid svg .node polygon,
+.mermaid svg .node path,
+.mermaid svg .basic .label-container,
+.mermaid svg g.stateGroup rect,
+.mermaid svg g.stateGroup polygon,
+.mermaid svg .cluster rect,
+.mermaid svg .cluster polygon,
+.prose:not(.katex) svg:not(.katex svg) rect,
+.prose:not(.katex) svg:not(.katex svg) polygon,
+.prose:not(.katex) svg:not(.katex svg) circle,
+.prose:not(.katex) svg:not(.katex svg) ellipse,
+.prose:not(.katex) svg:not(.katex svg) path:not([fill="none"]),
+.prose .block-diagram rect,
+.prose .block-diagram polygon,
+.prose .diagram-box,
+.prose .rhombus {
+  fill: transparent !important;
+  background-color: transparent !important;
+  stroke: rgba(255, 255, 255, 0.9) !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid svg .node .label,
+.mermaid svg .node text,
+.mermaid svg g.stateGroup text,
+.mermaid svg .cluster text,
+.prose:not(.katex) svg:not(.katex svg) text,
+.prose:not(.katex) svg:not(.katex svg) tspan {
+  fill: #f8fafc !important;
+  color: #f8fafc !important;
+  font-weight: 500 !important;
+}
+
+.mermaid svg .edgePath .path,
+.mermaid svg .flowchart-link,
+.prose:not(.katex) svg:not(.katex svg) line,
+.prose:not(.katex) svg:not(.katex svg) polyline {
+  stroke: rgba(255, 255, 255, 0.75) !important;
+  stroke-width: 2px !important;
+}
+
+.mermaid svg .edgeLabel,
+.mermaid svg .edgeLabel rect {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  fill: rgba(15, 23, 42, 0.95) !important;
+  color: #e2e8f0 !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * 3. KaTeX Mathematical Formulas & Matrix Delimiters/Brackets
+ * ───────────────────────────────────────────────────────────────────────── */
+.katex,
+.katex * {
+  text-rendering: auto;
+}
+
+.katex {
+  color: var(--vs-text, #f8fafc);
+  font-size: 1.05em;
+}
+
+.katex-display {
+  color: var(--vs-text, #f8fafc);
+  margin: 0.85em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Ensure matrix brackets, parentheses, and square brackets render with solid fill */
+.katex svg,
+.katex-html svg,
+.katex .delimsizing svg,
+.katex .mopen svg,
+.katex .mclose svg {
+  display: inline-block !important;
+  fill: currentColor !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.katex svg path,
+.katex-html svg path,
+.katex .delimsizing svg path,
+.katex .mopen svg path,
+.katex .mclose svg path {
+  fill: currentColor !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+  opacity: 1 !important;
+}
+
+.katex .delimsizing.size1,
+.katex .delimsizing.size2,
+.katex .delimsizing.size3,
+.katex .delimsizing.size4,
+.katex .delimsizing.mult {
+  color: currentColor !important;
+}
+
+

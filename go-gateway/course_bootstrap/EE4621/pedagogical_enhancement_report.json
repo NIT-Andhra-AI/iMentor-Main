@@ -1,0 +1,1434 @@
+{
+  "course_code": "EE4621",
+  "course_name": "DEC",
+  "category": "power_systems",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 126,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Types - three phase and single phase transformers – connections – causes and",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Types - three phase and single phase transformers – connections – causes and types of failures in distribution transformers",
+          "pedagogical_intuition": "For 'Types - three phase and single phase transformers – connections – causes and types of failures in distribution transformers', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Primary Distribution Systems and Distribution Sub–Stations: Distribution",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Primary Distribution Systems and Distribution Sub–Stations: Distribution substations – bus schemes –comparison of switching schemes- substation location and rating- types of feeders – voltage levels",
+          "pedagogical_intuition": "For 'Primary Distribution Systems and Distribution Sub–Stations: Distribution substations – bus schemes –comparison of switching schemes- substation location and rating- types of feeders – voltage levels', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit I: Distribution Transformers",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Three phase primary lines – copper loss – distribution feeder costs – loss",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Three phase primary lines – copper loss – distribution feeder costs – loss reduction and voltage improvement in rural networks",
+          "pedagogical_intuition": "For 'Three phase primary lines – copper loss – distribution feeder costs – loss reduction and voltage improvement in rural networks', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit II: Voltage Drop and Power Loss Calculations",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Effects of series and shunt capacitors – justification for capacitors –",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Effects of series and shunt capacitors – justification for capacitors – procedure to determine optimum capacitor size and location",
+          "pedagogical_intuition": "For 'Effects of series and shunt capacitors – justification for capacitors – procedure to determine optimum capacitor size and location', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit III: Capacitors in Distribution Systems",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Integrated sub–station metering system – revenue improvement – issues in",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Integrated sub–station metering system – revenue improvement – issues in multi–year tariff and availability based tariff",
+          "pedagogical_intuition": "For 'Integrated sub–station metering system – revenue improvement – issues in multi–year tariff and availability based tariff', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit IV: Distribution System Management",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Reforms in power sector – methods of improvement – reconfiguration",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Reforms in power sector – methods of improvement – reconfiguration –automation – communication systems – sensors –basic architecture of distribution automation system – software and open architecture – RTU and data communication – SCADA requirement and application functions –communication media for distribution system automation- communication protocols for distribution systems – IEC 61850 and IEEE 802.3 standards",
+          "pedagogical_intuition": "For 'Reforms in power sector – methods of improvement – reconfiguration –automation – communication systems – sensors –basic architecture of distribution automation system – software and open architecture – RTU and data communication – SCADA requirement and application functions –communication media for distribution system automation- communication protocols for distribution systems – IEC 61850 and IEEE 802.3 standards', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit V: Distribution System Automation",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', active and reactive power flow across high-voltage transmission corridors is bounded by rotor angle delta and line reactance X. Transient stability following fault clearing is evaluated via the Equal Area Criterion.",
+          "mathematical_model": "P_e = \\frac{|E||V|}{X}\\sin\\delta, \\quad M\\frac{d^2\\delta}{dt^2} = P_m - P_e",
+          "interactive_sim_hook": "Power-Angle \u0026 Equal Area Simulator: Set fault clearing time to view acceleration area A1 vs deceleration area A2 and determine critical clearing angle delta_cr.",
+          "industry_relevance": "Wide Area Measurement Systems (WAMS), Phasor Measurement Units (PMUs), and high-voltage direct current (HVDC) renewable grid interconnects.",
+          "gate_pyq_mapping": "GATE EE 2-Mark NAT: Newton-Raphson load flow Jacobian dimension and single-line-to-ground (SLG) fault current calculation.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE4621/ai_reference_textbook.md"
+}

@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3661,Advanced Power Electronics,Unit I,PFC Converters,"Controlled and uncontrolled converters, multi-pulse converters, and PWM",None,L2_UNDERSTAND
+EE3661,Advanced Power Electronics,Unit I,"converters – operation, analysis, and control.","converters – operation, analysis, and control.",1,L3_APPLY
+EE3661,Advanced Power Electronics,Unit I,Soft-switching DC-DC Converters,"Zero-voltage-switching converters, zero-current-",2,L2_UNDERSTAND
+EE3661,Advanced Power Electronics,Unit I,"switching converters, Cascaded DC-DC converters – ripple reduction and its advantages, dual","switching converters, Cascaded DC-DC converters – ripple reduction and its advantages, dual",3,L3_APPLY
+EE3661,Advanced Power Electronics,Unit I,active bridge rectifier-operation and control.,active bridge rectifier-operation and control.,4,L2_UNDERSTAND
+EE3661,Advanced Power Electronics,Unit I,AC-AC Converters,Single phase cyclo-converters-working-Analysis-various modes-,5,L3_APPLY
+EE3661,Advanced Power Electronics,Unit I,operation and three phase cyclo-converters-working-Analysis-various modes.,operation and three phase cyclo-converters-working-Analysis-various modes.,6,L2_UNDERSTAND
+EE3661,Advanced Power Electronics,Unit I,Inverters,"Matrix converters, multi-phase inverters, multi-level converters: cascaded H-bridge,",7,L3_APPLY
+EE3661,Advanced Power Electronics,Unit I,"diode clamped, NPC, flying capacitor – operation, modulation techniques-SPWM-SVM.","diode clamped, NPC, flying capacitor – operation, modulation techniques-SPWM-SVM.",8,L2_UNDERSTAND
+EE3661,Advanced Power Electronics,Unit I,Text Books,,9,L3_APPLY
+EE3661,Advanced Power Electronics,Unit I,"1. M.H.Rashid, Power Electronics - Circuits, Devices and Applications, Pearson India, 4th","1. M.H.Rashid, Power Electronics - Circuits, Devices and Applications, Pearson India, 4th",10,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"edition, 2017.","edition, 2017.",11,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"2. P.S.Bimbhra, Power Electronics, Khanna Publishers, New Delhi, 7th ed, 2022.","2. P.S.Bimbhra, Power Electronics, Khanna Publishers, New Delhi, 7th ed, 2022.",12,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"3. Mohan, Undeland, Robin, Power Electronics, 3ed (An Indian Adaptation)","Converters,",13,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"Applications and Design, Wiley India Pvt Ltd., 2022.","Applications and Design, Wiley India Pvt Ltd., 2022.",14,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,Reference Books,,15,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"1. M D Singh, K B Khanchandani, Power Electronics, 2009, Tata McGraw-Hill Publishing","1. M D Singh, K B Khanchandani, Power Electronics, 2009, Tata McGraw-Hill Publishing",16,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,"Company Limited, ISBN-13",978-0-07-058389-4,17,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,Online Resources,,18,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,1. https,//www.ti.com/power-management/overview.html#,19,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit I,Scheme and Syllabi 68 | Page,Scheme and Syllabi 68 | Page,20,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit III,Discrete-Time State-Space Representation & Sampling Period Selection,"Zero-order hold discretization, discrete A_d and B_d matrices, Shannon sampling rule",13,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+EE3661,Advanced Power Electronics,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Advanced Power Electronics,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Advanced Power Electronics,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3661,Advanced Power Electronics,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Advanced Power Electronics","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

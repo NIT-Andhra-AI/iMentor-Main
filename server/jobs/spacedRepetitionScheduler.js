@@ -60,21 +60,18 @@ function startSpacedRepetitionScheduler() {
             // Emit socket notifications for users with due reviews
             if (totalFlagged > 0) {
                 try {
-                    const { getIO } = require('../services/socketService');
-                    const io = getIO();
-                    if (io) {
-                        for (const student of dueStudents) {
-                            const dueTopics = student.masteredTopics
-                                .filter(t => t.shouldReview)
-                                .map(t => t.topic);
+                    const { emitToUser } = require('../services/socketService');
+                    for (const student of dueStudents) {
+                        const dueTopics = student.masteredTopics
+                            .filter(t => t.shouldReview)
+                            .map(t => t.topic);
 
-                            if (dueTopics.length > 0) {
-                                io.to(`user:${student.userId}`).emit('review_due', {
-                                    topics: dueTopics,
-                                    count: dueTopics.length,
-                                    message: `📖 ${dueTopics.length} topic${dueTopics.length > 1 ? 's' : ''} ready for review: ${dueTopics.slice(0, 3).join(', ')}${dueTopics.length > 3 ? '...' : ''}`
-                                });
-                            }
+                        if (dueTopics.length > 0 && student.userId) {
+                            emitToUser(student.userId, 'review_due', {
+                                topics: dueTopics,
+                                count: dueTopics.length,
+                                message: `📖 ${dueTopics.length} topic${dueTopics.length > 1 ? 's' : ''} ready for review: ${dueTopics.slice(0, 3).join(', ')}${dueTopics.length > 3 ? '...' : ''}`
+                            });
                         }
                     }
                 } catch (socketErr) {

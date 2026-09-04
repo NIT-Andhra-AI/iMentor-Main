@@ -237,4 +237,27 @@ test.describe('ST — Skill Tree Progression', () => {
     console.log('✓ ST-05 passed: Classic view loaded');
   });
 
+  test('ST-06 — Badges showcase page loads', async ({ page }) => {
+    await page.goto('/gamification/badges');
+    await page.waitForTimeout(2000);
+    const heading = page.getByText(/badge/i).first();
+    await expect(heading).toBeVisible({ timeout: 10000 });
+    console.log('✓ ST-06 passed: Badges page loaded');
+  });
+
+  test('ST-07 — Boss Battles page loads', async ({ page }) => {
+    await page.goto('/gamification/boss-battles');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✓ ST-07 passed: Boss Battles page loaded');
+  });
+
+  test('ST-08 — Bounties page loads', async ({ page }) => {
+    await page.goto('/gamification/bounties');
+    await page.waitForTimeout(2000);
+    await expect(page.locator('body')).toBeVisible();
+    console.log('✓ ST-08 passed: Bounties page loaded');
+  });
+
 });
+

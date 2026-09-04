@@ -7,7 +7,7 @@ const groqService = require('../groqService');
 const { decrypt } = require('../../utils/crypto');
 const { queryPythonRagService } = require('../toolExecutionService');
 const { resolveProviderByPreference } = require('../providerPriorityService');
-
+const log = require('../../utils/logger');
 
 const GOAL_ANALYSIS_PROMPT = `You are an expert curriculum designer. Your first task is to analyze a user's learning goal to determine if it's specific enough to build a detailed plan, or if it's too broad and requires clarification.
 
@@ -63,7 +63,7 @@ const PLAN_GENERATION_PROMPT = `You are a world-class AI academic advisor and cu
 
 **CRITICAL INSTRUCTIONS:**
 1.  **ADAPT PLAN SCALE:** Analyze the user's goal.
-    -   If the goal is **broad and long-term** (e.g., "learn full stack development", "master machine learning"), you MUST generate a comprehensive curriculum with **10-15 modules**, broken into logical phases (e.g., "Phase 1: Frontend Fundamentals").
+    -   If the goal is **broad and long-term** (e.g., "learn full stack development", "master machine learning"), you MUST generate a comprehensive curriculum with **6-10 modules**, broken into logical phases (e.g., "Phase 1: Fundamentals").
     -   If the goal is **specific and short-term** (e.g., "understand python decorators", "learn how TCP works"), you MUST generate a concise, focused plan of **3-5 modules** that directly addresses the concept.
 2.  **MODULE DESIGN:** Each module must be a clear, actionable step. For each module, provide:
     -   A "title" that is specific and descriptive.
@@ -100,82 +100,149 @@ const PLAN_GENERATION_PROMPT = `You are a world-class AI academic advisor and cu
   ]
 }`;
 
+/**
+ * Safely extracts and parses JSON from LLM output with auto-repair for truncated/missing braces
+ */
+function safeParseJson(rawText) {
+    if (!rawText || typeof rawText !== 'string') return null;
+    let clean = rawText.trim();
+    // Remove markdown code fences
+    clean = clean.replace(/```(?:json)?/gi, '').replace(/```/gi, '').trim();
+    
+    // 1. Try standard parse
+    try {
+        const res = JSON.parse(clean);
+        return Array.isArray(res) ? { modules: res } : res;
+    } catch (e) {}
+
+    // 2. Check if closing brace or bracket missing
+    const fixAttempts = [
+        clean + '}',
+        clean + ']}',
+        clean + '"}]}',
+        clean + '"}}'
+    ];
+    for (const attempt of fixAttempts) {
+        try {
+            const res = JSON.parse(attempt);
+            return Array.isArray(res) ? { modules: res } : res;
+        } catch (e) {}
+    }
+
+    // 3. Substring extraction & repair
+    const jsonMatch = clean.match(/\{[\s\S]*/);
+    if (jsonMatch) {
+        let candidate = jsonMatch[0].trim();
+        const candidateAttempts = [
+            candidate,
+            candidate + '}',
+            candidate + ']}',
+            candidate + '"}]}',
+            candidate + '"}}'
+        ];
+        for (const attempt of candidateAttempts) {
+            try {
+                const res = JSON.parse(attempt);
+                return Array.isArray(res) ? { modules: res } : res;
+            } catch (e) {}
+        }
+    }
+    return null;
+}
 
 /**
- * The intelligent "brain" of the feature. Generates a personalized learning plan.
- * @param {string} goal - The user's learning goal.
- * @param {object} user - The full user object from MongoDB.
- * @returns {Promise<Array>} A promise that resolves to an array of module objects.
+ * Resolves LLM client and proper options based on active provider
+ */
+async function resolveLlmClient(user, temperature = 0.3) {
+    const { preferredLlmProvider, ollamaUrl, encryptedApiKey } = user || {};
+    const userApiKey = encryptedApiKey ? decrypt(encryptedApiKey) : null;
+    const providerResolution = await resolveProviderByPreference({
+        preferredProvider: preferredLlmProvider || 'sglang',
+        userApiKey,
+        userLocalLlmUrl: ollamaUrl,
+    });
+
+    const activeProvider = providerResolution.chosenProvider;
+    let llmService = sglangService;
+    let llmOptions = { temperature };
+
+    if (activeProvider === 'sglang' || activeProvider === 'local_llm' || activeProvider === 'ollama') {
+        llmService = sglangService;
+        llmOptions = {
+            model: process.env.SGLANG_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
+            localLlmUrl: providerResolution.workingLocalLlmUrl,
+            temperature
+        };
+    } else if (activeProvider === 'groq') {
+        llmService = groqService;
+        llmOptions = {
+            model: process.env.GROQ_MODEL || 'llama-3.1-8b-instant',
+            apiKey: providerResolution.apiKey,
+            temperature
+        };
+    } else {
+        llmService = geminiService;
+        llmOptions = {
+            model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
+            apiKey: providerResolution.apiKey,
+            temperature
+        };
+    }
+
+    return { llmService, llmOptions, activeProvider };
+}
+
+/**
+ * Generates structured learning modules for a goal
  */
 async function generateModulesForGoal(goal, user, context) {
-    console.log(`[CurriculumOrchestrator] Generating ADVANCED modules for goal: "${goal}"`);
+    log.info('AI', `[CurriculumOrchestrator] Generating modules for goal: "${goal}"`);
 
-    const { profile, preferredLlmProvider, ollamaUrl, ollamaModel, encryptedApiKey } = user;
+    const profile = user.profile || {};
     const knowledgeGaps = profile.performanceMetrics && profile.performanceMetrics.size > 0 
         ? Array.from(profile.performanceMetrics.keys()).join(', ') 
         : "None identified yet.";
 
     const prompt = PLAN_GENERATION_PROMPT
-        .replace('{degreeType}', profile.degreeType || 'N/A')
-        .replace('{year}', profile.year || 'N/A')
-        .replace('{branch}', profile.branch || 'N/A')
-        .replace('{learningStyle}', profile.learningStyle || 'N/A')
+        .replace('{degreeType}', profile.degreeType || 'B.Tech')
+        .replace('{year}', profile.year || '3rd Year')
+        .replace('{branch}', profile.branch || 'Computer Science')
+        .replace('{learningStyle}', profile.learningStyle || 'Visual & Practical')
         .replace('{knowledgeGaps}', knowledgeGaps)
         .replace('{goal}', goal);
 
-    const userApiKey = encryptedApiKey ? decrypt(encryptedApiKey) : null;
-    const providerResolution = await resolveProviderByPreference({
-        preferredProvider: preferredLlmProvider || 'groq',
-        userApiKey,
-        userOllamaUrl: ollamaUrl,
-    });
-    const activeProvider = providerResolution.chosenProvider;
-    const llmService = activeProvider === 'ollama'
-        ? sglangService
-        : (activeProvider === 'groq' ? groqService : geminiService);
-    const llmOptions = {
-        apiKey: providerResolution.apiKey,
-        ollamaUrl: providerResolution.workingOllamaUrl || ollamaUrl,
-        model: activeProvider === 'groq'
-            ? (process.env.GROQ_MODEL || 'llama-3.1-8b-instant')
-            : ollamaModel,
-        temperature: 0.5
-    };
+    const { llmService, llmOptions, activeProvider } = await resolveLlmClient(user, 0.4);
+    log.info('AI', `[CurriculumOrchestrator] Using provider: ${activeProvider}`);
+
     const responseText = await llmService.generateContentWithHistory([], prompt, null, llmOptions);
-    
-    // Find and parse the JSON object from the response
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-        console.error("LLM did not return a valid JSON object. Response:", responseText);
+    const result = safeParseJson(responseText);
+
+    if (!result || !result.modules || !Array.isArray(result.modules) || result.modules.length === 0) {
+        log.error('AI', `LLM did not return a valid module list. Response: ${responseText}`);
         throw new Error("The AI failed to generate a structured learning plan. Please try rephrasing your goal.");
     }
-    const jsonString = jsonMatch[0];
-    const result = JSON.parse(jsonString);
-
-    if (!result.modules || !Array.isArray(result.modules)) {
-        throw new Error("LLM returned an invalid format for the learning plan's modules.");
-    }
-    
-    // ** The flawed RAG search post-processing step has been REMOVED **
 
     // Set initial status for the modules
-    if (result.modules.length > 0) {
-        result.modules[0].status = 'not_started';
-        for (let i = 1; i < result.modules.length; i++) {
-            result.modules[i].status = 'locked';
-        }
+    result.modules[0].status = 'not_started';
+    for (let i = 1; i < result.modules.length; i++) {
+        result.modules[i].status = 'locked';
     }
 
-    return result.modules;
+    // Assign module IDs and default activities if missing
+    return result.modules.map((m, idx) => ({
+        moduleId: m.moduleId || `mod_${idx + 1}`,
+        title: m.title || `Module ${idx + 1}`,
+        objective: m.objective || '',
+        status: m.status || (idx === 0 ? 'not_started' : 'locked'),
+        activity: {
+            type: m.activity?.type || 'direct_answer',
+            suggestedPrompt: m.activity?.suggestedPrompt || `Explain key concepts of ${m.title}`
+        }
+    }));
 }
-
 
 /**
  * Main orchestrator function. Creates and saves a new learning path OR returns clarification questions.
- * @param {string} userId - The ID of the user.
- * @param {string} goal - The user's stated learning goal.
- * @param {object} [context] - Optional context, including answers to clarification questions.
- * @returns {Promise<Object>} Either the newly created LearningPath document or a questionnaire object.
  */
 async function createLearningPath(userId, goal, context = {}) {
     if (!userId || !goal) {
@@ -190,85 +257,51 @@ async function createLearningPath(userId, goal, context = {}) {
         throw new Error("User not found.");
     }
 
-    if (user?.preferredLlmProvider === 'gemini' && user?.apiKeyRequestStatus === 'pending' && !user?.encryptedApiKey) {
-        throw new Error("Cannot process plan: User's API key request is pending approval.");
-    }
+    const { llmService, llmOptions } = await resolveLlmClient(user, 0.2);
 
-
-    const { preferredLlmProvider, ollamaUrl, ollamaModel, encryptedApiKey } = user;
-    const userApiKey = encryptedApiKey ? decrypt(encryptedApiKey) : null;
-    const providerResolution = await resolveProviderByPreference({
-        preferredProvider: preferredLlmProvider || 'groq',
-        userApiKey,
-        userOllamaUrl: ollamaUrl,
-    });
-    const activeProvider = providerResolution.chosenProvider;
-    const llmService = activeProvider === 'ollama'
-        ? sglangService
-        : (activeProvider === 'groq' ? groqService : geminiService);
-    const llmOptions = {
-        apiKey: providerResolution.apiKey,
-        ollamaUrl: providerResolution.workingOllamaUrl || ollamaUrl,
-        model: activeProvider === 'groq'
-            ? (process.env.GROQ_MODEL || 'llama-3.1-8b-instant')
-            : ollamaModel,
-        temperature: 0.3
-    };
-
-    // --- RESTRUCTURED LOGIC ---
-
-    // SCENARIO 1: The frontend has provided answers, so we must generate the final plan.
+    // SCENARIO 1: The user provided clarification answers
     if (context && context.clarificationAnswers) {
-        console.log(`[CurriculumOrchestrator] Received clarification answers. Generating final plan.`);
+        log.info('AI', `[CurriculumOrchestrator] Received clarification answers. Generating final plan.`);
         const refinedGoal = `${goal} - Specifics: ${JSON.stringify(context.clarificationAnswers)}`;
         const modules = await generateModulesForGoal(refinedGoal, user, context);
 
-        if (!modules || modules.length === 0) {
-            throw new Error("The curriculum orchestrator failed to generate any modules for this goal.");
-        }
-
         const newLearningPath = new LearningPath({ userId, title: goal, modules });
         await newLearningPath.save();
         
         await User.updateOne({ _id: userId }, { $push: { learningPaths: newLearningPath._id } });
-
-        console.log(`[CurriculumOrchestrator] Saved new intelligent learning path "${goal}" for user ${userId}.`);
+        log.success('AI', `Saved new learning path "${goal}" for user ${userId}`);
         return newLearningPath;
     }
 
-    // SCENARIO 2: This is the initial request. Analyze the goal's specificity.
-    console.log(`[CurriculumOrchestrator] Analyzing initial goal for specificity: "${goal}"`);
+    // SCENARIO 2: Analyze goal specificity
+    log.info('AI', `[CurriculumOrchestrator] Analyzing goal for specificity: "${goal}"`);
     const analysisPrompt = GOAL_ANALYSIS_PROMPT.replace('{goal}', goal);
     const analysisResponseText = await llmService.generateContentWithHistory([], analysisPrompt, null, llmOptions);
-    const analysisResult = JSON.parse(analysisResponseText.match(/\{[\s\S]*\}/)[0]);
+    const analysisResult = safeParseJson(analysisResponseText) || { isSpecific: true };
 
     if (analysisResult.isSpecific === false) {
-        // Goal is broad, generate and return the questionnaire.
-        console.log(`[CurriculumOrchestrator] Goal is broad. Generating clarification questions.`);
+        // Goal is broad -> generate questionnaire
+        log.info('AI', `[CurriculumOrchestrator] Goal is broad. Generating clarification questions.`);
         const questionsPrompt = CLARIFICATION_QUESTIONS_PROMPT.replace('{goal}', goal);
         const questionsResponseText = await llmService.generateContentWithHistory([], questionsPrompt, null, llmOptions);
-        const questionsResult = JSON.parse(questionsResponseText.match(/\{[\s\S]*\}/)[0]);
-        return { isQuestionnaire: true, ...questionsResult };
-    } else {
-        // Goal is specific, generate the plan directly.
-        console.log(`[CurriculumOrchestrator] Goal is specific. Proceeding to generate modules directly.`);
-        const modules = await generateModulesForGoal(goal, user, context);
-        
-        if (!modules || modules.length === 0) {
-            throw new Error("The curriculum orchestrator failed to generate any modules for this goal.");
+        const questionsResult = safeParseJson(questionsResponseText);
+        if (questionsResult && questionsResult.questions && questionsResult.questions.length > 0) {
+            return { isQuestionnaire: true, ...questionsResult };
         }
-        
-        const newLearningPath = new LearningPath({ userId, title: goal, modules });
-        await newLearningPath.save();
-        
-        await User.updateOne({ _id: userId }, { $push: { learningPaths: newLearningPath._id } });
-
-        console.log(`[CurriculumOrchestrator] Saved new intelligent learning path "${goal}" for user ${userId}.`);
-        return newLearningPath;
     }
-}
 
+    // Goal is specific or fallback directly to module generation
+    log.info('AI', `[CurriculumOrchestrator] Goal is specific. Generating modules directly.`);
+    const modules = await generateModulesForGoal(goal, user, context);
+    
+    const newLearningPath = new LearningPath({ userId, title: goal, modules });
+    await newLearningPath.save();
+    
+    await User.updateOne({ _id: userId }, { $push: { learningPaths: newLearningPath._id } });
+    log.success('AI', `Saved new learning path "${goal}" for user ${userId}`);
+    return newLearningPath;
+}
 
 module.exports = {
     createLearningPath,
-};
+};

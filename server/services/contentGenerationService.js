@@ -1102,19 +1102,12 @@ async function generateOrRetrieveAssessment(courseName, topic, userId) {
   // Get seen questions for replay protection
   const seenQuestionIds = userId ? await getSeenQuestions(userId, courseName, topic) : [];
 
-  // 1. Concept Question Bank — with timeout guard (max 8s)
+  // 1. Concept Question Bank — Instant lookup for pre-warmed / existing questions
   try {
     const conceptQbService = require('./conceptQuestionBankService');
-    const conceptBank = await Promise.race([
-      conceptQbService.ensureQuestionsForConcept({
-        course: courseName,
-        concept: topic,
-        topic,
-      }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Concept bank generation timed out (>50s)')), 50000)),
-    ]);
+    const conceptBank = await conceptQbService.fetchConceptQuestionBank(courseName, topic);
 
-    if (conceptBank && conceptBank.length > 0) {
+    if (conceptBank && conceptBank.length >= 3) {
       const selected = await conceptQbService.selectQuestionsForLevel({
         course: courseName,
         concept: topic,
@@ -1122,7 +1115,7 @@ async function generateOrRetrieveAssessment(courseName, topic, userId) {
         seenQuestionIds,
       });
 
-      if (selected.length >= 3) {
+      if (selected && selected.length >= 3) {
         const questionIds = selected.map(q => q._id).filter(Boolean);
         if (userId && questionIds.length) await addSeenQuestions(userId, courseName, topic, questionIds);
         const questions = selected.map(q => ({
@@ -1143,13 +1136,7 @@ async function generateOrRetrieveAssessment(courseName, topic, userId) {
       }
     }
   } catch (e) {
-    conceptBankTimedOut = true;
-    log.warn('PIPELINE', `Concept question bank timed out or failed, falling back: ${e.message}`);
-  }
-
-  // If concept bank timed out via LLM chain, continue with the direct AI generation path.
-  if (conceptBankTimedOut) {
-    logPipeline('FAST FAILOVER', `Concept bank timed out — continuing with direct AI generation for ${courseName}/${topic}`);
+    log.warn('PIPELINE', `Concept question bank lookup skipped: ${e.message}`);
   }
 
   // 2. Redis cache (only used when concept bank is unavailable)
@@ -1191,17 +1178,15 @@ Valid JSON only.`;
 
   try {
     const providerHealth = require('./providerHealthCache');
-    const healthyProviders = providerHealth.getHealthyProviders(['groq', 'sglang', 'gemini', 'openai', 'ollama']);
-    const preferredProvider = healthyProviders.includes('groq')
-      ? 'groq'
-      : (healthyProviders[0] || 'groq');
+    const healthyProviders = providerHealth.getHealthyProviders(['sglang', 'gemini', 'groq', 'openai', 'ollama']);
+    const preferredProvider = healthyProviders[0] || 'sglang';
     const result = await callWithFallback({
       userQuery: prompt,
       systemPrompt: 'Return ONLY valid JSON array of 5 MCQ objects.',
       chatHistory: [],
       preferredProvider,
-      preferLocalFirst: false,
-      options: { temperature: 0.5, maxOutputTokens: 4096, timeout: 30000 },
+      preferLocalFirst: true,
+      options: { temperature: 0.2, maxOutputTokens: 500, timeout: 15000 },
     });
     const provider = result?.provider || 'unknown';
     logPipeline(`GENERATED VIA ${provider.toUpperCase()}`, `Assessment for ${courseName}/${topic}`);

@@ -404,7 +404,8 @@ class GeminiProvider(BaseProvider):
     def __init__(self, config: ProviderConfig):
         super().__init__(config)
         self.api_key = os.getenv("GEMINI_API_KEY")
-        self.default_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        model_env = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        self.default_model = "gemini-2.5-flash" if model_env == "gemini-2.0-flash" else model_env
 
     def _configure_genai(self):
         if genai is None:
@@ -440,6 +441,10 @@ class GeminiProvider(BaseProvider):
             return None
 
         model_name = model or self.default_model
+        if not model_name or not (model_name.startswith("gemini") or model_name.startswith("models/gemini")):
+            model_name = self.default_model
+        if model_name == "gemini-2.0-flash":
+            model_name = "gemini-2.5-flash"
         self._configure_genai()
         gm = genai.GenerativeModel(model_name)
 
@@ -464,6 +469,37 @@ class GeminiProvider(BaseProvider):
                     time.sleep(self.config.retry_delay)
         return None
 
+    @staticmethod
+    def _clean_schema_for_gemini(schema: Dict) -> Dict:
+        """Resolve $defs / definitions and $ref in JSON schema for Gemini response_schema compatibility."""
+        import copy
+        schema = copy.deepcopy(schema)
+        defs = schema.pop("$defs", {}) or schema.pop("definitions", {})
+
+        def _resolve(node):
+            if isinstance(node, dict):
+                if "$ref" in node:
+                    ref = node["$ref"]
+                    def_key = ref.split("/")[-1]
+                    if def_key in defs:
+                        resolved = _resolve(defs[def_key])
+                        res = copy.deepcopy(resolved)
+                        for k, v in node.items():
+                            if k != "$ref":
+                                res[k] = v
+                        return res
+                # Filter out fields unsupported by protobuf Schema in google.generativeai
+                return {
+                    k: _resolve(v)
+                    for k, v in node.items()
+                    if k not in ("$schema", "$id", "title", "default", "examples", "additionalProperties")
+                }
+            elif isinstance(node, list):
+                return [_resolve(item) for item in node]
+            return node
+
+        return _resolve(schema)
+
     def generate_structured(
         self,
         system_prompt: str,
@@ -475,21 +511,58 @@ class GeminiProvider(BaseProvider):
     ) -> Optional[Dict]:
         self._configure_genai()
         model_name = model or self.default_model
+        if not model_name or not (model_name.startswith("gemini") or model_name.startswith("models/gemini")):
+            model_name = self.default_model
+        if model_name == "gemini-2.0-flash":
+            model_name = "gemini-2.5-flash"
         gm = genai.GenerativeModel(model_name)
+
+        cleaned_schema = self._clean_schema_for_gemini(schema) if isinstance(schema, dict) else schema
 
         gen_config = {
             "temperature": temperature,
             "max_output_tokens": max_tokens,
             "response_mime_type": "application/json",
-            "response_schema": schema
+            "response_schema": cleaned_schema
         }
 
         for attempt in range(self.config.max_retries + 1):
             try:
                 resp = gm.generate_content([system_prompt, user_prompt], generation_config=gen_config)
                 if resp.text:
-                    return json.loads(resp.text)
+                    text = resp.text.strip()
+                    if text.startswith("```"):
+                        lines = text.splitlines()
+                        if lines[0].startswith("```"):
+                            lines = lines[1:]
+                        if lines and lines[-1].startswith("```"):
+                            lines = lines[:-1]
+                        text = "\n".join(lines).strip()
+                    return json.loads(text)
             except Exception as e:
+                # If schema configuration failed (e.g. proto schema issue), fall back to prompt-guided JSON
+                if "Schema" in str(e) or "response_schema" in str(e) or "$defs" in str(e):
+                    try:
+                        schema_hint = json.dumps(schema, indent=2)
+                        fallback_prompt = f"{system_prompt}\n\nReturn ONLY valid JSON matching this schema:\n{schema_hint}\n\n{user_prompt}"
+                        fb_config = {
+                            "temperature": temperature,
+                            "max_output_tokens": max_tokens,
+                            "response_mime_type": "application/json",
+                        }
+                        resp = gm.generate_content(fallback_prompt, generation_config=fb_config)
+                        if resp.text:
+                            text = resp.text.strip()
+                            if text.startswith("```"):
+                                lines = text.splitlines()
+                                if lines[0].startswith("```"):
+                                    lines = lines[1:]
+                                if lines and lines[-1].startswith("```"):
+                                    lines = lines[:-1]
+                                text = "\n".join(lines).strip()
+                            return json.loads(text)
+                    except Exception as fb_err:
+                        logger.error(f"Gemini prompt-based structured generation fallback failed: {fb_err}")
                 if attempt == self.config.max_retries:
                     logger.error(f"Gemini structured generation failed: {e}")
                 else:

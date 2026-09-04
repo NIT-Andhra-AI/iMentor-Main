@@ -23,14 +23,34 @@ const MAX_DIFFICULTY_WEIGHT = Math.max(...Object.values(DIFFICULTY_WEIGHTS));
 
 // Agent-based evaluation combining LLM + weighted analysis
 async function agentEvaluate({ question, userAnswer, correctAnswer, modelAnswer, concepts, bloomLevel, difficulty, type }) {
-  // For MCQ, give highest weight to basic evaluator (exact letter match)
-  // For descriptive, give highest weight to LLM + keyword evaluators
+  // For MCQ, basic evaluator (exact letter match) is authoritative and instant
   const isMcq = type === 'mcq';
-  const agents = isMcq ? [
-    { name: 'basic', fn: () => basicEvaluate(question, userAnswer, correctAnswer, modelAnswer, type), weight: 0.7 },
-    { name: 'keyword', fn: () => keywordEvaluate(question, userAnswer, modelAnswer, concepts, bloomLevel), weight: 0.2 },
-    { name: 'llm', fn: () => llmEvaluate(question, userAnswer, modelAnswer, concepts, bloomLevel), weight: 0.1 },
-  ] : [
+  if (isMcq) {
+    const basicResult = basicEvaluate(question, userAnswer, correctAnswer, modelAnswer, type);
+    if (basicResult) {
+      const bloomWeight = BLOOM_WEIGHTS[bloomLevel] || 1.0;
+      const difficultyWeight = DIFFICULTY_WEIGHTS[difficulty] || 1.0;
+      const weightedMultiplier = 0.5 + (bloomWeight / MAX_BLOOM_WEIGHT) * 0.25 + (difficultyWeight / MAX_DIFFICULTY_WEIGHT) * 0.25;
+      const weightedScore = Math.min(10, Math.round(basicResult.score * weightedMultiplier * 10) / 10);
+      return {
+        score: weightedScore,
+        rawScore: basicResult.score,
+        confidence: 1.0,
+        weightedMultiplier,
+        bloomWeight,
+        difficultyWeight,
+        basicCorrect: basicResult.correct,
+        strengths: basicResult.strengths,
+        weaknesses: basicResult.weaknesses,
+        misconceptions: [],
+        feedback: basicResult.feedback || assessmentFeedback(weightedScore),
+        source: 'basic_mcq',
+        agentsUsed: ['basic'],
+      };
+    }
+  }
+
+  const agents = [
     { name: 'llm', fn: () => llmEvaluate(question, userAnswer, modelAnswer, concepts, bloomLevel), weight: 0.6 },
     { name: 'keyword', fn: () => keywordEvaluate(question, userAnswer, modelAnswer, concepts, bloomLevel), weight: 0.3 },
     { name: 'basic', fn: () => basicEvaluate(question, userAnswer, correctAnswer, modelAnswer, type), weight: 0.1 },
@@ -40,7 +60,7 @@ async function agentEvaluate({ question, userAnswer, correctAnswer, modelAnswer,
   let combinedConfidence = 0;
   let totalWeight = 0;
   let usedSource = 'none';
-  let basicCorrect = null; // Track basic evaluator's binary result
+  let basicCorrect = null;
   const allFindings = { strengths: [], weaknesses: [], misconceptions: [], feedback: '' };
 
   for (const agent of agents) {
@@ -218,6 +238,12 @@ async function determineLevelWithAgent({ responses, course, topic }) {
   const rawCorrectCount = gradingDetails.filter(g => g.correct).length;
   const rawPercent = gradingDetails.length > 0 ? Math.round((rawCorrectCount / gradingDetails.length) * 100) : 0;
 
+  // Fast-path: When all questions are high-confidence MCQs (exact matched), compute weighted level in 0ms
+  const allHighConfidence = gradingDetails.length > 0 && gradingDetails.every(g => (g.confidence || 0) >= 0.9);
+  if (allHighConfidence) {
+    return determineLevelWeighted(responses, course, topic);
+  }
+
   try {
     const { callWithFallback } = require('./llmFallbackService');
     const prompt = `You are an expert educational evaluator determining a learner's knowledge level.
@@ -269,14 +295,17 @@ Return ONLY valid JSON:
     const preferredProvider = healthyProviders.includes('groq')
       ? 'groq'
       : (healthyProviders[0] || 'groq');
-    const result = await callWithFallback({
-      userQuery: prompt,
-      systemPrompt: 'You are an expert educational evaluator. Return ONLY valid JSON.',
-      chatHistory: [],
-      preferredProvider,
-      preferLocalFirst: false,
-      options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.3, maxOutputTokens: 1024, timeout: 30000 },
-    });
+    const result = await Promise.race([
+      callWithFallback({
+        userQuery: prompt,
+        systemPrompt: 'You are an expert educational evaluator. Return ONLY valid JSON.',
+        chatHistory: [],
+        preferredProvider,
+        preferLocalFirst: false,
+        options: { groqModel: 'llama-3.1-8b-instant', temperature: 0.3, maxOutputTokens: 1024, timeout: 5000 },
+      }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Agent evaluation timeout')), 5000)),
+    ]);
 
     const text = typeof result === 'string' ? result : (result?.text || JSON.stringify(result || ''));
     const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -329,12 +358,8 @@ function determineLevelWeighted(gradingDetails) {
 
 // Main entry point: evaluate all responses and return assessment results
 async function evaluateAssessment({ responses, course, topic }) {
-  const gradingDetails = [];
-  const agentResults = [];
-  let totalWeightedScore = 0;
-  let totalMaxScore = 0;
-
-  for (const r of responses) {
+  // Concurrently evaluate all questions in parallel
+  const evalPromises = (responses || []).map(async (r) => {
     const evalResult = await agentEvaluate({
       question: r.question,
       userAnswer: r.userAnswer || r.answer || '',
@@ -351,31 +376,44 @@ async function evaluateAssessment({ responses, course, topic }) {
       ? (evalResult.basicCorrect === true)
       : evalResult.score >= 5;
 
-    // For MCQ correct answers, use full score for weighted calculation
     const adjustedScore = (isMcq && evalResult.basicCorrect === true) ? 10 : evalResult.score;
     const weighted = computeWeightedScore({ ...evalResult, score: adjustedScore }, r);
-    totalWeightedScore += weighted.weightedScore;
-    totalMaxScore += weighted.maxWeightedScore;
 
-    gradingDetails.push({
-      question: r.question,
-      userAnswer: r.userAnswer || r.answer || '',
-      correct: isCorrectThreshold,
-      score: isMcq ? (isCorrectThreshold ? 10 : 0) : evalResult.rawScore,
-      bloomLevel: r.bloomLevel || 'understand',
-      difficulty: r.difficulty || 'medium',
-      confidence: evalResult.confidence,
-      weightedScore: weighted.weightedScore,
-      maxWeightedScore: weighted.maxWeightedScore,
-      explanation: r.modelAnswer || evalResult.feedback,
-      strengths: evalResult.strengths,
-      weaknesses: evalResult.weaknesses,
-      misconceptions: evalResult.misconceptions,
-      source: evalResult.source,
-      correctAnswer: r.correctAnswer || r.modelAnswer,
-    });
+    return {
+      evalResult,
+      weighted,
+      gradingDetail: {
+        question: r.question,
+        userAnswer: r.userAnswer || r.answer || '',
+        correct: isCorrectThreshold,
+        score: isMcq ? (isCorrectThreshold ? 10 : 0) : evalResult.rawScore,
+        bloomLevel: r.bloomLevel || 'understand',
+        difficulty: r.difficulty || 'medium',
+        confidence: evalResult.confidence,
+        weightedScore: weighted.weightedScore,
+        maxWeightedScore: weighted.maxWeightedScore,
+        explanation: r.modelAnswer || evalResult.feedback,
+        strengths: evalResult.strengths,
+        weaknesses: evalResult.weaknesses,
+        misconceptions: evalResult.misconceptions,
+        source: evalResult.source,
+        correctAnswer: r.correctAnswer || r.modelAnswer,
+      }
+    };
+  });
 
-    agentResults.push(evalResult);
+  const evaluatedItems = await Promise.all(evalPromises);
+
+  const gradingDetails = [];
+  const agentResults = [];
+  let totalWeightedScore = 0;
+  let totalMaxScore = 0;
+
+  for (const item of evaluatedItems) {
+    totalWeightedScore += item.weighted.weightedScore;
+    totalMaxScore += item.weighted.maxWeightedScore;
+    gradingDetails.push(item.gradingDetail);
+    agentResults.push(item.evalResult);
   }
 
   const weightedPercent = totalMaxScore > 0 ? Math.round((totalWeightedScore / totalMaxScore) * 100) : 0;
@@ -390,10 +428,16 @@ async function evaluateAssessment({ responses, course, topic }) {
   let conceptMasteryResult = { mastered: [], developing: [], needsWork: [] };
 
   const agentResult = await determineLevelWithAgent({
-    responses: responses.map(r => ({
-      ...r,
-      correct: gradingDetails.find(g => g.question === r.question)?.correct || false,
-    })),
+    responses: responses.map(r => {
+      const g = gradingDetails.find(gd => gd.question === r.question);
+      const evalRes = agentResults.find(ar => ar.question === r.question);
+      return {
+        ...r,
+        correct: g?.correct || false,
+        confidence: evalRes?.confidence !== undefined ? evalRes.confidence : (r.type === 'mcq' ? 1.0 : 0.8),
+        score: g?.score || 0,
+      };
+    }),
     course,
     topic,
   });

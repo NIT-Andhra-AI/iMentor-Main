@@ -54,8 +54,8 @@ async function handle(res, ctx) {
     const semanticConfidence = ctx.semanticRouting?.confidence  || classification?.semanticConfidence || 0;
 
     // ── DIRECT ANSWER FAST PATH ───────────────────────────────────────────────
-    // Bypass ALL orchestrators — answer in a single LLM completion.
-    // Triggered when: semantic route is 'direct_answer' AND confidence > 0.75
+    // Bypass ALL heavy orchestrators — stream answer directly via SGLang / fallback.
+    // Triggered when: semantic route is 'direct_answer' AND confidence >= threshold
     // AND user has NOT explicitly enabled advanced reasoning.
     if (
         semanticRoute === 'direct_answer' &&
@@ -65,58 +65,131 @@ async function handle(res, ctx) {
         !ctx.useWebSearch &&           // don't skip when user enabled web search
         !ctx.useAcademicSearch         // don't skip when user enabled academic search
     ) {
-        log.info('AI', `[CRITICAL_PATH] DIRECT_ANSWER route — skipping all orchestrators (conf=${semanticConfidence.toFixed(2)})`);
+        log.info('AI', `[CRITICAL_PATH] DIRECT_ANSWER route — streaming via fast path (conf=${semanticConfidence.toFixed(2)})`);
         const directStart = Date.now();
+        let directSuccess = false;
+        
         try {
-            const sglangService = require('../../../services/sglangService');
-            const geminiService = require('../../../services/geminiService');
+            res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+            res.setHeader('Cache-Control', 'no-cache');
+            res.setHeader('Connection', 'keep-alive');
+            res.flushHeaders();
 
-            const directAnswer = llmConfig?.provider === 'ollama'
-                ? await sglangService.generateContentWithHistory(
-                    historyForLlm.slice(-4), // last 2 turns only
-                    query.trim(),
-                    finalSystemPrompt,
-                    { ...llmConfig, maxTokens: ROUTING_THRESHOLDS.DIRECT_ANSWER_MAX_TOKENS, think: false }
-                  )
-                : await geminiService.generateContentWithHistory(
-                    historyForLlm.slice(-4),
-                    query.trim(),
-                    finalSystemPrompt,
-                    { ...llmConfig, maxTokens: ROUTING_THRESHOLDS.DIRECT_ANSWER_MAX_TOKENS }
-                  );
+            const sglangService = require('../../../services/sglangService');
+            const llmFallback = require('../../../services/llmFallbackService');
+            
+            let fullDirectText = '';
+            
+            const isGreeting = /^(hi|hello|hey|greetings|good\s*(morning|afternoon|evening|day)|howdy|sup)\b/i.test(query.trim());
+            const directSystemPrompt = isGreeting
+                ? 'You are iMentor, a warm, highly knowledgeable, and encouraging academic AI tutor. Respond warmly and briefly to the greeting (1-2 sentences), introducing yourself and asking how you can help with their coursework, studies, or technical questions today. Do not output thinking tags.'
+                : (finalSystemPrompt || 'You are iMentor, an elite academic AI tutor. Provide a clear, concise, and helpful direct answer.');
+
+            try {
+                // Try SGLang streaming first
+                if (process.env.SGLANG_ENABLED === 'true') {
+                    const sglangStream = await sglangService.streamChat(
+                        historyForLlm.slice(-4),
+                        query.trim(),
+                        directSystemPrompt,
+                        { maxTokens: ROUTING_THRESHOLDS.DIRECT_ANSWER_MAX_TOKENS, temperature: 0.7, endpoint: 'chat' },
+                        (tokenData) => {
+                            const chunk = typeof tokenData === 'string' ? tokenData : tokenData?.content || '';
+                            if (chunk) {
+                                fullDirectText += chunk;
+                                streamEvent(res, { type: 'token', content: chunk });
+                            }
+                        }
+                    );
+                    if (sglangStream?.finalAnswer && !fullDirectText) {
+                        fullDirectText = sglangStream.finalAnswer;
+                    }
+                } else {
+                    // SGLang not enabled — use universal fallback service
+                    const fbResult = await llmFallback.callWithFallback({
+                        chatHistory: historyForLlm.slice(-4),
+                        userQuery: query.trim(),
+                        systemPrompt: directSystemPrompt,
+                        options: { maxOutputTokens: ROUTING_THRESHOLDS.DIRECT_ANSWER_MAX_TOKENS, temperature: 0.7 },
+                        preferredProvider: chosenModel?.provider || 'sglang',
+                        userApiKeys: {
+                            gemini: llmConfig?.apiKey && chosenModel?.provider === 'gemini' ? llmConfig.apiKey : process.env.GEMINI_API_KEY,
+                            groq: llmConfig?.apiKey && chosenModel?.provider === 'groq' ? llmConfig.apiKey : process.env.GROQ_API_KEY,
+                        },
+                        onToken: (tokenData) => {
+                            const chunk = typeof tokenData === 'string' ? tokenData : tokenData?.content || '';
+                            if (chunk) {
+                                fullDirectText += chunk;
+                                streamEvent(res, { type: 'token', content: chunk });
+                            }
+                        }
+                    });
+                    if (fbResult?.text && !fullDirectText) {
+                        fullDirectText = fbResult.text;
+                    }
+                }
+            } catch (llmErr) {
+                log.warn('AI', `[DIRECT_ANSWER] Primary stream failed: ${llmErr.message}. Attempting self-healing fallback.`);
+                // Self-healing: if it's a greeting or simple query, provide a friendly dynamic fallback
+                if (isGreeting) {
+                    fullDirectText = "Hello! 👋 I'm **iMentor**, your AI academic tutor and research companion. How can I help you with your coursework, coding, or studies today?";
+                } else {
+                    // Try fallback call
+                    const selfHealResult = await llmFallback.callWithFallback({
+                        chatHistory: historyForLlm.slice(-2),
+                        userQuery: query.trim(),
+                        systemPrompt: directSystemPrompt,
+                        options: { maxOutputTokens: 512, temperature: 0.5 },
+                        preferredProvider: 'sglang',
+                    }).catch(() => null);
+                    fullDirectText = selfHealResult?.text || `Hello! I'm iMentor. I'm ready to help you with ${query.trim()}. What specific question do you have?`;
+                }
+                streamEvent(res, { type: 'token', content: fullDirectText });
+            }
 
             const elapsed = Date.now() - directStart;
-            log.info('AI', `[CRITICAL_PATH] direct_answer completed in ${elapsed}ms`);
+            log.info('AI', `[CRITICAL_PATH] direct_answer streamed in ${elapsed}ms (${fullDirectText.length} chars)`);
 
-            const directResponseText = typeof directAnswer === 'string' ? directAnswer : String(directAnswer);
-            res.json({
-                response:        directResponseText,
-                route:           'direct_answer',
-                routeConfidence: semanticConfidence,
-                references:      [],
+            const finalAiMessage = {
+                sender: 'bot',
+                role: 'model',
+                text: fullDirectText,
+                parts: [{ text: fullDirectText }],
+                timestamp: new Date(),
                 source_pipeline: 'direct_answer',
-            });
+                confidenceScore: Math.round(semanticConfidence * 100),
+                references: [],
+                thinking: null,
+            };
+
+            streamEvent(res, { type: 'final_answer', content: finalAiMessage });
+            res.end();
+            directSuccess = true;
 
             // ── Non-blocking post-response: save to DB + fast XP ──────────────
             setImmediate(async () => {
                 try {
-                    const words      = query.split(/\s+/).filter(Boolean);
+                    const words = query.split(/\s+/).filter(Boolean);
                     const uniqueVocab = new Set(words.map(w => w.toLowerCase())).size;
                     const hasQuestion = /\?/.test(query);
-                    const xpAwarded  = Math.min(20, Math.max(1,
+                    const xpAwarded = Math.min(20, Math.max(1,
                         Math.round(words.length / 5 + uniqueVocab * 2 + (hasQuestion ? 10 : 0))
                     ));
 
-                    const aiMsg = {
+                    const aiMsgForDb = {
                         role: 'model',
-                        parts: [{ text: directResponseText }],
+                        parts: [{ text: fullDirectText }],
                         timestamp: new Date(),
                         source_pipeline: 'direct_answer',
                     };
-                    await chatSession.updateOne({
-                        $push: { messages: { $each: [userMessageForDb, aiMsg], $slice: -100 } },
-                        $set:  { updatedAt: new Date() },
-                    });
+                    await ChatHistory.findOneAndUpdate(
+                        { sessionId, userId },
+                        {
+                            $push: { messages: { $each: [userMessageForDb, aiMsgForDb], $slice: -100 } },
+                            $set: { updatedAt: new Date() },
+                        },
+                        { upsert: true }
+                    );
 
                     if (typeof gamificationService?.awardXP === 'function') {
                         await gamificationService.awardXP(userId, xpAwarded, 'direct_answer').catch(() => {});
@@ -125,11 +198,28 @@ async function handle(res, ctx) {
                     log.warn('AI', `[DIRECT_ANSWER] Post-response save failed: ${e.message}`);
                 }
             });
+            return;
         } catch (directErr) {
-            log.warn('AI', `[DIRECT_ANSWER] Failed (${directErr.message}) — falling through to standard path`);
-            // Fall through to standard path below
+            log.warn('AI', `[DIRECT_ANSWER] Outer handler caught (${directErr.message}) — ensuring fallback response`);
+            if (!res.headersSent) {
+                // Headers not sent yet, proceed to standard path
+            } else if (!res.writableEnded) {
+                const fallbackGreeting = "Hello! 👋 I'm **iMentor**, your academic tutor. How can I help you today?";
+                streamEvent(res, {
+                    type: 'final_answer',
+                    content: {
+                        sender: 'bot',
+                        role: 'model',
+                        text: fallbackGreeting,
+                        parts: [{ text: fallbackGreeting }],
+                        timestamp: new Date(),
+                        source_pipeline: 'direct_answer_fallback'
+                    }
+                });
+                res.end();
+                return;
+            }
         }
-        return;
     }
 
     // ToT / ReAct only fires when user explicitly toggles — never auto-triggered

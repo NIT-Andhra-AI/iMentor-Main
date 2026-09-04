@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppState } from '../../contexts/AppStateContext.jsx';
-import { Edit3, UploadCloud, FileText, ChevronRight, Settings2, History, GraduationCap, Zap } from 'lucide-react'; // Settings2 for fallback
+import { Edit3, UploadCloud, FileText, ChevronRight, Settings2, History, GraduationCap, Zap, BookOpen, Briefcase } from 'lucide-react'; // Settings2 for fallback
 import IconButton from '../core/IconButton.jsx';
 import Animate from '../core/Animate.jsx';
 
@@ -13,6 +13,8 @@ const iconMap = {
     docs: FileText,      // Icon for "Document List"
     history: History,
     tutor: GraduationCap,
+    placements: Briefcase,
+    studyPlan: BookOpen,
     research: Zap
 };
 
@@ -28,6 +30,14 @@ function LeftCollapsedNav({ isChatProcessing, onHistoryClick, onKnowledgeBaseCli
             iconName: 'prompt', // Matches key in iconMap
             action: () => {
                 setIsLeftPanelOpen(true);
+            }
+        },
+        {
+            id: 'study-plan',
+            label: 'Study Plan',
+            iconName: 'studyPlan',
+            action: () => {
+                navigate('/study-plan');
             }
         },
         {
@@ -58,6 +68,14 @@ function LeftCollapsedNav({ isChatProcessing, onHistoryClick, onKnowledgeBaseCli
             iconName: 'tutor',
             action: () => {
                 navigate('/tutor');
+            }
+        },
+        {
+            id: 'placements',
+            label: 'Placements',
+            iconName: 'placements',
+            action: () => {
+                navigate('/placements');
             }
         },
         {

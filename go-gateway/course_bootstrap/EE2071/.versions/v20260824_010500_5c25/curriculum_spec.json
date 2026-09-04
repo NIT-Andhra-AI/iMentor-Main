@@ -1,0 +1,41 @@
+{
+  "CourseCode": "EE2071",
+  "CourseName": "Power System Analysis",
+  "Credits": "4-0-0 4 Credits",
+  "Prerequisites": "Basic electrical circuits, electrical network analysis, power system generation",
+  "CourseOutcomes": [
+    "CO1: Study the power system modelling using single-line diagrams.",
+    "CO2: Carry out load flow study of a practical system.",
+    "CO3: Understand the importance of sequence components in power system.",
+    "CO4: Analyse and calculate various faults.",
+    "CO5: Study the stability of power systems."
+  ],
+  "SyllabusText": "Modelling of Power System Components: The one-line diagram, impedance and reactance\ndiagrams, per unit quantities, changing the base of per unit quantities, advantages of per unit\nsystem. single line diagram, bus impedance and admittance matrix.\nPower Flow Studies: Introduction, bus classification, load flow equations - iterative methods\n- gauss seidel methods, newton-raphson method-jacobian matrix, fast decoupled method,\nmerits and demerits of various load flow methods- system data for load flow study. Distribution\nload flow analysis-backward-forward load flow.\nSequence Components: Significance of positive, negative and zero sequence components,\naverage 3-phase power in terms of symmetrical components, sequence impedances and\nsequence networks.\nFault Analysis: Classification of faults, fault current calculations - sequence network\ndiagrams for single line to ground fault, line to line fault, double line to ground fault, three\nphase fault, faults on power systems, and faults with fault impedance, reactors and their\nlocation, short circuit capacity of a bus.\nStability Studies: The stability problem- steady state stability, transient stability and\ndynamic stability-swing equation. Equal area criterion of stability-applications of equal area\ncriterion, step-by-step solution of swing equation-factors affecting transient stability,\nmethods to improve steady state and transient stability, introduction to voltage stability.",
+  "UnitTexts": [
+    "The one-line diagram, impedance and reactance\ndiagrams, per unit quantities, changing the base of per unit quantities, advantages of per unit\nsystem. single line diagram, bus impedance and admittance matrix.",
+    "Introduction, bus classification, load flow equations - iterative methods\n- gauss seidel methods, newton-raphson method-jacobian matrix, fast decoupled method,\nmerits and demerits of various load flow methods- system data for load flow study. Distribution\nload flow analysis-backward-forward load flow.",
+    "Significance of positive, negative and zero sequence components,\naverage 3-phase power in terms of symmetrical components, sequence impedances and\nsequence networks.",
+    "Classification of faults, fault current calculations - sequence network\ndiagrams for single line to ground fault, line to line fault, double line to ground fault, three\nphase fault, faults on power systems, and faults with fault impedance, reactors and their\nlocation, short circuit capacity of a bus.",
+    "The stability problem- steady state stability, transient stability and\ndynamic stability-swing equation. Equal area criterion of stability-applications of equal area\ncriterion, step-by-step solution of swing equation-factors affecting transient stability,\nmethods to improve steady state and transient stability, introduction to voltage stability."
+  ],
+  "UnitTitles": [
+    "Modelling of Power System Components",
+    "Power Flow Studies",
+    "Sequence Components",
+    "Fault Analysis",
+    "Stability Studies"
+  ],
+  "Textbooks": [
+    "C.L. Wadhwa, Electrical Power Systems, 7th Edition, New Age International, 2016.",
+    "D P Kothari, I J Nagrath and R K Saket Modern Power System Analysis, 5th Edition,",
+    "Hadi Saadat, Power System Analysis, Tata Mc Graw Hill Pub.Co. 4th Edition 2011."
+  ],
+  "References": [
+    "Prabha S. Kundur, Om P Malik, ‘Power System Stability and Control’, McGraw-Hill,",
+    "NewYork,2nd edition, 2022.",
+    "John J. Grainger, W.D. Stevenson: Power System Analysis, McGraw-Hill International",
+    "(Indian Edition) 2017.",
+    "Electric Energy System Theory – an Introduction, Elgerd.O.I, Tata McGraw Hill, New",
+    "Delhi, 2013."
+  ]
+}

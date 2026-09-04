@@ -18,32 +18,33 @@ import {
     GraduationCap,
     Brain,
     Sparkles,
-    Type
+    Type,
+    Code2
 } from 'lucide-react';
 import ToolsModal from '../tools/ToolsModal.jsx';
 import LevelBadge from '../gamification/LevelBadge.jsx';
 import RankBadge from '../gamification/RankBadge.jsx';
 import XPProgressModal from '../gamification/XPProgressModal.jsx';
+import DeveloperPortalModal from '../developer/DeveloperPortalModal.jsx';
 import { useUserLevel } from '../../hooks/useUserLevel.jsx';
 import FeedbackWidget from './FeedbackWidget.jsx';
 
-// ─── Text Size Control ────────────────────────────────────────────────────────
-// Eight steps: 2 below default · default (17px) · 5 above default
-// Persisted in localStorage so the preference survives page refresh.
+// ─── Text Size Control (Executive Zoom Scaler) ────────────────────────────────
+// Eight steps: 2 below default · default (17px = 100%) · 5 above default
+// Persisted in localStorage so preference survives page refresh.
 
 const FONT_SIZES = [
-    { size: '13px', title: 'Compact (smallest)' },
-    { size: '15px', title: 'Small'               },
-    { size: '17px', title: 'Default'             },  // ← index 2
-    { size: '19px', title: 'Large'               },
-    { size: '21px', title: 'Larger'              },
-    { size: '23px', title: 'Extra large'         },
-    { size: '25px', title: 'Huge'                },
-    { size: '27px', title: 'Maximum'             },
+    { size: '13px', label: '76%',  title: 'Compact (76%)'     },
+    { size: '15px', label: '88%',  title: 'Small (88%)'       },
+    { size: '17px', label: '100%', title: 'Default (100%)'    },  // ← index 2
+    { size: '19px', label: '112%', title: 'Medium Large (112%)' },
+    { size: '21px', label: '124%', title: 'Large (124%)'      },
+    { size: '23px', label: '135%', title: 'Extra Large (135%)'},
+    { size: '25px', label: '147%', title: 'Huge (147%)'       },
+    { size: '27px', label: '160%', title: 'Maximum (160%)'    },
 ];
 const FS_STORAGE_KEY  = 'imentor-font-base';
-const FS_DEFAULT      = '17px';
-const FS_DEFAULT_IDX  = 2;  // index of FS_DEFAULT in FONT_SIZES
+const FS_DEFAULT_IDX  = 2;  // index of FS_DEFAULT (17px) in FONT_SIZES
 
 function applyFontSize(size) {
     document.documentElement.style.setProperty('--font-base', size);
@@ -52,16 +53,14 @@ function applyFontSize(size) {
 function TextSizeControl() {
     const [sizeIndex, setSizeIndex] = useState(() => {
         const saved = localStorage.getItem(FS_STORAGE_KEY);
-        // Migrate: if user had old default (15px) saved, upgrade to new default (17px)
         if (!saved || saved === '15px') return FS_DEFAULT_IDX;
         const idx = FONT_SIZES.findIndex(f => f.size === saved);
         return idx !== -1 ? idx : FS_DEFAULT_IDX;
     });
 
-    // Apply on mount (restores preference after page load)
     useEffect(() => {
         applyFontSize(FONT_SIZES[sizeIndex].size);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [sizeIndex]);
 
     const decrease = useCallback(() => {
         setSizeIndex(prev => {
@@ -74,8 +73,8 @@ function TextSizeControl() {
 
     const resetDefault = useCallback(() => {
         setSizeIndex(FS_DEFAULT_IDX);
-        applyFontSize(FS_DEFAULT);
-        localStorage.setItem(FS_STORAGE_KEY, FS_DEFAULT);
+        applyFontSize(FONT_SIZES[FS_DEFAULT_IDX].size);
+        localStorage.setItem(FS_STORAGE_KEY, FONT_SIZES[FS_DEFAULT_IDX].size);
     }, []);
 
     const increase = useCallback(() => {
@@ -87,80 +86,73 @@ function TextSizeControl() {
         });
     }, []);
 
-    const btnBase = {
-        lineHeight: 1,
-        padding: '4px 6px',
-        borderRadius: '3px',
-        border: '1px solid transparent',
-        background: 'transparent',
-        cursor: 'pointer',
-        transition: 'color 0.15s, background 0.15s, border-color 0.15s',
-        minWidth: '24px',
-        textAlign: 'center',
-        userSelect: 'none',
-    };
+    // Global keyboard shortcuts (Ctrl/Cmd + [=, -, 0])
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
+                if (e.key === '=' || e.key === '+') {
+                    e.preventDefault();
+                    increase();
+                } else if (e.key === '-') {
+                    e.preventDefault();
+                    decrease();
+                } else if (e.key === '0') {
+                    e.preventDefault();
+                    resetDefault();
+                }
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [increase, decrease, resetDefault]);
+
+    const currentItem = FONT_SIZES[sizeIndex];
 
     return (
         <div
-            className="flex items-center gap-px"
+            className="flex items-center gap-1 bg-[color:var(--vs-panel)] px-2 py-1 rounded-md border border-[color:var(--vs-border)] shadow-sm"
             role="group"
-            aria-label="Text size"
-            title="Adjust text size for readability"
+            aria-label="Text size scale control"
+            title={`Current Text Scale: ${currentItem.title} (Ctrl + / - to adjust)`}
         >
             <Type
-                size={14}
-                style={{ color: 'var(--vs-text-dim)' }}
+                size={13}
+                className="text-[color:var(--vs-text-dim)] flex-shrink-0"
                 aria-hidden="true"
-                className="mr-1 flex-shrink-0"
             />
             {/* Decrease */}
             <button
                 onClick={decrease}
                 disabled={sizeIndex === 0}
-                title={sizeIndex === 0 ? 'Smallest size reached' : `Smaller — ${FONT_SIZES[sizeIndex - 1]?.title}`}
+                title={sizeIndex === 0 ? 'Smallest font scale reached' : `Decrease font size (${FONT_SIZES[sizeIndex - 1]?.label})`}
                 aria-label="Decrease text size"
-                style={{
-                    ...btnBase,
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: sizeIndex === 0 ? 'var(--vs-text-dim)' : 'var(--vs-text-lo)',
-                    opacity: sizeIndex === 0 ? 0.4 : 1,
-                }}
-                onMouseEnter={e => { if (sizeIndex > 0) e.currentTarget.style.color = 'var(--vs-text)'; }}
-                onMouseLeave={e => { if (sizeIndex > 0) e.currentTarget.style.color = 'var(--vs-text-lo)'; }}
-            >A</button>
-            {/* Reset to default */}
+                className="w-6 h-6 flex items-center justify-center rounded text-xs font-semibold text-[color:var(--vs-text-lo)] hover:text-[color:var(--vs-text)] hover:bg-[color:var(--vs-surface-hi)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+                A-
+            </button>
+            {/* Scale badge & reset */}
             <button
                 onClick={resetDefault}
-                title={`Reset to default (${FONT_SIZES[FS_DEFAULT_IDX]?.title})`}
+                title={`Reset to standard 100% (${FONT_SIZES[FS_DEFAULT_IDX]?.size})`}
                 aria-label="Reset text size to default"
-                style={{
-                    ...btnBase,
-                    fontSize: '14px',
-                    fontWeight: sizeIndex === FS_DEFAULT_IDX ? 700 : 500,
-                    color: sizeIndex === FS_DEFAULT_IDX ? 'var(--vs-text)' : 'var(--vs-text-lo)',
-                    border: sizeIndex === FS_DEFAULT_IDX ? '1px solid var(--vs-border-hi)' : '1px solid transparent',
-                    background: sizeIndex === FS_DEFAULT_IDX ? 'var(--vs-active)' : 'transparent',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.color = 'var(--vs-text)'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = sizeIndex === FS_DEFAULT_IDX ? 'var(--vs-text)' : 'var(--vs-text-lo)'; }}
-            >A</button>
+                className={`px-1.5 h-6 flex items-center justify-center rounded text-[11px] font-mono tracking-tight transition-all ${
+                    sizeIndex === FS_DEFAULT_IDX
+                        ? 'text-[color:var(--vs-text-lo)] font-medium'
+                        : 'text-[color:var(--vs-accent)] font-bold bg-[color:var(--vs-surface-hi)] border border-[color:var(--vs-border-hi)]'
+                }`}
+            >
+                {currentItem.label}
+            </button>
             {/* Increase */}
             <button
                 onClick={increase}
                 disabled={sizeIndex === FONT_SIZES.length - 1}
-                title={sizeIndex === FONT_SIZES.length - 1 ? 'Largest size reached' : `Larger — ${FONT_SIZES[sizeIndex + 1]?.title}`}
+                title={sizeIndex === FONT_SIZES.length - 1 ? 'Largest font scale reached' : `Increase font size (${FONT_SIZES[sizeIndex + 1]?.label})`}
                 aria-label="Increase text size"
-                style={{
-                    ...btnBase,
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    color: sizeIndex === FONT_SIZES.length - 1 ? 'var(--vs-text-dim)' : 'var(--vs-text-lo)',
-                    opacity: sizeIndex === FONT_SIZES.length - 1 ? 0.4 : 1,
-                }}
-                onMouseEnter={e => { if (sizeIndex < FONT_SIZES.length - 1) e.currentTarget.style.color = 'var(--vs-text)'; }}
-                onMouseLeave={e => { if (sizeIndex < FONT_SIZES.length - 1) e.currentTarget.style.color = 'var(--vs-text-lo)'; }}
-            >A</button>
+                className="w-6 h-6 flex items-center justify-center rounded text-sm font-semibold text-[color:var(--vs-text-lo)] hover:text-[color:var(--vs-text)] hover:bg-[color:var(--vs-surface-hi)] disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+                A+
+            </button>
         </div>
     );
 }
@@ -179,6 +171,7 @@ function TopNav({
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isToolsModalOpen, setIsToolsModalOpen] = useState(false);
     const [isXPModalOpen, setIsXPModalOpen] = useState(false);
+    const [isDeveloperPortalOpen, setIsDeveloperPortalOpen] = useState(false);
 
     const navigate = useNavigate();
     const { level, totalXP, loading: levelLoading } = useUserLevel(null, xpRefreshCounter);
@@ -269,23 +262,27 @@ function TopNav({
                     boxShadow:    '0 1px 0 rgba(0,0,0,0.3)',
                 }}
             >
-                {/* Logo */}
-                <Link
-                    to="/"
-                    className="flex items-center gap-2 flex-shrink-0"
-                    style={{ textDecoration: 'none' }}
-                >
-                    <Server
-                        size={16}
-                        style={{ color: 'var(--vs-text-lo)' }}
-                    />
-                    <span
-                        className="hidden sm:inline text-sm font-semibold tracking-tight"
-                        style={{ color: 'var(--vs-text)', letterSpacing: '-0.01em' }}
+                {/* Executive Logo & Version Switcher */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                    <Link
+                        to="/"
+                        className="flex items-center gap-2.5 flex-shrink-0 group"
+                        style={{ textDecoration: 'none' }}
                     >
-                        iMentor
-                    </span>
-                </Link>
+                        <div className="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/30 flex items-center justify-center shadow-sm group-hover:border-sky-400/60 transition-all">
+                            <Brain size={15} className="text-sky-400" />
+                        </div>
+                        <span
+                            className="hidden sm:flex items-center gap-1.5 text-sm font-bold tracking-tight text-white"
+                            style={{ letterSpacing: '-0.01em' }}
+                        >
+                            iMentor
+                            <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                                PRO
+                            </span>
+                        </span>
+                    </Link>
+                </div>
 
                 {/* Center actions — hidden in Tutor mode */}
                 {!tutorMode && (
@@ -295,6 +292,9 @@ function TopNav({
                             <button
                                 onClick={onNewChat}
                                 disabled={isChatProcessing}
+                                aria-label="New Chat"
+                                title="New Chat"
+                                data-testid="new-chat-button"
                                 className={`${pillNormal} ${isChatProcessing ? pillDisabled : ''}`}
                             >
                                 <MessageSquare size={12} />
@@ -433,6 +433,12 @@ function TopNav({
                                     },
                                     {
                                         type: 'button',
+                                        onClick: () => { setIsDeveloperPortalOpen(true); setIsProfileDropdownOpen(false); },
+                                        icon: Code2,
+                                        label: 'Developer API Hub',
+                                    },
+                                    {
+                                        type: 'button',
                                         onClick: () => { setIsProfileModalOpen(true); setIsProfileDropdownOpen(false); },
                                         icon: Settings,
                                         label: 'Profile Settings',
@@ -528,6 +534,10 @@ function TopNav({
                 onClose={() => setIsXPModalOpen(false)}
                 level={level}
                 refreshCounter={xpRefreshCounter}
+            />
+            <DeveloperPortalModal
+                isOpen={isDeveloperPortalOpen}
+                onClose={() => setIsDeveloperPortalOpen(false)}
             />
         </>
     );

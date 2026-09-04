@@ -33,7 +33,7 @@ LG_MODEL = SGLANG_HEAVY_MODEL
 # ── Gemini fallback (admin-validated only, identical to existing logic) ─
 GEMINI_API_VALIDATED = os.getenv("GEMINI_API_VALIDATED", "false").lower() == "true"
 GEMINI_API_KEY       = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL         = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL         = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 # ── Generation parameters (mirrors subtopic_notes_generator.py) ────────
 SCHEMA_PARAMS = {          # structured JSON output — low temp for precision

@@ -6,8 +6,12 @@ const AdminDocument = require('../models/AdminDocument');
 const axios = require('axios');
 const { redisClient } = require('../config/redisClient');
 
-const PYTHON_RAG_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2001';
+const fs = require('fs');
+const path = require('path');
+const PYTHON_RAG_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006';
 const { runQuery: neo4jRun } = require('../config/neo4j');
+const ROOT_BOOTSTRAP_DIR = path.join(__dirname, '..', '..', 'course_bootstrap');
+const SERVER_BOOTSTRAP_DIR = path.join(__dirname, '..', 'course_bootstrap');
 
 let cachedSubjects = null;
 let lastFetchTime = 0;
@@ -17,10 +21,82 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function computeCourseMetadata(c) {
+    const code = (c.code || '').trim();
+    let dept = c.dept;
+    if (!dept) {
+        const prefix = code.replace(/[^A-Za-z]/g, '').toUpperCase();
+        if (prefix.startsWith('EE') || prefix.startsWith('PE')) dept = 'EE';
+        else if (prefix.startsWith('CS')) dept = 'CS';
+        else if (prefix.startsWith('EC')) dept = 'EC';
+        else if (prefix.startsWith('ME')) dept = 'ME';
+        else if (prefix.startsWith('MA')) dept = 'MA';
+        else if (prefix.startsWith('PH')) dept = 'PH';
+        else if (prefix.startsWith('CY')) dept = 'CY';
+        else if (prefix.startsWith('HS')) dept = 'HS';
+        else if (prefix.startsWith('SM')) dept = 'SM';
+        else dept = 'EE';
+    }
+
+    let semester = c.semester;
+    let year = 1;
+    if (semester) {
+        const s = String(semester).trim().toUpperCase();
+        if (s.includes('IV-I') || s === '7' || s.includes('SEM 7') || s.includes('SEM-7')) { semester = 'IV-I'; year = 4; }
+        else if (s.includes('IV-II') || s === '8' || s.includes('SEM 8') || s.includes('SEM-8')) { semester = 'IV-II'; year = 4; }
+        else if (s.includes('III-I') || s === '5' || s.includes('SEM 5') || s.includes('SEM-5')) { semester = 'III-I'; year = 3; }
+        else if (s.includes('III-II') || s === '6' || s.includes('SEM 6') || s.includes('SEM-6')) { semester = 'III-II'; year = 3; }
+        else if (s.includes('II-I') || s === '3' || s.includes('SEM 3') || s.includes('SEM-3')) { semester = 'II-I'; year = 2; }
+        else if (s.includes('II-II') || s === '4' || s.includes('SEM 4') || s.includes('SEM-4')) { semester = 'II-II'; year = 2; }
+        else if (s.includes('I-I') || s === '1' || s.includes('SEM 1') || s.includes('SEM-1')) { semester = 'I-I'; year = 1; }
+        else if (s.includes('I-II') || s === '2' || s.includes('SEM 2') || s.includes('SEM-2')) { semester = 'I-II'; year = 1; }
+    } else {
+        const numMatch = code.match(/\d/);
+        if (numMatch) {
+            const firstDigit = parseInt(numMatch[0], 10);
+            if (firstDigit >= 1 && firstDigit <= 4) {
+                year = firstDigit;
+                semester = firstDigit === 1 ? 'I-I' : firstDigit === 2 ? 'II-I' : firstDigit === 3 ? 'III-I' : 'IV-I';
+            }
+        }
+    }
+
+    let hasContent = false;
+    let lectureCount = 0;
+    for (const bDir of [ROOT_BOOTSTRAP_DIR, SERVER_BOOTSTRAP_DIR]) {
+        if (fs.existsSync(path.join(bDir, code))) {
+            const cDir = path.join(bDir, code);
+            const csvExists = fs.existsSync(path.join(cDir, 'syllabus.csv')) || fs.existsSync(path.join(cDir, 'curriculum_spec.json'));
+            const lecsDir = path.join(cDir, 'lectures');
+            const subDir = path.join(cDir, 'lecture_notes', 'subtopics');
+            let count = 0;
+            if (fs.existsSync(lecsDir)) {
+                count = fs.readdirSync(lecsDir).filter(f => f.endsWith('.md')).length;
+            } else if (fs.existsSync(subDir)) {
+                count = fs.readdirSync(subDir).filter(f => f.endsWith('.md')).length;
+            }
+            if (csvExists || count > 0) {
+                hasContent = true;
+                lectureCount = count || (csvExists ? 30 : 0);
+                break;
+            }
+        }
+    }
+
+    return {
+        ...c,
+        dept,
+        semester,
+        year,
+        hasContent,
+        lectureCount
+    };
+}
+
 async function enrichWithCourseMetadata(courses) {
     try {
         const codes = courses.map(c => c.code).filter(Boolean);
-        if (codes.length === 0) return courses;
+        if (codes.length === 0) return courses.map(computeCourseMetadata);
         const result = await neo4jRun(
             `MATCH (c:Course) WHERE c.code IN $codes
              RETURN c.code AS code, c.name AS name,
@@ -41,29 +117,30 @@ async function enrichWithCourseMetadata(courses) {
         }
         return courses.map(c => {
             const meta = metaMap[c.code];
-            return meta ? { ...c, ...meta } : c;
+            const merged = meta ? { ...c, ...meta } : c;
+            return computeCourseMetadata(merged);
         });
     } catch (err) {
         log.warn('DB', `Neo4j course metadata enrichment failed: ${err.message}`);
-        return courses;
+        return courses.map(computeCourseMetadata);
     }
 }
 
 function normalizeCourse(item) {
     // Object format from enriched RAG response
     if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
-        return {
+        return computeCourseMetadata({
             code: item.code || item.course || '',
             name: item.name || item.code || item.course || '',
             semester: item.semester || null,
             credits: item.credits != null ? item.credits : null,
             dept: item.dept || null,
             category: item.category || null,
-        };
+        });
     }
     // String format (backward compat)
     const str = String(item || '');
-    return { code: str, name: str, semester: null, credits: null, dept: null, category: null };
+    return computeCourseMetadata({ code: str, name: str, semester: null, credits: null, dept: null, category: null });
 }
 
 async function fetchCurriculumCoursesWithRetry({ attempts = 3, timeoutMs = 8000 } = {}) {

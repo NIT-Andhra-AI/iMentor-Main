@@ -1,0 +1,75 @@
+{
+  "course_code": "EE1621",
+  "subject_name": "Signals and Systems",
+  "category": "dsp",
+  "textbooks": [
+    {
+      "title": "Discrete-Time Signal Processing",
+      "authors": "Alan V. Oppenheim, Ronald W. Schafer",
+      "publisher": "Pearson",
+      "edition": "3rd Edition",
+      "code": "T1",
+      "relevance": "Definitive textbook for DTFT, Z-Transform, DFT/FFT, FIR/IIR digital filter design, and multirate DSP."
+    },
+    {
+      "title": "Digital Signal Processing: Principles, Algorithms, and Applications",
+      "authors": "John G. Proakis, Dimitris G. Manolakis",
+      "publisher": "Pearson",
+      "edition": "4th Edition",
+      "code": "T2",
+      "relevance": "Algorithm formulation, Fast Fourier Transforms, finite wordlength effects, and realization structures."
+    }
+  ],
+  "references": [
+    {
+      "title": "Digital Signal Processing: A Computer-Based Approach",
+      "authors": "Sanjit K. Mitra",
+      "publisher": "McGraw-Hill",
+      "edition": "4th Edition",
+      "code": "R1"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Delhi)",
+      "course_name": "Digital Signal Processing",
+      "instructor": "Prof. S. C. Dutta Roy",
+      "url": "https://nptel.ac.in/courses/117102060",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.341 Discrete-Time Signal Processing",
+      "instructor": "Prof. Alan V. Oppenheim",
+      "url": "https://ocw.mit.edu/courses/6-341-discrete-time-signal-processing-fall-2005/",
+      "modules_count": 26
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Delhi)",
+      "course_name": "Digital Signal Processing",
+      "instructor": "Prof. S. C. Dutta Roy",
+      "url": "https://nptel.ac.in/courses/117102060",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.341 Discrete-Time Signal Processing",
+      "instructor": "Prof. Alan V. Oppenheim",
+      "url": "https://ocw.mit.edu/courses/6-341-discrete-time-signal-processing-fall-2005/",
+      "modules_count": 26
+    }
+  ],
+  "simulation_tools": [
+    "SciPy Signal (scipy.signal)",
+    "MATLAB DSP System Toolbox",
+    "GNU Octave Signal Package",
+    "KaTeX DSP Interactive Portal"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

@@ -5,8 +5,72 @@ const router = express.Router();
 const axios = require('axios');
 const User = require('../models/User');
 const AdminDocument = require('../models/AdminDocument');
+const ChatHistory = require('../models/ChatHistory');
 const { decrypt } = require('../utils/crypto');
 const { auditLog } = require('../utils/logger');
+const llmRouterService = require('../services/llmRouterService');
+
+function extractConceptsFallbackFromText(transcript) {
+    const metaWords = new Set([
+        'live', 'conversation', 'session', 'user', 'assistant', 'system', 'student',
+        'tutor', 'message', 'hello', 'hi', 'hey', 'please', 'explain', 'tell', 'about',
+        'what', 'how', 'why', 'who', 'when', 'where', 'can', 'help', 'thanks', 'thank',
+        'yes', 'no', 'sure', 'okay', 'ok', 'right', 'good', 'great', 'question', 'answer'
+    ]);
+
+    // Extract multi-word technical phrases first
+    const rawPhrases = transcript.match(/\b[A-Z][a-zA-Z0-9#+.]*(?:\s+[A-Z][a-zA-Z0-9#+.]*)+\b/g) || [];
+    const cleanPhrases = [];
+    const seen = new Set();
+
+    rawPhrases.forEach(p => {
+        const clean = p.trim();
+        const words = clean.toLowerCase().split(/\s+/);
+        if (!words.some(w => metaWords.has(w)) && clean.length > 3 && !seen.has(clean.toLowerCase())) {
+            seen.add(clean.toLowerCase());
+            cleanPhrases.push(clean);
+        }
+    });
+
+    // Extract single technical capitalized terms or domain words
+    const singleWords = [];
+    const words = transcript.split(/[\s,.:;!?()\[\]"']/);
+    words.forEach(w => {
+        const clean = w.trim();
+        const lower = clean.toLowerCase();
+        if (clean.length > 3 && !metaWords.has(lower) && !/^\d+$/.test(clean)) {
+            const existsInPhrase = cleanPhrases.some(p => p.toLowerCase().includes(lower));
+            if (!existsInPhrase && !seen.has(lower)) {
+                seen.add(lower);
+                const formatted = clean.charAt(0).toUpperCase() + clean.slice(1);
+                singleWords.push(formatted);
+            }
+        }
+    });
+
+    const candidateList = [...cleanPhrases, ...singleWords].slice(0, 6);
+
+    if (candidateList.length === 0) {
+        candidateList.push("Core Topic", "Learning Concept", "Academic Knowledge");
+    }
+
+    const nodes = candidateList.map(name => ({
+        id: name,
+        type: "Concept",
+        description: `Topic node extracted from conversation`
+    }));
+
+    const edges = [];
+    for (let i = 0; i < nodes.length - 1; i++) {
+        edges.push({
+            from: nodes[i].id,
+            to: nodes[i + 1].id,
+            relationship: "DEPENDS_ON"
+        });
+    }
+
+    return { nodes, edges };
+}
 
 router.get('/visualize/:documentName', async (req, res) => {
     const { documentName } = req.params;
@@ -20,24 +84,18 @@ router.get('/visualize/:documentName', async (req, res) => {
         let sourceDocumentText = null;
         let apiKeyForRequest = null;
 
-        // We need to fetch the user to get their encrypted API key
         const user = await User.findById(currentUserId).select('uploadedDocuments.filename uploadedDocuments.text +encryptedApiKey');
-
-        // Check if the requested document belongs to the user
         const userDoc = user?.uploadedDocuments.find(doc => doc.filename === documentName);
 
         if (userDoc?.text) {
             sourceDocumentText = userDoc.text;
-            // Decrypt the key if the document is a user document
             if (user.encryptedApiKey) {
                 apiKeyForRequest = decrypt(user.encryptedApiKey);
             }
         } else {
-            // If not a user document, check if it's an admin document (Subject)
             const adminDoc = await AdminDocument.findOne({ originalName: documentName }).select('text');
             if (adminDoc?.text) {
                 sourceDocumentText = adminDoc.text;
-                // For admin docs, use the server's global API key
                 apiKeyForRequest = process.env.GEMINI_API_KEY;
             }
         }
@@ -57,11 +115,9 @@ router.get('/visualize/:documentName', async (req, res) => {
 
         const getKgUrl = `${pythonServiceUrl}/generate_kg_from_text`;
 
-        // log.info('DB', "Proxying KG generation request");
-
         const pythonResponse = await axios.post(getKgUrl, {
             document_text: sourceDocumentText,
-            api_key: apiKeyForRequest // <<< Pass the correct key
+            api_key: apiKeyForRequest
         }, { timeout: 300000 });
 
         if (pythonResponse.data && pythonResponse.data.success) {
@@ -76,44 +132,100 @@ router.get('/visualize/:documentName', async (req, res) => {
     }
 });
 
-
-// --- NEW ROUTE ---
 // @route   GET /api/kg/session/:sessionId
-// @desc    Get the knowledge graph for a specific chat session
+// @desc    Get knowledge graph for chat session (tries Go Gateway / LLM Router with NLP fallback)
 // @access  Private
 router.get('/session/:sessionId', async (req, res) => {
     const { sessionId } = req.params;
     const userId = req.user._id.toString();
 
     const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
-    if (!pythonServiceUrl) {
-        return res.status(500).json({ error: "Knowledge Graph service is not configured." });
-    }
-
-    // The sessionId is used as the document_name for the KG
-    const getKgUrl = `${pythonServiceUrl}/kg/${userId}/${encodeURIComponent(sessionId)}`;
+    const getKgUrl = pythonServiceUrl ? `${pythonServiceUrl}/kg/${userId}/${encodeURIComponent(sessionId)}` : null;
 
     try {
-        auditLog(req, 'TOOL_USAGE_LIVE_CONCEPT_MAP', {
-            sessionId: sessionId
-        });
-        // log.info('DB', `Proxying session KG request: ${sessionId}`);
-        const pythonResponse = await axios.get(getKgUrl, { timeout: 30000 });
+        auditLog(req, 'TOOL_USAGE_LIVE_CONCEPT_MAP', { sessionId });
 
-        if (pythonResponse.data) {
-            res.status(200).json(pythonResponse.data);
-        } else {
-            // It's not an error if a KG doesn't exist yet, just return empty data
-            res.status(200).json({ nodes: [], edges: [] });
+        // 1. Try to fetch existing graph from Neo4j / Python RAG
+        if (getKgUrl) {
+            try {
+                const pythonResponse = await axios.get(getKgUrl, { timeout: 6000 });
+                if (pythonResponse.data && Array.isArray(pythonResponse.data.nodes) && pythonResponse.data.nodes.length > 0) {
+                    return res.status(200).json(pythonResponse.data);
+                }
+            } catch (pyErr) {
+                // Fall through
+            }
         }
+
+        // 2. Fetch ChatHistory
+        const chat = await ChatHistory.findById(sessionId).lean();
+        const messages = chat?.messages || [];
+
+        if (messages.length === 0) {
+            return res.status(200).json({
+                nodes: [
+                    { id: "Active Conversation", type: "Concept", description: "Starting session context" },
+                    { id: "Learning Objectives", type: "Concept", description: "Target learning goal" }
+                ],
+                edges: [
+                    { from: "Active Conversation", to: "Learning Objectives", relationship: "INITIATES" }
+                ]
+            });
+        }
+
+        const validMessages = messages.filter(m => m.text || (m.parts && m.parts[0]?.text));
+        const transcript = validMessages
+            .slice(-10)
+            .map(m => `${m.sender || m.role || 'user'}: ${m.text || m.parts?.[0]?.text || ''}`)
+            .join('\n\n')
+            .slice(0, 4000);
+
+        let extractedKg = null;
+        try {
+            const prompt = `Extract 4 to 6 distinct technical concepts and semantic edges from this conversation.
+Return ONLY valid JSON:
+{
+  "nodes": [{ "id": "ConceptName", "type": "Concept", "description": "1 sentence description" }],
+  "edges": [{ "from": "ConceptName1", "to": "ConceptName2", "relationship": "DEPENDS_ON" }]
+}
+
+Conversation:
+${transcript}`;
+
+            const textResp = await llmRouterService.generate({
+                prompt,
+                systemInstruction: "You are an expert knowledge graph extractor. Output ONLY valid JSON.",
+                intent: 'academic'
+            });
+
+            const match = (textResp || '').match(/\{[\s\S]*\}/);
+            if (match) {
+                extractedKg = JSON.parse(match[0]);
+            }
+        } catch (llmErr) {
+            log.warn('KG', `LLM KG extraction fallback: ${llmErr.message}`);
+        }
+
+        // 3. Fallback to clean NLP keyword extraction if LLM returns empty nodes
+        if (!extractedKg || !Array.isArray(extractedKg.nodes) || extractedKg.nodes.length === 0) {
+            extractedKg = extractConceptsFallbackFromText(transcript);
+        }
+
+        // Asynchronously save to Python RAG / Neo4j in background
+        if (pythonServiceUrl && extractedKg?.nodes?.length > 0) {
+            axios.post(`${pythonServiceUrl}/kg`, {
+                userId,
+                originalName: sessionId,
+                nodes: extractedKg.nodes,
+                edges: extractedKg.edges || []
+            }).catch(e => log.warn('KG', `Neo4j background save non-fatal: ${e.message}`));
+        }
+
+        return res.status(200).json(extractedKg);
+
     } catch (error) {
-        if (error.response && error.response.status === 404) {
-            // Handle case where Python service returns 404 if KG doesn't exist
-            return res.status(200).json({ nodes: [], edges: [] });
-        }
-        const errorMsg = error.response?.data?.error || error.message || "Failed to retrieve knowledge graph.";
-        log.error('DB', `KG session fetch error [${sessionId}]: ${errorMsg}`);
-        res.status(error.response?.status || 500).json({ error: errorMsg });
+        log.error('DB', `KG session fetch error [${sessionId}]: ${error.message}`);
+        res.status(200).json(extractConceptsFallbackFromText("Active Conversation Session"));
     }
 });
 

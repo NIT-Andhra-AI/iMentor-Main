@@ -1,0 +1,1281 @@
+{
+  "course_code": "MA1021",
+  "course_name": "Matrices and Differential Equations",
+  "category": "math",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 109,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Linear dependence and independence of vectors",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Linear dependence and independence of vectors",
+          "pedagogical_intuition": "For 'Linear dependence and independence of vectors', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Rank of a matrix",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Rank of a matrix",
+          "pedagogical_intuition": "For 'Rank of a matrix', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Consistency of the system of linear equations",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Consistency of the system of linear equations",
+          "pedagogical_intuition": "For 'Consistency of the system of linear equations', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Eigenvalues and eigenvectors of a matrix",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Eigenvalues and eigenvectors of a matrix",
+          "pedagogical_intuition": "For 'Eigenvalues and eigenvectors of a matrix', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Caley-Hamilton theorem and its applications",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Caley-Hamilton theorem and its applications",
+          "pedagogical_intuition": "For 'Caley-Hamilton theorem and its applications', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Reduction to diagonal form",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Reduction to diagonal form",
+          "pedagogical_intuition": "For 'Reduction to diagonal form', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Reduction of a quadratic form to canonical form - orthogonal transformation",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Reduction of a quadratic form to canonical form - orthogonal transformation",
+          "pedagogical_intuition": "For 'Reduction of a quadratic form to canonical form - orthogonal transformation', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Properties of complex matrices - Hermitian, skew-Hermitian and Unitary matrices",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Properties of complex matrices - Hermitian",
+          "pedagogical_intuition": "For 'Properties of complex matrices - Hermitian', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "skew-Hermitian and Unitary matrices",
+          "pedagogical_intuition": "For 'skew-Hermitian and Unitary matrices', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Matrix Theory",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Review of First-order Ordinary Differential Equations, Higher order linear",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Review of First-order Ordinary Differential Equations",
+          "pedagogical_intuition": "For 'Review of First-order Ordinary Differential Equations', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "Higher order linear differential equations with constant coefficients - homogeneous and non-homogeneous",
+          "pedagogical_intuition": "For 'Higher order linear differential equations with constant coefficients - homogeneous and non-homogeneous', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Euler and Cauchy’s differential equations",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Euler and Cauchy’s differential equations",
+          "pedagogical_intuition": "For 'Euler and Cauchy’s differential equations', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Method of variation of parameters",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Method of variation of parameters",
+          "pedagogical_intuition": "For 'Method of variation of parameters', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "System of linear differential equations; applications in physical problems -",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "System of linear differential equations; applications in physical problems - forced oscillations",
+          "pedagogical_intuition": "For 'System of linear differential equations; applications in physical problems - forced oscillations', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "electric circuits",
+          "pedagogical_intuition": "For 'electric circuits', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "etc",
+          "pedagogical_intuition": "For 'etc', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit II: Ordinary Differential Equations of Higher Order",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Laplace transforms; inverse Laplace transforms",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Laplace transforms",
+          "pedagogical_intuition": "For 'Laplace transforms', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "inverse Laplace transforms",
+          "pedagogical_intuition": "For 'inverse Laplace transforms', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Properties of Laplace transforms",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Properties of Laplace transforms",
+          "pedagogical_intuition": "For 'Properties of Laplace transforms', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Laplace transforms of unit step function, impulse function, periodic function",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Laplace transforms of unit step function",
+          "pedagogical_intuition": "For 'Laplace transforms of unit step function', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "impulse function",
+          "pedagogical_intuition": "For 'impulse function', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "periodic function",
+          "pedagogical_intuition": "For 'periodic function', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Convolution theorem, Solving certain initial value problems, Solving system of",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Convolution theorem",
+          "pedagogical_intuition": "For 'Convolution theorem', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Solving certain initial value problems",
+          "pedagogical_intuition": "For 'Solving certain initial value problems', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Solving system of linear differential equations",
+          "pedagogical_intuition": "For 'Solving system of linear differential equations', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Finding responses of systems to various inputs viz. sinusoidal inputs acting over a time interval",
+          "pedagogical_intuition": "For 'Finding responses of systems to various inputs viz. sinusoidal inputs acting over a time interval', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "rectangular waves",
+          "pedagogical_intuition": "For 'rectangular waves', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "impulses",
+          "pedagogical_intuition": "For 'impulses', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "etc",
+          "pedagogical_intuition": "For 'etc', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 6)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 7)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 8)",
+      "module": "Unit III: Laplace Transforms",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', linear transformations and vector differential calculus map multi-dimensional vector spaces into invariant eigenspaces, where operators act as simple scalar scaling.",
+          "mathematical_model": "\\mathbf{A}\\mathbf{v} = \\lambda\\mathbf{v} \\implies \\det(\\mathbf{A} - \\lambda\\mathbf{I}) = 0",
+          "interactive_sim_hook": "2D Linear Transformation Matrix Sandbox: Adjust matrix elements [a, b; c, d] to visualize unit circle deformation into an ellipse along orthogonal eigenvectors.",
+          "industry_relevance": "Principal Component Analysis (PCA) in machine learning, structural finite element modeling (FEM), and quantum state transformations.",
+          "gate_pyq_mapping": "GATE Common 2-Mark NAT: Largest eigenvalue lambda_max and Green's/Stokes' theorem closed contour integrals.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/MA1021/ai_reference_textbook.md"
+}

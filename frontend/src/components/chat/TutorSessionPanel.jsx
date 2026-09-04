@@ -4,17 +4,28 @@ import './TutorSessionPanel.css';
 
 /**
  * Tutor Session Panel Component
- * Displays learning progress, knowledge gaps, adaptive scaffolding info,
- * and live curriculum progress fetched from the server.
+ * Displays persistent learning progress, knowledge gaps, adaptive scaffolding info,
+ * live curriculum progress, and the Real-time Concept Memory Map.
  */
 const TutorSessionPanel = ({ tutorSessionData }) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const [curriculumProgress, setCurriculumProgress] = useState(null);
+    const [liveMemoryMap, setLiveMemoryMap] = useState(null);
     const prevCourseRef = useRef(null);
 
-    // Fetch curriculum progress whenever the active course changes
+    // Fetch curriculum progress and live memory map
     useEffect(() => {
         const course = tutorSessionData?.courseName;
+
+        // Fetch Live Memory Map
+        api.getLiveMemoryMap()
+            .then(res => {
+                if (res?.success && res.liveMap) {
+                    setLiveMemoryMap(res.liveMap);
+                }
+            })
+            .catch(() => { /* non-critical */ });
+
         if (!course || course === 'General' || course === prevCourseRef.current) return;
         prevCourseRef.current = course;
 
@@ -88,7 +99,7 @@ const TutorSessionPanel = ({ tutorSessionData }) => {
                     {/* Learning Goal */}
                     <div className="info-section">
                         <div className="section-label">Learning Goal</div>
-                        <div className="section-value goal-text">{learningGoal}</div>
+                        <div className="section-value goal-text">{learningGoal || 'Mastery Learning'}</div>
                     </div>
 
                     {/* Student Level */}
@@ -96,78 +107,59 @@ const TutorSessionPanel = ({ tutorSessionData }) => {
                         <div className="section-label">Student Level</div>
                         <span
                             className="level-badge"
-                            style={{ backgroundColor: getLevelBadgeColor(studentLevel) }}
+                            style={{ backgroundColor: getLevelBadgeColor(studentLevel || 'beginner') }}
                         >
-                            {(studentLevel || 'unknown').toUpperCase()}
+                            {studentLevel || 'Beginner'}
                         </span>
                     </div>
 
-                    {/* Curriculum Progress */}
-                    {curriculumProgress && curriculumPercent !== null && (
-                        <div className="info-section">
-                            <div className="section-label">
-                                📚 Curriculum Progress
-                                {curriculumProgress.currentModule && (
-                                    <span style={{ fontWeight: 400, marginLeft: 4, fontSize: '0.75em' }}>
-                                        — {curriculumProgress.currentModule}
-                                    </span>
-                                )}
-                            </div>
-                            <div className="comprehension-bar" title={`${curriculumProgress.completedSubtopics} / ${curriculumProgress.totalSubtopics} subtopics`}>
-                                <div
-                                    className="comprehension-fill"
-                                    style={{
-                                        width: `${Math.min(curriculumPercent, 100)}%`,
-                                        backgroundColor: '#6bcf7f'
-                                    }}
-                                />
-                                <span className="comprehension-label">
-                                    {curriculumProgress.completedSubtopics}/{curriculumProgress.totalSubtopics} subtopics ({curriculumPercent}%)
-                                </span>
-                            </div>
-                            {curriculumProgress.currentTopic && (
-                                <div style={{ fontSize: '0.75em', marginTop: 2, opacity: 0.75 }}>
-                                    Now: {curriculumProgress.currentTopic}
-                                    {curriculumProgress.currentSubtopic && curriculumProgress.currentSubtopic !== curriculumProgress.currentTopic
-                                        ? ` › ${curriculumProgress.currentSubtopic}`
-                                        : ''}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Mastery Progress (from tutor AI response) */}
+                    {/* Mastery Progress Bar */}
                     {masteryPercent !== null && (
                         <div className="info-section">
-                            <div className="section-label">🎯 Topic Mastery</div>
-                            <div className="comprehension-bar" title={`${masteryProgress.current?.toFixed(1)} / ${masteryProgress.required} mastery score`}>
-                                <div
-                                    className="comprehension-fill"
-                                    style={{
-                                        width: `${Math.min(masteryPercent, 100)}%`,
-                                        backgroundColor: masteryPercent >= 80 ? '#6bcf7f' :
-                                            masteryPercent >= 50 ? '#ffd93d' : '#ff6b6b'
-                                    }}
-                                />
-                                <span className="comprehension-label">{masteryPercent}%</span>
+                            <div className="section-label">Topic Mastery</div>
+                            <div className="progress-bar-container">
+                                <div className="progress-bar" style={{ width: `${Math.min(100, masteryPercent)}%` }}></div>
                             </div>
+                            <span className="progress-text">{masteryPercent}% Mastery</span>
                         </div>
                     )}
 
-                    {/* Comprehension */}
-                    {comprehensionPercent !== null && (
+                    {/* Live Memory Map Section */}
+                    <div className="info-section memory-map-section">
+                        <div className="section-label">🧠 Live Memory Map</div>
+                        {liveMemoryMap && liveMemoryMap.nodes?.length > 0 ? (
+                            <div className="memory-map-nodes">
+                                {liveMemoryMap.nodes.slice(0, 8).map((node) => (
+                                    <div key={node.id} className="concept-chip">
+                                        <span className="concept-name">{node.label}</span>
+                                        <span className="concept-mastery">{node.mastery}%</span>
+                                    </div>
+                                ))}
+                                {liveMemoryMap.summary && (
+                                    <div className="memory-map-summary">
+                                        Overall Mastery: <strong>{liveMemoryMap.summary.overallMastery}%</strong> ({liveMemoryMap.summary.masteredConcepts}/{liveMemoryMap.summary.totalConcepts} Mastered)
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="memory-map-empty">
+                                <span>Building concept graph in background...</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Curriculum Progress */}
+                    {curriculumProgress && (
                         <div className="info-section">
-                            <div className="section-label">Current Comprehension</div>
-                            <div className="comprehension-bar">
-                                <div
-                                    className="comprehension-fill"
-                                    style={{
-                                        width: `${comprehensionPercent}%`,
-                                        backgroundColor: comprehensionPercent > 70 ? '#6bcf7f' :
-                                            comprehensionPercent > 40 ? '#ffd93d' : '#ff6b6b'
-                                    }}
-                                />
-                                <span className="comprehension-label">{comprehensionPercent}%</span>
+                            <div className="section-label">Curriculum Track</div>
+                            <div className="curriculum-info">
+                                <div><strong>Module:</strong> {curriculumProgress.currentModule || 'N/A'}</div>
+                                <div><strong>Topic:</strong> {curriculumProgress.currentTopic || 'N/A'}</div>
+                                {curriculumPercent !== null && (
+                                    <div className="progress-bar-container">
+                                        <div className="progress-bar curriculum-bar" style={{ width: `${curriculumPercent}%` }}></div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -175,52 +167,14 @@ const TutorSessionPanel = ({ tutorSessionData }) => {
                     {/* Knowledge Gaps */}
                     {unresolvedGaps.length > 0 && (
                         <div className="info-section">
-                            <div className="section-label">Working On:</div>
-                            <div className="gaps-list">
-                                {unresolvedGaps.map((gap, index) => (
-                                    <div key={index} className="gap-item unresolved">
-                                        <span className="gap-icon">⚠️</span>
-                                        <span className="gap-text">{gap.concept || gap}</span>
-                                    </div>
+                            <div className="section-label">Focus Areas</div>
+                            <ul className="gap-list">
+                                {unresolvedGaps.map((gap, idx) => (
+                                    <li key={idx} className="gap-item">{gap.concept || gap}</li>
                                 ))}
-                            </div>
+                            </ul>
                         </div>
                     )}
-
-                    {/* Understood Concepts */}
-                    {progressTracking.conceptsUnderstood?.length > 0 && (
-                        <div className="info-section">
-                            <div className="section-label">✅ Understood:</div>
-                            <div className="concepts-list">
-                                {progressTracking.conceptsUnderstood.map((concept, index) => (
-                                    <span key={index} className="concept-tag understood">
-                                        {concept}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Progress Stats */}
-                    <div className="stats-grid">
-                        <div className="stat-box">
-                            <div className="stat-value">{progressTracking.totalInteractions || 0}</div>
-                            <div className="stat-label">Interactions</div>
-                        </div>
-                        <div className="stat-box">
-                            <div className="stat-value">{progressTracking.successfulGuidance || 0}</div>
-                            <div className="stat-label">Helpful Hints</div>
-                        </div>
-                        <div className="stat-box">
-                            <div className="stat-value">{resolvedGaps.length}</div>
-                            <div className="stat-label">Gaps Resolved</div>
-                        </div>
-                    </div>
-
-                    {/* Session ID (for debugging) */}
-                    <div className="session-id">
-                        Session ID: {tutorSessionId?.toString().substring(0, 8)}...
-                    </div>
                 </div>
             )}
         </div>

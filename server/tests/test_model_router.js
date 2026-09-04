@@ -57,14 +57,14 @@ async function testHybridRouting() {
     process.env.GROQ_API_KEY = 'mock_key';
     process.env.GEMINI_API_KEY = 'mock_key';
 
-    // 1. Ollama is up, but complexity is very low -> route to Ollama (standard local)
+    // 1. SGLang is up, but complexity is very low -> route to SGLang (standard local)
     const decision1 = await selectModel({
         query: 'hello',
-        isOllamaActive: true,
+        isSglangActive: true,
         complexityScore: 20
     });
-    assert.strictEqual(decision1.provider, 'ollama');
-    assert.strictEqual(decision1.strategy, 'ollama_default');
+    assert.strictEqual(decision1.provider, 'sglang');
+    assert.strictEqual(decision1.strategy, 'sglang_default');
 
     // 2. Ollama is up, but complexity is very high (>=75) -> hybrid routing to cloud provider (Groq/Gemini) for better quality
     const decision2 = await selectModel({

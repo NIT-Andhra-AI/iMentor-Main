@@ -22,7 +22,7 @@ async function generateContentWithHistory(
     systemPromptText = null,
     options = {} // Now accepts { model, maxOutputTokens, apiKey }
 ) {
-    const apiKeyToUse = options.apiKey || SECONDARY_API_KEY;
+    const apiKeyToUse = options.apiKey || SECONDARY_API_KEY || null;
     let modelNameToUse = options.geminiModel || options.model || process.env.GEMINI_MODEL || MODEL_NAME;
     if (modelNameToUse.includes('gemini-2.0-flash') || modelNameToUse.includes('gemini-1.5-flash')) {
         modelNameToUse = 'gemini-2.5-flash';
@@ -35,8 +35,8 @@ async function generateContentWithHistory(
     }
 
     if (!apiKeyToUse) {
-        log.error('AI', "Gemini API key is not available.", null, "Check environment variables or user settings");
-        throw new Error("Gemini API key is missing. Please configure it.");
+        log.warn('AI', "Gemini call skipped: No user-provided API key.");
+        throw new Error("No Google Gemini API key provided. Please configure your personal API key in Settings to use cloud models.");
     }
 
     try {

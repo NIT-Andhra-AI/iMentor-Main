@@ -1,2 +1,3 @@
 #!/bin/bash
-conda run -n imentor uvicorn app:app --host 0.0.0.0 --port 2005
+exec /home/sri/anaconda3/envs/imentor/bin/uvicorn app:app --host 0.0.0.0 --port ${RAG_PORT:-2006}
+

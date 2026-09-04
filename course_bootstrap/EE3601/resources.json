@@ -1,0 +1,74 @@
+{
+  "course_code": "EE3601",
+  "subject_name": "Advanced Control Systems",
+  "category": "control",
+  "textbooks": [
+    {
+      "title": "Modern Control Engineering",
+      "authors": "Katsuhiko Ogata",
+      "publisher": "Pearson",
+      "edition": "5th Edition",
+      "code": "T1",
+      "relevance": "Standard curriculum text for Root Locus, Bode plots, Nyquist stability, State-Space analysis and PID design."
+    },
+    {
+      "title": "Control Systems Engineering",
+      "authors": "Norman S. Nise",
+      "publisher": "Wiley",
+      "edition": "8th Edition",
+      "code": "T2",
+      "relevance": "Practical control design, time-domain specs, frequency domain techniques, and compensators."
+    }
+  ],
+  "references": [
+    {
+      "title": "Automatic Control Systems",
+      "authors": "Farid Golnaraghi, Benjamin C. Kuo",
+      "publisher": "McGraw-Hill",
+      "edition": "10th Edition",
+      "code": "R1"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Control Engineering",
+      "instructor": "Prof. Ramkrishna Pasumarthy",
+      "url": "https://nptel.ac.in/courses/108106098",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "2.04A Systems and Controls",
+      "instructor": "Prof. Neville Hogan",
+      "url": "https://ocw.mit.edu/courses/2-04a-systems-and-controls-spring-2013/",
+      "modules_count": 25
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Control Engineering",
+      "instructor": "Prof. Ramkrishna Pasumarthy",
+      "url": "https://nptel.ac.in/courses/108106098",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "2.04A Systems and Controls",
+      "instructor": "Prof. Neville Hogan",
+      "url": "https://ocw.mit.edu/courses/2-04a-systems-and-controls-spring-2013/",
+      "modules_count": 25
+    }
+  ],
+  "simulation_tools": [
+    "Python Control Systems Library (control-toolbox)",
+    "MATLAB Simulink",
+    "GNU Octave Control Package"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

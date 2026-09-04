@@ -1,0 +1,43 @@
+{
+  "course_code": "EE2012",
+  "subject_name": "Analog and Digital Circuits Lab",
+  "category": "analog",
+  "textbooks": [
+    {
+      "title": "Fundamentals of Electric Circuits",
+      "authors": "Charles K. Alexander, Matthew N. O. Sadiku",
+      "publisher": "McGraw-Hill",
+      "edition": "7th Edition",
+      "code": "T1",
+      "relevance": "Nodal/mesh analysis, AC network theorems, resonance, and Laplace transforms."
+    },
+    {
+      "title": "Engineering Circuit Analysis",
+      "authors": "William H. Hayt, Jack E. Kemmerly, Steven M. Durbin",
+      "publisher": "McGraw-Hill",
+      "edition": "9th Edition",
+      "code": "T2",
+      "relevance": "Transient analysis and two-port network synthesis."
+    }
+  ],
+  "references": null,
+  "nptel_courses": [
+    {
+      "course_name": "Basic Electrical Circuits",
+      "instructor": "Prof. Nagendra Krishnapura",
+      "institute": "IIT Madras",
+      "url": "https://nptel.ac.in/courses/108106172",
+      "modules_count": 12
+    }
+  ],
+  "simulation_tools": [
+    "LTSpice XVII",
+    "MATLAB Simscape",
+    "Falstad Circuit Simulator"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

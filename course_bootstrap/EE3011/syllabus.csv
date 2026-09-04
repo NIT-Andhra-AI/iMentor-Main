@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3011,Power Electronics,Unit I,Introduction,"Concept of power electronics, power semiconductor switches operation, and",None,L2_UNDERSTAND
+EE3011,Power Electronics,Unit I,"their V-I characteristics, methods of SCR commutation, gate drive circuits- control-, protection","their V-I characteristics, methods of SCR commutation, gate drive circuits- control-, protection",1,L3_APPLY
+EE3011,Power Electronics,Unit I,"and conduction losses in a generic power semiconductor device, understanding data sheets","and conduction losses in a generic power semiconductor device, understanding data sheets",2,L2_UNDERSTAND
+EE3011,Power Electronics,Unit I,"of commercially available power semiconductor devices, Introduction of various types of AC-","of commercially available power semiconductor devices, Introduction of various types of AC-",3,L3_APPLY
+EE3011,Power Electronics,Unit I,"DC, DC-DC, DC-AC, and AC-AC Conversions.","DC, DC-DC, DC-AC, and AC-AC Conversions.",4,L2_UNDERSTAND
+EE3011,Power Electronics,Unit I,Phase-Controlled Rectifiers,Principles of single-phase half and fully-controlled converter,5,L3_APPLY
+EE3011,Power Electronics,Unit I,"with R, RL, and RLE load with and without freewheeling diode, principles of three-phase fully-","with R, RL, and RLE load with and without freewheeling diode, principles of three-phase fully-",6,L2_UNDERSTAND
+EE3011,Power Electronics,Unit I,"controlled converter operation with RLE load, effect of load and source inductances.","controlled converter operation with RLE load, effect of load and source inductances.",7,L3_APPLY
+EE3011,Power Electronics,Unit I,Inverters,Principle of operation and performance parameters of single phase bridge inverters,8,L2_UNDERSTAND
+EE3011,Power Electronics,Unit I,"with R, RL, and RLC loads and 3-phase bridge inverters, 180 and 120 degrees mode of","with R, RL, and RLC loads and 3-phase bridge inverters, 180 and 120 degrees mode of",9,L3_APPLY
+EE3011,Power Electronics,Unit I,"operation, single pulse width modulation, multiple pulse width modulation, sinusoidal pulse","operation, single pulse width modulation, multiple pulse width modulation, sinusoidal pulse",10,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"width modulation, unipolar and bipolar schemes.","width modulation, unipolar and bipolar schemes.",11,L4_ANALYZE
+EE3011,Power Electronics,Unit I,DC-DC Converters,Switched mode DC-DC converters (non-isolated) - buck converter –,12,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"boost converter – buck-boost converter; operation, design, and control (preliminary","boost converter – buck-boost converter; operation, design, and control (preliminary",13,L4_ANALYZE
+EE3011,Power Electronics,Unit I,approach). Cuk and Sepic converter operation.,approach). Cuk and Sepic converter operation.,14,L4_ANALYZE
+EE3011,Power Electronics,Unit I,Text Books,,15,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"1. M.H.Rashid, Power Electronics - Circuits, Devices and Applications, Pearson India, 4th","1. M.H.Rashid, Power Electronics - Circuits, Devices and Applications, Pearson India, 4th",16,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"edition, 2017.","edition, 2017.",17,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"2. P.S.Bimbhra, Power Electronics, Khanna Publishers, New Delhi, 7th ed, 2022.","2. P.S.Bimbhra, Power Electronics, Khanna Publishers, New Delhi, 7th ed, 2022.",18,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"3. Mohan, Undeland, Robin, Power Electronics, 3ed (An Indian Adaptation)","Converters,",19,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"Applications and Design, Wiley India Pvt Ltd., 2022","Applications and Design, Wiley India Pvt Ltd., 2022",20,L4_ANALYZE
+EE3011,Power Electronics,Unit I,Reference Books,,21,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"1. M D Singh, K B Khanchandani, Power Electronics, Tata McGraw-Hill Publishing","1. M D Singh, K B Khanchandani, Power Electronics, Tata McGraw-Hill Publishing",22,L4_ANALYZE
+EE3011,Power Electronics,Unit I,"Company Limited, 2009.","Company Limited, 2009.",23,L4_ANALYZE
+EE3011,Power Electronics,Unit I,Online Resources,,24,L4_ANALYZE
+EE3011,Power Electronics,Unit I,1. https,//www.ti.com/power-management/overview.html#,25,L4_ANALYZE
+EE3011,Power Electronics,Unit I,Scheme and Syllabi 47 | Page,Scheme and Syllabi 47 | Page,26,L4_ANALYZE
+EE3011,Power Electronics,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3011,Power Electronics,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3011,Power Electronics,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Power Electronics,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3011,Power Electronics,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3011,Power Electronics,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3011,Power Electronics,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3011,Power Electronics,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Power Electronics,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3011,Power Electronics,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3011,Power Electronics,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Power Electronics","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

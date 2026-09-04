@@ -336,11 +336,30 @@ export default function SocraticModePage() {
                                                             ul: ({ node, ...props }) => <ul className="list-disc pl-4 mb-2" {...props} />,
                                                             ol: ({ node, ...props }) => <ol className="list-decimal pl-4 mb-2" {...props} />,
                                                             li: ({ node, ...props }) => <li className="mb-1" {...props} />,
-                                                            code: ({ node, inline, className, children, ...props }) => (
-                                                                <code className={`${inline ? 'bg-black/10 dark:bg-white/10 px-1 py-0.5 rounded' : 'block bg-gray-900 text-white p-2 rounded mb-2 overflow-x-auto'}`} {...props}>
-                                                                    {children}
-                                                                </code>
-                                                            )
+                                                            code: ({ node, inline, className, children, ...props }) => {
+                                                                const match = /language-(\w+)/.exec(className || '');
+                                                                const rawText = String(children || '').trim();
+                                                                if (!inline && match && match[1] === 'interactive') {
+                                                                    return (
+                                                                        <div className="my-4 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden bg-white">
+                                                                            <div className="bg-gray-100 dark:bg-gray-800 px-3 py-1.5 text-xs text-gray-600 dark:text-gray-300 font-semibold border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                                                                                <span>Interactive Playground</span>
+                                                                            </div>
+                                                                            <iframe 
+                                                                                srcDoc={rawText} 
+                                                                                sandbox="allow-scripts allow-same-origin" 
+                                                                                className="w-full h-[350px] border-none"
+                                                                                title="Interactive Widget"
+                                                                            />
+                                                                        </div>
+                                                                    );
+                                                                }
+                                                                return (
+                                                                    <code className={`${inline ? 'bg-black/10 dark:bg-white/10 px-1 py-0.5 rounded' : 'block bg-gray-900 text-white p-2 rounded mb-2 overflow-x-auto'}`} {...props}>
+                                                                        {children}
+                                                                    </code>
+                                                                );
+                                                            }
                                                         }}
                                                     >
                                                         {msg.content}

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Send, Square, BookOpen, Brain, Target, ChevronDown, ChevronUp, Lightbulb, MessageCircle, RotateCcw } from 'lucide-react';
+import api from '../services/api.js';
  
 // ─── Anthropic API Call ──────────────────────────────────────────────────────
 async function callClaude({ messages, system, signal }) {
@@ -54,7 +55,11 @@ function parseResponse(raw) {
   const text = raw.replace(/<SESSION_DATA>[\s\S]*?<\/SESSION_DATA>/, '').trim();
   let sessionData = null;
   if (sessionMatch) {
-    try { sessionData = JSON.parse(sessionMatch[1].trim()); } catch {}
+    try {
+      sessionData = JSON.parse(sessionMatch[1].trim());
+    } catch (_) {
+      sessionData = null;
+    }
   }
   return { text, sessionData };
 }
@@ -159,6 +164,30 @@ export default function TutorPage() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Restore active tutor session and live progress on mount / page reload
+  useEffect(() => {
+    api.getActiveTutorSession()
+      .then(res => {
+        if (res?.success && res.active) {
+          if (Array.isArray(res.messages) && res.messages.length > 0) {
+            const loadedMsgs = res.messages.map((m, idx) => ({
+              id: `history-${idx}`,
+              role: m.role === 'model' || m.sender === 'bot' ? 'model' : 'user',
+              text: m.parts?.[0]?.text || m.text || '',
+            }));
+            setMessages(loadedMsgs);
+          }
+          setSession({
+            topic: res.topic || 'General Socratic Study',
+            concept: res.topic,
+            studentLevel: String(res.cognitiveLevel || 'intermediate').toLowerCase().replace('l1_', '').replace('l2_', '').replace('l3_', '').replace('l4_', ''),
+            progress: Math.min(100, Math.round((res.masteryScore || 0) * 25)),
+          });
+        }
+      })
+      .catch(() => { /* non-critical */ });
+  }, []);
  
   // Auto-resize textarea
   useEffect(() => {

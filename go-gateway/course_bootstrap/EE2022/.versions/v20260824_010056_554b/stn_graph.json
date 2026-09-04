@@ -1,0 +1,720 @@
+{
+  "course_code": "EE2022",
+  "course_name": "Circuits and Measurements Lab",
+  "total_nodes": 12,
+  "total_edges": 34,
+  "nodes": [
+    {
+      "id": "node_ee2022_l1",
+      "lecture_num": 1,
+      "title": "V-I Characteristics",
+      "module": "Cycle 1",
+      "subtopics": "Voltage, current, linearity",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.1388,
+        0.2557,
+        0.3322,
+        0.3563,
+        0.3241,
+        0.2408,
+        0.1194,
+        -0.0208,
+        -0.1577,
+        -0.2698,
+        -0.3392,
+        -0.3551,
+        -0.3149,
+        -0.225,
+        -0.0996,
+        0.0415
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l2",
+      "lecture_num": 2,
+      "title": "Verification of KVL \u0026 KCL",
+      "module": "Cycle 1",
+      "subtopics": "Node equations, mesh, breadboard",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.2549,
+        0.3552,
+        0.2401,
+        -0.0207,
+        -0.269,
+        -0.354,
+        -0.2243,
+        0.0414,
+        0.2821,
+        0.3516,
+        0.2079,
+        -0.062,
+        -0.2942,
+        -0.348,
+        -0.1907,
+        0.0823
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l3",
+      "lecture_num": 3,
+      "title": "Superposition Theorem Verification",
+      "module": "Cycle 1",
+      "subtopics": "Linearity, multiple sources",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.3296,
+        0.2389,
+        -0.1565,
+        -0.3523,
+        -0.0988,
+        0.2807,
+        0.3022,
+        -0.0616,
+        -0.3469,
+        -0.1898,
+        0.2094,
+        0.3415,
+        0.0381,
+        -0.3139,
+        -0.2656,
+        0.1214
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l4",
+      "lecture_num": 4,
+      "title": "Thevenin's Theorem Verification",
+      "module": "Cycle 1",
+      "subtopics": "Vth, Rth, load variations",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.3511,
+        -0.0205,
+        -0.3499,
+        0.0409,
+        0.3475,
+        -0.0612,
+        -0.3439,
+        0.0813,
+        0.3391,
+        -0.1011,
+        -0.3332,
+        0.1206,
+        0.3262,
+        -0.1396,
+        -0.318,
+        0.1582
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l5",
+      "lecture_num": 5,
+      "title": "Maximum Power Transfer",
+      "module": "Cycle 1",
+      "subtopics": "Impedance matching, efficiency",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.3164,
+        -0.2634,
+        -0.0972,
+        0.3443,
+        -0.1893,
+        -0.1867,
+        0.3447,
+        -0.1002,
+        -0.2613,
+        0.3177,
+        -0.0031,
+        -0.3151,
+        0.2654,
+        0.0943,
+        -0.3438,
+        0.1919
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l6",
+      "lecture_num": 6,
+      "title": "RC Transient Response",
+      "module": "Cycle 1",
+      "subtopics": "Step response, time constant",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.232,
+        -0.3421,
+        0.2726,
+        -0.0599,
+        -0.1843,
+        0.3317,
+        -0.3048,
+        0.1179,
+        0.1309,
+        -0.311,
+        0.3278,
+        -0.1723,
+        -0.0736,
+        0.2809,
+        -0.3406,
+        0.2215
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l7",
+      "lecture_num": 7,
+      "title": "RL Transient Response",
+      "module": "Cycle 2",
+      "subtopics": "Inductive kick, step response",
+      "bloom_level": "L3_APPLY",
+      "difficulty": 0.55,
+      "embedding": [
+        0.1119,
+        -0.2108,
+        0.2854,
+        -0.327,
+        0.3308,
+        -0.2964,
+        0.2277,
+        -0.1328,
+        0.0224,
+        0.0905,
+        -0.1929,
+        0.2731,
+        -0.3217,
+        0.3331,
+        -0.3061,
+        0.2436
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l8",
+      "lecture_num": 8,
+      "title": "RLC Series Resonance",
+      "module": "Cycle 2",
+      "subtopics": "Bandwidth, Q-factor, resonant freq",
+      "bloom_level": "L4_ANALYZE",
+      "difficulty": 0.75,
+      "embedding": [
+        -0.0284,
+        0.0566,
+        -0.0847,
+        0.1125,
+        -0.1399,
+        0.1668,
+        -0.1931,
+        0.2188,
+        -0.2438,
+        0.2679,
+        -0.2911,
+        0.3133,
+        -0.3344,
+        0.3544,
+        -0.3732,
+        0.3908
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l9",
+      "lecture_num": 9,
+      "title": "RLC Parallel Resonance",
+      "module": "Cycle 2",
+      "subtopics": "Tank circuit, dynamic impedance",
+      "bloom_level": "L4_ANALYZE",
+      "difficulty": 0.75,
+      "embedding": [
+        -0.157,
+        0.2817,
+        -0.3481,
+        0.3427,
+        -0.2665,
+        0.1353,
+        0.0239,
+        -0.1781,
+        0.2955,
+        -0.352,
+        0.3357,
+        -0.2502,
+        0.1129,
+        0.0476,
+        -0.1983,
+        0.3081
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l10",
+      "lecture_num": 10,
+      "title": "Z \u0026 Y Parameters",
+      "module": "Cycle 2",
+      "subtopics": "Two-port, open/short circuit",
+      "bloom_level": "L4_ANALYZE",
+      "difficulty": 0.75,
+      "embedding": [
+        -0.2632,
+        0.3441,
+        -0.1866,
+        -0.1001,
+        0.3175,
+        -0.3149,
+        0.0942,
+        0.1918,
+        -0.3449,
+        0.2591,
+        0.0062,
+        -0.2672,
+        0.3431,
+        -0.1814,
+        -0.106,
+        0.32
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l11",
+      "lecture_num": 11,
+      "title": "ABCD Parameters",
+      "module": "Cycle 2",
+      "subtopics": "Transmission line model, cascade",
+      "bloom_level": "L4_ANALYZE",
+      "difficulty": 0.75,
+      "embedding": [
+        -0.328,
+        0.2016,
+        0.2041,
+        -0.3271,
+        -0.0031,
+        0.3289,
+        -0.1991,
+        -0.2065,
+        0.3261,
+        0.0061,
+        -0.3298,
+        0.1966,
+        0.209,
+        -0.3251,
+        -0.0092,
+        0.3307
+      ],
+      "required_mastery": 0.85
+    },
+    {
+      "id": "node_ee2022_l12",
+      "lecture_num": 12,
+      "title": "SPICE Simulation of Circuits",
+      "module": "Cycle 2",
+      "subtopics": "AC sweep, transient analysis",
+      "bloom_level": "L4_ANALYZE",
+      "difficulty": 0.75,
+      "embedding": [
+        -0.3418,
+        -0.0598,
+        0.3314,
+        0.1178,
+        -0.3107,
+        -0.1722,
+        0.2806,
+        0.2213,
+        -0.2419,
+        -0.2636,
+        0.1957,
+        0.2979,
+        -0.1436,
+        -0.323,
+        0.0871,
+        0.3382
+      ],
+      "required_mastery": 0.85
+    }
+  ],
+  "edges": [
+    {
+      "source": "node_ee2022_l1",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l1",
+      "target": "node_ee2022_l2",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l2",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l1",
+      "target": "node_ee2022_l2",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l2",
+      "target": "node_ee2022_l3",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l3",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l2",
+      "target": "node_ee2022_l3",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l3",
+      "target": "node_ee2022_l4",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l4",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l3",
+      "target": "node_ee2022_l4",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l4",
+      "target": "node_ee2022_l5",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l5",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l4",
+      "target": "node_ee2022_l5",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l5",
+      "target": "node_ee2022_l6",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l6",
+      "target": "mod_ee2022_cycle_1",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l5",
+      "target": "node_ee2022_l6",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l6",
+      "target": "node_ee2022_l7",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l7",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l6",
+      "target": "node_ee2022_l7",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l7",
+      "target": "node_ee2022_l8",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l8",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l7",
+      "target": "node_ee2022_l8",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l8",
+      "target": "node_ee2022_l9",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l9",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l8",
+      "target": "node_ee2022_l9",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l9",
+      "target": "node_ee2022_l10",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l10",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l9",
+      "target": "node_ee2022_l10",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l10",
+      "target": "node_ee2022_l11",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l11",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l10",
+      "target": "node_ee2022_l11",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    },
+    {
+      "source": "node_ee2022_l11",
+      "target": "node_ee2022_l12",
+      "type": "LEADS_TO",
+      "weight": 0.8
+    },
+    {
+      "source": "node_ee2022_l12",
+      "target": "mod_ee2022_cycle_2",
+      "type": "PART_OF",
+      "weight": 1
+    },
+    {
+      "source": "node_ee2022_l11",
+      "target": "node_ee2022_l12",
+      "type": "PREREQUISITE_OF",
+      "weight": 0.95
+    }
+  ],
+  "adjacency_matrix": [
+    [
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0.95
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ]
+}

@@ -63,23 +63,53 @@ except Exception:
 
 def parse_pdf_fast(file_path: str) -> Optional[str]:
     """
-    Extract plain text from a PDF using pdfplumber (fast, ~100-300 ms/page).
+    Extract plain text from a PDF using pdfplumber, PyMuPDF (fitz), or pypdf.
     Returns None if extraction fails or yields no text.
     """
-    if not _PDFPLUMBER:
-        return None
+    parts = []
+    # 1. Try pdfplumber
+    if _PDFPLUMBER:
+        try:
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages:
+                    t = page.extract_text(x_tolerance=2, y_tolerance=2)
+                    if t and t.strip():
+                        parts.append(t.strip())
+            if parts:
+                return "\n\n".join(parts).strip()
+        except Exception as e:
+            logger.warning(f"pdfplumber fast-parse failed for {os.path.basename(file_path)}: {e}")
+
+    # 2. Try PyMuPDF (fitz) fallback
     try:
+        import fitz
+        doc = fitz.open(file_path)
         parts = []
-        with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages:
-                t = page.extract_text(x_tolerance=2, y_tolerance=2)
-                if t and t.strip():
-                    parts.append(t.strip())
-        text = "\n\n".join(parts).strip()
-        return text if text else None
+        for page in doc:
+            t = page.get_text()
+            if t and t.strip():
+                parts.append(t.strip())
+        doc.close()
+        if parts:
+            return "\n\n".join(parts).strip()
     except Exception as e:
-        logger.warning(f"pdfplumber fast-parse failed for {os.path.basename(file_path)}: {e}")
-        return None
+        logger.warning(f"PyMuPDF fast-parse failed for {os.path.basename(file_path)}: {e}")
+
+    # 3. Try pypdf fallback
+    try:
+        import pypdf
+        reader = pypdf.PdfReader(file_path)
+        parts = []
+        for page in reader.pages:
+            t = page.extract_text()
+            if t and t.strip():
+                parts.append(t.strip())
+        if parts:
+            return "\n\n".join(parts).strip()
+    except Exception as e:
+        logger.warning(f"pypdf fast-parse failed for {os.path.basename(file_path)}: {e}")
+
+    return None
 
 
 # ============================================================================
@@ -174,7 +204,7 @@ def _ocr_with_gemini_vision(file_path: str) -> Optional[str]:
             "tables, headings, and equations. Output plain text only."
         ))
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model=getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash"),
             contents=parts,
         )
         text = response.text.strip() if response.text else None

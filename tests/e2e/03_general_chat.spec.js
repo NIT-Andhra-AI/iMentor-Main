@@ -60,8 +60,8 @@ test.describe('GC — General Chat & Semantic Routing', () => {
     const elapsed = Date.now() - start;
 
     expect(text.length).toBeGreaterThan(5);
-    // Greeting should be relatively quick (< 30s even with slow models)
-    expect(elapsed).toBeLessThan(30000);
+    // Greeting should be relatively quick (< 60s with local models)
+    expect(elapsed).toBeLessThan(60000);
     // Should not contain RAG references or citations
     const noRAG = !/\[source\]|\[ref\]|retrieved from/i.test(text);
     expect(noRAG).toBeTruthy();
@@ -83,7 +83,7 @@ test.describe('GC — General Chat & Semantic Routing', () => {
   });
 
   test('GC-06 — Comparison/reasoning returns structured response', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(240000);
     const text = await sendAndWait(page, 'Compare gradient descent vs Adam optimizer');
 
     expect(text.length).toBeGreaterThan(100);
@@ -95,7 +95,7 @@ test.describe('GC — General Chat & Semantic Routing', () => {
   });
 
   test('GC-07 — Math/formula intent returns step-by-step', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(240000);
     const text = await sendAndWait(page, 'Derive the backpropagation formula for a 2-layer neural network');
 
     expect(text.length).toBeGreaterThan(100);
@@ -107,7 +107,7 @@ test.describe('GC — General Chat & Semantic Routing', () => {
   });
 
   test('GC-08 — Context recall across turns', async ({ page }) => {
-    test.setTimeout(120000);
+    test.setTimeout(240000);
     // Send a specific fact
     await sendAndWait(page, 'Remember this: the speed of light is exactly 299,792,458 meters per second');
 

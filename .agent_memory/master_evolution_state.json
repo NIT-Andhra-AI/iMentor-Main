@@ -1,0 +1,898 @@
+{
+  "architecture_version": "3.0.0",
+  "evolution_history": [
+    {
+      "cycle_number": 1,
+      "duration_ms": 184,
+      "enhancement_summary": "Modernized and hardened [Knowledge_Base_Hybrid_OCR] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/knowledge_base_hybrid_ocr",
+      "target_module": "Knowledge_Base_Hybrid_OCR",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-18T23:55:56.298744142+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 684,
+      "enhancement_summary": "Modernized and hardened [Knowledge_Base_Hybrid_OCR] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/knowledge_base_hybrid_ocr",
+      "target_module": "Knowledge_Base_Hybrid_OCR",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:15:47.450871602+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 665,
+      "enhancement_summary": "Modernized and hardened [Skill_Tree_Boss_Battles] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/skill_tree_boss_battles",
+      "target_module": "Skill_Tree_Boss_Battles",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:31:35.643338316+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 319,
+      "enhancement_summary": "Modernized and hardened [Unified_Fullstack_Gateway] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/unified_fullstack_gateway",
+      "target_module": "Unified_Fullstack_Gateway",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:41:49.143976225+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 210,
+      "enhancement_summary": "Modernized and hardened [Radix_Prefix_Cache_And_GraphRAG_Hardening] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/radix_prefix_cache_and_graphrag_hardening",
+      "target_module": "Radix_Prefix_Cache_And_GraphRAG_Hardening",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:46:01.531848096+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 253,
+      "enhancement_summary": "Modernized and hardened [Karpathy_PRM_Physical_Verification_And_Scaffolding] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/karpathy_prm_physical_verification_and_scaffolding",
+      "target_module": "Karpathy_PRM_Physical_Verification_And_Scaffolding",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:50:27.245688984+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 202,
+      "enhancement_summary": "Modernized and hardened [OpenAlex_Citation_Graph_And_Academic_Search] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/openalex_citation_graph_and_academic_search",
+      "target_module": "OpenAlex_Citation_Graph_And_Academic_Search",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:55:13.334121797+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 251,
+      "enhancement_summary": "Modernized and hardened [Enterprise_Audio_Debate_And_Full_Legacy_Inclusion] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/enterprise_audio_debate_and_full_legacy_inclusion",
+      "target_module": "Enterprise_Audio_Debate_And_Full_Legacy_Inclusion",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T00:58:12.015315007+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 275,
+      "enhancement_summary": "Modernized and hardened [SLM_Distillation_And_Dataset_Harvester] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/slm_distillation_and_dataset_harvester",
+      "target_module": "SLM_Distillation_And_Dataset_Harvester",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:00:28.502659482+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 171,
+      "enhancement_summary": "Modernized and hardened [Enterprise_Quality_Critic_And_Multimodal_Parser] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/enterprise_quality_critic_and_multimodal_parser",
+      "target_module": "Enterprise_Quality_Critic_And_Multimodal_Parser",
+      "test_result": "TESTS FAILED: # imentor/gateway/pkg/course_agents [imentor/gateway/pkg/course_agents.test]\npkg/course_agents/unified_api_server.go:54:40: s.handleAudioDebate undefined (type *UnifiedAPIServer has no field or method handleAudioDebate)\nFAIL\timentor/gateway/pkg/course_agents [build failed]\nFAIL\n",
+      "timestamp": "2026-08-19T01:07:53.860640967+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 785,
+      "enhancement_summary": "Modernized and hardened [Enterprise_Quality_Critic_And_Multimodal_Parser] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/enterprise_quality_critic_and_multimodal_parser",
+      "target_module": "Enterprise_Quality_Critic_And_Multimodal_Parser",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:08:20.849532438+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 203,
+      "enhancement_summary": "Modernized and hardened [ScaffoldChatEngine] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/scaffoldchatengine",
+      "target_module": "ScaffoldChatEngine",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:08:46.69268548+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 242,
+      "enhancement_summary": "Modernized and hardened [Guided_Learning_Protocol_And_Enterprise_Expansion] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/guided_learning_protocol_and_enterprise_expansion",
+      "target_module": "Guided_Learning_Protocol_And_Enterprise_Expansion",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:10:37.56332356+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 214,
+      "enhancement_summary": "Modernized and hardened [Enterprise_Architecture_Mastery_And_Safety_Audit] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/enterprise_architecture_mastery_and_safety_audit",
+      "target_module": "Enterprise_Architecture_Mastery_And_Safety_Audit",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:15:16.084706544+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 318,
+      "enhancement_summary": "Modernized and hardened [Hands_Free_VAD_Audio_Debate_Barge_In_Release] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/hands_free_vad_audio_debate_barge_in_release",
+      "target_module": "Hands_Free_VAD_Audio_Debate_Barge_In_Release",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:23:05.700677984+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 234,
+      "enhancement_summary": "Modernized and hardened [Cadence_3Min_Strict_iMentorV2_Boundary] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/cadence_3min_strict_imentorv2_boundary",
+      "target_module": "Cadence_3Min_Strict_iMentorV2_Boundary",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:24:50.891047028+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 234,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_1] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_1",
+      "target_module": "3Min_Cadence_Evolution_Iteration_1",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:27:02.917793679+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 222,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_2] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_2",
+      "target_module": "3Min_Cadence_Evolution_Iteration_2",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:30:03.292349309+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 234,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_3] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_3",
+      "target_module": "3Min_Cadence_Evolution_Iteration_3",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:33:03.179631356+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 242,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_4] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_4",
+      "target_module": "3Min_Cadence_Evolution_Iteration_4",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:36:03.289443742+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 222,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_5] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_5",
+      "target_module": "3Min_Cadence_Evolution_Iteration_5",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:39:05.320736994+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 228,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_6] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_6",
+      "target_module": "3Min_Cadence_Evolution_Iteration_6",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:42:02.906730591+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 235,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_7] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_7",
+      "target_module": "3Min_Cadence_Evolution_Iteration_7",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:45:02.947788655+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 323,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_8] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_8",
+      "target_module": "3Min_Cadence_Evolution_Iteration_8",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:48:03.608574125+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 340,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_9] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_9",
+      "target_module": "3Min_Cadence_Evolution_Iteration_9",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:51:04.605937996+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 269,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_10] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_10",
+      "target_module": "3Min_Cadence_Evolution_Iteration_10",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:54:04.215982416+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 221,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_11] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_11",
+      "target_module": "3Min_Cadence_Evolution_Iteration_11",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T01:57:03.162959428+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 222,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_12] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_12",
+      "target_module": "3Min_Cadence_Evolution_Iteration_12",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:00:03.45414711+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 232,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_13] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_13",
+      "target_module": "3Min_Cadence_Evolution_Iteration_13",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:03:03.342367361+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 237,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_14] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_14",
+      "target_module": "3Min_Cadence_Evolution_Iteration_14",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:06:03.775165448+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 244,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_15] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_15",
+      "target_module": "3Min_Cadence_Evolution_Iteration_15",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:09:02.528310533+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 202,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_16] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_16",
+      "target_module": "3Min_Cadence_Evolution_Iteration_16",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:12:02.910605837+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 230,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_18] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_18",
+      "target_module": "3Min_Cadence_Evolution_Iteration_18",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:18:04.503280033+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 219,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_19] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_19",
+      "target_module": "3Min_Cadence_Evolution_Iteration_19",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:21:10.314140983+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 274,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_20] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_20",
+      "target_module": "3Min_Cadence_Evolution_Iteration_20",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:24:03.342094844+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 217,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_21] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_21",
+      "target_module": "3Min_Cadence_Evolution_Iteration_21",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:27:03.017769029+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 241,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_22] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_22",
+      "target_module": "3Min_Cadence_Evolution_Iteration_22",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:30:03.801942021+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 253,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_23] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_23",
+      "target_module": "3Min_Cadence_Evolution_Iteration_23",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:33:04.225832026+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 347,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_24] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_24",
+      "target_module": "3Min_Cadence_Evolution_Iteration_24",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:36:03.928681722+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 423,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_25] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_25",
+      "target_module": "3Min_Cadence_Evolution_Iteration_25",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:39:04.108834561+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 440,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_27] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_27",
+      "target_module": "3Min_Cadence_Evolution_Iteration_27",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:45:03.305886687+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 245,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_28] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_28",
+      "target_module": "3Min_Cadence_Evolution_Iteration_28",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:48:02.451733423+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 256,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_29] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_29",
+      "target_module": "3Min_Cadence_Evolution_Iteration_29",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:51:03.049488027+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 240,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_30] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_30",
+      "target_module": "3Min_Cadence_Evolution_Iteration_30",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:54:02.585497661+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 220,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_31] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_31",
+      "target_module": "3Min_Cadence_Evolution_Iteration_31",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T02:57:03.020363328+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 261,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_32] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_32",
+      "target_module": "3Min_Cadence_Evolution_Iteration_32",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:00:03.695652104+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 249,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_33] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_33",
+      "target_module": "3Min_Cadence_Evolution_Iteration_33",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:03:03.45097665+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 260,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_34] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_34",
+      "target_module": "3Min_Cadence_Evolution_Iteration_34",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:06:03.206878182+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 255,
+      "enhancement_summary": "Modernized and hardened [3Min_Cadence_Evolution_Iteration_35] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/3min_cadence_evolution_iteration_35",
+      "target_module": "3Min_Cadence_Evolution_Iteration_35",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:09:03.057012012+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 254,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_1] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_1",
+      "target_module": "1Min_Cadence_Evolution_Iteration_1",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:12:03.095507499+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 229,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_2] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_2",
+      "target_module": "1Min_Cadence_Evolution_Iteration_2",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:13:02.929443728+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 234,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_3] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_3",
+      "target_module": "1Min_Cadence_Evolution_Iteration_3",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:14:03.53797792+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 227,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_4] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_4",
+      "target_module": "1Min_Cadence_Evolution_Iteration_4",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:15:11.847347458+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 223,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_5] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_5",
+      "target_module": "1Min_Cadence_Evolution_Iteration_5",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:16:02.923829979+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 244,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_6] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_6",
+      "target_module": "1Min_Cadence_Evolution_Iteration_6",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:17:02.945564295+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 240,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_7] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_7",
+      "target_module": "1Min_Cadence_Evolution_Iteration_7",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:18:03.419757872+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 248,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_8] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_8",
+      "target_module": "1Min_Cadence_Evolution_Iteration_8",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:19:02.896253026+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 239,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_9] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_9",
+      "target_module": "1Min_Cadence_Evolution_Iteration_9",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:20:03.757080678+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 229,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_10] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_10",
+      "target_module": "1Min_Cadence_Evolution_Iteration_10",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:21:03.098833288+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 252,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_11] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_11",
+      "target_module": "1Min_Cadence_Evolution_Iteration_11",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:22:04.061960182+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 253,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_12] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_12",
+      "target_module": "1Min_Cadence_Evolution_Iteration_12",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:23:03.414028953+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 212,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_13] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_13",
+      "target_module": "1Min_Cadence_Evolution_Iteration_13",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:24:03.193417397+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 244,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_14] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_14",
+      "target_module": "1Min_Cadence_Evolution_Iteration_14",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:25:03.368598682+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 238,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_15] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_15",
+      "target_module": "1Min_Cadence_Evolution_Iteration_15",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:26:02.680541731+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 263,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_16] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_16",
+      "target_module": "1Min_Cadence_Evolution_Iteration_16",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:27:03.151180456+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 225,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_17] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_17",
+      "target_module": "1Min_Cadence_Evolution_Iteration_17",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:28:03.29348412+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 235,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_18] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_18",
+      "target_module": "1Min_Cadence_Evolution_Iteration_18",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:29:03.137940608+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 240,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_19] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_19",
+      "target_module": "1Min_Cadence_Evolution_Iteration_19",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:30:02.907393611+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 221,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_20] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_20",
+      "target_module": "1Min_Cadence_Evolution_Iteration_20",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:31:03.170418069+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 221,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_21] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_21",
+      "target_module": "1Min_Cadence_Evolution_Iteration_21",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:32:03.156621307+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 220,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_22] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_22",
+      "target_module": "1Min_Cadence_Evolution_Iteration_22",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:33:02.882876756+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "duration_ms": 234,
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_23] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_23",
+      "target_module": "1Min_Cadence_Evolution_Iteration_23",
+      "test_result": "PASSED (0 Failures)",
+      "timestamp": "2026-08-19T03:34:05.974708079+05:30"
+    },
+    {
+      "cycle_number": 1,
+      "timestamp": "2026-08-19T03:35:03.656329355+05:30",
+      "target_module": "1Min_Cadence_Evolution_Iteration_24",
+      "legacy_baseline_path": "server/services/1min_cadence_evolution_iteration_24",
+      "enhancement_summary": "Modernized and hardened [1Min_Cadence_Evolution_Iteration_24] with Code-as-Visual and Karpathy System 2 test-time compute.",
+      "gatekeeper_approved": true,
+      "gatekeeper_score": 0.96,
+      "test_result": "PASSED (0 Failures)",
+      "duration_ms": 255
+    }
+  ],
+  "llm_strategy": {
+    "fallback": "Cloud API (Gemini/Claude/Groq/OpenAI)",
+    "primary": "SGLang (Local Qwen2.5-AWQ on port 30000)",
+    "slm_distillation_pipeline": "Enabled (Idle-time student feedback collection)"
+  },
+  "modules": {
+    "admin_telemetry_dashboard": {
+      "features": [
+        "MODEL_LATENCY_TRACKING",
+        "STUDENT_MASTERY_HEATMAP",
+        "COURSE_VERSION_BROWSER"
+      ],
+      "status": "MIGRATING_FROM_NODE"
+    },
+    "curriculum_engine_r24": {
+      "catalog_size": 44,
+      "experiments_per_lab": 12,
+      "faculty_dashboard": "5_TAB_COMPENDIUM",
+      "lectures_per_course": 36,
+      "status": "IMPLEMENTED_MODERN"
+    },
+    "deep_research_engine": {
+      "features": [
+        "MULTI_STEP_SYNTHESIS",
+        "ACADEMIC_CITATION_GRAPH"
+      ],
+      "status": "MIGRATING_FROM_NODE"
+    },
+    "faculty_copilot_vcs": {
+      "features": [
+        "IN_SESSION_UNDO_STACK",
+        "ATOMIC_SNAPSHOT_COMMITS",
+        "NATURAL_LANGUAGE_DIFF_PROPOSALS"
+      ],
+      "status": "IMPLEMENTED_MODERN"
+    },
+    "knowledge_base_hybrid_ocr": {
+      "capabilities": [
+        "PDF_PARSE",
+        "EQUATION_LATEX_EXTRACT",
+        "FIGURE_EXTRACT",
+        "HYBRID_VECTOR_GRAPH_INDEX"
+      ],
+      "status": "IN_PROGRESS"
+    },
+    "skill_tree_boss_battles": {
+      "features": [
+        "BLOOM_CALIBRATED_MCQ",
+        "REPLAY_PROTECTION",
+        "DUPLICATE_COSINE_CHECK"
+      ],
+      "status": "MIGRATING_FROM_NODE"
+    },
+    "student_general_chat": {
+      "code_as_visual": [
+        "SVG_CIRCUIT",
+        "WAVEFORM_PLOT",
+        "MERMAID_DAG",
+        "INTERACTIVE_SLIDER"
+      ],
+      "focus_tracks": [
+        "STANDARD_BTECH",
+        "GATE_ASPIRANT",
+        "PLACEMENT_PREP",
+        "ENTREPRENEURSHIP",
+        "RESEARCHER"
+      ],
+      "modes": [
+        "DIRECT",
+        "RAG_ON",
+        "WEB_SEARCH_ON",
+        "ACADEMIC_SEARCH_ON",
+        "TOT_SYSTEM2_ON"
+      ],
+      "status": "IMPLEMENTED_MODERN"
+    },
+    "tutor_guided_scaffolding": {
+      "benchmarks": "Mimicking Gemini Guided Learning and ChatGPT Study Mode",
+      "mode": "SCAFFOLDING_PLUS_SOCRATIC",
+      "status": "IMPLEMENTED_MODERN"
+    }
+  },
+  "project": "iMentor-NextGen",
+  "protected_live_services": {
+    "fastapi_rag": "port 2005 (PID 1530359)",
+    "mongodb": "port 27017 (PID 2470244)",
+    "redis": "port 6379 (PID 2470209)",
+    "sglang_server": "port 30000 (PID 2487436)",
+    "vite_frontend": "port 3005 (PID 1564218)"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "course_code": "EE3631",
+  "subject_name": "Soft Computing Techniques",
+  "category": "cs",
+  "textbooks": [
+    {
+      "title": "Introduction to Algorithms (CLRS)",
+      "authors": "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+      "publisher": "MIT Press",
+      "edition": "4th Edition",
+      "code": "T1",
+      "relevance": "Foundational text for asymptotic analysis, divide-and-conquer, dynamic programming, and graph algorithms."
+    },
+    {
+      "title": "Data Structures and Algorithm Analysis in C",
+      "authors": "Mark Allen Weiss",
+      "publisher": "Pearson",
+      "edition": "2nd Edition",
+      "code": "T2",
+      "relevance": "Rigorous analysis of AVL trees, B-trees, hashing, and priority queues."
+    }
+  ],
+  "references": null,
+  "nptel_courses": [
+    {
+      "course_name": "Programming, Data Structures and Algorithms in Python / C",
+      "instructor": "Prof. Madhavan Mukund",
+      "institute": "IIT Madras / CMI",
+      "url": "https://nptel.ac.in/courses/106106145",
+      "modules_count": 40
+    }
+  ],
+  "simulation_tools": [
+    "Visualgo / HTML5 Canvas",
+    "Python / C++ GDB",
+    "Algorithm Profiler"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Basic Physics \u0026 Computational Modeling"
+  ]
+}

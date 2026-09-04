@@ -1,0 +1,1731 @@
+{
+  "course_code": "EE2061",
+  "course_name": "Control Systems",
+  "category": "control",
+  "generated_at": "2026-08-24T01:14:44+05:30",
+  "standard_caliber": "IIT Bombay / MIT OCW / Stanford Graduate Standards",
+  "total_lectures": 36,
+  "total_subtopics": 159,
+  "topic_records": [
+    {
+      "lecture_num": 1,
+      "topic_title": "Analogy with mechanical systems, formulation of differential equations for",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Analogy with mechanical systems",
+          "pedagogical_intuition": "For 'Analogy with mechanical systems', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "formulation of differential equations for electrical systems transfer functions of open and closed loop systems",
+          "pedagogical_intuition": "For 'formulation of differential equations for electrical systems transfer functions of open and closed loop systems', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "DC \u0026 AC servomotors",
+          "pedagogical_intuition": "For 'DC \u0026 AC servomotors', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "synchro pair as error detector",
+          "pedagogical_intuition": "For 'synchro pair as error detector', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "block diagram representation of control systems: block diagram algebra",
+          "pedagogical_intuition": "For 'block diagram representation of control systems: block diagram algebra', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "signal flow graph",
+          "pedagogical_intuition": "For 'signal flow graph', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "Mason’s gain formula",
+          "pedagogical_intuition": "For 'Mason’s gain formula', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 2,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L2_UNDERSTAND",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L2_UNDERSTAND"
+        }
+      ]
+    },
+    {
+      "lecture_num": 3,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 4,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 5,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 6,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit I: Mathematical Models of Physical Systems",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 7,
+      "topic_title": "Standard test signals – step, ramp, parabolic, and impulse; impulse response,",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Standard test signals – step",
+          "pedagogical_intuition": "For 'Standard test signals – step', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "ramp",
+          "pedagogical_intuition": "For 'ramp', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "parabolic",
+          "pedagogical_intuition": "For 'parabolic', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "and impulse; impulse response",
+          "pedagogical_intuition": "For 'and impulse; impulse response', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "characteristic equation of feedback systems",
+          "pedagogical_intuition": "For 'characteristic equation of feedback systems', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "transient response of first order and second order systems to standard test signals",
+          "pedagogical_intuition": "For 'transient response of first order and second order systems to standard test signals', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "time domain specifications",
+          "pedagogical_intuition": "For 'time domain specifications', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "steady-state error and error constants",
+          "pedagogical_intuition": "For 'steady-state error and error constants', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "introduction to P",
+          "pedagogical_intuition": "For 'introduction to P', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "PI",
+          "pedagogical_intuition": "For 'PI', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "PID controllers",
+          "pedagogical_intuition": "For 'PID controllers', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 8,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 9,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L3_APPLY",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L3_APPLY"
+        }
+      ]
+    },
+    {
+      "lecture_num": 10,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 11,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 12,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit II: Time Domain Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 13,
+      "topic_title": "Concept of stability and conditions for stability, Routh – Hurwitz criterion,",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Concept of stability and conditions for stability",
+          "pedagogical_intuition": "For 'Concept of stability and conditions for stability', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Routh – Hurwitz criterion",
+          "pedagogical_intuition": "For 'Routh – Hurwitz criterion', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "dominant poles of transfer function",
+          "pedagogical_intuition": "For 'dominant poles of transfer function', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 14,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 15,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 16,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 17,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 18,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit III: Stability Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 19,
+      "topic_title": "The root locus concept, basic properties, magnitude and angle conditions,",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "The root locus concept",
+          "pedagogical_intuition": "For 'The root locus concept', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "basic properties",
+          "pedagogical_intuition": "For 'basic properties', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "magnitude and angle conditions",
+          "pedagogical_intuition": "For 'magnitude and angle conditions', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "properties and construction of the complex root loci",
+          "pedagogical_intuition": "For 'properties and construction of the complex root loci', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "effects of adding poles and zeros to G(s) H(s) on the root loci",
+          "pedagogical_intuition": "For 'effects of adding poles and zeros to G(s) H(s) on the root loci', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 20,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 21,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 22,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 23,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 24,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit IV: Root Locus Technique",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 25,
+      "topic_title": "Introduction, frequency response specifications, correlation between time and",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Introduction",
+          "pedagogical_intuition": "For 'Introduction', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "frequency response specifications",
+          "pedagogical_intuition": "For 'frequency response specifications', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "correlation between time and frequency response",
+          "pedagogical_intuition": "For 'correlation between time and frequency response', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "specifications",
+          "pedagogical_intuition": "For 'specifications', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "stability analysis from Bode plot",
+          "pedagogical_intuition": "For 'stability analysis from Bode plot', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Nyquist plot",
+          "pedagogical_intuition": "For 'Nyquist plot', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "effect of adding poles \u0026 zeros to G(s) H(s) on the shape of polar plots",
+          "pedagogical_intuition": "For 'effect of adding poles \u0026 zeros to G(s) H(s) on the shape of polar plots', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 26,
+      "topic_title": "Introduction to lead, lag, lead-lag compensation techniques",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Introduction to lead",
+          "pedagogical_intuition": "For 'Introduction to lead', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "lag",
+          "pedagogical_intuition": "For 'lag', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "lead-lag compensation techniques",
+          "pedagogical_intuition": "For 'lead-lag compensation techniques', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 27,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 28,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 29,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 30,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit V: Frequency Response Analysis",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 31,
+      "topic_title": "State variables, State equations, converting a transfer function to state space,",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "State variables",
+          "pedagogical_intuition": "For 'State variables', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "State equations",
+          "pedagogical_intuition": "For 'State equations', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "converting a transfer function to state space",
+          "pedagogical_intuition": "For 'converting a transfer function to state space', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "converting from state space to a transfer function",
+          "pedagogical_intuition": "For 'converting from state space to a transfer function', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "Laplace transform solution of state equations",
+          "pedagogical_intuition": "For 'Laplace transform solution of state equations', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "time-domain solution of state equations",
+          "pedagogical_intuition": "For 'time-domain solution of state equations', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept of controllability and observability",
+          "pedagogical_intuition": "For 'concept of controllability and observability', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 32,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 1)",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 33,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 2)",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L4_ANALYZE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L4_ANALYZE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 34,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 3)",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 35,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 4)",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L5_EVALUATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L5_EVALUATE"
+        }
+      ]
+    },
+    {
+      "lecture_num": 36,
+      "topic_title": "Numerical Problem Solving \u0026 GATE Practice (Session 5)",
+      "module": "Unit VI: State Space Analysis",
+      "bloom_level": "L6_CREATE",
+      "subtopic_enhancements": [
+        {
+          "subtopic_name": "Comprehensive review",
+          "pedagogical_intuition": "For 'Comprehensive review', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "GATE PYQ practice",
+          "pedagogical_intuition": "For 'GATE PYQ practice', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "numerical problem solving",
+          "pedagogical_intuition": "For 'numerical problem solving', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        },
+        {
+          "subtopic_name": "concept mapping",
+          "pedagogical_intuition": "For 'concept mapping', dynamic trajectories are characterized by the complex s-plane pole constellation. Damping ratio zeta governs transient overshoot while natural frequency omega_n controls response speed.",
+          "mathematical_model": "s^2 + 2\\zeta\\omega_n s + \\omega_n^2 = 0 \\implies s_{1,2} = -\\zeta\\omega_n \\pm j\\omega_n\\sqrt{1-\\zeta^2}",
+          "interactive_sim_hook": "Real-Time S-Plane Pole Constellation: Drag closed-loop complex conjugate poles to observe instantaneous 2nd-order step response y(t), settling time T_s, and % overshoot.",
+          "industry_relevance": "Fly-by-wire aerospace autopilots (DO-178C certification), robotic manipulator trajectory controllers, and ASML extreme ultraviolet lithography stage positioning.",
+          "gate_pyq_mapping": "GATE EE/EC 2-Mark: Routh-Hurwitz marginal stability gain K_mar and phase margin PM calculation from Nyquist plots.",
+          "bloom_cognitive_target": "L6_CREATE"
+        }
+      ]
+    }
+  ],
+  "master_textbook_path": "course_bootstrap/EE2061/ai_reference_textbook.md"
+}

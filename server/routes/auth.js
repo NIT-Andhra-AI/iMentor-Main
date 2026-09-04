@@ -103,24 +103,15 @@ router.post('/signup', async (req, res) => {
         user.unmarkModified('password');
 
         user.profile = { name, college, universityNumber, degreeType, branch, year, learningStyle, currentGoals: currentGoals || '' };
-        // LLM provider is required — no silent default
-        if (!preferredLlmProvider) {
-            return res.status(400).json({ message: 'Please select your LLM provider to continue.' });
-        }
-        user.preferredLlmProvider = preferredLlmProvider;
-        user.apiKeyRequestStatus = requestAdminKey ? 'pending' : 'none';
-        // local_llm uses vLLM/Ollama on the server — no API key needed
-        if (preferredLlmProvider === 'local_llm' || preferredLlmProvider === 'ollama') {
-            user.ollamaUrl = (ollamaUrl || '').trim() || process.env.OLLAMA_API_BASE_URL || 'http://localhost:11434';
+        if (!preferredLlmProvider || preferredLlmProvider === 'local_llm' || preferredLlmProvider === 'ollama') {
+            user.preferredLlmProvider = 'sglang';
+            user.localLlmUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
             user.encryptedApiKey = null;
-        } else if (preferredLlmProvider === 'gemini') {
-            user.encryptedApiKey = requestAdminKey ? null : (apiKey || null);
-            user.ollamaUrl = '';
         } else {
-            // groq or other cloud providers
+            user.preferredLlmProvider = preferredLlmProvider;
             user.encryptedApiKey = requestAdminKey ? null : (apiKey || null);
-            user.ollamaUrl = '';
         }
+        user.apiKeyRequestStatus = requestAdminKey ? 'pending' : 'none';
 
         // Mark email as verified
         user.emailVerified = true;

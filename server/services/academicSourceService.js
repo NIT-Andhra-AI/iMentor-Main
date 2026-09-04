@@ -138,6 +138,47 @@ async function fetchViaMCP(query, options = {}) {
 const OPENALEX_API = 'https://api.openalex.org/works';
 const ARXIV_API    = 'http://export.arxiv.org/api/query';
 
+// ── Academic Query Multi-tier LRU Cache ──────────────────────────────────────
+const _academicQueryCache = new Map();
+const ACADEMIC_CACHE_MAX = 1000;
+const ACADEMIC_CACHE_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
+
+function _getCachedAcademicQuery(key) {
+    const entry = _academicQueryCache.get(key);
+    if (!entry) return null;
+    if (Date.now() - entry.timestamp > ACADEMIC_CACHE_TTL_MS) {
+        _academicQueryCache.delete(key);
+        return null;
+    }
+    return entry.data;
+}
+
+function _setCachedAcademicQuery(key, data) {
+    if (_academicQueryCache.size >= ACADEMIC_CACHE_MAX) {
+        const firstKey = _academicQueryCache.keys().next().value;
+        _academicQueryCache.delete(firstKey);
+    }
+    _academicQueryCache.set(key, { data, timestamp: Date.now() });
+}
+
+// ── OpenAlex Token Bucket Rate Limiter (10 req/s polite pool) ────────────────
+let _openAlexTokens = 10;
+let _lastOpenAlexTokenRefill = Date.now();
+
+async function _acquireOpenAlexRateLimitToken() {
+    const now = Date.now();
+    const elapsed = (now - _lastOpenAlexTokenRefill) / 1000;
+    _openAlexTokens = Math.min(10, _openAlexTokens + elapsed * 10);
+    _lastOpenAlexTokenRefill = now;
+
+    if (_openAlexTokens < 1) {
+        const waitMs = Math.ceil((1 - _openAlexTokens) * 100);
+        await new Promise(resolve => setTimeout(resolve, waitMs));
+        return _acquireOpenAlexRateLimitToken();
+    }
+    _openAlexTokens -= 1;
+}
+
 // ── Trusted publisher allow-list for deep research ────────────────────────────
 // Only papers from these publishers pass the quality gate.
 // arXiv is included but requires a minimum citation count.
@@ -314,6 +355,16 @@ const academicSourceService = {
 
   async fetchOpenAlex(query, limit, constraints = {}) {
     try {
+      const cacheKey = `oa_${query.trim().toLowerCase()}_${limit}_${JSON.stringify(constraints)}`;
+      const cached = _getCachedAcademicQuery(cacheKey);
+      if (cached) {
+        log.debug('RESEARCH', `[OpenAlex Cache Hit] for "${query.slice(0, 40)}"`);
+        return cached.slice(0, limit);
+      }
+
+      // Acquire polite pool rate limit token (10 req/s)
+      await _acquireOpenAlexRateLimitToken();
+
       // Build OpenAlex filter string from structured constraints
       const filterParts = [];
       if (constraints.yearStart && constraints.yearEnd) {
@@ -329,9 +380,6 @@ const academicSourceService = {
       }
 
       // ── Trusted publisher filter ─────────────────────────────────────────
-      // OpenAlex publisher IDs for the trusted allow-list.
-      // When trustedPublishersOnly=true (always set for deep research) we push
-      // an OR filter for IEEE | Elsevier | Springer | ScienceDirect.
       const TRUSTED_ORG_IDS = [
         'https://openalex.org/P4310315706',  // IEEE
         'https://openalex.org/P4310319900',  // Elsevier (includes ScienceDirect)
@@ -339,13 +387,11 @@ const academicSourceService = {
         'https://openalex.org/P4310315823',  // Nature Portfolio
       ];
       if (constraints.trustedPublishersOnly) {
-        // OpenAlex supports pipe (OR) for the same filter key
         filterParts.push(
           `primary_location.source.host_organization:${TRUSTED_ORG_IDS.join('|')}`
         );
         log.info('RESEARCH', '[PublisherGate] OpenAlex restricted to IEEE|Elsevier|Springer|Nature');
       } else if (constraints.venueFilter) {
-        // Legacy single-venue filter kept for backward compatibility
         const VENUE_MAP = {
           'IEEE':     'https://openalex.org/P4310315706',
           'Elsevier': 'https://openalex.org/P4310319900',
@@ -366,6 +412,7 @@ const academicSourceService = {
       const params = {
         search:   query,
         per_page: fetchLimit,
+        mailto:   'imentor@academic.search',
         sort:     'cited_by_count:desc,publication_year:desc',
         select:   'id,title,abstract_inverted_index,authorships,publication_year,doi,cited_by_count,concepts,referenced_works,primary_location',
       };
@@ -399,15 +446,14 @@ const academicSourceService = {
         };
       });
 
-      // Post-fetch gate: if trustedPublishersOnly is set, the API-level filter
-      // already restricts results; this second pass catches anything that slipped
-      // through (e.g. works without host_organization metadata).
       if (constraints.trustedPublishersOnly) {
-        mapped = applyPublisherGate(mapped, false); // soft — missing publisher = keep
+        mapped = applyPublisherGate(mapped, false);
         log.info('RESEARCH', `[PublisherGate] OpenAlex: ${mapped.length}/${works.length} pass publisher check`);
       }
 
-      return mapped.slice(0, limit);
+      const finalResults = mapped.slice(0, limit);
+      _setCachedAcademicQuery(cacheKey, finalResults);
+      return finalResults;
     } catch (err) {
       log.warn('RESEARCH', `OpenAlex error: ${err.message}`);
       return [];

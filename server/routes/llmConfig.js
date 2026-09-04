@@ -11,18 +11,19 @@ const { validateProviderConnection, fetchAvailableModels } = require('../service
 // @desc    Update user's LLM preferences (provider, key, or URL)
 // @access  Private
 router.put("/config", async (req, res) => {
-  // 1. Destructure all possible fields.
-  const { llmProvider, apiKey, ollamaUrl, ollamaModel, selectedModelId, modelRoutingMode, autoModelRouting } = req.body;
-  const userId = req.user._id;
-
   try {
-    // 2. Start with a blank object. We will only update what is sent.
+    // 1. Destructure all possible fields.
+    const { llmProvider, apiKey, sglangUrl, localLlmUrl, ollamaUrl, ollamaModel, selectedModelId, modelRoutingMode, autoModelRouting } = req.body;
+    const userId = req.user._id;
+
     const updates = {};
 
     if (llmProvider) {
-      // Normalize frontend alias
-      const normalizedProvider = llmProvider === 'local_llm' ? 'local_llm' : llmProvider;
-      if (!["local_llm", "gemini", "ollama", "groq"].includes(normalizedProvider)) {
+      let normalizedProvider = llmProvider;
+      if (llmProvider === 'local_llm' || llmProvider === 'ollama') {
+        normalizedProvider = 'sglang';
+      }
+      if (!["sglang", "local_llm", "gemini", "groq", "openai", "claude"].includes(normalizedProvider)) {
         log.warn('AI', `Invalid LLM provider: ${llmProvider}`);
         return res
           .status(400)
@@ -50,15 +51,10 @@ router.put("/config", async (req, res) => {
       updates.encryptedApiKey = encrypt(apiKey);
     }
 
-    // If a new Ollama URL is provided, add it to updates.
-    if (typeof ollamaUrl === "string") {
-      updates.ollamaUrl = ollamaUrl.trim().replace(/\/+$/, "");
-    }
-
-
-    // If a new Ollama model is provided, add it to updates.
-    if (ollamaModel) {
-      updates.ollamaModel = ollamaModel;
+    // Support sglangUrl / localLlmUrl / legacy ollamaUrl
+    const effectiveLocalUrl = sglangUrl || localLlmUrl || ollamaUrl;
+    if (typeof effectiveLocalUrl === "string") {
+      updates.localLlmUrl = effectiveLocalUrl.trim().replace(/\/+$/, "");
     }
 
     // 3. If the updates object is empty, nothing was sent to change.

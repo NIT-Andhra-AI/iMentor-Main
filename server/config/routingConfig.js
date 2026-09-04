@@ -132,10 +132,10 @@ const PROVIDERS = {
     OLLAMA_EMBED:    { provider: 'ollama',     model: process.env.OLLAMA_EMBED_MODEL   || 'mxbai-embed-large', shift: 'day',   active: true, embeddingOnly: true },
     OLLAMA_ROUTER:   { provider: 'ollama',     model: process.env.OLLAMA_ROUTER_MODEL  || 'qwen2.5:3b',        shift: 'day',   active: true, routerOnly: true },
     // ── Primary: SGLang for ALL chat operations ──
-    SGLANG_CHAT:     { provider: 'sglang_chat',  model: process.env.SGLANG_CHAT_MODEL    || 'Qwen/Qwen2.5-14B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
-    SGLANG_REASON:   { provider: 'sglang_reason',model: process.env.SGLANG_REASON_MODEL  || 'Qwen/Qwen2.5-14B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
-    SGLANG_HEAVY:    { provider: 'sglang_heavy', model: process.env.SGLANG_HEAVY_MODEL   || 'Qwen/Qwen2.5-14B-Instruct-AWQ', shift: 'both',  active: process.env.SGLANG_ENABLED === 'true' },
-    SGLANG_TUTOR:    { provider: 'sglang_chat',  model: process.env.SGLANG_CHAT_MODEL    || 'Qwen/Qwen2.5-14B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
+    SGLANG_CHAT:     { provider: 'sglang_chat',  model: process.env.SGLANG_CHAT_MODEL    || 'Qwen/Qwen2.5-7B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
+    SGLANG_REASON:   { provider: 'sglang_reason',model: process.env.SGLANG_REASON_MODEL  || 'Qwen/Qwen2.5-7B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
+    SGLANG_HEAVY:    { provider: 'sglang_heavy', model: process.env.SGLANG_HEAVY_MODEL   || 'Qwen/Qwen2.5-7B-Instruct-AWQ', shift: 'both',  active: process.env.SGLANG_ENABLED === 'true' },
+    SGLANG_TUTOR:    { provider: 'sglang_chat',  model: process.env.SGLANG_CHAT_MODEL    || 'Qwen/Qwen2.5-7B-Instruct-AWQ', shift: 'day',   active: process.env.SGLANG_ENABLED === 'true' },
     // ── Fallback: Gemini when SGLang unreachable ──
     GEMINI_FLASH:    { provider: 'gemini',     model: process.env.GEMINI_MODEL         || 'gemini-2.0-flash', shift: 'day', active: !!process.env.GEMINI_API_KEY },
 };

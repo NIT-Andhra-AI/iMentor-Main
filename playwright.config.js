@@ -15,12 +15,12 @@ export default defineConfig({
   timeout: 180000,
   expect: { timeout: 30000 },
   use: {
-    baseURL: 'http://localhost:3005',
+    baseURL: process.env.BASE_URL || 'http://localhost:3006',
     headless: true,             // ← headless for agent/CI execution
-    slowMo: 400,                 // ← 400ms between actions for clear visibility
-    video: 'on',                 // ← always record video
-    screenshot: 'on',
-    trace: 'on',
+    slowMo: 50,                 // ← snappy yet stable event pacing
+    video: 'retain-on-failure',  // ← record and retain video on failure
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
     actionTimeout: 30000,
     navigationTimeout: 30000,
     viewport: { width: 1440, height: 900 },

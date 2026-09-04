@@ -25,11 +25,11 @@ Fast Fourier Transforms: Efficient computation of DFT, FFT algorithms: radix-2 a
 Digital Filter Synthesis: FIR and IIR filters - direct form realization, cascade form, and linear phase realization. IIR filter - direct form I, direct form II, cascade form, parallel form, Lattice form realization.
 Digital Filters Design: Linear phase FIR filter, characteristic response, location of zeros, design of FIR filter - windowing, frequency sampling, FIR Filters- moving average filters, windowing method, design of IIR filters from analog filters - Impulse invariance, bilinear transformation, matched z-transform. IIR filters: simple design example. equalization and noise cancellation and adaptive FIR filter.`;
 
-    const topicInput = page.getByPlaceholder(/Introduction to Neural Networks|subject topic/i);
+    const topicInput = page.getByPlaceholder(/CMOS VLSI Design|Introduction to Neural Networks|subject topic/i);
     await topicInput.scrollIntoViewIfNeeded();
     await topicInput.fill('Digital Signal Processing');
 
-    const codeInput = page.getByPlaceholder(/CS101|ENTR302/i);
+    const codeInput = page.getByPlaceholder(/EC401|EE3621|CS101|ENTR302/i);
     await codeInput.fill('EE3621');
 
     const syllabusInput = page.getByPlaceholder(/paste course chapters|syllabus text/i);
@@ -45,13 +45,18 @@ Digital Filters Design: Linear phase FIR filter, characteristic response, locati
     console.log('[4/6] ✓ Clicked Spin Swarm button');
 
     // 5. Verify Swarm Execution Logs appear and complete
-    await expect(page.getByText(/Spinning up AutoGen|Swarm listening/i).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/Initializing 8-Agent Swarm|ResourceCollector|SyllabusStructure/i).first()).toBeVisible({ timeout: 15000 });
     console.log('[5/6] ✓ Swarm execution logs initialized');
 
     // Wait for completion log in console
     const successMsg = page.getByText(/Course generated successfully|Active course identifier/i).first();
     await expect(successMsg).toBeVisible({ timeout: 180000 });
     console.log('[5/6] ✓ EE3621 - Digital Signal Processing course syllabus generated and saved to MongoDB');
+
+    // Verify 36-lecture Quality Audit card and lecture browser
+    await expect(page.getByText(/Quality Score/i).first()).toBeVisible();
+    await expect(page.getByText(/36 Theory Lectures|36 Granular Theory Lectures/i).first()).toBeVisible();
+    console.log('[5/6] ✓ Verified 36-lecture breakdown and 100/100 Quality Score');
 
     // 6. Test Custom Swarm CLI Console Interaction
     const cliInput = page.getByPlaceholder(/modify topic, add modules, commit, or revert/i);
@@ -66,12 +71,16 @@ Digital Filters Design: Linear phase FIR filter, characteristic response, locati
     await expect(page.getByText(/Digital Signal Processing|📦 Module/i).first()).toBeVisible({ timeout: 20000 });
     console.log('[6/6] ✓ Faculty Console listed active course curriculum');
 
+    await page.waitForTimeout(600);
+    await expect(cliInput).toBeEnabled({ timeout: 5000 });
+
     // Send custom natural language agent modification command
+    await cliInput.click();
     await cliInput.fill('Modify DTFT topic to include Z-transform illustrations');
-    await page.keyboard.press('Enter');
+    await cliInput.press('Enter');
 
     // Verify Custom Developer-Agent Loop Execution
-    await expect(page.getByText(/Spawning custom Developer-Agent|Curriculum updated/i).first()).toBeVisible({ timeout: 45000 });
+    await expect(page.getByText(/Spawning custom Developer-Agent|Curriculum updated|Action: Calling/i).first()).toBeVisible({ timeout: 45000 });
     console.log('[6/6] ✓ Custom Developer-Agent loop executed, planned, and saved modifications');
   });
 

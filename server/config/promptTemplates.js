@@ -469,9 +469,13 @@ Your entire response MUST be this JSON object and nothing else. Do not add any c
 Provide your JSON decision now.`;
 };
 
-
-
 const createSynthesizerPrompt = (originalQuery, toolOutput, toolName) => {
+  const rawOutputStr = typeof toolOutput === 'string'
+    ? toolOutput
+    : (toolOutput?.toolOutput && typeof toolOutput.toolOutput === 'string')
+      ? toolOutput.toolOutput
+      : (toolOutput ? (typeof toolOutput === 'object' ? JSON.stringify(toolOutput) : String(toolOutput)) : '');
+  const outputStr = rawOutputStr.trim();
 
   let synthesizerUserMessage;
 
@@ -502,7 +506,7 @@ Your final response MUST follow this two-part structure precisely:
 ${safe(originalQuery)}
 
 **WEB SEARCH RESULTS:**
-${safe(toolOutput)}
+${safe(rawOutputStr)}
 
 **YOUR COMPLETE, FORMATTED RESPONSE:**
 `;
@@ -606,32 +610,19 @@ ${safe(toolOutput)}
   }
   else if (toolName === 'rag_search') {
     // Detect whether RAG returned no usable results
-    const _noResults = !toolOutput
-      || toolOutput.trim() === ''
-      || /no relevant context was found/i.test(toolOutput)
-      || /no relevant documents were found/i.test(toolOutput)
-      || /no sufficiently relevant context/i.test(toolOutput);
+    const _noResults = !outputStr
+      || outputStr === ''
+      || /no relevant context was found/i.test(outputStr)
+      || /no relevant documents were found/i.test(outputStr)
+      || /no sufficiently relevant context/i.test(outputStr);
 
     if (_noResults) {
       synthesizerUserMessage = `
-You are an expert AI Tutor. A RAG search was performed on the selected document or course, but **no relevant information was retrieved** for the user's query.
+You are an expert AI Tutor. 
 
-**YOUR TASK — Do NOT answer from your base knowledge. Output exactly the following response, substituting nothing:**
-
----
-
-I searched the selected knowledge source but couldn't find relevant information matching your query.
-
-**What you can try:**
-
-- 🔍 **Refine your query** — use more specific keywords directly from the document. For example, instead of a broad phrase like *"explain X"*, try exact terms like *"X algorithm"*, *"X formula"*, or *"X in the context of Y"*.
-- 💡 **Switch to LLM knowledge** — deselect the document or course from the Knowledge Base panel (toolbar icon) to get an answer from my general training knowledge.
-- 📄 **Verify coverage** — the topic may not be covered in this specific document or course. Check the table of contents or upload a more relevant resource.
-
----
-
-**USER'S ORIGINAL QUERY:**
-"${safe(originalQuery)}"
+**YOUR TASK:**
+Provide a thorough, engaging, highly informative and clear pedagogical answer directly addressing the user's question: "${safe(originalQuery)}".
+If the user asked for a specific tone, depth, or audience (e.g. "to an 8 year old", "intuitive analogy", "step-by-step"), strictly adhere to that tone and target audience!
 `;
     } else {
       synthesizerUserMessage = `
@@ -662,7 +653,7 @@ Your final response MUST follow this two-part structure precisely:
 
 ---
 **CONTEXT DOCUMENTS (from uploaded course materials):**
-${safe(toolOutput)}
+${safe(rawOutputStr)}
 ---
 
 **YOUR COMPLETE, FORMATTED RESPONSE:**
@@ -685,7 +676,7 @@ Your task is to now write a new, comprehensive, and well-structured final answer
 
 ---
 **INFORMATION GATHERED (Your research findings):**
-${safe(toolOutput)}
+${safe(rawOutputStr)}
 ---
 
 Provide your final, comprehensive, and well-formatted answer now.

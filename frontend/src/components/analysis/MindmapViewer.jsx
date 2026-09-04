@@ -109,13 +109,13 @@ const MindmapViewer = forwardRef(({ mermaidCode }, ref) => {
       return <div className="p-4 text-center text-text-muted-light dark:text-text-muted-dark text-xs">Waiting for Mermaid.js library...</div>;
     }
     if (error && (!isLoading || (svgContainerRef.current && svgContainerRef.current.innerHTML.includes('Error rendering')))) {
-        return <div ref={svgContainerRef} className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-gray-50 dark:bg-gray-800/50 p-2 rounded-md">
+        return <div ref={svgContainerRef} className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-slate-900/90 border border-slate-700/60 shadow-xl backdrop-blur-md p-4 rounded-xl text-slate-100">
                 {/* Error message will be injected by useEffect's catch block */}
                </div>;
     }
     
     if (isLoading) { 
-         return <div ref={svgContainerRef} className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-gray-50 dark:bg-gray-800/50 p-2 rounded-md">
+         return <div ref={svgContainerRef} className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-slate-900/90 border border-slate-700/60 shadow-xl backdrop-blur-md p-4 rounded-xl text-slate-100">
             {/* Loading message is set by renderMermaidDiagram's initial innerHTML write */}
          </div>;
     }
@@ -127,7 +127,7 @@ const MindmapViewer = forwardRef(({ mermaidCode }, ref) => {
     return (
         <div 
             ref={svgContainerRef} 
-            className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-gray-50 dark:bg-gray-800/50 p-2 rounded-md"
+            className="mermaid-diagram-render-area w-full h-full flex justify-center items-center bg-slate-900/90 border border-slate-700/60 shadow-xl backdrop-blur-md p-4 rounded-xl text-slate-100"
         >
 
         </div>

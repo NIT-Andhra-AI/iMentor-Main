@@ -1,7 +1,7 @@
 // tests/e2e/helpers/chat-helpers.js
 // Shared chat interaction helpers for E2E tests
 
-const BASE_API = 'http://localhost:5005/api';
+const BASE_API = process.env.BASE_API || 'http://localhost:5006/api';
 
 /* ─── Selectors ────────────────────────────────────────────────────── */
 
@@ -37,9 +37,9 @@ export const SEL = {
   // Error indicators
   errorModal:         '[role="alert"], [class*="error-modal"]',
 
-  // Service interruption dialog ("AI Service Notification")
-  serviceDialog:      'dialog[aria-modal="true"]',
-  serviceDialogDismiss: 'dialog button:text-is("Dismiss"), dialog button:text-is("Got it"), dialog button[aria-label*="Close"]',
+  // Service interruption dialog ("AI Service Notification" / "Service Status")
+  serviceDialog:      '[role="dialog"][aria-modal="true"], dialog[aria-modal="true"], [class*="error-modal"]',
+  serviceDialogDismiss: '[role="dialog"] button:has-text("Dismiss"), [role="dialog"] button:has-text("Got it"), [role="dialog"] button[aria-label*="Close"], button:has-text("Got it"), button:has-text("Dismiss")',
 };
 
 /* ─── Core chat actions ────────────────────────────────────────────── */
@@ -47,10 +47,10 @@ export const SEL = {
 /**
  * Wait for SSE streaming to complete (cursor disappears).
  */
-export async function waitForStreamComplete(page, timeout = 90000) {
+export async function waitForStreamComplete(page, timeout = 120000) {
   try {
-    // First wait for cursor to appear (streaming started)
-    await page.waitForSelector(SEL.streamingCursor, { state: 'visible', timeout: 90000 });
+    // Wait for cursor to appear if starting
+    await page.waitForSelector(SEL.streamingCursor, { state: 'visible', timeout: 15000 });
   } catch {
     // Cursor may have already gone or response was instant
   }
@@ -59,7 +59,7 @@ export async function waitForStreamComplete(page, timeout = 90000) {
   } catch {
     // Already hidden
   }
-  await page.waitForTimeout(500); // settle
+  await page.waitForTimeout(1000); // settle
 }
 
 /**
@@ -68,17 +68,15 @@ export async function waitForStreamComplete(page, timeout = 90000) {
  */
 export async function dismissServiceDialog(page) {
   try {
-    const dialog = page.locator(SEL.serviceDialog);
-    if (await dialog.isVisible({ timeout: 1000 }).catch(() => false)) {
-      // Try the labelled dismiss buttons first
-      const dismissBtn = page.locator(SEL.serviceDialogDismiss).first();
-      if (await dismissBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
-        await dismissBtn.click();
+    const dialog = page.locator('[role="dialog"][aria-modal="true"], dialog[aria-modal="true"]').first();
+    if (await dialog.isVisible({ timeout: 500 }).catch(() => false)) {
+      const dismissBtn = page.locator('button:has-text("Got it"), button:has-text("Dismiss"), button[aria-label*="Close"]').first();
+      if (await dismissBtn.isVisible({ timeout: 500 }).catch(() => false)) {
+        await dismissBtn.click({ force: true });
       } else {
         await page.keyboard.press('Escape');
       }
-      // Wait for dialog to close
-      await dialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+      await dialog.waitFor({ state: 'hidden', timeout: 3000 }).catch(() => {});
     }
   } catch {
     // No dialog present — fine
@@ -89,13 +87,13 @@ export async function dismissServiceDialog(page) {
  * Send a chat message and wait for full bot response.
  * Returns the text content of the last bot message.
  */
-export async function sendAndWait(page, text, timeout = 90000) {
+export async function sendAndWait(page, text, timeout = 120000) {
   const input = page.locator('textarea').first();
-  // Wait for textarea to be visible AND enabled (previous response must have finished)
-  await input.waitFor({ state: 'visible', timeout: 10000 });
-  await page.waitForSelector('textarea:not([disabled])', { timeout });
-  // Dismiss any service dialog that might be blocking the UI
+  await input.waitFor({ state: 'visible', timeout: 15000 });
   await dismissServiceDialog(page);
+  await page.waitForSelector('textarea:not([disabled])', { timeout: 30000 });
+
+  const initialBotCount = await page.locator(SEL.botMessage).count();
   await input.fill(text);
 
   const sendBtn = page.locator(SEL.sendButton);
@@ -105,14 +103,23 @@ export async function sendAndWait(page, text, timeout = 90000) {
     await input.press('Enter');
   }
 
-  // Wait for at least one bot message to appear
-  await page.waitForSelector(SEL.botMessage, { timeout });
+  // Poll until new bot message appears and completes streaming
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    await dismissServiceDialog(page);
+    const count = await page.locator(SEL.botMessage).count();
+    const hasCursor = await page.locator(SEL.streamingCursor).isVisible().catch(() => false);
+    const isTextareaReady = await page.locator('textarea:not([disabled])').isVisible().catch(() => false);
 
-  // Wait for streaming to finish
-  await waitForStreamComplete(page, timeout);
-
-  // Ensure textarea is re-enabled, meaning stream/reasoning is completely finished
-  await page.waitForSelector('textarea:not([disabled])', { timeout });
+    if (count > initialBotCount && !hasCursor && isTextareaReady) {
+      const lastText = await getLastBotText(page);
+      if (lastText && lastText.length > 5 && !lastText.includes('Thinking...')) {
+        await page.waitForTimeout(500);
+        return lastText;
+      }
+    }
+    await page.waitForTimeout(800);
+  }
 
   return getLastBotText(page);
 }

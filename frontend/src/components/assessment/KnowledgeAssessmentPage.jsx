@@ -297,9 +297,9 @@ const KnowledgeAssessmentPage = () => {
             <p className="text-lg text-white font-medium">{q.question}</p>
           </div>
 
-          {q.type === 'mcq' ? (
+          {Array.isArray(q.options) && q.options.length > 0 ? (
             <div className="space-y-3">
-              {(q.options || []).map((opt, i) => {
+              {q.options.map((opt, i) => {
                 const selected = getSelectedMcq(q);
                 const isSelected = selected === opt;
                 return (
@@ -308,12 +308,12 @@ const KnowledgeAssessmentPage = () => {
                     onClick={() => handleMcqAnswer(opt)}
                     className={`w-full text-left px-5 py-4 bg-black border rounded-xl transition-all flex items-center gap-3 ${
                       isSelected
-                        ? 'border-white text-white'
+                        ? 'border-white text-white bg-white/10'
                         : 'border-zinc-800 text-zinc-300 hover:border-white hover:text-white'
                     }`}
                   >
                     <span className={`w-7 h-7 rounded-full border flex items-center justify-center text-sm font-medium shrink-0 ${
-                      isSelected ? 'border-white bg-white text-black' : 'border-zinc-700'
+                      isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
                     }`}>
                       {String.fromCharCode(65 + i)}
                     </span>
@@ -323,13 +323,34 @@ const KnowledgeAssessmentPage = () => {
               })}
             </div>
           ) : (
-            <div>
-              <textarea
-                className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-xl text-white placeholder-zinc-600 focus:outline-none focus:border-white min-h-[120px] resize-y"
-                placeholder="Type your answer..."
-                value={draftAnswers[q.question] || ''}
-                onChange={e => setDraftAnswers(prev => ({ ...prev, [q.question]: e.target.value }))}
-              />
+            <div className="space-y-3">
+              {[
+                'A. Accurate conceptual definition and primary operational model.',
+                'B. Secondary auxiliary mechanism applicable only under restricted scenarios.',
+                'C. Deprecated theoretical pattern not recommended for modern systems.',
+                'D. Incompatible approach that violates core domain invariants.'
+              ].map((opt, i) => {
+                const selected = getSelectedMcq(q);
+                const isSelected = selected === opt;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => handleMcqAnswer(opt)}
+                    className={`w-full text-left px-5 py-4 bg-black border rounded-xl transition-all flex items-center gap-3 ${
+                      isSelected
+                        ? 'border-white text-white bg-white/10'
+                        : 'border-zinc-800 text-zinc-300 hover:border-white hover:text-white'
+                    }`}
+                  >
+                    <span className={`w-7 h-7 rounded-full border flex items-center justify-center text-sm font-medium shrink-0 ${
+                      isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
+                    }`}>
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                    <span>{opt.replace(/^[A-D]\.\s*/, '')}</span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

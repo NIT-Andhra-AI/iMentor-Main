@@ -158,6 +158,7 @@ _SYSTEM_PROMPT = (
     "- Every diagram must be a valid ```mermaid``` code block using graph TD or flowchart LR syntax.\n"
     "- CRITICAL MERMAID RULES: Node labels must contain ONLY plain text — no LaTeX, no parentheses with backslashes, no special characters.\n"
     "- Use simple words in node labels: write 'f(x)' as 'f of x', write Greek letters as words (alpha, beta, theta).\n"
+    "- INTERACTIVE EXPLANATIONS: You can create interactive HTML/JS widgets (e.g., sliders, charts, variant selectors) to explain concepts visually. To do this, output a self-contained HTML document (with <style> and <script> tags) inside a ```interactive ... ``` code block. This will be rendered securely in an iframe. Use this to help students 'play' with the parameters of a theory.\n"
     "- Never use \\documentclass, \\begin{document}, or any LaTeX document commands.\n"
     "- Never output raw JSON. Output only clean Markdown."
 )

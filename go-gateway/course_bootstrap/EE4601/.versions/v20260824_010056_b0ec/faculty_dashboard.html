@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EE4601 Energy Management and Audit — Faculty Reference Textbook & Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- MathJax 3 for publication-grade mathematical equations -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        packages: {'[+]': ['ams', 'boldsymbol']},
+        tags: 'ams',
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script','noscript','style','textarea','pre','code'],
+        processHtmlClass: 'math-render'
+      },
+      startup: {
+        ready() { MathJax.startup.defaultReady(); }
+      }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #080d1a;
+      --bg-secondary: #0d1528;
+      --bg-tertiary: #111e38;
+      --bg-card: #0f1a30;
+      --bg-hover: #162040;
+      --accent-gold: #d4a853;
+      --accent-gold-dim: #a07830;
+      --accent-teal: #38bdf8;
+      --accent-purple: #a78bfa;
+      --accent-green: #34d399;
+      --accent-rose: #f43f5e;
+      --text-primary: #e8e4d8;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border: #1e2d4a;
+      --border-bright: #2a3f60;
+      --sidebar-w: 360px;
+      --header-h: 68px;
+
+      /* Bloom Level Colors */
+      --bloom-l1: #9ca3af; /* Gray */
+      --bloom-l2: #3b82f6; /* Blue */
+      --bloom-l3: #10b981; /* Green */
+      --bloom-l4: #f59e0b; /* Orange/Amber */
+      --bloom-l5: #8b5cf6; /* Purple */
+      --bloom-l6: #f43f5e; /* Red/Rose */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      height: var(--header-h);
+      background: linear-gradient(135deg, #0d1528 0%, #0f1e3a 100%);
+      border-bottom: 1px solid var(--border-bright);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 100;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), var(--accent-teal), transparent);
+    }
+    .header-logo {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, #b8860b 100%);
+      color: #080d1a; font-weight: 800; font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .header-title h1 {
+      font-size: 1.15rem; font-weight: 700; color: #fff; line-height: 1.2;
+    }
+    .header-title p {
+      font-size: 0.8rem; color: var(--accent-gold); margin-top: 2px; font-weight: 500;
+    }
+    .header-badge {
+      margin-left: auto; background: rgba(212, 168, 83, 0.15); border: 1px solid var(--accent-gold-dim);
+      color: var(--accent-gold); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* ── APP LAYOUT ── */
+    .app-body {
+      display: flex; flex: 1; overflow: hidden;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: var(--sidebar-w);
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar-tabs {
+      display: flex; border-bottom: 1px solid var(--border); background: #070c18; flex-wrap: wrap;
+    }
+    .tab-btn {
+      flex: 1 1 30%; padding: 12px 8px; background: none; border: none; color: var(--text-muted);
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap;
+    }
+    .tab-btn.active {
+      color: var(--accent-gold); border-bottom: 2px solid var(--accent-gold); background: rgba(212, 168, 83, 0.05);
+    }
+    .sidebar-content {
+      flex: 1; overflow-y: auto; padding: 16px;
+    }
+    .sidebar-section { margin-bottom: 20px; }
+    .section-label {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--accent-gold); font-weight: 700; margin-bottom: 4px; padding-left: 4px;
+    }
+    .unit-progress {
+      height: 4px; background: var(--bg-tertiary); border-radius: 2px; margin: 4px 4px 8px; overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%; background: var(--accent-teal); transition: width 0.3s ease;
+    }
+    .unit-stats {
+      font-size: 0.65rem; color: var(--text-muted); padding-left: 4px; margin-bottom: 8px;
+    }
+
+    .nav-group { display: flex; flex-direction: column; gap: 4px; }
+    .nav-item {
+      display: flex; align-items: center; padding: 8px 10px; border-radius: 6px;
+      background: none; border: 1px solid transparent; color: var(--text-secondary);
+      text-align: left; font-size: 0.82rem; cursor: pointer; transition: 0.15s; width: 100%;
+    }
+    .nav-item:hover {
+      background: var(--bg-hover); color: var(--text-primary); border-color: var(--border-bright);
+    }
+    .nav-item.active {
+      background: var(--bg-tertiary); color: var(--accent-gold); border-color: var(--accent-gold-dim); font-weight: 600;
+    }
+    .nav-item-num {
+      width: 32px; font-weight: 700; color: var(--accent-teal); font-size: 0.75rem; flex-shrink: 0;
+    }
+    .nav-item-title {
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 6px;
+    }
+    
+    /* Bloom Badges */
+    .nav-item-bloom {
+      font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; flex-shrink: 0; font-weight: 600;
+    }
+    .bloom-l1 { background: rgba(156, 163, 175, 0.15); color: var(--bloom-l1); }
+    .bloom-l2 { background: rgba(59, 130, 246, 0.15); color: var(--bloom-l2); }
+    .bloom-l3 { background: rgba(16, 185, 129, 0.15); color: var(--bloom-l3); }
+    .bloom-l4 { background: rgba(245, 158, 11, 0.15); color: var(--bloom-l4); }
+    .bloom-l5 { background: rgba(139, 92, 246, 0.15); color: var(--bloom-l5); }
+    .bloom-l6 { background: rgba(244, 63, 94, 0.15); color: var(--bloom-l6); }
+    .bloom-default { background: rgba(56, 189, 248, 0.1); color: var(--accent-teal); }
+
+    /* Alternate Tab Content Containers */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    
+    .panel-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px;
+    }
+    .panel-card h3 { font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 8px; }
+    .panel-card ul { margin-left: 20px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .panel-card li { margin-bottom: 4px; }
+    .score-bar-bg { background: #1e293b; height: 8px; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+    .score-bar-fg { background: var(--accent-green); height: 100%; }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1; display: flex; flex-direction: column; background: var(--bg-primary); overflow: hidden; position: relative;
+    }
+    .top-toolbar {
+      height: 52px; border-bottom: 1px solid var(--border); background: var(--bg-secondary);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+    }
+    .breadcrumb { font-size: 0.85rem; color: var(--text-secondary); }
+    .breadcrumb strong { color: var(--accent-gold); }
+    .btn-group { display: flex; gap: 8px; }
+    .btn-action {
+      padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+      background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-primary); cursor: pointer; transition: 0.2s;
+    }
+    .btn-action:hover { background: var(--border-bright); color: var(--accent-gold); }
+
+    .content-scroll {
+      flex: 1; overflow-y: auto; padding: 32px 48px; display: flex; flex-direction: column; gap: 28px;
+    }
+
+    /* Indicators */
+    .indicators-row {
+      display: flex; gap: 16px; margin-bottom: 20px;
+    }
+    .indicator-pill {
+      background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 6px; padding: 8px 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; flex: 1;
+    }
+    .indicator-val { font-weight: bold; color: #fff; }
+    .indicator-bar { flex: 1; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; }
+    .indicator-bar-inner { height: 100%; }
+    .gate-bar { background: var(--accent-rose); }
+    .ind-bar { background: var(--accent-teal); }
+
+    /* ── TEXTBOOK COMPONENT CARDS ── */
+    .tb-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px;
+    }
+    .tb-card-header {
+      border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start;
+    }
+    .tb-card-header h2 {
+      font-family: 'EB Garamond', serif; font-size: 1.8rem; color: #fff; font-weight: 600;
+    }
+    .tb-meta {
+      display: flex; gap: 12px; margin-top: 6px; font-size: 0.82rem; color: var(--text-muted);
+    }
+    .tb-meta span { color: var(--accent-gold); font-weight: 500; }
+
+    .prose {
+      font-size: 1.02rem; line-height: 1.75; color: #d1d5db;
+    }
+    .prose h3 {
+      font-family: 'EB Garamond', serif; font-size: 1.35rem; color: var(--accent-gold); margin: 20px 0 10px; font-weight: 600;
+    }
+    .prose p { margin-bottom: 14px; }
+    .prose ul { margin: 10px 0 16px 24px; line-height: 1.8; }
+    .prose li { margin-bottom: 6px; }
+
+    .equation-box {
+      background: #060a14; border: 1px solid var(--border-bright); border-left: 4px solid var(--accent-gold);
+      padding: 18px 24px; border-radius: 8px; margin: 20px 0; overflow-x: auto;
+    }
+
+    .worked-example {
+      background: #091224; border: 1px solid var(--border-bright); border-radius: 10px; padding: 20px 24px; margin: 20px 0;
+    }
+    .example-title {
+      font-size: 0.95rem; font-weight: 700; color: var(--accent-teal); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+    }
+
+    .schematic-box {
+      background: #050811; border: 1px solid var(--border); padding: 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; overflow-x: auto; margin: 16px 0;
+    }
+
+    .viva-bank {
+      margin-top: 24px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .viva-item {
+      background: #0b1426; border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px;
+    }
+    .viva-q {
+      font-weight: 600; font-size: 0.92rem; color: var(--text-primary); margin-bottom: 6px;
+    }
+    .viva-a {
+      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* Formula Sheet Overlay */
+    .formula-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(8, 13, 26, 0.95); z-index: 200; display: none;
+      padding: 40px; overflow-y: auto; backdrop-filter: blur(5px);
+    }
+    .formula-overlay.active { display: block; }
+    .formula-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    .formula-header h2 { font-family: 'EB Garamond', serif; font-size: 2rem; color: var(--accent-gold); }
+    .close-formula { background: var(--bg-tertiary); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+    .search-box { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border-bright); background: var(--bg-card); color: #fff; margin-bottom: 24px; font-family: 'Inter', sans-serif; }
+
+    .formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+    .formula-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+    .formula-card h4 { color: var(--accent-teal); margin-bottom: 12px; font-size: 1rem; }
+
+    .floating-btn {
+      position: fixed; bottom: 32px; right: 32px; background: var(--accent-gold); color: #000;
+      width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; border: none; z-index: 99; transition: 0.2s;
+    }
+    .floating-btn:hover { transform: scale(1.05); }
+
+    /* Print styling */
+    @media print {
+      aside, .top-toolbar, .floating-btn { display: none !important; }
+      body { background: #fff; color: #000; overflow: visible; }
+      .content-scroll { padding: 0; overflow: visible; }
+      .tb-card, .formula-overlay { border: none; padding: 0; background: #fff; color: #000; }
+      .formula-overlay { position: static; display: block; }
+      .prose { color: #000; }
+      .equation-box { border-color: #ccc; background: #f9f9f9; }
+      h2, h3, .indicator-pill, .tb-meta { color: #000; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-logo">🏛️</div>
+    <div class="header-title">
+      <h1>EE4601: Energy Management and Audit</h1>
+      <p>Faculty Reference Compendium & Course Teaching Blueprint (Higher Education Standard)</p>
+    </div>
+    <div class="header-badge">📖 Complete Course Compendium</div>
+  </header>
+
+  <!-- APP BODY -->
+  <div class="app-body">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="sidebar-tabs">
+        <button class="tab-btn active" onclick="switchSidebarTab('lectures')">📚 Lectures</button>
+        <button class="tab-btn" onclick="switchSidebarTab('gate')">🎯 GATE Prep</button>
+        <button class="tab-btn" onclick="switchSidebarTab('industry')">🏭 Industry</button>
+        <button class="tab-btn" onclick="switchSidebarTab('exam')">📝 Exam Bank</button>
+        <button class="tab-btn" onclick="switchSidebarTab('viva')">🔬 Viva Bank</button>
+      </div>
+      
+      <div class="sidebar-content">
+        
+        <!-- LECTURES PANE -->
+        <div id="pane-lectures" class="tab-pane active">
+          
+        <div class="sidebar-section">
+          <div class="section-label">UNIT 1: UNIT I: INTRODUCTION TO ENERGY MANAGEMENT AND AUDIT</div>
+          <div class="unit-progress"><div class="progress-bar" style="width: 0%;"></div></div>
+          <div class="unit-stats">0/8 Completed • 320 min remaining</div>
+          <div class="nav-group">
+            <button class="nav-item" onclick="loadLectureView(1)">
+              <span class="nav-item-num">L1</span>
+              <span class="nav-item-title">Definition, need of energy management, principles of energy management - energy</span>
+              <span class="nav-item-bloom bloom-l2">L2_UNDERSTAND</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(2)">
+              <span class="nav-item-num">L2</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 1)</span>
+              <span class="nav-item-bloom bloom-l2">L2_UNDERSTAND</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(3)">
+              <span class="nav-item-num">L3</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 2)</span>
+              <span class="nav-item-bloom bloom-l2">L2_UNDERSTAND</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(4)">
+              <span class="nav-item-num">L4</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 3)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(5)">
+              <span class="nav-item-num">L5</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 4)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(6)">
+              <span class="nav-item-num">L6</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 5)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(7)">
+              <span class="nav-item-num">L7</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 6)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(8)">
+              <span class="nav-item-num">L8</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 7)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="section-label">UNIT 2: UNIT II: IMPLEMENTATION OF ENERGY MANAGEMENT & AUDIT</div>
+          <div class="unit-progress"><div class="progress-bar" style="width: 0%;"></div></div>
+          <div class="unit-stats">0/7 Completed • 280 min remaining</div>
+          <div class="nav-group">
+            <button class="nav-item" onclick="loadLectureView(9)">
+              <span class="nav-item-num">L9</span>
+              <span class="nav-item-title">Energy and power, model energy policy, energy conversion factors, power factor,</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(10)">
+              <span class="nav-item-num">L10</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 1)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(11)">
+              <span class="nav-item-num">L11</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 2)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(12)">
+              <span class="nav-item-num">L12</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 3)</span>
+              <span class="nav-item-bloom bloom-l3">L3_APPLY</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(13)">
+              <span class="nav-item-num">L13</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 4)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(14)">
+              <span class="nav-item-num">L14</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 5)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(15)">
+              <span class="nav-item-num">L15</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 6)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="section-label">UNIT 3: UNIT III: ENERGY MANAGEMENT FOR BUILDINGS AND LIGHTING</div>
+          <div class="unit-progress"><div class="progress-bar" style="width: 0%;"></div></div>
+          <div class="unit-stats">0/7 Completed • 280 min remaining</div>
+          <div class="nav-group">
+            <button class="nav-item" onclick="loadLectureView(16)">
+              <span class="nav-item-num">L16</span>
+              <span class="nav-item-title">Green buildings, lighting, daylighting, motors, HVAC systems, effective outdoor</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(17)">
+              <span class="nav-item-num">L17</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 1)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(18)">
+              <span class="nav-item-num">L18</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 2)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(19)">
+              <span class="nav-item-num">L19</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 3)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(20)">
+              <span class="nav-item-num">L20</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 4)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(21)">
+              <span class="nav-item-num">L21</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 5)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(22)">
+              <span class="nav-item-num">L22</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 6)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="section-label">UNIT 4: UNIT IV: ENERGY MANAGEMENT FOR MOTORS AND INDUSTRIES</div>
+          <div class="unit-progress"><div class="progress-bar" style="width: 0%;"></div></div>
+          <div class="unit-stats">0/7 Completed • 280 min remaining</div>
+          <div class="nav-group">
+            <button class="nav-item" onclick="loadLectureView(23)">
+              <span class="nav-item-num">L23</span>
+              <span class="nav-item-title">Energy management for electric motors, electric motor categories and</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(24)">
+              <span class="nav-item-num">L24</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 1)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(25)">
+              <span class="nav-item-num">L25</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 2)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(26)">
+              <span class="nav-item-num">L26</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 3)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(27)">
+              <span class="nav-item-num">L27</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 4)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(28)">
+              <span class="nav-item-num">L28</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 5)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(29)">
+              <span class="nav-item-num">L29</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 6)</span>
+              <span class="nav-item-bloom bloom-l6">L6_CREATE</span>
+            </button>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <div class="section-label">UNIT 5: UNIT V: CASE STUDIES OF ENERGY MANAGEMENT AND BEST PRACTICES</div>
+          <div class="unit-progress"><div class="progress-bar" style="width: 0%;"></div></div>
+          <div class="unit-stats">0/7 Completed • 280 min remaining</div>
+          <div class="nav-group">
+            <button class="nav-item" onclick="loadLectureView(30)">
+              <span class="nav-item-num">L30</span>
+              <span class="nav-item-title">Case studies: direct effects of energy management, indirect effects of energy</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(31)">
+              <span class="nav-item-num">L31</span>
+              <span class="nav-item-title">Challenges: facilities energy management</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(32)">
+              <span class="nav-item-num">L32</span>
+              <span class="nav-item-title">Best practices: management, team work, resources, energy efficient operation and</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(33)">
+              <span class="nav-item-num">L33</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 1)</span>
+              <span class="nav-item-bloom bloom-l4">L4_ANALYZE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(34)">
+              <span class="nav-item-num">L34</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 2)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(35)">
+              <span class="nav-item-num">L35</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 3)</span>
+              <span class="nav-item-bloom bloom-l5">L5_EVALUATE</span>
+            </button>
+            <button class="nav-item" onclick="loadLectureView(36)">
+              <span class="nav-item-num">L36</span>
+              <span class="nav-item-title">Numerical Problem Solving & GATE Practice (Session 4)</span>
+              <span class="nav-item-bloom bloom-l6">L6_CREATE</span>
+            </button>
+          </div>
+        </div>
+        </div>
+
+        <!-- GATE PREP PANE -->
+        <div id="pane-gate" class="tab-pane">
+          <div class="panel-card">
+            <h3>GATE Syllabus Coverage</h3>
+            <div style="font-size: 2rem; font-weight: bold; color: #fff;">85%</div>
+            <div class="score-bar-bg"><div class="score-bar-fg" style="width: 85%;"></div></div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Highly correlated with Core GATE modules</p>
+          </div>
+          <div class="panel-card">
+            <h3>Unit-wise Marks Weightage</h3>
+            <ul>
+              <li>Unit 1: 15% (Approx 2-3 marks)</li>
+              <li>Unit 2: 25% (Approx 4-5 marks)</li>
+              <li>Unit 3: 30% (Approx 5-6 marks)</li>
+              <li>Unit 4: 20% (Approx 3-4 marks)</li>
+              <li>Unit 5: 10% (Approx 1-2 marks)</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#" style="color: var(--accent-teal);" onclick="toggleFormulaSheet()">📝 Formula Quick-Reference</a></li>
+              <li><a href="#" style="color: var(--accent-teal);">📊 PYQ Index Mapping</a></li>
+              <li><a href="#" style="color: var(--accent-teal);">⏱️ Exam Time Management</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- INDUSTRY PANE -->
+        <div id="pane-industry" class="tab-pane">
+          <div class="panel-card">
+            <h3>Core Recruiters</h3>
+            <p style="font-size: 0.85rem; color: #d1d5db; margin-bottom: 10px;">Companies targeting this domain knowledge:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">BHEL</span>
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">NTPC</span>
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">Power Grid</span>
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">ABB</span>
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">Siemens</span>
+              <span style="background: var(--bg-tertiary); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">L&T</span>
+            </div>
+          </div>
+          <div class="panel-card">
+            <h3>Interview Question Mapping</h3>
+            <ul>
+              <li>Unit 1: 12 Questions</li>
+              <li>Unit 2: 28 Questions (High Priority)</li>
+              <li>Unit 3: 15 Questions</li>
+              <li>Unit 4: 22 Questions</li>
+              <li>Unit 5: 8 Questions</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <h3>Industrial Case Studies</h3>
+            <ul>
+              <li>Failure Analysis in Grid Stability</li>
+              <li>HVDC Transmission Control Layouts</li>
+              <li>Motor Drive Thermal Derating</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- EXAM BANK PANE -->
+        <div id="pane-exam" class="tab-pane">
+          <div class="panel-card">
+            <h3>Enhanced Question Bank</h3>
+            <p style="font-size: 0.85rem; color: #d1d5db; margin-bottom: 10px;">Select format to view:</p>
+            <ul>
+              <li>🎯 GATE 1-Mark MCQs</li>
+              <li>🎯 GATE 2-Mark MCQs</li>
+              <li>🔢 NAT (Numerical Answer Type)</li>
+              <li>📝 Descriptive (University Level)</li>
+            </ul>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">* Model solutions included with tolerances for NAT questions.</p>
+        </div>
+
+        <!-- VIVA BANK PANE -->
+        <div id="pane-viva" class="tab-pane">
+          <div class="panel-card">
+            <h3>Lab Viva Preparation</h3>
+            <p style="font-size: 0.85rem; color: #d1d5db; margin-bottom: 10px;">Categorized Questions:</p>
+            <ul>
+              <li>🔬 Equipment Setup & Safety Protocol</li>
+              <li>🔧 Hardware Troubleshooting</li>
+              <li>📊 Observational Analysis</li>
+              <li>🧠 Theory-to-Practice Connections</li>
+            </ul>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">* 20+ standardized questions available per experiment module.</p>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- MAIN VIEW -->
+    <main>
+      <div class="top-toolbar">
+        <div class="breadcrumb">
+          Course Reference &bull; <strong id="activeLecHeader">Lecture 1: Theoretical Foundations</strong>
+        </div>
+        <div class="btn-group">
+          <button class="btn-action" onclick="toggleFormulaSheet()" title="Shortcut: F">📐 Formulas</button>
+          <button class="btn-action" onclick="window.print()" title="Shortcut: P">🖨️ Print PDF</button>
+          <button class="btn-action" onclick="prevLecture()" title="Shortcut: ←">← Prev</button>
+          <button class="btn-action" onclick="nextLecture()" title="Shortcut: →">Next →</button>
+        </div>
+      </div>
+
+      <div class="content-scroll" id="mainLectureScroll">
+        
+        <!-- Key Metrics Indicators -->
+        <div class="indicators-row">
+          <div class="indicator-pill">
+            <span>🎯 GATE Weight:</span>
+            <div class="indicator-bar"><div class="indicator-bar-inner gate-bar" style="width: 75%;"></div></div>
+            <span class="indicator-val">High</span>
+          </div>
+          <div class="indicator-pill">
+            <span>🏭 Industry Relevance:</span>
+            <div class="indicator-bar"><div class="indicator-bar-inner ind-bar" style="width: 90%;"></div></div>
+            <span class="indicator-val">Critical</span>
+          </div>
+        </div>
+
+        <!-- Overview & Curriculum Mapping Card -->
+        <div class="tb-card">
+          <div class="tb-card-header">
+            <div>
+              <h2 id="cardTitle">Lecture 1: Fundamental Governing Principles</h2>
+              <div class="tb-meta">
+                <span>Duration: 40 Minutes</span> &bull;
+                <span id="cardModule">Unit I</span> &bull;
+                <span id="cardBloom">L3_APPLY</span> &bull;
+                <span>Reference: Fundamentals of Electric Circuits (Charles K. Alexander, Matthew N. O. Sadiku)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="prose" id="lectureDetailContent">
+            <h3>1. Executive Academic Motivation & First-Principles Foundation</h3>
+            <p id="lecExecutiveText">Loading higher-education level instructional blueprint and derivations...</p>
+
+            <h3>2. Governing State Equations & Transform Domain Proofs</h3>
+            <div class="equation-box math-render" id="lecMathContainer">
+              $$ \mathbf{\dot{x}}(t) = \mathbf{A}\mathbf{x}(t) + \mathbf{B}\mathbf{u}(t), \quad \mathbf{y}(t) = \mathbf{C}\mathbf{x}(t) + \mathbf{D}\mathbf{u}(t) $$
+            </div>
+
+            <h3>3. Structural Signal Flow & Schematic Representation</h3>
+            <div class="schematic-box" id="lecSchematic">
+[ Input u(t) ] ───▶ [ State Matrix B ] ───▶ ( ∑ ) ───▶ [ Integrator ∫ ] ───┬───▶ [ Output Matrix C ] ───▶ [ y(t) ]
+                                                ▲                           │
+                                                │                           │
+                                                └─── [ State Matrix A ] ────┘
+            </div>
+
+            <div class="worked-example">
+              <div class="example-title">★ Worked Higher-Education Numerical Example & Step-by-Step Proof</div>
+              <div id="lecWorkedExampleText">
+                <strong>Problem:</strong> Formulate the unilateral transform of the dynamic system response under critical damping conditions and verify asymptotic stability.<br><br>
+                <strong>Analytical Solution:</strong><br>
+                1. Take the Laplace/Z-transform of governing differential equations.<br>
+                2. Factorize the characteristic polynomial: $\Delta(s) = \det(s\mathbf{I} - \mathbf{A}) = 0$.<br>
+                3. Apply partial fraction expansion and inverse transform to yield the closed-form time trajectory. $\blacksquare$
+              </div>
+            </div>
+
+            <h3>4. Assessment: GATE / Exam / Viva Bank Snippet</h3>
+            <div class="viva-bank" id="lecQuestionsContainer">
+              <div class="viva-item">
+                <div class="viva-q">Q1 [GATE NAT]: Calculate the steady state error for a unit step input given the open loop transfer function $G(s) = \frac{10}{s(s+2)}$.</div>
+                <div class="viva-a"><strong>Model Answer:</strong> Since it's a Type 1 system, the positional error constant $K_p = \lim_{s \to 0} G(s) = \infty$. Thus, steady state error $e_{ss} = \frac{1}{1 + K_p} = 0$.</div>
+              </div>
+              <div class="viva-item">
+                <div class="viva-q">Q2 [Viva - L5 Evaluate]: Compare performance trade-offs between transient settling time and frequency-domain bandwidth.</div>
+                <div class="viva-a"><strong>Model Answer:</strong> Increasing bandwidth improves system speed and reduces settling time $T_s \approx \frac{4}{\zeta \omega_n}$, but increases susceptibility to high-frequency noise and quantization harmonics.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula Sheet Overlay -->
+      <div class="formula-overlay" id="formulaOverlay">
+        <div class="formula-header">
+          <h2>📐 Formula Quick-Reference Sheet</h2>
+          <button class="close-formula" onclick="toggleFormulaSheet()">✕ Close (Esc)</button>
+        </div>
+        <input type="text" id="formulaSearch" class="search-box" placeholder="Search formulas... (Shortcut: S)" onkeyup="filterFormulas()">
+        
+        <div class="formula-grid">
+          <div class="formula-card math-render">
+            <h4>State Space Representation</h4>
+            $$ \mathbf{\dot{x}}(t) = \mathbf{A}\mathbf{x}(t) + \mathbf{B}\mathbf{u}(t) $$
+            $$ \mathbf{y}(t) = \mathbf{C}\mathbf{x}(t) + \mathbf{D}\mathbf{u}(t) $$
+          </div>
+          <div class="formula-card math-render">
+            <h4>Transfer Function from State Space</h4>
+            $$ G(s) = \mathbf{C}(s\mathbf{I} - \mathbf{A})^{-1}\mathbf{B} + \mathbf{D} $$
+          </div>
+          <div class="formula-card math-render">
+            <h4>State Transition Matrix</h4>
+            $$ \Phi(t) = e^{\mathbf{A}t} = \mathscr{L}^{-1}\{(s\mathbf{I}-\mathbf{A})^{-1}\} $$
+          </div>
+          <div class="formula-card math-render">
+            <h4>Controllability Matrix</h4>
+            $$ \mathcal{C} = \begin{bmatrix} \mathbf{B} & \mathbf{A}\mathbf{B} & \dots & \mathbf{A}^{n-1}\mathbf{B} \end{bmatrix} $$
+          </div>
+        </div>
+      </div>
+
+      <button class="floating-btn" onclick="toggleFormulaSheet()" title="Formula Sheet (F)">📐</button>
+    </main>
+  </div>
+
+  <script>
+    const lecturesData = [{"module":"Unit I: Introduction to Energy Management and Audit","num":1,"title":"Definition, need of energy management, principles of energy management - energy","subtopics":"Definition, need of energy management, principles of energy management - energy audit: types and methodology, energy audit reporting format, understanding energy costs, benchmarking and energy performance, matching energy usage to requirement, maximising system efficiency, fuel and energy substitution, energy audit instruments","bloom":"L2_UNDERSTAND","prereq":"None","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":2,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 1)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L2_UNDERSTAND","prereq":"L1","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":3,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 2)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L2_UNDERSTAND","prereq":"L2","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":4,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 3)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L3","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":5,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 4)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L4","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":6,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 5)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L5","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":7,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 6)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L6","is_lab":false},{"module":"Unit I: Introduction to Energy Management and Audit","num":8,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 7)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L7","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":9,"title":"Energy and power, model energy policy, energy conversion factors, power factor,","subtopics":"Energy and power, model energy policy, energy conversion factors, power factor, efficiency, energy balance, organising for energy management, location of energy management leadership, top management support, roles and responsibilities, accountability, develop day-to-day operations","bloom":"L3_APPLY","prereq":"L8","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":10,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 1)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L9","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":11,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 2)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L10","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":12,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 3)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L3_APPLY","prereq":"L11","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":13,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 4)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L12","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":14,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 5)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L13","is_lab":false},{"module":"Unit II: Implementation of Energy Management \u0026 Audit","num":15,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 6)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L14","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":16,"title":"Green buildings, lighting, daylighting, motors, HVAC systems, effective outdoor","subtopics":"Green buildings, lighting, daylighting, motors, HVAC systems, effective outdoor lighting, illumination, metering and monitoring, energy efficient lighting, energy efficient street lighting, energy efficiency of lighting systems, energy saving options and opportunities in lighting, effectiveness of task lighting","bloom":"L4_ANALYZE","prereq":"L15","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":17,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 1)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L16","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":18,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 2)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L17","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":19,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 3)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L18","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":20,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 4)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L19","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":21,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 5)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L20","is_lab":false},{"module":"Unit III: Energy Management for Buildings and Lighting","num":22,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 6)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L21","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":23,"title":"Energy management for electric motors, electric motor categories and","subtopics":"Energy management for electric motors, electric motor categories and applications, transformer and reactors - capacitors and harmonic compensators, electrical interconnection","bloom":"L4_ANALYZE","prereq":"L22","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":24,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 1)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L23","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":25,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 2)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L24","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":26,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 3)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L25","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":27,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 4)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L26","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":28,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 5)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L27","is_lab":false},{"module":"Unit IV: Energy Management for Motors and Industries","num":29,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 6)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L6_CREATE","prereq":"L28","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":30,"title":"Case studies: direct effects of energy management, indirect effects of energy","subtopics":"Case studies: direct effects of energy management, indirect effects of energy management","bloom":"L4_ANALYZE","prereq":"L29","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":31,"title":"Challenges: facilities energy management","subtopics":"Challenges: facilities energy management","bloom":"L4_ANALYZE","prereq":"L30","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":32,"title":"Best practices: management, team work, resources, energy efficient operation and","subtopics":"Best practices: management, team work, resources, energy efficient operation and maintenance. career opportunities in energy management","bloom":"L4_ANALYZE","prereq":"L31","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":33,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 1)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L4_ANALYZE","prereq":"L32","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":34,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 2)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L33","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":35,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 3)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L5_EVALUATE","prereq":"L34","is_lab":false},{"module":"Unit V: Case Studies of Energy Management and Best Practices","num":36,"title":"Numerical Problem Solving \u0026 GATE Practice (Session 4)","subtopics":"Comprehensive review, GATE PYQ practice, numerical problem solving, concept mapping","bloom":"L6_CREATE","prereq":"L35","is_lab":false}];
+    let currentLecIndex = 0;
+
+    function loadLectureView(num) {
+      const idx = lecturesData.findIndex(l => l.num === num);
+      if (idx === -1) return;
+      currentLecIndex = idx;
+      const lec = lecturesData[idx];
+
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      const activeBtn = document.querySelectorAll('.nav-item')[idx];
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      document.getElementById('activeLecHeader').innerText = 'Lecture ' + lec.num + ': ' + lec.title;
+      document.getElementById('cardTitle').innerText = 'Lecture ' + lec.num + ': ' + lec.title;
+      document.getElementById('cardModule').innerText = lec.module;
+      document.getElementById('cardBloom').innerText = lec.bloom || 'L3_APPLY';
+
+      document.getElementById('lecExecutiveText').innerHTML = 
+        'This lecture delivers a rigorous higher-education examination of <strong>' + lec.title + '</strong>. ' +
+        'Instructional focus is centered on first-principles derivations, mathematical formulations, and engineering design trade-offs. ' +
+        '<br><strong>Key Subtopics:</strong> ' + (lec.subtopics || 'Foundational principles and applications.');
+
+      // Update progress bars for units
+      updateProgressBars(lec.module, idx);
+
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    function updateProgressBars(currentModule, currentIdx) {
+      // Very basic simulation of progress updating
+      const sections = document.querySelectorAll('.sidebar-section');
+      sections.forEach(sec => {
+        const title = sec.querySelector('.section-label').innerText.toLowerCase();
+        const bar = sec.querySelector('.progress-bar');
+        const stats = sec.querySelector('.unit-stats');
+        
+        if (title.includes(currentModule.toLowerCase())) {
+          bar.style.width = '60%'; // simulated
+        }
+      });
+    }
+
+    function nextLecture() {
+      if (currentLecIndex < lecturesData.length - 1) {
+        loadLectureView(lecturesData[currentLecIndex + 1].num);
+      }
+    }
+
+    function prevLecture() {
+      if (currentLecIndex > 0) {
+        loadLectureView(lecturesData[currentLecIndex - 1].num);
+      }
+    }
+
+    function switchSidebarTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      document.getElementById('pane-' + tabId).classList.add('active');
+    }
+
+    function toggleFormulaSheet() {
+      const overlay = document.getElementById('formulaOverlay');
+      overlay.classList.toggle('active');
+      if (overlay.classList.contains('active')) {
+        document.getElementById('formulaSearch').focus();
+      }
+    }
+
+    function filterFormulas() {
+      const query = document.getElementById('formulaSearch').value.toLowerCase();
+      document.querySelectorAll('.formula-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Don't trigger shortcuts if typing in search box
+      if (e.target.tagName === 'INPUT') {
+        if (e.key === 'Escape') {
+          toggleFormulaSheet();
+        }
+        return;
+      }
+
+      switch(e.key) {
+        case 'ArrowRight':
+          nextLecture();
+          break;
+        case 'ArrowLeft':
+          prevLecture();
+          break;
+        case 'f':
+        case 'F':
+          toggleFormulaSheet();
+          break;
+        case 's':
+        case 'S':
+          e.preventDefault(); // prevent typing 's' in the input immediately
+          const overlay = document.getElementById('formulaOverlay');
+          if (!overlay.classList.contains('active')) toggleFormulaSheet();
+          setTimeout(() => document.getElementById('formulaSearch').focus(), 50);
+          break;
+        case 'p':
+        case 'P':
+          if (!e.ctrlKey && !e.metaKey) { // if just 'p', trigger print
+             window.print();
+          }
+          break;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (lecturesData && lecturesData.length > 0) {
+        loadLectureView(lecturesData[0].num);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -148,6 +148,12 @@ const StudentKnowledgeStateSchema = new mongoose.Schema({
             type: String,
             enum: ['rarely_asks', 'asks_when_stuck', 'frequently_asks', 'asks_deep_questions'],
             default: 'asks_when_stuck'
+        },
+        // Active Focus Track
+        focusTrack: {
+            type: String,
+            enum: ['STANDARD_BTECH', 'GATE_ASPIRANT', 'PLACEMENT_PREP', 'ENTREPRENEURSHIP', 'RESEARCHER'],
+            default: 'STANDARD_BTECH'
         }
     },
 

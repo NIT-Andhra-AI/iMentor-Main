@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3601,Advanced Control Systems,Unit I,Digital Control System Design,"Ideal sampling, the z-transform, stability in the z-plane,",None,L2_UNDERSTAND
+EE3601,Advanced Control Systems,Unit I,"mapping from the s-plane into z-plane, the jury stability test, lyapunov stability analysis, root","mapping from the s-plane into z-plane, the jury stability test, lyapunov stability analysis, root",1,L3_APPLY
+EE3601,Advanced Control Systems,Unit I,"locus analysis in the z-plane, root locus construction rules, digital compensator types and","locus analysis in the z-plane, root locus construction rules, digital compensator types and",2,L2_UNDERSTAND
+EE3601,Advanced Control Systems,Unit I,design.,design.,3,L3_APPLY
+EE3601,Advanced Control Systems,Unit I,Optimal and Robust Control System Design,"Types of optimal control problems, selection",4,L2_UNDERSTAND
+EE3601,Advanced Control Systems,Unit I,"of performance index, the linear quadratic regulator, continuous form and discrete form, the","of performance index, the linear quadratic regulator, continuous form and discrete form, the",5,L3_APPLY
+EE3601,Advanced Control Systems,Unit I,kalman filter,"state estimation process, robust control, internal model control, H - and H -",6,L2_UNDERSTAND
+EE3601,Advanced Control Systems,Unit I,2 ∞,2 ∞,7,L3_APPLY
+EE3601,Advanced Control Systems,Unit I,"optimal control, robust stability and robust performance, multivariable robust control.","optimal control, robust stability and robust performance, multivariable robust control.",8,L2_UNDERSTAND
+EE3601,Advanced Control Systems,Unit I,Intelligent Control System Design,"Intelligence in machines, fuzzy logic control systems,",9,L3_APPLY
+EE3601,Advanced Control Systems,Unit I,"neural network control systems, genetic algorithms and their application to control system","neural network control systems, genetic algorithms and their application to control system",10,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,design.,design.,11,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,Text Books,,12,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,"1. K.Ogata, “ Modern control Engineering”, PHI,.KhannaPublishers,7th Edition,2015.","1. K.Ogata, “ Modern control Engineering”, PHI,.KhannaPublishers,7th Edition,2015.",13,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,"2. K.Ogata, “ Discrete time control systems”, Pearson Education, 2005.","2. K.Ogata, “ Discrete time control systems”, Pearson Education, 2005.",14,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,"3. M. Gopal, “ Digital control and state variable methods”, 4th Edition, TMH, 2017.","3. M. Gopal, “ Digital control and state variable methods”, 4th Edition, TMH, 2017.",15,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,References,,16,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,"1. Norman.S.Nise, “ Control system Engineering”, 7th edition, Wiley","1. Norman.S.Nise, “ Control system Engineering”, 7th edition, Wiley",17,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,"2. B.C.Kuo, “Digital control systems” Holt Saunder’s International edition,1991.","2. B.C.Kuo, “Digital control systems” Holt Saunder’s International edition,1991.",18,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit I,Scheme and Syllabi 62 | Page,Scheme and Syllabi 62 | Page,19,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit III,Constrained Parameter Optimization & Gradient Descent Formulations,"Lagrangian multipliers, KKT conditions, gradient descent with momentum, line search",20,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit III,Discrete-Time State-Space Representation & Sampling Period Selection,"Zero-order hold discretization, discrete A_d and B_d matrices, Shannon sampling rule",13,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+EE3601,Advanced Control Systems,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Advanced Control Systems,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Advanced Control Systems,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3601,Advanced Control Systems,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Advanced Control Systems","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

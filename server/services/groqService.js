@@ -32,12 +32,12 @@ async function generateContentWithHistory(
     systemPromptText = null,
     options = {}
 ) {
-    const apiKeyToUse = options.apiKey || SERVER_API_KEY;
+    const apiKeyToUse = options.apiKey || SERVER_API_KEY || null;
     const modelToUse = options.model || DEFAULT_MODEL_NAME;
 
     if (!apiKeyToUse || apiKeyToUse === "your_groq_api_key_here") {
-        log.error('AI', "Groq API key is not configured.");
-        throw new Error("Groq API key is missing. Please configure it in your environment variables.");
+        log.warn('AI', "Groq call skipped: No user-provided API key.");
+        throw new Error("No Groq API key provided. Please configure your personal API key in Settings to use Groq cloud models.");
     }
 
     try {

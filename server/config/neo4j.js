@@ -30,12 +30,18 @@ const initializeNeo4j = async () => {
             return false;
         }
 
-        driver = neo4jDriver.driver(uri, neo4jDriver.auth.basic(user, password));
+        driver = neo4jDriver.driver(uri, neo4jDriver.auth.basic(user, password), {
+            maxConnectionPoolSize: parseInt(process.env.NEO4J_MAX_POOL_SIZE, 10) || 300,
+            connectionAcquisitionTimeout: parseInt(process.env.NEO4J_CONNECTION_TIMEOUT, 10) || 5000,
+            maxConnectionLifetime: 60 * 60 * 1000, // 1 hour
+            connectionTimeout: 10000,
+            disableLosslessIntegers: true,
+        });
 
         // Verify connectivity
         await driver.verifyConnectivity();
         isConnected = true;
-        log.success('DB', 'Neo4j connection established');
+        log.success('DB', 'Neo4j connection established (pool max: 300)');
 
         // Ensure composite indexes for hot MERGE paths
         const session = driver.session();

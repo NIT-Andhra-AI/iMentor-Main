@@ -1,0 +1,37 @@
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3031,Embedded Systems,Unit I,Embedded Software Development,Microprocessor & microcontroller fundamentals;,None,L2_UNDERSTAND
+EE3031,Embedded Systems,Unit I,"embedded systems- introduction, build, functions, constraints and their impacts; software","embedded systems- introduction, build, functions, constraints and their impacts; software",1,L3_APPLY
+EE3031,Embedded Systems,Unit I,"development- concurrency, static schedule, dynamic schedule, waterfall & V development","development- concurrency, static schedule, dynamic schedule, waterfall & V development",2,L2_UNDERSTAND
+EE3031,Embedded Systems,Unit I,"model, architecture, design, coding and software unit testing.","model, architecture, design, coding and software unit testing.",3,L3_APPLY
+EE3031,Embedded Systems,Unit I,Cortex-M4 Core,"ARM: Architectures, processors, cortex-M series; cortex-M4 - processor,",4,L2_UNDERSTAND
+EE3031,Embedded Systems,Unit I,"block diagram, registers, memory map, bitband operations and program image; ARM and","block diagram, registers, memory map, bitband operations and program image; ARM and",5,L3_APPLY
+EE3031,Embedded Systems,Unit I,"thumb instruction set; cortex-m4 instruction set - memory access, general data processing,","thumb instruction set; cortex-m4 instruction set - memory access, general data processing,",6,L2_UNDERSTAND
+EE3031,Embedded Systems,Unit I,"arithmetic, bitfield, branch, control and float point.","arithmetic, bitfield, branch, control and float point.",7,L3_APPLY
+EE3031,Embedded Systems,Unit I,Interfacing,"Interrupts: entering & exiting exception, microcontroller interrupts and timing",8,L2_UNDERSTAND
+EE3031,Embedded Systems,Unit I,analysis; GPIO,"basic concepts, port circuitry and alternate functions; A/D conversion; D/A",9,L3_APPLY
+EE3031,Embedded Systems,Unit I,"conversion; peripherals, comparator; timers","interrupt timer, PWM module, low power timer",10,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,and real time clock; serial communication.,and real time clock; serial communication.,11,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,Textbooks,,12,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,1. Shibu K.V,"Introduction to Embedded Systems, McGraw Hill",13,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,"2. Ariel Lutenberg, Pablo Gomez, Eric Pernia",A Beginner’s Guide to Designing Embedded,14,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,"System Applications on Arm Cortex-M Microcontroller, arm Education Media.","System Applications on Arm Cortex-M Microcontroller, arm Education Media.",15,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,3. Muhammad Tahir and Kashif Javed,ARM® Microprocessor Systems Cortex®-M,16,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,"Architecture, Programming, and Interfacing, CRC Press 2017.","Architecture, Programming, and Interfacing, CRC Press 2017.",17,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,4. Perry Xiao,Designing Embedded Systems and the Internet of Things (IoT) with the,18,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,"ARM® Mbed™, Wiley","ARM® Mbed™, Wiley",19,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,5. Mark Fisher,"Arm® Cortex® M4 Cookbook, O’Reilly",20,L4_ANALYZE
+EE3031,Embedded Systems,Unit I,Scheme and Syllabi 53 | Page,Scheme and Syllabi 53 | Page,21,L4_ANALYZE
+EE3031,Embedded Systems,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+EE3031,Embedded Systems,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+EE3031,Embedded Systems,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE3031,Embedded Systems,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE3031,Embedded Systems,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE3031,Embedded Systems,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3031,Embedded Systems,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Embedded Systems,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Embedded Systems,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3031,Embedded Systems,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Embedded Systems","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

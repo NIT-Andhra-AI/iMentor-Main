@@ -34,7 +34,7 @@ def llm_generate(prompt):
             logger.info("[QA Generator] Attempting Gemini...")
             client = genai.Client(api_key=config.GEMINI_API_KEY)
             response = client.models.generate_content(
-                model=config.GEMINI_MODEL_NAME or "gemini-2.0-flash",
+                model=config.GEMINI_MODEL_NAME or "gemini-2.5-flash",
                 contents=prompt,
             )
             if response and response.text:

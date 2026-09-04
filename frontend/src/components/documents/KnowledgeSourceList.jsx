@@ -44,26 +44,6 @@ function KnowledgeSourceList({ onSelectSource, selectedSource, onRefreshNeeded, 
                 ? fetchedSources 
                 : fetchedSources.filter(source => source.sourceType !== 'subject');
 
-            if (showSubjects) {
-                try {
-                    const subjectsData = await api.getSubjects();
-                    if (subjectsData && Array.isArray(subjectsData.subjects)) {
-                        const dynamicSubjects = subjectsData.subjects.map((sub, index) => ({
-                            _id: `dynamic_subject_${index}_${sub.code}`,
-                            title: sub.name || sub.code,
-                            sourceType: 'subject',
-                            status: 'completed',
-                            createdAt: new Date().toISOString()
-                        }));
-                        const existingTitles = new Set(resultSources.map(s => s.title));
-                        const uniqueDynamic = dynamicSubjects.filter(ds => !existingTitles.has(ds.title));
-                        resultSources = [...uniqueDynamic, ...resultSources];
-                    }
-                } catch (subErr) {
-                    console.warn("Failed to fetch dynamic subjects for KB list", subErr);
-                }
-            }
-
             setSources(resultSources);
             // Check if there are any sources still processing to decide if we need to continue polling.
             const stillProcessing = fetchedSources.some(s => s.status && s.status.startsWith('processing'));

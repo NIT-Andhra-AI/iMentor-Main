@@ -122,15 +122,12 @@ async function runNightlyEvaluator() {
     const jobStart = Date.now();
     log.info('NIGHTLY', `═══ Night-Shift Session Evaluator starting (lookback=${LOOKBACK_HRS}h, batch=${BATCH_SIZE}) ═══`);
 
-    // Build default LLM config (heavy SGLang model when available, else Ollama fallback)
+    // Build default LLM config (heavy SGLang model when available)
     const nightLlmConfig = {
-        provider:    process.env.SGLANG_ENABLED === 'true' ? 'sglang' : (process.env.OLLAMA_DEFAULT_PROVIDER || 'ollama'),
-        model:       process.env.SGLANG_ENABLED === 'true'
-                         ? (process.env.SGLANG_HEAVY_MODEL || 'Qwen/Qwen2.5-32B-Instruct-AWQ')
-                         : (process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b'),
+        provider:    'sglang',
+        model:       process.env.SGLANG_HEAVY_MODEL || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
         temperature: 0.3,
         maxTokens:   2048,
-        ollamaUrl:   process.env.OLLAMA_API_BASE_URL,
     };
 
     const since = new Date(Date.now() - LOOKBACK_HRS * 60 * 60 * 1000);

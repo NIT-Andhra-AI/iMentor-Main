@@ -103,9 +103,14 @@ const availableTools = {
   },
   kg_search: {
     description: "Finds structured facts and relationships within a document's pre-built knowledge graph. Use this to complement RAG search.",
-     execute: async (params, context) => {
-        const facts = await queryKgService(params.query, context.documentContextName, context.userId);
-        return { references: [], toolOutput: facts };
+    execute: async (params, context) => {
+        const result = await queryKgService(params.query, context.documentContextName, context.userId);
+        return {
+            references: result?.references || [],
+            toolOutput: typeof result?.toolOutput === 'string'
+                ? result.toolOutput
+                : (result?.toolOutput?.toolOutput || (result?.toolOutput ? JSON.stringify(result.toolOutput) : 'No specific facts were found in the knowledge graph.'))
+        };
     },
     requiredParams: ['query'],
     meta: {
@@ -286,6 +291,47 @@ Format it in clean Markdown with proper headings, bullet points, and emphasis.`;
       acceptsChainInput: true,
       avgLatencyMs: 30000,
       retryable: false,
+      complementaryTools: [],
+    },
+  },
+  create_study_plan: {
+    description: "Creates and saves an interactive, personalized study plan or learning roadmap on any academic/engineering topic with structured modules, objectives, and hands-on activities. Use this when the user asks to build, generate, or create a study plan, learning path, or curriculum.",
+    execute: async (params, context) => {
+      const { goal } = params;
+      const userId = context?.userId;
+      if (!goal) {
+        return { toolOutput: "Please specify a topic or learning goal for your study plan.", references: [] };
+      }
+      if (!userId) {
+        return { toolOutput: `Please log in to generate and save your personalized study plan for "${goal}".`, references: [] };
+      }
+      try {
+        const { createLearningPath } = require('./learning/curriculumOrchestrator');
+        const plan = await createLearningPath(userId, goal);
+        if (plan.isQuestionnaire) {
+          const qList = (plan.questions || []).map((q, i) => `${i + 1}. **${q.questionText}**${q.options ? ' (' + q.options.join(', ') + ')' : ''}`).join('\n');
+          return {
+            toolOutput: `To tailor your personalized study plan for **${goal}**, please answer these questions:\n\n${qList}\n\n👉 You can also customize it directly in the [Study Plan Center](/study-plan).`,
+            references: []
+          };
+        }
+        const moduleSummary = (plan.modules || []).slice(0, 8).map((m, i) => `• **Module ${i + 1}: ${m.title}** — ${m.objective}`).join('\n');
+        return {
+          toolOutput: `🎓 **Personalized Study Plan Created: ${plan.title}**\n\nYour interactive curriculum with **${plan.modules?.length || 0} modules** has been saved to your account:\n\n${moduleSummary}\n\n👉 **[Open Interactive Study Plan in iMentor](/study-plan)**`,
+          references: [],
+          studyPlanId: plan._id
+        };
+      } catch (err) {
+        return { toolOutput: `Failed to create study plan: ${err.message}`, references: [] };
+      }
+    },
+    requiredParams: ['goal'],
+    meta: {
+      category: 'learning',
+      outputType: 'action',
+      acceptsChainInput: false,
+      avgLatencyMs: 8000,
+      retryable: true,
       complementaryTools: [],
     },
   },

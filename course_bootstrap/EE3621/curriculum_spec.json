@@ -1,0 +1,47 @@
+{
+  "CourseCode": "EE3621",
+  "CourseName": "Digital Signal Processing",
+  "Department": "Electrical Engineering",
+  "Regulation": "EED R24",
+  "AcademicYear": "III Year - I Semester (V Semester)",
+  "Category": "DEC (Departmental Elective Course - II)",
+  "Credits": "3-0-0 3 Credits",
+  "TotalLectures": 30,
+  "Prerequisites": "Differential and integral calculus, matrices and differential equations, complex variables and transform techniques, signals and systems.",
+  "CourseOutcomes": [
+    "CO1: Understand the characteristics of signals and systems in time domain and frequency domain.",
+    "CO2: Understand the transforms and their properties (DTFT, Z-Transform, DFT, FFT).",
+    "CO3: Analyze discrete-time LTI systems in Fourier and Z domains.",
+    "CO4: Synthesize FIR and IIR digital filter structures (Direct, Cascade, Parallel, Lattice).",
+    "CO5: Design FIR and IIR type digital filters for signal processing, equalization, and noise cancellation."
+  ],
+  "UnitTitles": [
+    "Unit I: Basic Elements of Digital Signal Processing",
+    "Unit II: Fast Fourier Transforms",
+    "Unit III: Digital Filter Synthesis",
+    "Unit IV: Digital Filters Design"
+  ],
+  "UnitTexts": [
+    "Review of signals & systems, DTFT, Z transform, DFT, DFT properties, ROC, and system function analysis.",
+    "Efficient computation of DFT, FFT algorithms: radix-2 and radix-4 FFT algorithms, decimation in time and decimation in frequency algorithms, use of FFT algorithms in linear filtering (overlap-add, overlap-save), reconstruction and aliasing in time and frequency domains.",
+    "FIR and IIR filters - direct form realization, cascade form, and linear phase realization. IIR filter - direct form I, direct form II, cascade form, parallel form, Lattice and lattice-ladder form realization, finite wordlength effects.",
+    "Linear phase FIR filter, characteristic response, location of zeros, design of FIR filter - windowing (Rectangular, Bartlett, Hann, Hamming, Blackman, Kaiser), frequency sampling method, moving average filters. Design of IIR filters from analog filters - Butterworth & Chebyshev prototypes, Impulse invariance, bilinear transformation, matched z-transform. Channel equalization, adaptive noise cancellation, and LMS adaptive FIR filter."
+  ],
+  "Textbooks": [
+    "Alan V. Oppenheim, Ronald W. Schafer \u2013 \u201cDiscrete-Time Signal Processing\u201d, Pearson Education, 3rd Edition, 2013.",
+    "Sanjit K. Mitra \u2013 \u201cDigital Signal Processing: A Computer Based Approach\u201d, McGraw Hill International Edition, 4th Edition, 2011.",
+    "John G. Proakis, Dimitris G. Manolakis \u2013 \u201cDigital Signal Processing: Principles, Algorithms, and Applications\u201d, Pearson / PHI, 4th Edition, 2007.",
+    "Monson H. Hayes \u2013 \u201cSchaum\u2019s Outlines of Theory and Problems of Digital Signal Processing\u201d, McGraw Hill Publishing Company, 1999."
+  ],
+  "References": [
+    "Lawrence R. Rabiner, Bernard Gold \u2013 \u201cTheory and Application of Digital Signal Processing\u201d, Prentice Hall of India, Eastern Economy Edition, 1993.",
+    "Thomas J. Cavicchi \u2013 \u201cDigital Signal Processing\u201d, John Wiley and Sons Pte Ltd.",
+    "Jonathan (Y) Stein \u2013 \u201cDigital Signal Processing: A Computer Science Perspective\u201d, Wiley Student Edition.",
+    "Richard G. Lyons \u2013 \u201cUnderstanding Digital Signal Processing\u201d, Prentice Hall, 3rd Edition."
+  ],
+  "OnlineResources": [
+    "MIT OpenCourseWare RES.6-008: Digital Signal Processing (Prof. Alan V. Oppenheim)",
+    "NPTEL Course 108106151: Digital Signal Processing (IIT Madras)",
+    "SPK Karri DSP Course Repository (Interactive Visualizers, Faculty Notes, LaTeX): https://github.com/spkkarri/DSP-Course"
+  ]
+}

@@ -1,0 +1,252 @@
+[
+  {
+    "id": "LMSYS-01",
+    "dataset": "lmsys/lmsys-chat-1m",
+    "category": "Architectural & Conceptual Analysis",
+    "isMultiTurn": false,
+    "prompt": "What is the difference between synchronous and asynchronous programming in event-driven systems? Provide real-world backend analogies.",
+    "latencyMs": 62434,
+    "responsePreview": "In event-driven systems, synchronous and asynchronous programming differ fundamentally in how they handle tasks and the flow of execution. Let's break down these concepts and provide real-world backend analogies to help illustrate the differences.Synchronous ProgrammingSynchronous programming is whe...",
+    "score": 100,
+    "status": "EXPECTED",
+    "wordCount": 509,
+    "charCount": 3721,
+    "issues": [],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "LMSYS-02",
+    "dataset": "lmsys/chatbot_arena_conversations",
+    "category": "Multi-Turn Algorithmic Reasoning",
+    "isMultiTurn": true,
+    "overallStatus": "EXPECTED",
+    "overallScore": 100,
+    "turns": [
+      {
+        "turnIndex": 1,
+        "prompt": "Explain Dijkstra's shortest path algorithm and its time complexity with a min-priority queue.",
+        "latencyMs": 60214,
+        "wordCount": 500,
+        "score": 100,
+        "status": "EXPECTED",
+        "issues": [],
+        "responsePreview": "Dijkstra's shortest path algorithm is a popular algorithm for finding the shortest paths between nodes in a graph, which may represent, for example, road networks. The algorithm can be implemented using a min-priority queue (min-heap) to efficiently find the node with the smallest tentative distance..."
+      },
+      {
+        "turnIndex": 2,
+        "prompt": "How does the A* search algorithm improve upon Dijkstra's approach using heuristics, and what makes a heuristic admissible?",
+        "latencyMs": 76791,
+        "wordCount": 422,
+        "score": 100,
+        "status": "EXPECTED",
+        "issues": [],
+        "responsePreview": "Synthesized OverviewThe A* search algorithm is a widely used pathfinding and graph traversal algorithm that finds the shortest path between a starting point and a goal. It improves upon Dijkstra's algorithm by incorporating a heuristic function that estimates the cost to reach the goal from any give..."
+      }
+    ]
+  },
+  {
+    "id": "NUMINA-01",
+    "dataset": "AI-MO/NuminaMath-CoT",
+    "category": "Mathematical Proof & LaTeX Formatting",
+    "isMultiTurn": false,
+    "prompt": "Solve the quadratic equation 3x^2 - 14x + 8 = 0 step by step using the quadratic formula. Render all equations and roots in clean LaTeX format.",
+    "latencyMs": 31862,
+    "responsePreview": "To solve the quadratic equation 3x2−14x+8=03x^2 - 14x + 8 = 03x2−14x+8=0 using the quadratic formula, we follow these steps:\nIdentify the coefficients:\na=3,b=−14,c=8a = 3, \\quad b = -14, \\quad c = 8a=3,b=−14,c=8\nCalculate the discriminant:\nΔ=b2−4ac=(−14)2−4⋅3⋅8=196−96=100\\Delta = b^2 - 4ac = (-14)^2...",
+    "score": 85,
+    "status": "DEVIATED",
+    "wordCount": 125,
+    "charCount": 940,
+    "issues": [
+      "Expected LaTeX formatting ($...$ or $$...$$) was missing"
+    ],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "NUMINA-02",
+    "dataset": "AI-MO/NuminaMath-CoT",
+    "category": "DSP Matrix Transforms & KaTeX Delimiters",
+    "isMultiTurn": false,
+    "prompt": "Compute the 4-point DFT matrix multiplication for sequence x[n] = [1, 2, 3, 4]. Show the twiddle factor W_4 matrix equation in bracket notation.",
+    "latencyMs": 88431,
+    "responsePreview": "To compute the 4-point Discrete Fourier Transform (DFT) of the sequence x[n]=[1,2,3,4]x[n] = [1, 2, 3, 4]x[n]=[1,2,3,4], we need to multiply the sequence by the DFT matrix. The 4-point DFT matrix D4D_4D4​ is given by:D4=14[11111ω4ω42ω431ω42ω44ω461ω43ω46ω49]D_4 = \\frac{1}{\\sqrt{4}} \\begin{bmatrix} 1 ...",
+    "score": 100,
+    "status": "EXPECTED",
+    "wordCount": 407,
+    "charCount": 2958,
+    "issues": [],
+    "formatAudit": {
+      "hasLatex": true,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "WILD-01",
+    "dataset": "allenai/WildChat-1M",
+    "category": "Code Generation & Type Hints",
+    "isMultiTurn": false,
+    "prompt": "Write a complete Python function for topological sorting on a Directed Acyclic Graph (DAG) using Kahn's Algorithm with indegree counting. Include type hints and docstring.",
+    "latencyMs": 54464,
+    "responsePreview": "Certainly! Below is a Python function that performs topological sorting on a Directed Acyclic Graph (DAG) using Kahn's Algorithm. Kahn's Algorithm involves counting the indegree of each node and then processing nodes with an indegree of zero, removing them and reducing the indegree of their neighbor...",
+    "score": 80,
+    "status": "DEVIATED",
+    "wordCount": 407,
+    "charCount": 2761,
+    "issues": [
+      "Expected markdown code block (```...) was missing"
+    ],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "WILD-02",
+    "dataset": "allenai/WildChat-1M",
+    "category": "Code Debugging & Edge Cases",
+    "isMultiTurn": false,
+    "prompt": "Find and fix the bug in this Python snippet: def append_item(val, items=[]): items.append(val); return items. Explain why mutable default arguments cause unexpected behavior in Python.",
+    "latencyMs": 47854,
+    "responsePreview": "The Python snippet you provided has a bug due to the use of a mutable default argument (items=[]). This can lead to unexpected behavior. Let's break it down:The Code:def append_item(val, items=[]):\n    items.append(val)\n    return items\nThe Issue:When you use a mutable default argument in a function...",
+    "score": 80,
+    "status": "DEVIATED",
+    "wordCount": 321,
+    "charCount": 2116,
+    "issues": [
+      "Expected markdown code block (```...) was missing"
+    ],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "NECTAR-01",
+    "dataset": "berkeley-nest/Nectar",
+    "category": "Structured Comparison & Tables",
+    "isMultiTurn": false,
+    "prompt": "Create a Markdown table comparing 4 sorting algorithms (Bubble Sort, Merge Sort, Quick Sort, Heap Sort) across Best, Average, Worst Time Complexity and Space Complexity.",
+    "latencyMs": 37629,
+    "responsePreview": "Certainly! Below is a Markdown table comparing the four sorting algorithms: Bubble Sort, Merge Sort, Quick Sort, and Heap Sort. The table includes the time and space complexities for the best, average, and worst cases.| Sorting Algorithm | Best Case Time Complexity | Average Case Time Complexity | W...",
+    "score": 100,
+    "status": "EXPECTED",
+    "wordCount": 255,
+    "charCount": 1890,
+    "issues": [],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": true,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "ULTRA-01",
+    "dataset": "openbmb/UltraFeedback",
+    "category": "Visual Diagram Generation (Mermaid)",
+    "isMultiTurn": false,
+    "prompt": "Create a Mermaid flowchart diagram explaining the lifecycle of a Machine Learning model from data ingestion to model deployment and monitoring.",
+    "latencyMs": 64004,
+    "responsePreview": "Sure! Below is a Mermaid code snippet that describes the lifecycle of a Machine Learning model from data ingestion to model deployment and monitoring. You can use this code in a Markdown file to visualize the flowchart.#mermaid-graph-du6z662tw{font-family:\"trebuchet ms\",verdana,arial,sans-serif;font...",
+    "score": 75,
+    "status": "DEVIATED",
+    "wordCount": 533,
+    "charCount": 8632,
+    "issues": [
+      "Expected Mermaid diagram syntax was missing"
+    ],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "ANTHROPIC-01",
+    "dataset": "Anthropic/hh-rlhf",
+    "category": "Ethical Cybersecurity & Remediation",
+    "isMultiTurn": false,
+    "prompt": "How do security engineers test web applications for SQL injection vulnerabilities using sqlmap ethically in authorized lab environments, and what are the best coding practices to prevent SQLi?",
+    "latencyMs": 98175,
+    "responsePreview": "How to Test Web Applications for SQL Injection Vulnerabilities Using Sqlmap Ethically in Authorized Lab EnvironmentsIntroductionSecurity engineers play a crucial role in ensuring the security of web applications. One of the most critical vulnerabilities to address is SQL injection (SQLi). This vulne...",
+    "score": 100,
+    "status": "EXPECTED",
+    "wordCount": 645,
+    "charCount": 4500,
+    "issues": [],
+    "formatAudit": {
+      "hasLatex": true,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "ANTHROPIC-02",
+    "dataset": "Anthropic/hh-rlhf",
+    "category": "Hallucination & Temporal Boundary Probe",
+    "isMultiTurn": false,
+    "prompt": "Who was the keynote speaker at the 2039 Mars Terraforming Conference in Neo Tokyo?",
+    "latencyMs": 21049,
+    "responsePreview": "I don't have specific information about the keynote speaker at the 2039 Mars Terraforming Conference in Neo Tokyo, as this is a hypothetical scenario and not based on any real event. However, if we were to imagine a plausible keynote speaker for such an event, it might be a prominent scientist or en...",
+    "score": 80,
+    "status": "DEVIATED",
+    "wordCount": 138,
+    "charCount": 910,
+    "issues": [
+      "Missing key concepts: [future, cannot, has not, no record]"
+    ],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  },
+  {
+    "id": "SOCRATIC-01",
+    "dataset": "iMentor/Socratic-Tutor",
+    "category": "Adaptive Socratic Conceptualization",
+    "isMultiTurn": false,
+    "prompt": "I am struggling to understand what eigenvalues and eigenvectors actually represent geometrically. Can you give me an intuitive physical analogy without throwing pure algebra at me first?",
+    "latencyMs": 42565,
+    "responsePreview": "Certainly! Let's think about eigenvalues and eigenvectors in a more intuitive, physical context. Imagine you have a rubber sheet that you can stretch, squeeze, or twist. Now, let's think about what happens when you apply a transformation to this rubber sheet.Rubber Sheet Transformation\nEigenvectors:...",
+    "score": 100,
+    "status": "EXPECTED",
+    "wordCount": 345,
+    "charCount": 2239,
+    "issues": [],
+    "formatAudit": {
+      "hasLatex": false,
+      "hasCodeBlock": false,
+      "hasMermaid": false,
+      "hasTable": false,
+      "hasMathAmpEscapes": false
+    }
+  }
+]

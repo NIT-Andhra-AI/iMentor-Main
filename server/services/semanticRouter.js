@@ -66,22 +66,21 @@ const INTENT_ROUTES = {
 
   ACADEMIC_SEARCH: {
     examples: [
-      "find papers on attention mechanisms",
-      "research articles about transformers",
-      "scholarly articles on quantum entanglement",
-      "peer-reviewed papers about vaccination",
-      "arxiv papers on computer vision",
-      "locate papers on dark matter theories",
-      // Additional diverse examples
+      "find research papers on attention mechanisms",
+      "find scholarly articles about transformer models",
+      "search arxiv papers on quantum entanglement",
+      "peer-reviewed research papers about vaccination",
+      "arxiv preprint papers on computer vision",
+      "locate published papers on dark matter theories",
       "peer-reviewed research on mRNA vaccine safety",
-      "scholarly articles on dark matter detection methods",
-      "find academic research on reinforcement learning from human feedback",
-      "journal articles about climate change impacts",
-      "scientific literature on quantum computing algorithms",
+      "scholarly journal articles on dark matter detection methods",
+      "find academic papers on reinforcement learning from human feedback",
+      "journal publication articles about climate change impacts",
+      "scientific research papers on quantum computing algorithms",
     ],
     tools: ['academic_search'],
     handler: 'academicSearch',
-    confidence_threshold: 0.60,  // was 0.70; measured scores land 0.62-0.70
+    confidence_threshold: 0.88,
   },
 
   WEB_SEARCH: {
@@ -107,7 +106,7 @@ const INTENT_ROUTES = {
     ],
     tools: ['web_search'],
     handler: 'webSearch',
-    confidence_threshold: 0.52,  // was 0.60; measured scores land 0.55-0.71
+    confidence_threshold: 0.85,
   },
 
   TECHNICAL_CODING: {
@@ -130,10 +129,10 @@ const INTENT_ROUTES = {
       "Write a C++ class for a thread-safe queue",
       "Fix a segmentation fault in C pointer arithmetic",
     ],
-    tools: ['rag_retrieve'],
+    tools: [],
     handler: 'standardWithRAG',
     llm_preference: 'code',
-    confidence_threshold: 0.57,  // was 0.75; measured scores land 0.60-0.75
+    confidence_threshold: 0.65,
   },
 
   MATHEMATICAL_REASONING: {
@@ -156,13 +155,15 @@ const INTENT_ROUTES = {
     tools: [],
     handler: 'standardWithRAG',
     llm_preference: 'reasoning',
-    confidence_threshold: 0.68,  // was 0.80; measured scores land 0.71-0.78
+    confidence_threshold: 0.68,
   },
 
   CONCEPTUAL_EXPLANATION: {
     examples: [
       "explain how photosynthesis works",
       "what is quantum entanglement",
+      "what is quantum computing",
+      "explain quantum computing to a 8 year old",
       "describe the krebs cycle",
       "how does TCP/IP protocol work",
       "explain gradient descent algorithm",
@@ -170,9 +171,9 @@ const INTENT_ROUTES = {
       "how do vaccines provide immunity",
       "what is general relativity",
     ],
-    tools: ['rag_retrieve'],
+    tools: [],
     handler: 'standardWithRAG',
-    confidence_threshold: 0.70,
+    confidence_threshold: 0.65,
   },
 
   SOCRATIC_TUTORING: {
@@ -193,9 +194,9 @@ const INTENT_ROUTES = {
       "Guide me through how the TCP handshake works",
       "Walk me through how a compiler works step by step",
     ],
-    tools: ['rag_retrieve'],
+    tools: [],
     handler: 'socraticTutor',
-    confidence_threshold: 0.72,  // was 0.75; measured scores land 0.749
+    confidence_threshold: 0.85,
   },
 
   DOCUMENT_RAG: {

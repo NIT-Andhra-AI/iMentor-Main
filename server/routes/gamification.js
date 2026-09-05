@@ -1,6 +1,8 @@
 // server/routes/gamification.js
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const { authMiddleware } = require('../middleware/authMiddleware');
 const gamificationService = require('../services/gamificationService');
 const skillTreeService = require('../services/skillTreeService');
@@ -16,6 +18,7 @@ const geminiService = require('../services/geminiService');
 const { getCurriculumStructure } = require('../services/socraticTutorService');
 const conceptQuestionRepository = require('../services/conceptQuestionRepository');
 const skillTreeGameService = require('../services/skillTreeGameService');
+const activeQuestionValidatorService = require('../services/activeQuestionValidatorService');
 const log = require('../utils/logger');
 
 // All routes require authentication
@@ -569,60 +572,82 @@ router.post('/skill-tree/generate-levels', async (req, res) => {
     }
 });
 
-// @route   POST /api/gamification/skill-tree/level-questions
-// @desc    Generate quiz questions for a specific level
+const COURSE_BOOTSTRAP_DIR_REF = path.join(__dirname, '..', '..', 'course_bootstrap');
+
+function getEvaluationPoolForTopicAndLevel(topic, levelId, levelName) {
+    if (!topic) return null;
+    try {
+        if (!fs.existsSync(COURSE_BOOTSTRAP_DIR_REF)) return null;
+        const dirs = fs.readdirSync(COURSE_BOOTSTRAP_DIR_REF);
+        const cleanTopic = String(topic).toLowerCase().replace(/[^a-z0-9]/g, '');
+        
+        let targetDir = dirs.find(d => d.toLowerCase() === cleanTopic || cleanTopic.includes(d.toLowerCase()));
+        
+        if (!targetDir) {
+            targetDir = dirs.find(d => {
+                const evalPath = path.join(COURSE_BOOTSTRAP_DIR_REF, d, 'skill_tree_evaluation.json');
+                if (fs.existsSync(evalPath)) {
+                    try {
+                        const content = JSON.parse(fs.readFileSync(evalPath, 'utf8'));
+                        const cName = String(content.course_name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                        return cName.includes(cleanTopic) || cleanTopic.includes(cName);
+                    } catch (e) { return false; }
+                }
+                return false;
+            });
+        }
+
+        if (targetDir) {
+            const evalPath = path.join(COURSE_BOOTSTRAP_DIR_REF, targetDir, 'skill_tree_evaluation.json');
+            if (fs.existsSync(evalPath)) {
+                const evalData = JSON.parse(fs.readFileSync(evalPath, 'utf8'));
+                const levels = evalData.levels || [];
+                
+                let targetLvl = null;
+                if (typeof levelId !== 'undefined' && levelId !== null) {
+                    const parsedLvlId = parseInt(levelId);
+                    targetLvl = levels.find(l => l.level === parsedLvlId);
+                }
+                if (!targetLvl && levelName) {
+                    targetLvl = levels.find(l => l.name?.toLowerCase().includes(String(levelName).toLowerCase()) || String(levelName).includes(`Level ${l.level}`));
+                }
+                if (!targetLvl) {
+                    targetLvl = levels[0];
+                }
+
+                if (targetLvl && targetLvl.questions && targetLvl.questions.length > 0) {
+                    return {
+                        courseCode: evalData.course_code,
+                        courseName: evalData.course_name,
+                        level: targetLvl.level,
+                        levelName: targetLvl.name,
+                        questionsPool: targetLvl.questions
+                    };
+                }
+            }
+        }
+    } catch (err) {
+        log.warn('GAMIFICATION', `Evaluation pool lookup error: ${err.message}`);
+    }
+    return null;
+}
+
+// // @route   POST /api/gamification/skill-tree/level-questions
+// @desc    Generate/validate quiz questions for a specific level (Active Deduplication & Local LLM dynamic generator)
 router.post('/skill-tree/level-questions', async (req, res) => {
     try {
-        const { topic, levelId, levelName, difficulty, gameId, seenQuestions: reqBodySeen } = req.body;
+        const { topic, levelId, levelName, difficulty, gameId, seenQuestions: reqBodySeen, requestedCount = 50 } = req.body;
 
-        // Accept either a numeric `levelId` or a `levelName` from frontend.
         if (!topic || (!levelId && !levelName)) {
             return res.status(400).json({ message: 'Topic and level identifier (levelId or levelName) are required' });
         }
 
         let seenQuestions = Array.isArray(reqBodySeen) ? [...reqBodySeen] : [];
 
-        // 1. Try to find pre-computed technical MCQs for this skill from SkillTree or ConceptQuestionBank
-        let availableQuestions = [];
-        try {
-            const skillNode = await SkillTree.findOne({
-                $and: [
-                    { $or: [{ skillId: levelName }, { name: levelName }, { skillId: { $regex: new RegExp(String(levelName).replace(/[^a-zA-Z0-9]/g, '.*'), 'i') } }] },
-                    { course: { $regex: new RegExp(topic, 'i') } }
-                ],
-                'assessmentQuestions.0': { $exists: true }
-            }).lean();
-
-            if (skillNode && skillNode.assessmentQuestions && skillNode.assessmentQuestions.length > 0) {
-                availableQuestions = skillNode.assessmentQuestions;
-            } else {
-                // Check ConceptQuestionBank
-                const cqbQuestions = await require('../models/ConceptQuestionBank').find({
-                    $or: [
-                        { course: { $regex: new RegExp(topic, 'i') } },
-                        { courseCode: { $regex: new RegExp(topic, 'i') } }
-                    ]
-                }).limit(50).lean();
-                
-                if (cqbQuestions && cqbQuestions.length > 0) {
-                    availableQuestions = cqbQuestions.map(q => ({
-                        question: q.question,
-                        options: q.options,
-                        correctAnswer: q.options[q.correctIndex] || 'A',
-                        explanation: q.explanation || ''
-                    }));
-                }
-            }
-        } catch (dbErr) {
-            log.warn('GAMIFICATION', `SkillTree/CQB lookup error: ${dbErr.message}`);
-        }
-
-        if (availableQuestions && availableQuestions.length > 0) {
-            log.success('GAMIFICATION', `Serving ${availableQuestions.length} pre-computed technical MCQs for level "${levelName}" in "${topic}"`);
-            
-            // 1.1 Fetch current game state to track seen questions
-            let game = null;
-            if (gameId) {
+        // Check active game state for additional seen questions if gameId provided
+        let game = null;
+        if (gameId) {
+            try {
                 game = await SkillTreeGame.findOne({ _id: gameId, userId: req.user._id });
                 if (game) {
                     const level = typeof levelId !== 'undefined'
@@ -632,164 +657,57 @@ router.post('/skill-tree/level-questions', async (req, res) => {
                         seenQuestions = Array.from(new Set([...seenQuestions, ...level.seenQuestions]));
                     }
                 }
+            } catch (err) {
+                log.warn('GAMIFICATION', `Game state lookup error: ${err.message}`);
             }
+        }
 
-            // 1.2 Filter out already seen questions
-            const unseenMCQs = availableQuestions.filter(q => !seenQuestions.includes(q.question));
-            
-            // 1.3 Select 5 questions (prioritize unseen, fallback to repeats if pool exhausted)
-            let selectedPool = unseenMCQs.length >= 5 
-                ? unseenMCQs.sort(() => 0.5 - Math.random()).slice(0, 5)
-                : (unseenMCQs.length > 0 ? unseenMCQs : availableQuestions.sort(() => 0.5 - Math.random()).slice(0, 5));
+        // Delegate to Active Question Validator Service (enforces deduplication & local LLM dynamic synthesis)
+        const valResult = await activeQuestionValidatorService.validateAndGenerateFreshQuestions({
+            userId: req.user._id,
+            courseCode: topic,
+            topic,
+            levelId,
+            levelName,
+            requestedCount: parseInt(requestedCount) || 50,
+            seenQuestions
+        });
 
-            // Format questions for frontend
-            const questions = selectedPool.map(q => {
-                let correctIdx = -1;
-                if (q.options) {
-                    correctIdx = q.options.findIndex(opt => 
-                        opt.trim().toLowerCase() === q.correctAnswer.trim().toLowerCase() ||
-                        opt.trim().startsWith(q.correctAnswer) ||
-                        (q.correctAnswer.length === 1 && opt.trim().startsWith(q.correctAnswer.toUpperCase() + ')'))
-                    );
-                }
-                if (correctIdx === -1 && q.correctAnswer && /^[A-D]$/i.test(q.correctAnswer.trim())) {
-                    correctIdx = q.correctAnswer.trim().toUpperCase().charCodeAt(0) - 65;
-                }
-                return {
-                    question: q.question,
-                    options: q.options || [],
-                    correctIndex: correctIdx !== -1 ? correctIdx : 0,
-                    explanation: q.explanation || ''
-                };
-            });
-
-            // 1.4 Update seenQuestions and cached questions in DB
-            if (game) {
+        // Persist served questions into game state if gameId provided
+        if (game && valResult.questions.length > 0) {
+            try {
                 const levelIdx = typeof levelId !== 'undefined'
                     ? game.levels.findIndex(l => String(l.id) === String(levelId))
                     : game.levels.findIndex(l => l.name === levelName);
-                
+
                 if (levelIdx !== -1) {
-                    const newSeen = selectedPool.map(q => q.question);
-                    game.levels[levelIdx].seenQuestions = Array.from(new Set([...seenQuestions, ...newSeen]));
-                    game.levels[levelIdx].questions = questions; // cache for first attempt
+                    const newlyServed = valResult.questions.map(q => q.question || q.id);
+                    game.levels[levelIdx].seenQuestions = Array.from(new Set([...seenQuestions, ...newlyServed]));
+                    game.levels[levelIdx].questions = valResult.questions;
                     await game.save();
                 }
-            }
-
-            return res.json({
-                questions,
-                cached: true,
-                source: 'skill_tree_node',
-                generatedBy: 'precomputed',
-                model: 'stored',
-                pipelineVersion: 'v2',
-                generatedAt: new Date().toISOString(),
-            });
-        }
-
-        let seenQuestionsForLevel = [];   // tracks question texts already shown, for dedup on retry
-
-        // 2. Check if this level already has saved questions in the database (for replay/retry)
-        if (gameId) {
-            try {
-                const game = await SkillTreeGame.findOne({ _id: gameId, userId: req.user._id });
-                if (game) {
-                    const levelIdx = typeof levelId !== 'undefined'
-                        ? game.levels.findIndex(l => String(l.id) === String(levelId))
-                        : game.levels.findIndex(l => l.name === levelName);
-                    
-                    if (levelIdx !== -1) {
-                        const lvl = game.levels[levelIdx];
-                        const isRetry = (lvl.attempts || 0) > 0;
-
-                        // Collect all previously seen question texts (for prompt exclusion)
-                        seenQuestionsForLevel = Array.isArray(lvl.seenQuestions) ? lvl.seenQuestions : [];
-
-                        // Only serve cached questions on the FIRST attempt if not already served from SkillTree.
-                        // On retry, fall through to generate a fresh set via LLM.
-                        if (!isRetry && lvl.questions && lvl.questions.length > 0) {
-                            log.info('SYSTEM', `Returning cached questions for "${levelName || levelId}"`);
-                            return res.json({
-                                questions: lvl.questions,
-                                cached: true,
-                                source: 'game_cache',
-                                generatedBy: 'stored',
-                                model: 'stored',
-                                pipelineVersion: 'v2',
-                                generatedAt: lvl.updatedAt || new Date().toISOString(),
-                            });
-                        }
-                    }
-                }
-            } catch (cacheErr) {
-                log.warn('SYSTEM', `Error checking cached questions: ${cacheErr.message}`);
-                // Continue to generate new questions
-            }
-        }
-
-        // Use content generation service (Redis → MongoDB → QuestionBank → Generate → Cache)
-        const combinedSeen = Array.from(new Set([...(seenQuestions || []), ...(seenQuestionsForLevel || [])]));
-        const contentGen = require('../services/contentGenerationService');
-        const genResult = await contentGen.generateOrRetrieveLevelQuestions(
-          topic, levelId, levelName, difficulty, gameId, combinedSeen
-        );
-
-        let questions = genResult.questions || [];
-        log.info('AI', `Level questions: ${questions.length} from ${genResult._source}`);
-
-        // If we successfully generated questions and a gameId was provided,
-        // persist them to the game's level into the database.
-        if (questions.length > 0 && gameId) {
-            try {
-                const game = await SkillTreeGame.findOne({ _id: gameId, userId: req.user._id });
-                if (game) {
-                    const idx = typeof levelId !== 'undefined'
-                        ? game.levels.findIndex(l => String(l.id) === String(levelId))
-                        : game.levels.findIndex(l => l.name === levelName);
-
-                    if (idx !== -1) {
-                        // Overwrite active questions with fresh batch
-                        game.levels[idx].questions = questions;
-                        // Accumulate all shown question texts for future dedup
-                        const newQTexts = questions.map(q => q.question).filter(Boolean);
-                        const existingSeen = Array.isArray(game.levels[idx].seenQuestions) ? game.levels[idx].seenQuestions : [];
-                        game.levels[idx].seenQuestions = [...new Set([...existingSeen, ...newQTexts])];
-                        await game.save();
-                        log.info('SYSTEM', `Saved ${questions.length} questions for "${levelName || levelId}" (total seen: ${game.levels[idx].seenQuestions.length})`);
-                    } else {
-                        log.warn('SYSTEM', `Level ${levelId}/${levelName} not found in game ${gameId}`);
-                    }
-                }
             } catch (saveErr) {
-                // If saving fails, we should still return the generated questions to the user!
-                log.warn('SYSTEM', `Failed to persist level questions: ${saveErr.message}`);
+                log.warn('GAMIFICATION', `Failed updating game state: ${saveErr.message}`);
             }
         }
 
-        log.info('AI', `Level questions response: _source=${genResult._source}, cached=${genResult.cached}, questions=${questions.length}`);
-
-        // Ensure questions include _conceptQuestionId for analytics tracking
-        const responseQuestions = questions.map(q => {
-          if (q._conceptQuestionId) return q;
-          return {
-            ...q,
-            _conceptQuestionId: q._id || null,
-          };
-        });
-
-        res.json({
-          questions: responseQuestions,
-          source: genResult._source || 'generated',
-          generatedBy: genResult.generatedBy || '',
-          model: genResult.model || '',
-          pipelineVersion: genResult.pipelineVersion || '',
-          generatedAt: genResult.generatedAt || '',
-          cached: genResult.cached || false,
+        return res.json({
+            questions: valResult.questions,
+            totalServed: valResult.totalServed,
+            timeLimitMinutes: 60,
+            timeLimitSeconds: 3600,
+            minSyllabusCoveragePercentage: 100,
+            deduplicationActive: true,
+            llmSynthesizedCount: valResult.llmSynthesizedCount,
+            source: 'active_question_validator_service',
+            generatedBy: 'active_validator_local_llm',
+            model: 'rubric_evaluator_sglang_ollama',
+            pipelineVersion: 'v2',
+            generatedAt: new Date().toISOString()
         });
 
     } catch (error) {
-        log.error('SYSTEM', 'Error generating level questions', error);
+        log.error('SYSTEM', 'Error validating level questions', error);
         res.status(500).json({ message: 'Error generating level questions' });
     }
 });

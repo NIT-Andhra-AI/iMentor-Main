@@ -222,12 +222,14 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
             return '';
         };
 
-        // Capture the index for this specific conversation turn
-        capturedIndexRef.current = currentQuestionIndex;
+        const effectiveSessionId = currentSessionId || crypto.randomUUID();
+        if (!currentSessionId) {
+            setSessionId(effectiveSessionId);
+        }
 
         const payload = {
             query: inputText.trim(),
-            sessionId: currentSessionId,
+            sessionId: effectiveSessionId,
             useWebSearch: options.useWebSearch,
             useAcademicSearch: options.useAcademicSearch,
             systemPrompt,
@@ -525,6 +527,10 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                     detail: finalBotMessageObject.currentPosition
                 }));
             }
+            // Dispatch session-graph-updated event so RealtimeKgPanel auto-refreshes
+            window.dispatchEvent(new CustomEvent('session-graph-updated', {
+                detail: { sessionId: currentSessionId }
+            }));
             // --- END OF FIX ---
 
             if (finalBotMessageObject.action && finalBotMessageObject.action.type === 'DOWNLOAD_DOCUMENT') {
@@ -644,7 +650,12 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
 
 
     const handleSendMessage = useCallback(async (inputText, options = {}) => {
-        if (!inputText.trim() || !regularUserToken || !currentSessionId || isActuallySendingAPI) return;
+        const effectiveSessionId = currentSessionId || crypto.randomUUID();
+        if (!currentSessionId) {
+            setSessionId(effectiveSessionId);
+        }
+
+        if (!inputText.trim() || !regularUserToken || isActuallySendingAPI) return;
 
         const effectiveUseWebSearch = options.useWebSearch ?? useWebSearch;
         const effectiveUseAcademicSearch = options.useAcademicSearch ?? useAcademicSearch;

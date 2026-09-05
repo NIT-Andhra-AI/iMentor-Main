@@ -107,7 +107,7 @@ const ResearchDetailView = () => {
 
             <main className="flex-1 overflow-y-auto bg-[#0A0A0A] p-6 lg:p-12 relative scrollbar-thin scrollbar-thumb-gray-800">
                 <div className="max-w-4xl mx-auto pb-20">
-                    <ResearchReport researchReport={researchData.researchReport} />
+                    <ResearchReport researchReport={researchData.researchReport} sources={researchData.sources} />
                 </div>
             </main>
 

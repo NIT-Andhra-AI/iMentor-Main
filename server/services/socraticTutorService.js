@@ -781,6 +781,9 @@ async function generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConf
  * Uses precomputed intro+question from Redis when available (zero LLM latency).
  */
 async function startSocraticSession(topic, context, llmConfig, position = null, onToken = null) {
+    const { sanitizeTutorTopic } = require('./tutorService');
+    const cleanTopic = sanitizeTutorTopic(topic);
+
     // ── Fast path: use precomputed content from Redis ──────────────────────────
     const courseName = position?.courseName || position?.course;
     const topicId = position?.topicId || position?.subtopicId;
@@ -798,7 +801,7 @@ async function startSocraticSession(topic, context, llmConfig, position = null, 
 
     // ── Slow path: generate via LLM ───────────────────────────────────────────
     const { llmService, llmOptions } = getLLMService(llmConfig);
-    const prompt = `Start a Study Mode Socratic lesson on: ${safe(topic)}`;
+    const prompt = `Start a Study Mode Socratic lesson on: ${safe(cleanTopic)}`;
 
     let systemPrompt = `You are iMentor's Guided Learning Coach, designed to feel like the interactive tutoring features of ChatGPT Study Mode and Gemini Learning Coach.
 
@@ -806,32 +809,36 @@ PEDAGOGICAL RULES:
 1. NEVER dump the complete solution or full multi-step derivation all at once.
 2. NEVER answer a student's genuine question with only another question.
 3. STRUCTURE EVERY RESPONSE INTO 3 CLEAR BLOCKS:
-   - BLOCK 1: VALIDATE & CLARIFY (1-2 sentences): Acknowledge their topic/question warmly and explain the immediate core principle or intuitive mental model.
+   - BLOCK 1: VALIDATE & CLARIFY (1-2 sentences): Begin with "Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step." and explain the immediate core principle or intuitive mental model.
    - BLOCK 2: THE BITE-SIZED STEP (2-4 sentences or equations): Walk through the first logical chunk of the problem. Show the formula, define the variables, or provide a concrete analogy.
    - BLOCK 3: THE GUIDED CHECKPOINT (1 targeted question): Ask a low-friction, scaffolded question that invites the student to apply what was just explained or determine the next step.
 4. ADAPTIVE RESPONSES:
    - If the student answers correctly: Validate with positive reinforcement, explain why their logic was sound, and introduce the next concept milestone.
    - If the student is stuck or says "I don't know": Break down the step further with an everyday analogy or give a partial hint.
 
-TOPIC TO INTRODUCE: "${safe(topic)}"
+TOPIC TO INTRODUCE: "${safe(cleanTopic)}"
 
 CONTEXT FOR FACTS:
 ${safe(context)}`;
 
     if (position) {
-        systemPrompt += `\n\n📍 POSITION: ${safe(position.moduleName || 'General')} -> ${safe(position.topicName || topic)}`;
+        systemPrompt += `\n\n📍 POSITION: ${safe(position.moduleName || 'General')} -> ${safe(position.topicName || cleanTopic)}`;
     }
 
     // Inject dynamic instructions based on topic content/query characteristics (prompt injection)
-    systemPrompt += getAdaptivePromptInjection(topic);
+    systemPrompt += getAdaptivePromptInjection(cleanTopic);
 
     try {
         const response = await generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConfig, llmOptions, onToken);
-        console.log(`\n\n[STUDENT INPUT]\nTopic: ${topic}\n\n[TUTOR ACTION]\nGuided Learning Step 1\n\n[GUIDED CHECKPOINT]\n(Waiting for response)\n`);
+        console.log(`\n\n[STUDENT INPUT]\nTopic: ${cleanTopic}\n\n[TUTOR ACTION]\nGuided Learning Step 1\n\n[GUIDED CHECKPOINT]\n(Waiting for response)\n`);
         return sanitizeGeneratedText(response);
     } catch (error) {
         log.error('TUTOR', `Start session error: ${error.message}`, error);
-        return sanitizeGeneratedText(`Welcome to **${safe(topic)}**! Let's build a solid understanding together step by step.\n\nThe core principle starts with understanding how the physical parameters interact. To begin, what is your initial intuition about this concept?`);
+        return sanitizeGeneratedText(
+            `### 📌 1. Validate & Clarify\nWelcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step.\n\n` +
+            `### 🧩 2. Bite-Sized Step\nThe core principle starts with understanding how the primary physical parameters interact in **${safe(cleanTopic)}**.\n\n` +
+            `### 🎯 3. Guided Checkpoint\nTo begin, what is your initial intuition about this concept?`
+        );
     }
 }
 

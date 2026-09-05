@@ -85,7 +85,9 @@ function extractYear(source) {
 }
 
 function safeText(source) {
-    return [source.title, source.abstract, source.content, source.snippet].filter(Boolean).join(' ').toLowerCase();
+    const concepts = Array.isArray(source.concepts) ? source.concepts.join(' ') : '';
+    const journal = source.journal || source.publisher || '';
+    return [source.title, source.abstract, source.content, source.snippet, concepts, journal].filter(Boolean).join(' ').toLowerCase();
 }
 
 function scoreRecency(year) {
@@ -100,9 +102,9 @@ function scoreRecency(year) {
 
 function detectEvidenceCategory(text, sourceType) {
     const hasNumbers = /\b\d+(\.\d+)?%?\b/.test(text);
-    const hasEmpiricalKeywords = /(dataset|survey|sample|experiment|regression|panel|randomized|meta-analysis|empirical|n=|observation)/.test(text);
+    const hasEmpiricalKeywords = /(dataset|survey|sample|experiment|regression|panel|randomized|meta-analysis|empirical|n=|observation|evaluation|benchmark|accuracy|precision|recall|f1|rmse|performance|measurement|simulation)/.test(text);
     const hasHistoricalKeywords = /(historical|previous cycle|prior era|dot-com|dot com|2008|1999|timeline|longitudinal)/.test(text);
-    const hasTheoreticalKeywords = /(framework|model|theory|hypothesis|conceptual|proposition)/.test(text);
+    const hasTheoreticalKeywords = /(framework|model|theory|hypothesis|conceptual|proposition|architecture|algorithm|methodology|formulation|mathematical)/.test(text);
     const hasMarketKeywords = /(valuation|earnings|revenue|capex|ipo|market share|cash flow|gross margin|multiple|institutional)/.test(text);
 
     if (sourceType === 'academic' && (hasEmpiricalKeywords || hasNumbers)) return 'empirical';
@@ -110,6 +112,7 @@ function detectEvidenceCategory(text, sourceType) {
     if (hasHistoricalKeywords) return 'historical';
     if (hasMarketKeywords && hasNumbers) return 'market_signal';
     if (hasTheoreticalKeywords) return 'theoretical';
+    if (sourceType === 'academic') return 'theoretical';
     return 'speculative';
 }
 
@@ -260,35 +263,64 @@ const researchIntelligenceService = {
         // Normalise nature / depth from user selection
         const nature = ['general', 'academic', 'research'].includes(cfg.nature)
             ? cfg.nature : 'academic';
-        const depth  = ['low', 'medium', 'high'].includes(cfg.depth)
-            ? cfg.depth : 'medium';
+
+        // Map depth presets if passed as standard/deep/extensive
+        let depth = cfg.depth;
+        if (cfg.depthPreset === 'standard' || cfg.depth === 'standard') depth = 'low';
+        else if (cfg.depthPreset === 'deep' || cfg.depth === 'deep') depth = 'medium';
+        else if (cfg.depthPreset === 'extensive' || cfg.depth === 'extensive') depth = 'high';
+        else if (!['low', 'medium', 'high'].includes(depth)) depth = 'medium';
 
         const preset = NATURE_DEPTH_MATRIX[nature][depth];
 
-        // Apply preset — overrides any manual source-count specification
-        cfg.nature               = nature;
-        cfg.depth                = depth;
-        cfg.target_source_count  = preset.total;
-        cfg.openAlexTarget       = preset.openAlex;
-        cfg.semanticTarget       = preset.semantic;
-        cfg.arxivTarget          = preset.arxiv;
-        cfg.webTarget            = preset.web;
-        cfg.targetPages          = preset.pages;
-        cfg.targetSections       = preset.sections;
-        cfg.minWordsPerSection   = preset.minWordsPerSection;
+        cfg.nature = nature;
+        cfg.depth = depth;
+
+        // If explicit target_source_count was specified by user/preset (e.g. 5, 8, 12, 15)
+        const explicitTarget = Number(userConfig?.target_source_count);
+        const hasExplicitTarget = Number.isFinite(explicitTarget) && explicitTarget >= 3 && explicitTarget <= 100;
+
+        if (hasExplicitTarget) {
+            cfg.target_source_count = explicitTarget;
+            cfg.openAlexTarget = Math.max(2, Math.round(explicitTarget * 0.45));
+            cfg.semanticTarget = Math.max(1, Math.round(explicitTarget * 0.20));
+            cfg.arxivTarget = Math.max(1, Math.round(explicitTarget * 0.15));
+            cfg.webTarget = Math.max(1, Math.round(explicitTarget * 0.20));
+            cfg.targetPages = explicitTarget <= 10 ? [3, 4] : explicitTarget <= 25 ? [4, 6] : preset.pages;
+            cfg.targetSections = explicitTarget <= 10 ? 5 : explicitTarget <= 25 ? 7 : preset.sections;
+            cfg.minWordsPerSection = preset.minWordsPerSection;
+        } else {
+            cfg.target_source_count  = preset.total;
+            cfg.openAlexTarget       = preset.openAlex;
+            cfg.semanticTarget       = preset.semantic;
+            cfg.arxivTarget          = preset.arxiv;
+            cfg.webTarget            = preset.web;
+            cfg.targetPages          = preset.pages;
+            cfg.targetSections       = preset.sections;
+            cfg.minWordsPerSection   = preset.minWordsPerSection;
+        }
+
+        // Adjust for enabledProviders if passed
+        if (userConfig?.enabledProviders) {
+            const ep = userConfig.enabledProviders;
+            if (ep.openalex === false) { cfg.webTarget += cfg.openAlexTarget; cfg.openAlexTarget = 0; }
+            if (ep.arxiv === false) { cfg.openAlexTarget += cfg.arxivTarget; cfg.arxivTarget = 0; }
+            if (ep.semanticScholar === false) { cfg.openAlexTarget += cfg.semanticTarget; cfg.semanticTarget = 0; }
+            if (ep.web === false) { cfg.openAlexTarget += cfg.webTarget; cfg.webTarget = 0; }
+        }
 
         // Academic-fraction drives the empirical ratio
-        const academicFraction   = (preset.openAlex + preset.semantic + preset.arxiv) / preset.total;
-        cfg.empirical_ratio      = Math.min(0.90, Math.round(academicFraction * 100) / 100);
-        cfg.empirical_required   = Math.ceil(preset.total * cfg.empirical_ratio);
+        const academicFraction   = (cfg.openAlexTarget + cfg.semanticTarget + cfg.arxivTarget) / Math.max(1, cfg.target_source_count);
+        cfg.empirical_ratio      = userConfig?.empirical_ratio ?? Math.min(0.90, Math.round(academicFraction * 100) / 100);
+        cfg.empirical_required   = Math.max(1, Math.ceil(cfg.target_source_count * cfg.empirical_ratio));
 
         // Scale minimums proportionally
-        cfg.minimum_academic             = Math.max(5,  Math.floor(preset.total * 0.25));
-        cfg.minimum_counter_sources      = Math.max(2,  Math.floor(preset.total * 0.04));
-        cfg.minimum_industry_or_report   = Math.max(2,  Math.floor(preset.total * 0.04));
+        cfg.minimum_academic             = Math.max(2,  Math.floor(cfg.target_source_count * 0.25));
+        cfg.minimum_counter_sources      = Math.max(1,  Math.floor(cfg.target_source_count * 0.04));
+        cfg.minimum_industry_or_report   = Math.max(1,  Math.floor(cfg.target_source_count * 0.04));
 
         cfg.allow_adaptive_fallback = cfg.allow_adaptive_fallback !== false;
-        cfg.studentSpecifiedCount   = false; // users choose nature/depth, not raw counts
+        cfg.studentSpecifiedCount   = hasExplicitTarget;
 
         return cfg;
     },
@@ -400,10 +432,10 @@ const researchIntelligenceService = {
         );
 
         const thresholds = context.thresholds || { relevance: 0.65, domainAlignment: 0.6, includeNearMatch: false };
-        const strictEvidenceGate = (dataRichness >= 0.2 || evidenceStrength >= 0.65);
-        const nearMatchGate = thresholds.includeNearMatch && (
-            (topicalRelevance >= (thresholds.relevance - 0.08) && domainAlignment >= (thresholds.domainAlignment - 0.1) && credibility >= 0.45)
-            || (topicalRelevance >= 0.5 && credibility >= 0.55)
+        const strictEvidenceGate = (dataRichness >= 0.2 || evidenceStrength >= 0.65 || source.sourceType === 'academic');
+        const nearMatchGate = (thresholds.includeNearMatch || source.sourceType === 'academic') && (
+            (topicalRelevance >= (thresholds.relevance - 0.15) && domainAlignment >= (thresholds.domainAlignment - 0.15) && credibility >= 0.40)
+            || (topicalRelevance >= 0.45 && credibility >= 0.50)
         );
 
         const passesThreshold = (

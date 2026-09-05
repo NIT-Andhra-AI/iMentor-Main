@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EE3010: Advanced Power Systems - Interactive Learning Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- KaTeX for crisp mathematical notation -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>EE3010: Advanced Power Systems</h1>
+                <p>Interactive Lecture &amp; Simulation Sandbox</p>
+            </div>
+            <nav class="lecture-list">
+                
+            <div class="unit-section">
+                <div class="unit-title">Unit I</div>
+                <div class="lecture-item active" data-lecture="1" onclick="loadLecture(1)">
+                    <div class="lecture-num">L1</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Physical Foundations & Governing Conservation Laws of Advanced Power Systems</div>
+                        <div class="lecture-meta">L2_UNDERSTAND &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="2" onclick="loadLecture(2)">
+                    <div class="lecture-num">L2</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">State Variable Formulation & Continuous-Time Differential Equations in Advanced Power Systems</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="3" onclick="loadLecture(3)">
+                    <div class="lecture-num">L3</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Transform Domain Methods (Laplace, Fourier & Z-Transforms)</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="4" onclick="loadLecture(4)">
+                    <div class="lecture-num">L4</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Matrix Canonical Representations & Coupled Dynamical Systems</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="5" onclick="loadLecture(5)">
+                    <div class="lecture-num">L5</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Energy, Power & Constitutive Relations in Complex Networks</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="6" onclick="loadLecture(6)">
+                    <div class="lecture-num">L6</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Equilibrium States, Operating Point Analysis & Small-Signal Linearization</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="7" onclick="loadLecture(7)">
+                    <div class="lecture-num">L7</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Boundary Conditions, Spatial Discretization & Lumped Approximations</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit II</div>
+                <div class="lecture-item " data-lecture="8" onclick="loadLecture(8)">
+                    <div class="lecture-num">L8</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">First and Second Order Transient Dynamics in Advanced Power Systems</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="9" onclick="loadLecture(9)">
+                    <div class="lecture-num">L9</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Frequency Response, Asymptotic Bode Formulations & Group Delay</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="10" onclick="loadLecture(10)">
+                    <div class="lecture-num">L10</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Algebraic Stability Criteria (Routh-Hurwitz / Schur-Cohn Criteria)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="11" onclick="loadLecture(11)">
+                    <div class="lecture-num">L11</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Geometric Stability & Root Locus Trajectory Mapping</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="12" onclick="loadLecture(12)">
+                    <div class="lecture-num">L12</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Nyquist Encirclement Criterion & Principle of the Argument</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="13" onclick="loadLecture(13)">
+                    <div class="lecture-num">L13</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">State Transition Matrix e^(At), Matrix Exponentials & Cayley-Hamilton</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="14" onclick="loadLecture(14)">
+                    <div class="lecture-num">L14</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Controllability and Observability (Kalman Rank Conditions & Gramians)</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit III</div>
+                <div class="lecture-item " data-lecture="15" onclick="loadLecture(15)">
+                    <div class="lecture-num">L15</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Feedback System Topologies & Closed-Loop Gain Sensitivity in Advanced Power Systems</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="16" onclick="loadLecture(16)">
+                    <div class="lecture-num">L16</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Lead, Lag & Lag-Lead Compensator Frequency-Domain Design</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="17" onclick="loadLecture(17)">
+                    <div class="lecture-num">L17</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">State Feedback Pole Placement & Ackermann's Gain Formula</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="18" onclick="loadLecture(18)">
+                    <div class="lecture-num">L18</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Full-Order & Reduced-Order Luenberger State Observer Synthesis</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="19" onclick="loadLecture(19)">
+                    <div class="lecture-num">L19</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Optimal Control & Linear Quadratic Regulator (LQR) Formulation</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="20" onclick="loadLecture(20)">
+                    <div class="lecture-num">L20</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Numerical Simulation Solvers (Runge-Kutta, Forward/Backward Euler)</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="21" onclick="loadLecture(21)">
+                    <div class="lecture-num">L21</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Constrained Parameter Optimization & Gradient Descent Formulations</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="22" onclick="loadLecture(22)">
+                    <div class="lecture-num">L22</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Discrete-Time State-Space Representation & Sampling Period Selection</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit IV</div>
+                <div class="lecture-item " data-lecture="23" onclick="loadLecture(23)">
+                    <div class="lecture-num">L23</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="24" onclick="loadLecture(24)">
+                    <div class="lecture-num">L24</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="25" onclick="loadLecture(25)">
+                    <div class="lecture-num">L25</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="26" onclick="loadLecture(26)">
+                    <div class="lecture-num">L26</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Anti-Windup Compensation & Actuator Saturation Protection</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="27" onclick="loadLecture(27)">
+                    <div class="lecture-num">L27</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="28" onclick="loadLecture(28)">
+                    <div class="lecture-num">L28</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Fault Detection, Isolation (FDI) & Residual Generator Design</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="29" onclick="loadLecture(29)">
+                    <div class="lecture-num">L29</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit-section">
+                <div class="unit-title">Unit V</div>
+                <div class="lecture-item " data-lecture="30" onclick="loadLecture(30)">
+                    <div class="lecture-num">L30</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">IEEE / ISO Industrial Engineering Standards & Compliance Verification in Advanced Power Systems</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="31" onclick="loadLecture(31)">
+                    <div class="lecture-num">L31</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="32" onclick="loadLecture(32)">
+                    <div class="lecture-num">L32</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Telemetry Monitoring, State Estimation & Extended Kalman Filtering</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="33" onclick="loadLecture(33)">
+                    <div class="lecture-num">L33</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="34" onclick="loadLecture(34)">
+                    <div class="lecture-num">L34</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Deep Industrial Case Study: Safety-Critical Deployment of Advanced Power Systems</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="35" onclick="loadLecture(35)">
+                    <div class="lecture-num">L35</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends</div>
+                        <div class="lecture-meta">L5_EVALUATE &bull; 45 mins</div>
+                    </div>
+                </div>
+                <div class="lecture-item " data-lecture="36" onclick="loadLecture(36)">
+                    <div class="lecture-num">L36</div>
+                    <div class="lecture-info">
+                        <div class="lecture-title">End-to-End System Design Verification, Synthesis Defense & Capstone Review in Advanced Power Systems</div>
+                        <div class="lecture-meta">L6_CREATE &bull; 45 mins</div>
+                    </div>
+                </div>
+            </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h2 id="currentLecBadge">Lecture 1: Introduction</h2>
+                    <p id="lectureSubtopics">Loading curriculum details and mathematical foundations...</p>
+                </div>
+                <div class="header-actions">
+                    <span class="status-pill success" id="bloomBadge">L3_APPLY</span>
+                    <button class="btn" onclick="prevLecture()">← Prev</button>
+                    <button class="btn btn-primary" onclick="nextLecture()">Next →</button>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Theoretical Foundations Card -->
+                <section class="card">
+                    <div class="card-title">Curriculum Foundations &amp; Mathematical Formulation</div>
+                    <p class="theory-text" id="theoryDesc">
+                        Feedback control systems stabilize dynamic plants by shaping closed-loop pole locations in the complex s-plane to achieve fast transient response and zero steady-state error.
+                    </p>
+                    <div class="math-card">
+                        <div class="math-eq" id="lectureMathFormula">
+                            $$ T(s) = rac{C(s)G(s)}{1 + C(s)G(s)H(s)} = rac{\omega_n^2}{s^2 + 2\zeta\omega_n s + \omega_n^2}, \quad M_p = e^{-rac{\pi\zeta}{\sqrt{1-\zeta^2}}} 	imes 100\%, \quad t_s pprox rac{4}{\zeta\omega_n} $$
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive System Block Diagram -->
+                <section class="card">
+                    <div class="card-title">Closed-Loop Feedback Control System</div>
+                    <p class="theory-text">
+                        Click on each stage of the system architecture to inspect its governing equations, signal transformations, and operational parameters:
+                    </p>
+                    <div class="diagram-container" id="diagramContainer">
+                        
+                    <div class="diagram-node active-block" onclick="selectBlock('ref')">
+                        <div class="node-title">1. Reference Input</div>
+                        <div class="node-subtitle">Set-Point R(s)</div>
+                        <div class="node-status">Command</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('sum')">
+                        <div class="node-title">2. Summing Junction</div>
+                        <div class="node-subtitle">Error E(s) = R - B</div>
+                        <div class="node-status">Comparator</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('controller')">
+                        <div class="node-title">3. PID Controller</div>
+                        <div class="node-subtitle">C(s) = Kp + Ki/s + Kd s</div>
+                        <div class="node-status">Compensation</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('plant')">
+                        <div class="node-title">4. Physical Plant</div>
+                        <div class="node-subtitle">Actuator &amp; Dynamics</div>
+                        <div class="node-status">G(s) Transfer</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('sensor')">
+                        <div class="node-title">5. Feedback Sensor</div>
+                        <div class="node-subtitle">Measurement H(s)</div>
+                        <div class="node-status">Output Y(s)</div>
+                    </div>
+                
+                    </div>
+                    <div class="diagram-info-panel">
+                        <div class="diagram-info-title" id="diagramInfoTitle">PID Controller Compensation</div>
+                        <div class="diagram-info-desc" id="diagramInfoDesc">Proportional gain speeds up response, Integral action eliminates steady-state error, and Derivative action adds phase lead to dampen transient overshoot.</div>
+                    </div>
+                </section>
+
+                <!-- Interactive Simulation Sandbox -->
+                <section class="card">
+                    <div class="card-title">⚡ Interactive S-Plane Root Locus & Step Response Sandbox</div>
+                    <p class="theory-text">
+                        Adjust parameters in real time using the sliders below. Observe how state variables, trajectories, and dynamic responses evolve at 60 FPS:
+                    </p>
+
+                    <div class="sandbox-grid">
+                        <div class="plot-container">
+                            <canvas id="interactiveCanvas" width="800" height="360"></canvas>
+                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 0.75rem; color: var(--text-muted);" id="canvasFootnote">Interactive HTML5 Canvas Vector Plot</div>
+                                <div id="statusPillContainer">
+                                    <span class="status-pill success" id="statusPill">&bull; Stable Operating Mode</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel">
+                            <h4 style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; margin-bottom: 14px; color: var(--color-teal); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                Parameter Controls
+                            </h4>
+
+                            <div class="control-group">
+                                <label>Damping Ratio (\(\zeta\)): <span id="valParam1" class="control-val">0.45</span></label>
+                                <input type="range" id="sliderParam1" min="0.05" max="2.0" step="0.05" value="0.45" oninput="handleParamChange()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>Natural Frequency (\(\omega_n\)) [rad/s]: <span id="valParam2" class="control-val">4.0</span></label>
+                                <input type="range" id="sliderParam2" min="1.0" max="15.0" step="0.5" value="4.0" oninput="handleParamChange()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>Proportional Loop Gain (\(K\)): <span id="valParam3" class="control-val">8.0</span></label>
+                                <input type="range" id="sliderParam3" min="0.5" max="30.0" step="0.5" value="8.0" oninput="handleParamChange()">
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 18px;">
+                                <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="toggleAnimation()">▶ Run / Pause</button>
+                                <button class="btn" style="flex: 1; justify-content: center;" onclick="resetSimulation()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Lecture Checkpoint -->
+                <section class="card">
+                    <div class="card-title">🎯 Concept Checkpoint &amp; Self-Assessment</div>
+                    <div class="accordion open">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title" id="checkpointQuestion">How does increasing the damping ratio \(\zeta\) from 0.2 to 0.8 affect closed-loop peak overshoot and transient oscillation?</div>
+                            <div class="accordion-icon"></div>
+                        </div>
+                        <div class="accordion-content" id="checkpointBody">
+                            <div class="options-grid" id="optionsContainer">
+                                <button class="option-btn" onclick="checkAnswer(0)">A) Peak overshoot drops dramatically and oscillations decay much faster.</button>
+                                <button class="option-btn" onclick="checkAnswer(1)">B) Overshoot increases exponentially toward instability.</button>
+                                <button class="option-btn" onclick="checkAnswer(2)">C) Settling time diverges toward infinity.</button>
+                            </div>
+                            <div class="feedback-alert" id="checkpointFeedback" style="display: none; margin-top: 14px;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- References & Accreditation Mapping -->
+                <section class="card">
+                    <div class="card-title">📚 Recommended References &amp; NPTEL Alignment</div>
+                    <ul class="theory-list">
+                        <li><strong>Standard Textbook:</strong> Fundamentals of Electric Circuits</li>
+                        <li><strong>NPTEL / MOOC Alignment:</strong> Basic Electrical Circuits</li>
+                        <li><strong>Outcome Alignment:</strong> Satisfies accredited engineering program outcomes with rigorous mathematical derivations and interactive verification.</li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

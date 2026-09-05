@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import Prism from 'prismjs';
 import toast from 'react-hot-toast';
 import Animate from '../core/Animate.jsx';
-import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle, Sparkles } from 'lucide-react';
+import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle, Sparkles, ExternalLink } from 'lucide-react';
 import ThinkingDropdown from './ThinkingDropdown.jsx';
 import TypingIndicator from './TypingIndicator.jsx';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech.js';
@@ -578,26 +578,19 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                     </div>
 
                     {!activeIsStreaming && !isUser && activeReferences && activeReferences.length > 0 && (
-                        <div className="message-metadata-container max-w-[85%] md:max-w-[75%] mt-1.5 pl-2">
-                            <details className="group/details text-xs">
-                                <summary className="flex items-center justify-between gap-1 cursor-pointer text-text-muted-light dark:text-text-muted-dark hover:text-black dark:hover:text-white transition-colors">
-                                    <span className="flex items-center gap-1">
-                                        <LinkIcon size={14} /> References
-                                    </span>
-                                    <ChevronDown size={14} className="transition-transform group-open/details:rotate-180" />
-                                </summary>
-                                <ul className="mt-1 pl-1 space-y-0.5 text-[0.7rem]">
-                                    {activeReferences.map((ref, index) => (
-                                        <li
-                                            key={index}
-                                            className="text-text-muted-light dark:text-text-muted-dark hover:text-text-light dark:hover:text-text-dark transition-colors truncate"
-                                            title={`Preview: ${escapeHtml(ref.content_preview || '')}\nSource: ${escapeHtml(ref.source || '')}`}
-                                        >
-                                            <span className="font-semibold text-black dark:text-white">[{ref.number}]</span> {escapeHtml(ref.source)}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </details>
+                        <div className="flex flex-wrap gap-2 mt-3 pt-2 border-t border-gray-700/50">
+                            {activeReferences.map((ref, idx) => (
+                                <a
+                                    key={idx}
+                                    href={ref.url || (ref.id?.startsWith('http') ? ref.id : `https://arxiv.org/abs/${ref.id || ''}`)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-colors"
+                                >
+                                    <ExternalLink size={12} />
+                                    <span>[{idx + 1}] {(ref.title || ref.source || 'Paper')?.slice(0, 45)}... ({ref.source || 'arXiv'})</span>
+                                </a>
+                            ))}
                         </div>
                     )}
 

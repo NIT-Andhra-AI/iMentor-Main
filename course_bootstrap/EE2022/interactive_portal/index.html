@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EE2022: Circuits and Measurements Lab - Interactive Learning Portal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- KaTeX for beautiful math equations -->
+    <!-- KaTeX for crisp mathematical notation -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
@@ -16,7 +16,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h1>EE2022: Circuits and Measurements Lab</h1>
-                <p>B.Tech R24 Curriculum &bull; Interactive Lectures</p>
+                <p>Interactive Lecture &amp; Simulation Sandbox</p>
             </div>
             <nav class="lecture-list">
                 
@@ -26,42 +26,42 @@
                     <div class="lecture-num">L1</div>
                     <div class="lecture-info">
                         <div class="lecture-title">V-I Characteristics</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="2" onclick="loadLecture(2)">
                     <div class="lecture-num">L2</div>
                     <div class="lecture-info">
                         <div class="lecture-title">Verification of KVL & KCL</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="3" onclick="loadLecture(3)">
                     <div class="lecture-num">L3</div>
                     <div class="lecture-info">
                         <div class="lecture-title">Superposition Theorem Verification</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="4" onclick="loadLecture(4)">
                     <div class="lecture-num">L4</div>
                     <div class="lecture-info">
                         <div class="lecture-title">Thevenin's Theorem Verification</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="5" onclick="loadLecture(5)">
                     <div class="lecture-num">L5</div>
                     <div class="lecture-info">
                         <div class="lecture-title">Maximum Power Transfer</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="6" onclick="loadLecture(6)">
                     <div class="lecture-num">L6</div>
                     <div class="lecture-info">
                         <div class="lecture-title">RC Transient Response</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
             </div>
@@ -71,42 +71,42 @@
                     <div class="lecture-num">L7</div>
                     <div class="lecture-info">
                         <div class="lecture-title">RL Transient Response</div>
-                        <div class="lecture-meta">L3_APPLY &bull; 40 mins</div>
+                        <div class="lecture-meta">L3_APPLY &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="8" onclick="loadLecture(8)">
                     <div class="lecture-num">L8</div>
                     <div class="lecture-info">
                         <div class="lecture-title">RLC Series Resonance</div>
-                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="9" onclick="loadLecture(9)">
                     <div class="lecture-num">L9</div>
                     <div class="lecture-info">
                         <div class="lecture-title">RLC Parallel Resonance</div>
-                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="10" onclick="loadLecture(10)">
                     <div class="lecture-num">L10</div>
                     <div class="lecture-info">
                         <div class="lecture-title">Z & Y Parameters</div>
-                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="11" onclick="loadLecture(11)">
                     <div class="lecture-num">L11</div>
                     <div class="lecture-info">
                         <div class="lecture-title">ABCD Parameters</div>
-                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
                     </div>
                 </div>
                 <div class="lecture-item " data-lecture="12" onclick="loadLecture(12)">
                     <div class="lecture-num">L12</div>
                     <div class="lecture-info">
                         <div class="lecture-title">SPICE Simulation of Circuits</div>
-                        <div class="lecture-meta">L4_ANALYZE &bull; 40 mins</div>
+                        <div class="lecture-meta">L4_ANALYZE &bull; 45 mins</div>
                     </div>
                 </div>
             </div>
@@ -115,75 +115,151 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Top Navigation Banner -->
-            <header class="top-nav">
-                <div class="current-lecture-badge" id="currentLecBadge">Lecture 1: Introduction</div>
-                <div class="nav-actions">
-                    <span class="badge badge-accent" id="bloomBadge">L2_UNDERSTAND</span>
-                    <button class="btn btn-secondary" onclick="prevLecture()">← Prev</button>
+            <header class="main-header">
+                <div class="header-title">
+                    <h2 id="currentLecBadge">Lecture 1: Introduction</h2>
+                    <p id="lectureSubtopics">Loading curriculum details and mathematical foundations...</p>
+                </div>
+                <div class="header-actions">
+                    <span class="status-pill success" id="bloomBadge">L3_APPLY</span>
+                    <button class="btn" onclick="prevLecture()">← Prev</button>
                     <button class="btn btn-primary" onclick="nextLecture()">Next →</button>
                 </div>
             </header>
 
-            <!-- Lecture View Container -->
-            <div class="content-body" id="lectureContentArea">
-                <!-- Overview Card -->
-                <div class="card">
-                    <div class="card-title" id="lectureHeaderTitle">Lecture 1: Theoretical Foundations</div>
-                    <div class="card-desc" id="lectureSubtopics">Loading lecture subtopics and engineering concepts...</div>
-                    <div class="math-box" id="lectureMathFormula">
-                        $$ y(t) = \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\tau \iff Y(s) = X(s) H(s) $$
-                    </div>
-                </div>
-
-                <!-- Interactive Simulation Canvas Card -->
-                <div class="card">
-                    <div class="card-title">⚡ Interactive RLC Resonance & Phasor Visualizer</div>
-                    <p class="card-desc">Adjust parameters in real time to observe mathematical transformations, dynamic waveforms, and stability trajectories.</p>
-                    
-                    <!-- Controls Bar -->
-                    <div class="controls-bar">
-                        <div class="control-group">
-                            <label>Damping / Parameter &alpha;: <span id="paramValAlpha">0.50</span></label>
-                            <input type="range" id="sliderAlpha" min="0.05" max="1.50" step="0.05" value="0.50" oninput="updateSimulation()">
-                        </div>
-                        <div class="control-group">
-                            <label>Frequency &omega; / Scale: <span id="paramValOmega">2.00</span></label>
-                            <input type="range" id="sliderOmega" min="0.5" max="10.0" step="0.5" value="2.0" oninput="updateSimulation()">
-                        </div>
-                        <div class="control-group">
-                            <button class="btn btn-accent" onclick="toggleAnimation()">▶ Run Simulation</button>
-                            <button class="btn btn-secondary" onclick="resetSimulation()">Reset</button>
+            <div class="content-wrapper">
+                <!-- Theoretical Foundations Card -->
+                <section class="card">
+                    <div class="card-title">Curriculum Foundations &amp; Mathematical Formulation</div>
+                    <p class="theory-text" id="theoryDesc">
+                        Electrical circuit dynamics are governed by Kirchhoff's laws and differential energy-storage dynamics in inductors (\(v = L rac{di}{dt}\)) and capacitors (\(i = C rac{dv}{dt}\)).
+                    </p>
+                    <div class="math-card">
+                        <div class="math-eq" id="lectureMathFormula">
+                            $$ L rac{d^2 i(t)}{dt^2} + R rac{di(t)}{dt} + rac{1}{C} i(t) = 0 \implies s^2 + 2lpha s + \omega_0^2 = 0, \quad lpha = rac{R}{2L}, \quad \omega_0 = rac{1}{\sqrt{LC}} $$
                         </div>
                     </div>
+                </section>
 
-                    <!-- Live Canvas -->
-                    <div class="canvas-container">
-                        <canvas id="interactiveCanvas" width="900" height="320"></canvas>
+                <!-- Interactive System Block Diagram -->
+                <section class="card">
+                    <div class="card-title">RLC Dynamic Circuit Architecture</div>
+                    <p class="theory-text">
+                        Click on each stage of the system architecture to inspect its governing equations, signal transformations, and operational parameters:
+                    </p>
+                    <div class="diagram-container" id="diagramContainer">
+                        
+                    <div class="diagram-node active-block" onclick="selectBlock('source')">
+                        <div class="node-title">1. Excitation Source</div>
+                        <div class="node-subtitle">Step / AC Sinusoid</div>
+                        <div class="node-status">V_in(t)</div>
                     </div>
-                    <div class="canvas-caption" id="canvasCaption">Real-time simulation rendered at 60 FPS using HTML5 Canvas & Vector Math.</div>
-                </div>
-
-                <!-- Diagnostic Checkpoint Quiz Card -->
-                <div class="card">
-                    <div class="card-title">🎯 Concept Checkpoint & Self-Assessment</div>
-                    <div id="checkpointQuestion" class="checkpoint-question">Which criterion guarantees that an LTI system is strictly BIBO stable?</div>
-                    <div class="options-grid" id="optionsContainer">
-                        <button class="option-btn" onclick="checkAnswer(0)">A) All poles lie outside |z| &gt; 1</button>
-                        <button class="option-btn" onclick="checkAnswer(1)">B) All poles lie strictly inside the unit circle |z| &lt; 1</button>
-                        <button class="option-btn" onclick="checkAnswer(2)">C) The impulse response is growing exponentially</button>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('inductor')">
+                        <div class="node-title">2. Inductive Choke</div>
+                        <div class="node-subtitle">Magnetic Storage</div>
+                        <div class="node-status">E_L = 0.5 L I^2</div>
                     </div>
-                    <div class="feedback-alert" id="checkpointFeedback" style="display:none;"></div>
-                </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('resistor')">
+                        <div class="node-title">3. Damping Resistor</div>
+                        <div class="node-subtitle">Ohmic Dissipation</div>
+                        <div class="node-status">P = I^2 R</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('capacitor')">
+                        <div class="node-title">4. Capacitive Tank</div>
+                        <div class="node-subtitle">Electrostatic Storage</div>
+                        <div class="node-status">E_C = 0.5 C V^2</div>
+                    </div>
+                    <div class="diagram-arrow"><span>&rarr;</span></div>
+                    <div class="diagram-node" onclick="selectBlock('output')">
+                        <div class="node-title">5. Terminal Load</div>
+                        <div class="node-subtitle">Impedance Match</div>
+                        <div class="node-status">Z_L = R + jX</div>
+                    </div>
+                
+                    </div>
+                    <div class="diagram-info-panel">
+                        <div class="diagram-info-title" id="diagramInfoTitle">Inductive Choke & Energy Oscillation</div>
+                        <div class="diagram-info-desc" id="diagramInfoDesc">The inductor stores magnetic energy and opposes sudden changes in current, establishing energy exchange with the capacitor that produces transient damped oscillations.</div>
+                    </div>
+                </section>
 
-                <!-- References & Textbooks Card -->
-                <div class="card">
-                    <div class="card-title">📚 Recommended References & NPTEL Mapping</div>
-                    <ul class="references-list" id="referencesList">
-                        <li><strong>Primary Textbook:</strong> Fundamentals of Electric Circuits</li>
-                        <li><strong>NPTEL Course:</strong> Basic Electrical Circuits</li>
+                <!-- Interactive Simulation Sandbox -->
+                <section class="card">
+                    <div class="card-title">⚡ Interactive RLC Transient Response & Damping Sandbox</div>
+                    <p class="theory-text">
+                        Adjust parameters in real time using the sliders below. Observe how state variables, trajectories, and dynamic responses evolve at 60 FPS:
+                    </p>
+
+                    <div class="sandbox-grid">
+                        <div class="plot-container">
+                            <canvas id="interactiveCanvas" width="800" height="360"></canvas>
+                            <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 0.75rem; color: var(--text-muted);" id="canvasFootnote">Interactive HTML5 Canvas Vector Plot</div>
+                                <div id="statusPillContainer">
+                                    <span class="status-pill success" id="statusPill">&bull; Stable Operating Mode</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel">
+                            <h4 style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; margin-bottom: 14px; color: var(--color-teal); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                Parameter Controls
+                            </h4>
+
+                            <div class="control-group">
+                                <label>Damping Resistance (\(R\)) [\(\Omega\)]: <span id="valParam1" class="control-val">25</span></label>
+                                <input type="range" id="sliderParam1" min="1" max="300" step="2" value="25" oninput="handleParamChange()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>Inductance (\(L\)) [mH]: <span id="valParam2" class="control-val">50</span></label>
+                                <input type="range" id="sliderParam2" min="5" max="200" step="5" value="50" oninput="handleParamChange()">
+                            </div>
+
+                            <div class="control-group">
+                                <label>Capacitance (\(C\)) [\(\mu\)F]: <span id="valParam3" class="control-val">20</span></label>
+                                <input type="range" id="sliderParam3" min="1" max="100" step="1" value="20" oninput="handleParamChange()">
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 18px;">
+                                <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="toggleAnimation()">▶ Run / Pause</button>
+                                <button class="btn" style="flex: 1; justify-content: center;" onclick="resetSimulation()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interactive Lecture Checkpoint -->
+                <section class="card">
+                    <div class="card-title">🎯 Concept Checkpoint &amp; Self-Assessment</div>
+                    <div class="accordion open">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title" id="checkpointQuestion">What damping condition is established when \(R = 2\sqrt{L/C}\)?</div>
+                            <div class="accordion-icon"></div>
+                        </div>
+                        <div class="accordion-content" id="checkpointBody">
+                            <div class="options-grid" id="optionsContainer">
+                                <button class="option-btn" onclick="checkAnswer(0)">A) Critically Damped (\(\zeta = 1\)), returning to steady state in minimal time without oscillation.</button>
+                                <button class="option-btn" onclick="checkAnswer(1)">B) Underdamped (\(\zeta < 1\)), exhibiting sustained high-frequency ringing.</button>
+                                <button class="option-btn" onclick="checkAnswer(2)">C) Overdamped (\(\zeta > 1\)), with two complex conjugate s-plane poles.</button>
+                            </div>
+                            <div class="feedback-alert" id="checkpointFeedback" style="display: none; margin-top: 14px;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- References & Accreditation Mapping -->
+                <section class="card">
+                    <div class="card-title">📚 Recommended References &amp; NPTEL Alignment</div>
+                    <ul class="theory-list">
+                        <li><strong>Standard Textbook:</strong> Fundamentals of Electric Circuits</li>
+                        <li><strong>NPTEL / MOOC Alignment:</strong> Basic Electrical Circuits</li>
+                        <li><strong>Outcome Alignment:</strong> Satisfies accredited engineering program outcomes with rigorous mathematical derivations and interactive verification.</li>
                     </ul>
-                </div>
+                </section>
             </div>
         </main>
     </div>

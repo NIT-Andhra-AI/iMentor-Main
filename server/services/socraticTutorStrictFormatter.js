@@ -108,6 +108,14 @@ function formatSocraticStrict(text) {
     return placeholder;
   });
 
+  // If text is already formatted into 3-Block Guided Learning structure, preserve headers
+  if (/\b(Validate\s*&\s*Clarify|Bite-Sized\s*Step|Guided\s*Checkpoint)\b/i.test(t) || /[📌🧩🎯]/.test(t)) {
+    codeBlocks.forEach((block, idx) => {
+      t = t.replace(`__CODE_VISUAL_BLOCK_${idx}__`, block);
+    });
+    return t.trim();
+  }
+
   // 3. Strip prompt template labels/meta-headers (case-insensitive) to prevent leaking structural markers
   t = t
     .replace(/^#{1,6}\s*(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+|Acknowledge\s*&\s*Affirm|Validate\s*&\s*Diagnose|Multimodal\s*Scaffolding|Metacognitive\s*Checkpoint)\b.*$/gim, '')

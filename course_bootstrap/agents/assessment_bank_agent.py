@@ -22,10 +22,12 @@ class AssessmentBankAgent:
             "course_code": course_code,
             "course_name": course_name,
             "total_questions": 0,
-            "topics": []
+            "topics": [],
+            "questions": []
         }
 
         total_q_count = 0
+        all_questions = []
 
         for lec in lectures:
             topic_num = lec["num"]
@@ -93,6 +95,7 @@ class AssessmentBankAgent:
             ]
 
             total_q_count += len(questions)
+            all_questions.extend(questions)
             bank["topics"].append({
                 "topic_num": topic_num,
                 "topic_title": topic_title,
@@ -102,6 +105,7 @@ class AssessmentBankAgent:
             })
 
         bank["total_questions"] = total_q_count
+        bank["questions"] = all_questions
 
         output_path = os.path.join(output_dir, "concept_question_bank.json")
         with open(output_path, "w", encoding="utf-8") as f:

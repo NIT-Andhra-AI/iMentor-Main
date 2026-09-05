@@ -7,11 +7,34 @@ const sglangService = require("./sglangService");
 const axios = require("axios");
 const path = require("path");
 
+const UNIT_NUM_REGEX = /^\d+(\.\d+)?\s*(ohms?|Ω|h|mh|μh|f|uf|μf|v|kv|hz|khz|mhz|a|ma)$/i;
+const FILLER_PHRASES = new Set(['and', 'and c', 'has r', 'with', 'calculate', 'show', 'step by step', 'connected to', 'a series', 'has', 'connected', 'source', 'find', 'determine', 'given', 'solve']);
+const STOP_START_WORDS = new Set(['and', 'with', 'has', 'a', 'an', 'the', 'to', 'of', 'in', 'for', 'on', 'connected', 'calculate', 'show', 'given', 'r', 'c', 'l', 'v']);
+
+function cleanKgNodeLabel(rawLabel) {
+    if (!rawLabel || typeof rawLabel !== 'string') return null;
+    let label = rawLabel.split(/[.!?]/)[0];
+    label = label.replace(/[*#`_~>]/g, '').replace(/^[^\w]+|[^\w]+$/g, '').replace(/\s+/g, ' ').trim();
+    if (!label) return null;
+    if (UNIT_NUM_REGEX.test(label) || /^\d+(\.\d+)?$/.test(label) || FILLER_PHRASES.has(label.toLowerCase())) return null;
+    let words = label.split(/\s+/);
+    if (words.length > 4) words = words.slice(0, 4);
+    while (words.length > 0 && STOP_START_WORDS.has(words[0].toLowerCase())) words.shift();
+    while (words.length > 0 && STOP_START_WORDS.has(words[words.length - 1].toLowerCase())) words.pop();
+    if (words.length === 0) return null;
+    label = words.map(w => {
+        if (/^(rlc|kvl|kcl|dc|ac|dsp|fft|stft|dwt|ai|ml|llm)$/i.test(w)) return w.toUpperCase();
+        return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    }).join(' ');
+    if (UNIT_NUM_REGEX.test(label) || FILLER_PHRASES.has(label.toLowerCase())) return null;
+    return label;
+}
+
 const KG_EXTRACTION_PROMPT = `
 You are an expert data architect. Your task is to analyze the provided text and extract a detailed knowledge graph of the key concepts and their relationships.
 
 **INSTRUCTIONS:**
-1.  **Identify Entities/Nodes**: Identify the top 5-7 most important entities (concepts, technologies, processes). These will be your nodes.
+1.  **Identify Entities/Nodes**: Identify the top 5-7 most important core technical entities (concepts, technologies, processes). Node labels MUST be coherent technical noun phrases of 2 to 4 words. DO NOT extract numbers, units (e.g. 10 Ohms, 0.1 H), conversational filler, conjunctions, or sentence fragments. Strip sentence-ending punctuation.
 2.  **Identify Relationships/Edges**: Determine how these nodes are connected with descriptive verb phrases (e.g., 'IS_A', 'USES', 'RESULTS_IN').
 3.  **Format as JSON**: Your entire output MUST be a single, valid JSON object with "nodes" and "edges".
     -   Nodes: \`[{"id": "NodeID", "description": "A brief, one-sentence description."}]\`
@@ -197,10 +220,14 @@ async function extractAndStoreKgFromText(text, sessionId, userId, llmConfig, cou
         const existingNodes = chatDoc.knowledgeGraph?.nodes || [];
         const existingEdges = chatDoc.knowledgeGraph?.edges || [];
         const nodeMap = new Map();
-        existingNodes.forEach(n => { if (n?.id) nodeMap.set(n.id.toLowerCase(), n); });
+        existingNodes.forEach(n => {
+          const cleaned = cleanKgNodeLabel(n?.id);
+          if (cleaned) nodeMap.set(cleaned.toLowerCase(), { ...n, id: cleaned });
+        });
         (graphData.nodes || []).forEach(n => {
-          if (n && n.id && !nodeMap.has(n.id.toLowerCase())) {
-            nodeMap.set(n.id.toLowerCase(), { id: n.id, type: n.type || 'Concept', description: n.description || '' });
+          const cleaned = cleanKgNodeLabel(n?.id);
+          if (cleaned && !nodeMap.has(cleaned.toLowerCase())) {
+            nodeMap.set(cleaned.toLowerCase(), { id: cleaned, type: n.type || 'Concept', description: n.description || '' });
           }
         });
 

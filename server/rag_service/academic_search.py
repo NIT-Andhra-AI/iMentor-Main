@@ -53,12 +53,32 @@ async def search_semantic_scholar(session: aiohttp.ClientSession, query: str, ma
                 papers.append(paper)
         return papers
 
+import re
+
+def clean_academic_query(query: str) -> str:
+    if not query:
+        return ""
+    cleaned = str(query)
+    cleaned = re.sub(r'^(cite|find|search\s+for|get|show|provide|give\s+me)\s+(\d+\s+)?', '', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'^(recent|latest|top|some|new|academic|scholarly|scientific)\s+', '', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'(academic|scholarly|scientific)\s+(papers|articles|publications|studies|research)\s+(on|about|for|regarding)?\s*', ' ', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'\b(papers|articles|publications|studies)\s+(on|about|for|regarding)?\s*', ' ', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'\b(in|from|published in|of)\s+(19|20)\d{2}\b', '', cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r'\b(19|20)\d{2}\b', '', cleaned)
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    cleaned = re.sub(r'^(on|about|for|regarding)\s+', '', cleaned, flags=re.IGNORECASE)
+    cleaned = cleaned.strip()
+    return cleaned if cleaned else str(query).strip()
+
 async def search_all_apis(query: str, max_results_per_api: int = 3) -> List[Dict[str, Any]]:
     """Asynchronously searches all configured academic APIs and aggregates results."""
+    cleaned_query = clean_academic_query(query)
+    logger.info(f"Cleaned academic query: '{query}' -> '{cleaned_query}'")
+    
     async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=20)) as session:
         tasks = [
-            search_arxiv(session, query, max_results=max_results_per_api),
-            search_semantic_scholar(session, query, max_results=max_results_per_api)
+            search_arxiv(session, cleaned_query, max_results=max_results_per_api),
+            search_semantic_scholar(session, cleaned_query, max_results=max_results_per_api)
         ]
         
         results_from_tasks = await asyncio.gather(*tasks, return_exceptions=True)

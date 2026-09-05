@@ -671,13 +671,28 @@ function ContentPane({ courseName, activeSubtopic, onAskAI, sidebarOpen, setSide
                             <p className="text-sm text-gray-500 mt-1">{activeSubtopic.topicName}</p>
                         )}
                     </div>
-                    <button
-                        onClick={onAskAI}
-                        className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/30 hover:border-indigo-500/60 text-indigo-300 rounded-xl text-sm font-medium transition-all"
-                    >
-                        <MessageSquare size={14} />
-                        Ask AI
-                    </button>
+                    <div className="flex items-center gap-2">
+                        {courseName && (
+                            <a
+                                href={`/course_bootstrap/${courseName}/interactive_portal/index.html`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Launch Interactive Simulation Portal"
+                                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-500/30 hover:border-cyan-500/60 text-cyan-300 rounded-xl text-sm font-medium transition-all cursor-pointer shadow-sm"
+                            >
+                                <Sparkles size={14} className="text-cyan-400" />
+                                <span className="hidden sm:inline">Interactive Portal</span>
+                                <ExternalLink size={13} className="opacity-70" />
+                            </a>
+                        )}
+                        <button
+                            onClick={onAskAI}
+                            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/30 hover:border-indigo-500/60 text-indigo-300 rounded-xl text-sm font-medium transition-all"
+                        >
+                            <MessageSquare size={14} />
+                            Ask AI
+                        </button>
+                    </div>
                 </div>
 
                 {/* Loading */}
@@ -1290,7 +1305,7 @@ function CourseGrid({ onSelectCourse }) {
                                             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-medium">
                                                 <CheckCircle2 size={12} className="text-emerald-400 flex-shrink-0" />
                                                 <span>
-                                                    {isDSP ? '30 Lectures & Interactive Demos' : course.lectureCount ? `${course.lectureCount} Lectures Available` : 'Content Ready'}
+                                                    {course.lectureCount ? `${course.lectureCount} Lectures & Interactive Demos` : 'Lectures & Interactive Demos Ready'}
                                                 </span>
                                             </div>
                                         ) : (
@@ -1312,17 +1327,17 @@ function CourseGrid({ onSelectCourse }) {
                                             <ChevronRight size={13} className="ml-auto opacity-70" />
                                         </button>
 
-                                        {isDSP && (
-                                            <a
-                                                href="/course_bootstrap/EE3621/interactive_portal/index.html"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                title="Launch Interactive DSP Demos"
-                                                className="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 transition-all"
-                                            >
-                                                <ExternalLink size={14} />
-                                            </a>
-                                        )}
+                                        <a
+                                            href={`/course_bootstrap/${course.code}/interactive_portal/index.html`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            title={`Launch Interactive ${course.name || course.code} Demos & Simulators`}
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 transition-all text-xs font-semibold cursor-pointer"
+                                        >
+                                            <Sparkles size={13} className="text-cyan-400" />
+                                            <span className="hidden sm:inline">Demos</span>
+                                            <ExternalLink size={12} className="opacity-70" />
+                                        </a>
                                     </div>
                                 </div>
                             );

@@ -268,7 +268,7 @@ async function checkHealth(endpoint = 'chat') {
     if (!SGLANG_ENABLED) return false;
     try {
         const client = _getClient(endpoint);
-        await client.models.list();
+        await client.models.list({ timeout: 2000 });
         return true;
     } catch (e) {
         log.warn('AI', `[SGLang] Health check failed for endpoint=${endpoint}: ${e.message}`);

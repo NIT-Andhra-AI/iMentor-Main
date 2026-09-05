@@ -223,16 +223,15 @@ async function handle(res, ctx) {
     }
 
     // ToT / ReAct only fires when user explicitly toggles — never auto-triggered
-    const advancedReasoningRequested = Boolean(criticalThinkingEnabled || useReAct);
+    const advancedReasoningRequested = Boolean(criticalThinkingEnabled || userRequestedToT || useReAct);
 
     // ── TOT STRICT GATE ───────────────────────────────────────────────────────
-    // Issue 1.2: Distinguish user-explicit ToT (lower gate: 40) from system auto-activation (gate: 85).
-    // User requested "Thinking Mode" toggle: Leverage LLM internal thinking + tool calling in single-turn path instead of multi-stage ToT tree orchestrator
-    const totAllowed = !userRequestedToT && advancedReasoningRequested && (
-        isTotRoute({ route: semanticRoute, confidence: semanticConfidence }, estimatedComplexityScore) || useReAct
+    // Route user-explicit ToT toggle or high-complexity queries to processQueryWithToT_Streaming
+    const totAllowed = advancedReasoningRequested && (
+        userRequestedToT || criticalThinkingEnabled || isTotRoute({ route: semanticRoute, confidence: semanticConfidence }, estimatedComplexityScore) || useReAct
     );
     if (userRequestedToT) {
-        log.info('AI', '[CRITICAL_PATH] User Thinking Mode active → routing to single-turn native thinking stream with tool calling');
+        log.info('AI', '[CRITICAL_PATH] User Thinking Mode active → routing to ToT reasoning stream');
     } else if (advancedReasoningRequested && !totAllowed && !useReAct) {
         const threshold = ROUTING_THRESHOLDS.TOT_MIN_COMPLEXITY;
         log.info('AI', `[CRITICAL_PATH] ToT suppressed: semanticRoute=${semanticRoute} score=${estimatedComplexityScore} < threshold=${threshold} (system-auto) — routing to standard path`);

@@ -219,10 +219,8 @@ const deepResearchOrchestrator = {
         }
         const activeConstraints = {
             ...querySets.constraints || {},
-            // ── Deep research always uses trusted publishers only ─────────────
-            // OpenAlex: restricted to IEEE, Elsevier, Springer, Nature
-            // arXiv:    only papers with ≥18 citations (or published < 12 months)
-            trustedPublishersOnly: true,
+            ...(researchConfig.constraints || {}),
+            trustedPublishersOnly: researchConfig.constraints?.trustedPublishersOnly !== false,
         };
 
         // ── 3. Local knowledge ───────────────────────────────────────────────

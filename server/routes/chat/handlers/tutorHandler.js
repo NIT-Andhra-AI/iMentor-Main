@@ -326,17 +326,8 @@ async function handleGeneral(res, ctx) {
     }
  
     // ── Extract teaching unit ─────────────────────────────────────────────────
-    let teachingUnit = rawQuery
-        .replace(/^(tell me about|explain|what is|what us|how does|teach me|i want to learn about|describe|what's|who is|let'?s?\s*(start|go|begin|learn)\s*(with)?|start\s*(with)?|begin\s*(with)?)\s*/i, '')
-        .replace(/\,?\s*(and\s+)?(provide|give|show|cite|include|with)\s+.*$/i, '')
-        .replace(/\?$/, '')
-        .trim();
-    if (!teachingUnit || teachingUnit.length < 2) teachingUnit = 'General AI Concepts';
-    else if (teachingUnit.length > 60) teachingUnit = teachingUnit.slice(0, 60).replace(/\s+\S*$/, '');
-    teachingUnit = teachingUnit.split(' ').map(word => {
-        if (/^(a|an|the|in|on|of|for|to|and|or|with)$/i.test(word)) return word.toLowerCase();
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    }).join(' ');
+    const { sanitizeTutorTopic } = require('../../../services/tutorService');
+    let teachingUnit = sanitizeTutorTopic(rawQuery);
  
     // ── SKIP: prior knowledge detected — jump straight to L2 question ─────────
     if (hasPriorKnowledge && rawQuery.trim().length > 20) {
@@ -398,7 +389,7 @@ async function handleGeneral(res, ctx) {
         res.end();
         return true;
     }
-
+ 
     let initialResponse = '';
     try {
         initialResponse = await startSocraticSession(
@@ -416,7 +407,9 @@ async function handleGeneral(res, ctx) {
         );
     } catch (err) {
         log.warn('TUTOR', `General Socratic init failed: ${err.message}`);
-        initialResponse = `Let's explore **${teachingUnit}** together.\n\nTo begin, what do you already believe about this topic?`;
+        initialResponse = `### 📌 1. Validate & Clarify\nWelcome to **${teachingUnit}**! Let's build a solid understanding together step by step.\n\n` +
+            `### 🧩 2. Bite-Sized Step\nThe core principle starts with understanding how the primary physical parameters interact in **${teachingUnit}**.\n\n` +
+            `### 🎯 3. Guided Checkpoint\nTo begin, what is your initial intuition about this concept?`;
     }
  
     const startingCognitiveLevel = selectStartingCognitiveLevel(difficultyLevel, hasPriorKnowledge);

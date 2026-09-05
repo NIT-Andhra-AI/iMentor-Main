@@ -71,7 +71,7 @@ handle_service_failure() {
     
     # Python RAG services take 12-15 seconds to initialize FastEmbedder, Qdrant, Neo4j
     if [[ "$service_name" == *"rag"* ]]; then
-        sleep 15
+        sleep 20
     elif [[ "$service_name" == *"backend"* ]]; then
         sleep 10
     else
@@ -125,9 +125,9 @@ while true; do
     fi
 
     # Python RAG Service (:2005)
-    if ! check_port 2005 || ! check_http_healthy "http://127.0.0.1:2005/health" 4; then
-        sleep 3
-        if ! check_port 2005 || ! check_http_healthy "http://127.0.0.1:2005/health" 4; then
+    if ! check_port 2005 || ! check_http_healthy "http://127.0.0.1:2005/health" 6; then
+        sleep 10
+        if ! check_port 2005 || ! check_http_healthy "http://127.0.0.1:2005/health" 10; then
             handle_service_failure "imentor-v2-rag" 2005 "http://127.0.0.1:2005/health" "$PROJECT_DIR/server/rag_service"
         fi
     fi

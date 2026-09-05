@@ -1,0 +1,661 @@
+{
+  "platform": "iMentor V2 Academic Platform",
+  "rubric_framework": "Course Outcomes (CO1-CO5) & Bloom's Taxonomy Metric Alignment",
+  "total_courses": 72,
+  "levels_per_course": 5,
+  "questions_per_level": 50,
+  "total_questions": 18000,
+  "total_numerical_problems": 10440,
+  "numerical_percentage": 58.0,
+  "syllabus_coverage_per_level": "\u2265 80% to 100% of all course subtopics explicitly covered at every level",
+  "courses": [
+    {
+      "course_code": "CS1031",
+      "course_name": "ESC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS1031/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "CS1032",
+      "course_name": "ESC",
+      "cos_count": 4,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS1032/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "CS2101",
+      "course_name": "Data Structures and Applications",
+      "cos_count": 6,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS2101/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "CS2102",
+      "course_name": "Data Structures and Applications Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS2102/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "CS601",
+      "course_name": "Machine Learning",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS601/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "CS702",
+      "course_name": "Deep Reinforcement Learning",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/CS702/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EC1521",
+      "course_name": "Signals and Systems for Electrical Engineers",
+      "cos_count": 5,
+      "subtopics_count": 27,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EC1521/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EC401",
+      "course_name": "CMOS VLSI Design and Digital IC Architecture",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EC401/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE1011",
+      "course_name": "Basic Electrical Circuits",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE1011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE1021",
+      "course_name": "Electrical Network Analysis",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE1021/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE1031",
+      "course_name": "Electrical Network Analysis",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE1031/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE1611",
+      "course_name": "ESC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE1611/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE1621",
+      "course_name": "ESC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE1621/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2010",
+      "course_name": "Circuit Theory and Networks",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2010/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2011",
+      "course_name": "Measurements and Instrumentation",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2012",
+      "course_name": "Analog and Digital Circuits Lab",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2012/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2021",
+      "course_name": "DC Machines and Transformers",
+      "cos_count": 5,
+      "subtopics_count": 26,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2021/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2022",
+      "course_name": "Circuits and Measurements Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2022/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2031",
+      "course_name": "PCC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2031/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2032",
+      "course_name": "DC Machines and Transformers Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2032/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2041",
+      "course_name": "Digital Electronics",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2041/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2042",
+      "course_name": "Control Systems Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2042/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2051",
+      "course_name": "AC Rotating Machines",
+      "cos_count": 5,
+      "subtopics_count": 30,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2051/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2052",
+      "course_name": "AC Rotating Machines Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2052/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2061",
+      "course_name": "Control Systems",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2061/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2062",
+      "course_name": "Power Systems and Renewable Energy Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2062/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2071",
+      "course_name": "Power System Analysis",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2071/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2601",
+      "course_name": "Basics of Internet of Things",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2601/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2611",
+      "course_name": "Renewable Power Generation",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2611/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE2621",
+      "course_name": "Introduction to Machine Learning",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE2621/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3010",
+      "course_name": "Advanced Power Systems",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3010/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3011",
+      "course_name": "Power Electronics",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3012",
+      "course_name": "Power Electronics Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3012/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3021",
+      "course_name": "Power System Protection and Control",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3021/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3022",
+      "course_name": "Embedded Systems Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3022/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3031",
+      "course_name": "Embedded Systems",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3031/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3032",
+      "course_name": "Electric Power Drives Lab",
+      "cos_count": 5,
+      "subtopics_count": 12,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3032/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3041",
+      "course_name": "Electric Power Drives",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3041/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3601",
+      "course_name": "Advanced Control Systems",
+      "cos_count": 5,
+      "subtopics_count": 35,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3601/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3611",
+      "course_name": "Wind and Solar Electrical Systems",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3611/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3621",
+      "course_name": "Digital Signal Processing",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3621/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3631",
+      "course_name": "Soft Computing Techniques",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3631/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3641",
+      "course_name": "Introduction to Electric Vehicles",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3641/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3651",
+      "course_name": "DEC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3651/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3661",
+      "course_name": "Advanced Power Electronics",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3661/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3671",
+      "course_name": "Industrial Instrumentation and Automation",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3671/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3681",
+      "course_name": "DEC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3681/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3691",
+      "course_name": "Deep Learning Algorithms",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3691/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3701",
+      "course_name": "Electrical Machine Design",
+      "cos_count": 5,
+      "subtopics_count": 35,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3701/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3711",
+      "course_name": "Introduction to Smart Grid",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3711/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3721",
+      "course_name": "Battery Energy Storage and EV Charging Systems",
+      "cos_count": 5,
+      "subtopics_count": 27,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3721/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3731",
+      "course_name": "Power System Security and Reliability",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3731/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3741",
+      "course_name": "Switched Mode Power Supplies",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3741/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE3751",
+      "course_name": "New Venture Creation",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE3751/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4014",
+      "course_name": "High Voltage Engineering",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4014/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4024",
+      "course_name": "Electric Drives & Control",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4024/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4601",
+      "course_name": "Energy Management and Audit",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4601/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4611",
+      "course_name": "Power Quality Improvement",
+      "cos_count": 5,
+      "subtopics_count": 35,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4611/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4621",
+      "course_name": "DEC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4621/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "EE4631",
+      "course_name": "Special Machines",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/EE4631/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "HS2011",
+      "course_name": "Personality Development & Professional Ethics",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/HS2011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "HS2012",
+      "course_name": "NCC and Community Social Services",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/HS2012/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "MA1011",
+      "course_name": "BSC",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/MA1011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "MA1021",
+      "course_name": "Matrices and Differential Equations",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/MA1021/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "MA2051",
+      "course_name": "BSC",
+      "cos_count": 4,
+      "subtopics_count": 35,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/MA2051/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "MA2092",
+      "course_name": "Numerical Methods Lab",
+      "cos_count": 4,
+      "subtopics_count": 2,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/MA2092/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "ME1021",
+      "course_name": "Basics of Mechanical Engineering",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/ME1021/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "PE1022",
+      "course_name": "Physical Education and Health Sciences",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/PE1022/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "PE2012",
+      "course_name": "Yoga and Mindful Wellness",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/PE2012/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "QC401",
+      "course_name": "Quantum Information and Quantum Computing",
+      "cos_count": 5,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/QC401/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "SM3011",
+      "course_name": "Introduction to Entrepreneurship HSC",
+      "cos_count": 3,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/SM3011/skill_tree_evaluation.json"
+    },
+    {
+      "course_code": "SM3021",
+      "course_name": "Design Thinking",
+      "cos_count": 3,
+      "subtopics_count": 36,
+      "total_questions": 250,
+      "numerical_count": 145,
+      "eval_file": "/home/sri/Downloads/iMentor_march/iMentorV2/course_bootstrap/SM3021/skill_tree_evaluation.json"
+    }
+  ]
+}

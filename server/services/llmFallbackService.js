@@ -109,7 +109,7 @@ async function isSglangUp() {
         const baseUrl = sglangUrl.replace(/\/chat\/completions\/?$/, '');
         const axios = require('axios');
         const modelsUrl = baseUrl.endsWith('/v1') ? `${baseUrl}/models` : `${baseUrl}/v1/models`;
-        await axios.get(modelsUrl, { timeout: 3000 });
+        await axios.get(modelsUrl, { timeout: 1500 });
         _sglangHealthy = true;
         _sglangHealthTs = now;
         return true;
@@ -314,7 +314,7 @@ async function callWithFallback({
                         max_tokens: callOptions.maxOutputTokens ?? 4096,
                         temperature: callOptions.temperature ?? 0.7,
                         stream: false,
-                    }, { timeout: 120000 });
+                    }, { timeout: 6000 });
                     return resp.data?.choices?.[0]?.message?.content || '';
                 } else {
                     const svc = getServiceForProvider(provider);

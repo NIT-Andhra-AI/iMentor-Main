@@ -1,0 +1,75 @@
+{
+  "course_code": "EE4014",
+  "subject_name": "High Voltage Engineering",
+  "category": "circuits",
+  "textbooks": [
+    {
+      "title": "Fundamentals of Electric Circuits",
+      "authors": "Charles K. Alexander, Matthew N. O. Sadiku",
+      "publisher": "McGraw-Hill Education",
+      "edition": "7th Edition",
+      "code": "T1",
+      "relevance": "Primary textbook for nodal/mesh analysis, AC network analysis, resonance, and Laplace network synthesis."
+    },
+    {
+      "title": "Engineering Circuit Analysis",
+      "authors": "William H. Hayt, Jack E. Kemmerly, Steven M. Durbin",
+      "publisher": "McGraw-Hill",
+      "edition": "9th Edition",
+      "code": "T2",
+      "relevance": "Comprehensive coverage of transient response, two-port networks, and coupled circuits."
+    }
+  ],
+  "references": [
+    {
+      "title": "Electric Circuits",
+      "authors": "James W. Nilsson, Susan A. Riedel",
+      "publisher": "Pearson",
+      "edition": "11th Edition",
+      "code": "R1"
+    }
+  ],
+  "video_lectures": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Basic Electrical Circuits",
+      "instructor": "Prof. Nagendra Krishnapura",
+      "url": "https://nptel.ac.in/courses/108106172",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.002 Circuits and Electronics",
+      "instructor": "Prof. Anant Agarwal",
+      "url": "https://ocw.mit.edu/courses/6-002-circuits-and-electronics-spring-2007/",
+      "modules_count": 25
+    }
+  ],
+  "nptel_courses": [
+    {
+      "platform": "NPTEL (IIT Madras)",
+      "course_name": "Basic Electrical Circuits",
+      "instructor": "Prof. Nagendra Krishnapura",
+      "url": "https://nptel.ac.in/courses/108106172",
+      "modules_count": 40
+    },
+    {
+      "platform": "MIT OpenCourseWare (OCW)",
+      "course_name": "6.002 Circuits and Electronics",
+      "instructor": "Prof. Anant Agarwal",
+      "url": "https://ocw.mit.edu/courses/6-002-circuits-and-electronics-spring-2007/",
+      "modules_count": 25
+    }
+  ],
+  "simulation_tools": [
+    "LTSpice",
+    "MATLAB Simscape",
+    "Falstad Circuit Simulator",
+    "TINA-TI"
+  ],
+  "interactive_sandbox_available": true,
+  "suggested_prerequisites": [
+    "Engineering Mathematics (Calculus, Linear Algebra, Differential Equations)",
+    "Fundamental Physics (Electromagnetism, Solid State & Systems Theory)"
+  ]
+}

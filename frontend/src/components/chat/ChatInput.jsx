@@ -244,6 +244,13 @@ function ChatInput({
                 selectedSource={selectedDocumentForAnalysis}
             />
 
+            {isLoading && criticalThinkingEnabled && (
+                <div className="flex items-center gap-2 px-3 py-1 text-xs text-blue-400 bg-blue-500/10 rounded-md mb-1 animate-pulse">
+                    <Brain size={13} className="animate-spin" />
+                    <span>iMentor is building multi-stage reasoning tree...</span>
+                </div>
+            )}
+
             {/* VS Code terminal-style input container */}
             <Animate
                 data-tutor-tour="chat-input"

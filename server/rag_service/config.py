@@ -220,7 +220,7 @@ SPARSE_EMBED_MODEL    = os.getenv("SPARSE_EMBED_MODEL", "prithvida/Splade_PP_en_
 SPACY_MODEL_NAME = os.getenv('SPACY_MODEL_NAME', 'en_core_web_sm')
 
 # --- API Port Configuration ---
-API_PORT = int(os.getenv('API_PORT', 2001))
+API_PORT = int(os.getenv('RAG_PORT', os.getenv('API_PORT', 2006)))
 
 # --- Tesseract OCR Path ---
 TESSERACT_CMD = os.getenv('TESSERACT_CMD')  # None on Linux; set env var if tesseract is not on PATH

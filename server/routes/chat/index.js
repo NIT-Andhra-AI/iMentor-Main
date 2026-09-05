@@ -601,6 +601,7 @@ Current turn preference: ${wantsDirectExplanation ? 'DIRECT_EXPLANATION_REQUESTE
             isWebSearchEnabled: !!useWebSearch,
             isAcademicSearchEnabled: !!useAcademicSearch,
             isKgRealtimeEnabled: !!isKgRealtimeEnabled,  // Issue 1.1
+            userRequestedToT: !!userRequestedToT,       // Issue 1.2: explicit user ToT toggle
             intent: queryIntent,
             complexityScore: estimatedComplexityScore,
             queryTokenCount,

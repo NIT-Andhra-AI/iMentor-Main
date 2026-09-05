@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import api from '../../services/api';
 import Modal from '../core/Modal.jsx';
 import Button from '../core/Button.jsx';
-import { FileText, AlertCircle, Mic, MicOff } from 'lucide-react';
+import { FileText, AlertCircle, Mic, MicOff, SlidersHorizontal, Check, ExternalLink } from 'lucide-react';
 import { useWebSpeech } from '../../hooks/useWebSpeech';
 
 const DeepResearchPage = () => {
@@ -25,10 +25,23 @@ const DeepResearchPage = () => {
 
     const [query, setQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+    const [nature, setNature] = useState('academic');
     const [depthPreset, setDepthPreset] = useState('standard');
     const [customSourceCount, setCustomSourceCount] = useState(5);
     const [empiricalRatio, setEmpiricalRatio] = useState(0.5);
     
+    // Scholar Filters
+    const [showFilters, setShowFilters] = useState(false);
+    const [providers, setProviders] = useState({
+        openalex: true,
+        arxiv: true,
+        semanticScholar: true,
+        web: true,
+    });
+    const [yearStart, setYearStart] = useState('');
+    const [yearEnd, setYearEnd] = useState('');
+    const [strictPublishers, setStrictPublishers] = useState(true);
+
     // Voice input
     const { transcript, listening, isSpeechSupported, startListening, stopListening, resetTranscript } = useWebSpeech();
 
@@ -93,17 +106,30 @@ const DeepResearchPage = () => {
         })()}`;
 
         const apiUrl = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:2000/api'}/chat/message`;
+        const targetCount = depthPreset === 'custom'
+            ? Math.max(3, Number(customSourceCount) || 5)
+            : depthPreset === 'standard' ? 8
+            : depthPreset === 'deep' ? 15
+            : 25;
+
         const payload = {
             query: query.trim(),
             sessionId: effectiveSessionId,
             deepResearchMode: true,
-            useWebSearch: true,
-            useAcademicSearch: true,
+            useWebSearch: !!providers.web,
+            useAcademicSearch: !!(providers.openalex || providers.arxiv || providers.semanticScholar),
             researchConfig: {
+                nature,
                 depthPreset,
-                target_source_count: depthPreset === 'custom' ? Number(customSourceCount) : undefined,
+                target_source_count: targetCount,
                 empirical_ratio: Number(empiricalRatio),
-                allow_adaptive_fallback: true
+                allow_adaptive_fallback: true,
+                constraints: {
+                    yearStart: yearStart ? Number(yearStart) : undefined,
+                    yearEnd: yearEnd ? Number(yearEnd) : undefined,
+                    trustedPublishersOnly: strictPublishers
+                },
+                enabledProviders: providers
             }
         };
 
@@ -183,7 +209,10 @@ const DeepResearchPage = () => {
                                 </span>
                             ));
                         } else if (eventData.type === 'error') {
-                            throw new Error(eventData.content);
+                            toast.error(eventData.content || "Deep Research failed");
+                            setPipelineStage('error');
+                            setIsSearching(false);
+                            return;
                         }
                     } catch (e) {
                         // console.error("Error parsing stream chunk", e);
@@ -195,6 +224,7 @@ const DeepResearchPage = () => {
             console.error("Research failed:", error);
             toast.error(error.message || "Deep Research encountered a network error.");
             setPipelineStage('error');
+            setIsSearching(false);
         }
     };
 
@@ -223,7 +253,10 @@ const DeepResearchPage = () => {
                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
                         <div className="relative bg-[#111] border border-[#333] rounded-xl overflow-hidden group-focus-within:border-gray-500 transition-colors">
                             <div className="relative">
+                                <label htmlFor="deep-research-query" className="sr-only">Research Query</label>
                                 <textarea
+                                    id="deep-research-query"
+                                    name="query"
                                     value={query}
                                     onChange={(e) => setQuery(e.target.value)}
                                     onKeyDown={(e) => {
@@ -253,34 +286,58 @@ const DeepResearchPage = () => {
                                     </button>
                                 )}
                             </div>
-                            <div className="flex justify-between items-center px-4 py-3 bg-[#0f0f0f] border-t border-[#222]">
-                                <div className="flex flex-col gap-2 text-xs text-gray-500 font-medium w-full pr-3" data-deep-research-tour="depth-controls">
-                                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span> Academic + Web Deep Search Enabled</span>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <label className="text-[11px] uppercase tracking-wider text-gray-500">Depth</label>
+
+                            <div className="flex flex-wrap justify-between items-center gap-3 px-4 py-3 bg-[#0f0f0f] border-t border-[#222]">
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400 font-medium" data-deep-research-tour="depth-controls">
+                                    <div className="flex items-center gap-1.5">
+                                        <label htmlFor="deep-research-nature" className="text-[11px] uppercase tracking-wider text-gray-500">Nature</label>
                                         <select
+                                            id="deep-research-nature"
+                                            name="nature"
+                                            value={nature}
+                                            onChange={(e) => setNature(e.target.value)}
+                                            className="bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded"
+                                        >
+                                            <option value="academic">Academic (Peer-Reviewed)</option>
+                                            <option value="research">Exhaustive Ph.D.</option>
+                                            <option value="general">General (Web + Whitepapers)</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5">
+                                        <label htmlFor="deep-research-depth" className="text-[11px] uppercase tracking-wider text-gray-500">Depth</label>
+                                        <select
+                                            id="deep-research-depth"
+                                            name="depthPreset"
                                             value={depthPreset}
                                             onChange={(e) => setDepthPreset(e.target.value)}
                                             className="bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded"
                                         >
-                                            <option value="standard">Standard (5 sources)</option>
-                                            <option value="deep">Deep (8 sources)</option>
-                                            <option value="extensive">Extensive (12 sources)</option>
+                                            <option value="standard">Standard (8 sources)</option>
+                                            <option value="deep">Deep (15 sources)</option>
+                                            <option value="extensive">Extensive (25 sources)</option>
                                             <option value="custom">Custom</option>
                                         </select>
                                         {depthPreset === 'custom' && (
                                             <input
+                                                id="deep-research-custom-count"
+                                                name="customSourceCount"
                                                 type="number"
                                                 min={3}
-                                                max={20}
+                                                max={60}
                                                 value={customSourceCount}
                                                 onChange={(e) => setCustomSourceCount(e.target.value)}
-                                                className="w-20 bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded"
+                                                className="w-16 bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded"
                                                 title="Custom source count"
                                             />
                                         )}
-                                        <label className="text-[11px] uppercase tracking-wider text-gray-500">Empirical %</label>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5">
+                                        <label htmlFor="deep-research-empirical" className="text-[11px] uppercase tracking-wider text-gray-500">Empirical %</label>
                                         <input
+                                            id="deep-research-empirical"
+                                            name="empiricalRatio"
                                             type="number"
                                             min={30}
                                             max={90}
@@ -291,7 +348,20 @@ const DeepResearchPage = () => {
                                             title="Empirical ratio percentage"
                                         />
                                     </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowFilters(!showFilters)}
+                                        className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs border transition-colors ${
+                                            showFilters ? 'bg-blue-600/20 text-blue-400 border-blue-500/30' : 'bg-[#121212] text-gray-400 border-[#2a2a2a] hover:text-white'
+                                        }`}
+                                        title="Advanced Scholar Controls"
+                                    >
+                                        <SlidersHorizontal className="w-3 h-3" />
+                                        Scholar Filters
+                                    </button>
                                 </div>
+
                                 <button
                                     type="submit"
                                     disabled={!query.trim()}
@@ -301,14 +371,92 @@ const DeepResearchPage = () => {
                                     Start Research
                                 </button>
                             </div>
+
+                            {/* Expandable Scholar Filters */}
+                            {showFilters && (
+                                <div className="p-4 bg-[#0a0a0a] border-t border-[#222] space-y-3 text-xs">
+                                    <div className="flex flex-wrap items-center justify-between gap-3">
+                                        <div className="flex flex-wrap items-center gap-4">
+                                            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">Repositories:</span>
+                                            <label className="flex items-center gap-1.5 cursor-pointer text-gray-300 hover:text-white">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={providers.openalex}
+                                                    onChange={(e) => setProviders(p => ({ ...p, openalex: e.target.checked }))}
+                                                    className="rounded bg-[#1a1a1a] border-gray-700 text-blue-500 focus:ring-0"
+                                                />
+                                                OpenAlex (IEEE, Nature, Elsevier, Springer)
+                                            </label>
+                                            <label className="flex items-center gap-1.5 cursor-pointer text-gray-300 hover:text-white">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={providers.arxiv}
+                                                    onChange={(e) => setProviders(p => ({ ...p, arxiv: e.target.checked }))}
+                                                    className="rounded bg-[#1a1a1a] border-gray-700 text-blue-500 focus:ring-0"
+                                                />
+                                                arXiv (Preprints)
+                                            </label>
+                                            <label className="flex items-center gap-1.5 cursor-pointer text-gray-300 hover:text-white">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={providers.semanticScholar}
+                                                    onChange={(e) => setProviders(p => ({ ...p, semanticScholar: e.target.checked }))}
+                                                    className="rounded bg-[#1a1a1a] border-gray-700 text-blue-500 focus:ring-0"
+                                                />
+                                                Semantic Scholar
+                                            </label>
+                                            <label className="flex items-center gap-1.5 cursor-pointer text-gray-300 hover:text-white">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={providers.web}
+                                                    onChange={(e) => setProviders(p => ({ ...p, web: e.target.checked }))}
+                                                    className="rounded bg-[#1a1a1a] border-gray-700 text-blue-500 focus:ring-0"
+                                                />
+                                                Authoritative Web
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-[#1a1a1a]">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider">Publication Years:</span>
+                                            <input
+                                                type="number"
+                                                placeholder="From (e.g. 2020)"
+                                                value={yearStart}
+                                                onChange={(e) => setYearStart(e.target.value)}
+                                                className="w-28 bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded placeholder:text-gray-600"
+                                            />
+                                            <span className="text-gray-600">—</span>
+                                            <input
+                                                type="number"
+                                                placeholder="To (e.g. 2026)"
+                                                value={yearEnd}
+                                                onChange={(e) => setYearEnd(e.target.value)}
+                                                className="w-28 bg-[#121212] border border-[#2a2a2a] text-gray-300 text-xs px-2 py-1 rounded placeholder:text-gray-600"
+                                            />
+                                        </div>
+
+                                        <label className="flex items-center gap-2 cursor-pointer text-gray-300 hover:text-white">
+                                            <input
+                                                type="checkbox"
+                                                checked={strictPublishers}
+                                                onChange={(e) => setStrictPublishers(e.target.checked)}
+                                                className="rounded bg-[#1a1a1a] border-gray-700 text-blue-500 focus:ring-0"
+                                            />
+                                            <span className="text-xs">Strict Peer-Reviewed Only (IEEE / Elsevier / Springer / Nature)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </form>
 
                     <div className="mt-12 grid grid-cols-3 gap-4 text-center mb-12">
                         {[
-                            { label: "Research Planning", val: "Automated" },
-                            { label: "Source Depth", val: "12-15 Sources" },
-                            { label: "Synthesis", val: "Academic Standard" }
+                            { label: "Research Focus", val: nature === 'academic' ? "Peer-Reviewed Journals" : nature === 'research' ? "Exhaustive Ph.D." : "Hybrid Web + Whitepapers" },
+                            { label: "Target Evidence", val: `${depthPreset === 'custom' ? customSourceCount : depthPreset === 'standard' ? 8 : depthPreset === 'deep' ? 15 : 25} Sources` },
+                            { label: "Synthesis Rigor", val: `${Math.round(empiricalRatio * 100)}% Empirical Focus` }
                         ].map((stat, i) => (
                             <div key={i} className="p-4 border border-[#161616] rounded-lg bg-[#0F0F0F]">
                                 <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">{stat.label}</div>

@@ -1,2 +1,37 @@
-Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites
-EE3010,Minor Project (Audit Course)-II,Module 1,"Project Work","System design; Implementation; Testing; Documentation and presentation",EE2010
+Course Code,Course Name,Module,Lecture Topic,Subtopics,Prerequisites,Bloom Level
+EE3010,Advanced Power Systems,Unit I,Physical Foundations & Governing Conservation Laws of Advanced Power Systems,"Physical principles, conservation laws, state definitions, domain boundaries",None,L2_UNDERSTAND
+EE3010,Advanced Power Systems,Unit I,State Variable Formulation & Continuous-Time Differential Equations in Advanced Power Systems,"Governing differential equations, state vector definition, input-output representations",1,L3_APPLY
+EE3010,Advanced Power Systems,Unit I,"Transform Domain Methods (Laplace, Fourier & Z-Transforms)","Complex frequency transformation, s-domain impedance, region of convergence",2,L3_APPLY
+EE3010,Advanced Power Systems,Unit I,Matrix Canonical Representations & Coupled Dynamical Systems,"Companion forms, modal decomposition, decoupled state equations",2,L3_APPLY
+EE3010,Advanced Power Systems,Unit I,"Energy, Power & Constitutive Relations in Complex Networks","Energy storage elements, power dissipation functions, Hamiltonian / Lagrangian views",1,L3_APPLY
+EE3010,Advanced Power Systems,Unit I,"Equilibrium States, Operating Point Analysis & Small-Signal Linearization","Nonlinear systems, Jacobian matrix linearization, perturbation dynamics",2,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit I,"Boundary Conditions, Spatial Discretization & Lumped Approximations","Spatial differential operators, lumped element validity criteria, boundary values",6,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,First and Second Order Transient Dynamics in Advanced Power Systems,"Step/impulse response, time constants, damping ratio, natural frequency, overshoot metrics",2,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,"Frequency Response, Asymptotic Bode Formulations & Group Delay","Logarithmic magnitude/phase plots, corner frequencies, resonant peak, phase delay",3,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,Algebraic Stability Criteria (Routh-Hurwitz / Schur-Cohn Criteria),"Characteristic polynomial, BIBO stability conditions, special cases in Routh array",8,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,Geometric Stability & Root Locus Trajectory Mapping,"Angle and magnitude criteria, asymptotes, breakaway points, imaginary axis crossings",10,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,Nyquist Encirclement Criterion & Principle of the Argument,"Cauchy argument principle, open-loop contour mapping, gain margin & phase margin",10,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit II,"State Transition Matrix e^(At), Matrix Exponentials & Cayley-Hamilton","Computation methods for e^(At), Laplace inversion, Cayley-Hamilton matrix theorem",4,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit II,Controllability and Observability (Kalman Rank Conditions & Gramians),"Controllability matrix rank, Observability matrix rank, duality, PBH rank tests",13,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,Feedback System Topologies & Closed-Loop Gain Sensitivity in Advanced Power Systems,"Open-loop vs closed-loop sensitivity derivatives, disturbance rejection properties",9,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit III,"Lead, Lag & Lag-Lead Compensator Frequency-Domain Design","Phase lead margin boost, phase lag steady-state error reduction, lag-lead cascade",15,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,State Feedback Pole Placement & Ackermann's Gain Formula,"Full state feedback u = -Kx + r, desired closed-loop pole placement, Ackermann formulation",14,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,Full-Order & Reduced-Order Luenberger State Observer Synthesis,"Observer error dynamics, observer gain L design, separation principle theorem",17,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,Optimal Control & Linear Quadratic Regulator (LQR) Formulation,"Quadratic cost functional J, Algebraic Riccati Equation (ARE), state weighting Q/R",17,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,"Numerical Simulation Solvers (Runge-Kutta, Forward/Backward Euler)","Explicit vs implicit time-marching solvers, numerical stability regions, stiff systems",2,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit III,Constrained Parameter Optimization & Gradient Descent Formulations,"Lagrangian multipliers, KKT conditions, gradient descent with momentum, line search",20,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit III,Discrete-Time State-Space Representation & Sampling Period Selection,"Zero-order hold discretization, discrete A_d and B_d matrices, Shannon sampling rule",13,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit IV,Fixed-Point vs Floating-Point Quantization & Finite Wordlength Effects,"Dynamic range, precision trade-offs, scaling techniques, overflow characteristics",22,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit IV,"Signal-to-Noise Ratio (SNR), Noise Floor & Quantization Noise Models","Uniform quantization noise, SNR formulas, thermal noise and Johnson-Nyquist limits",23,L4_ANALYZE
+EE3010,Advanced Power Systems,Unit IV,"Non-Linear Dynamics, Limit Cycles, Saturation & Windup Phenomena","Describing functions, phase-plane portraits, limit cycles, integrator windup",6,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit IV,Anti-Windup Compensation & Actuator Saturation Protection,"Back-calculation anti-windup, conditional integration, rate-limiters",25,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit IV,"Robust Stability Bounds, Parametric Uncertainty & H-Infinity Fundamentals","Small-gain theorem, structured singular values mu, unstructured additive uncertainty",12,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit IV,"Fault Detection, Isolation (FDI) & Residual Generator Design","Model-based fault diagnosis, parity equations, observer-based residual generation",18,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit IV,"Real-Time Operating Systems (RTOS), Task Scheduling & Latency Budgets","Rate monotonic scheduling (RMS), earliest deadline first (EDF), jitter mitigation",22,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,IEEE / ISO Industrial Engineering Standards & Compliance Verification in Advanced Power Systems,"Safety standards (ISO 26262 / IEC 61508), validation methodologies, SIL ratings",28,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,Hardware-in-the-Loop (HIL) Emulation & Real-Time Testbenches,"FPGA/dSPACE real-time emulation, sensor fault injection, plant simulator calibration",29,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,"Telemetry Monitoring, State Estimation & Extended Kalman Filtering","EKF linearization, covariance update, measurement noise filtering, state tracking",18,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,"Edge Computing, FPGA / ASIC Acceleration & Parallel Architectures","High-throughput streaming hardware, pipelining, SIMD vectorization, memory hierarchies",23,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,Deep Industrial Case Study: Safety-Critical Deployment of Advanced Power Systems,"Production architecture, failure mode analysis (FMEA), trade-off Pareto curve",30,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,Emerging Research Frontiers: Physics-Informed Neural Networks & Modern Trends,"PINNs, digital twins, data-driven system identification, quantum computing extensions",34,L5_EVALUATE
+EE3010,Advanced Power Systems,Unit V,"End-to-End System Design Verification, Synthesis Defense & Capstone Review in Advanced Power Systems","Complete system verification, performance validation against specs, synthesis review",35,L6_CREATE

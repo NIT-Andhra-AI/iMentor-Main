@@ -14,6 +14,24 @@ try { solveBountyInternal = require('./gamificationService').solveBountyInternal
 try { Bounty = require('../models/Bounty'); } catch(e) {}
 try { executeAgentTask = require('./agentOrchestrator').executeAgentTask; } catch(e) {}
 
+function cleanAcademicQuery(query) {
+    if (!query) return '';
+    let cleaned = String(query);
+    // Remove instruction prefixes/directives (e.g., "give me 3", "cite 5", "find", "search for")
+    cleaned = cleaned.replace(/^(cite|find|search\s+for|get|show|provide|give\s+me)\s+(\d+\s+)?/gi, '');
+    cleaned = cleaned.replace(/^(recent|latest|top|some|new|academic|scholarly|scientific)\s+/gi, '');
+    cleaned = cleaned.replace(/(academic|scholarly|scientific)\s+(papers|articles|publications|studies|research)\s+(on|about|for|regarding)?\s*/gi, ' ');
+    cleaned = cleaned.replace(/\b(papers|articles|publications|studies)\s+(on|about|for|regarding)?\s*/gi, ' ');
+    // Remove year references like 2020-2029, published in 2024, etc.
+    cleaned = cleaned.replace(/\b(in|from|published in|of)\s+(19|20)\d{2}\b/gi, '');
+    cleaned = cleaned.replace(/\b(19|20)\d{2}\b/g, '');
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+    // Clean remaining leading prepositions
+    cleaned = cleaned.replace(/^(on|about|for|regarding)\s+/gi, '');
+    cleaned = cleaned.trim();
+    return cleaned || String(query).trim();
+}
+
 async function queryAcademicService(query) {
     const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
     if (!pythonServiceUrl) {
@@ -21,9 +39,11 @@ async function queryAcademicService(query) {
     }
     const searchUrl = `${pythonServiceUrl}/academic_search`;
     
+    const cleanedQuery = cleanAcademicQuery(query);
+
     try {
-        // log.info('SYSTEM', `Academic search: ${query}`);
-        const response = await axios.post(searchUrl, { query }, { timeout: 45000 });
+        log.info('SYSTEM', `Academic search query cleaned: "${query}" -> "${cleanedQuery}"`);
+        const response = await axios.post(searchUrl, { query: cleanedQuery }, { timeout: 45000 });
         const papers = response.data?.results || [];
         
         const toolOutput = papers.length > 0
@@ -35,11 +55,21 @@ async function queryAcademicService(query) {
               ).join('\n\n')
             : "No relevant academic papers were found for this query.";
             
-        const references = papers.map((p, index) => ({
-            number: index + 1,
-            source: `${p.title || 'Untitled Paper'} (${p.source || 'N/A'})`,
-            url: p.url || '#',
-        }));
+        const references = papers.map((p, index) => {
+            const paperId = p.id || p.arxivId || p.url || '';
+            let url = p.url;
+            if (!url || url === '#' || url === 'null') {
+                url = paperId.startsWith('http') ? paperId : `https://arxiv.org/abs/${paperId}`;
+            }
+            return {
+                number: index + 1,
+                title: p.title || 'Untitled Paper',
+                source: p.source || 'arXiv',
+                url: url.startsWith('http') ? url : `https://arxiv.org/abs/${url}`,
+                authors: p.authors || [],
+                year: p.publishedYear || p.year || 2024
+            };
+        });
 
         return { references, toolOutput };
 

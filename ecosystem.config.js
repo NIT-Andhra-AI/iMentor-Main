@@ -39,7 +39,7 @@ module.exports = {
     {
       name: "imentor-v2-frontend",
       script: "npx",
-      args: "vite --host 0.0.0.0 --port 3006",
+      args: "vite preview --host 0.0.0.0 --port 3006",
       cwd: "/home/sri/Downloads/iMentor_march/iMentorV2/frontend",
       autorestart: true,
       watch: false,

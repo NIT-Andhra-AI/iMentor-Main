@@ -22,9 +22,8 @@ function getAllIPs() {
 
 router.get('/ip', (req, res) => {
     res.json({
-        ips: getAllIPs(),
-        // req.ip might be less reliable behind proxies, but can be included
-        // currentRequestIp: req.ip
+        status: 'ok',
+        ips: ['online']
     });
 });
 

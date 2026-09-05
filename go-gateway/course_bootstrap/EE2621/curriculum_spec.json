@@ -2,20 +2,13 @@
   "CourseCode": "EE2621",
   "CourseName": "Introduction to Machine Learning",
   "Credits": "3-0-0 3 Credits",
-  "Prerequisites": "Differential and integral calculus, matrices and differential equations",
+  "Prerequisites": "Linear algebra, multivariable calculus, and basic probability",
   "CourseOutcomes": [
-    "CO1: Identify design practices for efficient Machine Learning based solution",
-    "CO2: Understand Machine Learning algorithms in practice",
-    "CO3: Implement strategies to boost the existing Machine Learning model",
-    "CO4: Design Machine Learning architecture for a task",
-    "CO5: Design Machine Learning modelling pipeline for Electrical engineering applications"
-  ],
-  "SyllabusText": "Machine Learning Landscape: Introduction, learning paradigm, machine learning algorithm\nattribution: inductive learning, online learning, active learning, unsupervised learning, semi-\nsupervised learning, active learning, reinforcement learning, metric learning.\nLearning Algorithms: Linear regression; logistic regression; artificial neural networks:\nperceptron, gradient descent and the delta rule, multilayer networks, derivation of\nbackpropagation rule, backpropagation algorithm, support vector machine, decision trees;\nrandom forest; bayes classifier. clustering, principle component analysis, graph based\nmethods.\nAugmenting Machine Learning: Convergence, generalization, inductive bias, regularization,\nloss function, optimizers, feature extraction, subset selection, ensemble learning, data\naugmentation.\nElectrical Applications of Machine Learning: Control applications, forecasting pipelines,\nanomaly detection.",
-  "UnitTexts": [
-    "Introduction, learning paradigm, machine learning algorithm\nattribution: inductive learning, online learning, active learning, unsupervised learning, semi-\nsupervised learning, active learning, reinforcement learning, metric learning.",
-    "Linear regression; logistic regression; artificial neural networks:\nperceptron, gradient descent and the delta rule, multilayer networks, derivation of\nbackpropagation rule, backpropagation algorithm, support vector machine, decision trees;\nrandom forest; bayes classifier. clustering, principle component analysis, graph based\nmethods.",
-    "Convergence, generalization, inductive bias, regularization,\nloss function, optimizers, feature extraction, subset selection, ensemble learning, data\naugmentation.",
-    "Control applications, forecasting pipelines,\nanomaly detection."
+    "CO1: Understand core machine learning paradigms, inductive bias, and hypothesis spaces",
+    "CO2: Implement and analyze regression, classification, neural networks, and backpropagation",
+    "CO3: Formulate optimization algorithms, loss functions, and regularization techniques for generalization",
+    "CO4: Design clustering and dimensionality reduction models for unsupervised data analysis",
+    "CO5: Deploy machine learning pipelines for electrical engineering power systems, forecasting, and fault diagnosis"
   ],
   "UnitTitles": [
     "Machine Learning Landscape",
@@ -24,10 +17,8 @@
     "Electrical Applications of Machine Learning"
   ],
   "Textbooks": [
-    "Tom.M.Mitchell, Machine Learning, McGraw Hill International Edition, 2017.",
-    "C Bishop – Pattern Recognition and Machine Learning – Springer, 2009.",
-    "Ian Goodfellow, Yoshua Bengio, AaronCourville – Deep Learning, The MIT Press",
-    "Cambridge, Massachusetts, London, England, 2016"
-  ],
-  "References": null
+    "Tom M. Mitchell, Machine Learning, McGraw Hill International Edition, 2017.",
+    "Christopher M. Bishop, Pattern Recognition and Machine Learning, Springer, 2009.",
+    "Ian Goodfellow, Yoshua Bengio, Aaron Courville, Deep Learning, MIT Press, 2016."
+  ]
 }

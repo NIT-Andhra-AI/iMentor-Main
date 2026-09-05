@@ -62,6 +62,10 @@ export default defineConfig({
       ],
     },
   },
+  preview: {
+    port: 3006,
+    host: '0.0.0.0',
+  },
   // --- FIX "global is not defined" + expose Capacitor build flag ---
   define: {
     'global': {},

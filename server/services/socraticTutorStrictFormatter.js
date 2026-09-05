@@ -10,6 +10,7 @@ function cleanResponse(text) {
   if (!text) return "";
   let s = String(text)
     .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '')
+    .replace(/\*?\*?BLOCK\s*[1-4]:\s*([A-Z\s&-]+)\*?\*?:?\s*/gim, '')
     .trim();
   s = s
     .replace(/^(Thinking Process|Thought Process|Internal Monologue|Thought|Analysis|Reasoning)\b[^\n]*\n*/i, '')
@@ -108,19 +109,14 @@ function formatSocraticStrict(text) {
     return placeholder;
   });
 
-  // If text is already formatted into 3-Block Guided Learning structure, preserve headers
-  if (/\b(Validate\s*&\s*Clarify|Bite-Sized\s*Step|Guided\s*Checkpoint)\b/i.test(t) || /[📌🧩🎯]/.test(t)) {
-    codeBlocks.forEach((block, idx) => {
-      t = t.replace(`__CODE_VISUAL_BLOCK_${idx}__`, block);
-    });
-    return t.trim();
-  }
-
-  // 3. Strip prompt template labels/meta-headers (case-insensitive) to prevent leaking structural markers
+  // 3. Strip prompt template labels, block headers, and structural markers (e.g. BLOCK 1, Validate & Clarify, etc.)
   t = t
+    .replace(/^#{1,6}\s*(📌|🧩|🎯)?\s*\d*\.?\s*(Validate\s*&\s*Clarify|The\s*Bite-Sized\s*Step|Bite-Sized\s*Step|The\s*Guided\s*Checkpoint|Guided\s*Checkpoint|Validate\s*&\s*Diagnose)[^\n]*\n*/gim, '')
+    .replace(/\*?\*?BLOCK\s*[1-4]:\s*([A-Z\s&-]+)\*?\*?:?\s*/gim, '')
     .replace(/^#{1,6}\s*(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+|Acknowledge\s*&\s*Affirm|Validate\s*&\s*Diagnose|Multimodal\s*Scaffolding|Metacognitive\s*Checkpoint)\b.*$/gim, '')
-    .replace(/\*\*(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+|Acknowledge\s*&\s*Affirm|Validate\s*&\s*Diagnose|Multimodal\s*Scaffolding|Metacognitive\s*Checkpoint)\*\*:\s*/gi, '')
-    .replace(/\b(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+):\s*/gi, '');
+    .replace(/\*\*(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+|Acknowledge\s*&\s*Affirm|Validate\s*&\s*Diagnose|Multimodal\s*Scaffolding|Metacognitive\s*Checkpoint|Validate\s*&\s*Clarify|Bite-Sized\s*Step|Guided\s*Checkpoint|Checkpoint\s*)\*\*:\s*/gi, '')
+    .replace(/\b(Feedback|Transition|Next Question|Question|Explanation|Socratic Question|Concept|Analogy|Step\s*\d+|Validate\s*&\s*Clarify|Bite-Sized\s*Step|Guided\s*Checkpoint|Checkpoint):\s*/gi, '')
+    .replace(/\*\*Checkpoint\s*\*\*\s*/gi, '');
 
   const paras = t
     .split(/\n\s*\n+/)

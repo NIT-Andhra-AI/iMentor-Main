@@ -714,12 +714,15 @@ async function handleStructured(res, ctx) {
                     const nextIntro = await startSocraticSession(nextUnit, nextEnhancedContext, llmConfig, advanceResult.nextPosition);
  
                     let transitionParts = [];
-                    transitionParts.push(`Great job! You've mastered **${tutorState.teachingUnit || tutorResult.moduleTitle}**.`);
+                    transitionParts.push(`🎉 **Mastery Achieved!** You've completed **${tutorState.teachingUnit || tutorResult.moduleTitle}**.`);
                     if (advanceResult.topicJustCompleted) {
-                        transitionParts.push(`We've also finished the whole topic on **${advanceResult.topicCompletedName}**.`);
+                        transitionParts.push(`We've also completed the topic on **${advanceResult.topicCompletedName}**.`);
                     }
-                    transitionParts.push(`Let's move on to the next idea:\n\n${nextIntro}`);
-                    finalReplyText = transitionParts.join(' ');
+                    transitionParts.push(`Let's advance to the next concept:\n\n${nextIntro}`);
+                    const transitionText = transitionParts.join(' ');
+                    finalReplyText = tutorResult.followUpQuestion
+                        ? `${tutorResult.followUpQuestion}\n\n---\n\n${transitionText}`
+                        : transitionText;
  
                     await clearTutorSessionState(sessionId);
                     nextTopicState = {

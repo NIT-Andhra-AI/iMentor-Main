@@ -807,14 +807,16 @@ async function startSocraticSession(topic, context, llmConfig, position = null, 
 
 PEDAGOGICAL RULES:
 1. NEVER dump the complete solution or full multi-step derivation all at once.
-2. NEVER answer a student's genuine question with only another question.
-3. STRUCTURE EVERY RESPONSE INTO 3 CLEAR BLOCKS:
-   - BLOCK 1: VALIDATE & CLARIFY (1-2 sentences): Begin with "Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step." and explain the immediate core principle or intuitive mental model.
-   - BLOCK 2: THE BITE-SIZED STEP (2-4 sentences or equations): Walk through the first logical chunk of the problem. Show the formula, define the variables, or provide a concrete analogy.
-   - BLOCK 3: THE GUIDED CHECKPOINT (1 targeted question): Ask a low-friction, scaffolded question that invites the student to apply what was just explained or determine the next step.
-4. ADAPTIVE RESPONSES:
+2. NEVER answer a student's genuine question with only another question. Always address their doubt directly.
+3. CONVERSATIONAL SCAFFOLDING (Do NOT output block titles, prefixes, or headers like "BLOCK 1:", "BLOCK 2:", "BLOCK 3:", or "Step 1:"):
+   - First paragraph (1-2 sentences): Begin with "Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step." Introduce the core intuitive mental model or high-level intuition.
+   - Second paragraph (2-4 sentences max): Walk through a single bite-sized step with an everyday analogy or concrete example.
+   - Third paragraph (1 targeted question): Ask a single low-friction, scaffolded checkpoint question that invites the student to apply what was just explained (do not reveal the answer inside the question).
+4. COGNITIVE LOAD CONTROL:
+   - Keep total response length strictly under 180-220 words. Avoid giant walls of text or repeating boilerplate lifecycle lists.
+5. ADAPTIVE RESPONSES:
    - If the student answers correctly: Validate with positive reinforcement, explain why their logic was sound, and introduce the next concept milestone.
-   - If the student is stuck or says "I don't know": Break down the step further with an everyday analogy or give a partial hint.
+   - If the student is stuck or confused: Break down the step further with an everyday analogy or give a partial hint.
 
 TOPIC TO INTRODUCE: "${safe(cleanTopic)}"
 
@@ -835,9 +837,9 @@ ${safe(context)}`;
     } catch (error) {
         log.error('TUTOR', `Start session error: ${error.message}`, error);
         return sanitizeGeneratedText(
-            `### 📌 1. Validate & Clarify\nWelcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step.\n\n` +
-            `### 🧩 2. Bite-Sized Step\nThe core principle starts with understanding how the primary physical parameters interact in **${safe(cleanTopic)}**.\n\n` +
-            `### 🎯 3. Guided Checkpoint\nTo begin, what is your initial intuition about this concept?`
+            `Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step.\n\n` +
+            `The core principle starts with understanding how the primary physical parameters interact in **${safe(cleanTopic)}**.\n\n` +
+            `To begin, what is your initial intuition about this concept?`
         );
     }
 }
@@ -1258,15 +1260,16 @@ You must respond like an inspiring, patient human tutor (matching ChatGPT & Gemi
 `}
 
 CRITICAL RULES:
-- DO NOT use structural headings (like "### Phase 1", "Step 1:", etc.)
+- DO NOT use structural headings, phase markers, or block titles (like "### Phase 1", "Step 1:", "BLOCK 1:", "BLOCK 2:", etc.).
 - Maintain 70% Scaffolding (supportive, clear explanation) and 30% Socratic (one guiding check question).
-- Write in natural, fluid paragraphs with clean formatting.
-- Provide comprehensive, proactive, and detailed explanations of essential concepts. Do NOT artificially cap response length.
-- Use paragraph breaks between explanation, analogy, and question.
+- COGNITIVE LOAD & LENGTH: Keep your response concise, punchy, and bite-sized (150–220 words maximum). Do NOT overwhelm the student with long multi-step lifecycles or walls of text.
+- Focus on ONE micro-concept or intuitive insight at a time.
+- If the student asks a question or shares a misconception, directly address and resolve their question first before asking the checkpoint question.
+- Write in natural, fluid paragraphs with clean formatting. Use paragraph breaks between explanation, analogy, and question.
 - DO NOT output internal thinking tags.
 - Be specific to the topic: "${safe(topic)}"
 - Adapt complexity to the student's preferred depth: ${knowledgeProfile?.learningProfile?.preferredDepth || 'balanced'}.
-- Ensure all technical terms, formulas, derivations, algorithms, and complex systems are fully detailed to match the standard of B.Tech engineering and research.`;
+- Ensure all technical terms and formulas are precise and mathematically sound.`;
 
     // Inject dynamic instructions based on student response (or the topic/history context) (prompt injection)
     let dynamicRigorPrompt = getAdaptivePromptInjection(studentResponse);
@@ -1915,18 +1918,69 @@ async function getCurriculumStructure(courseName) {
                 if (fs.existsSync(csvPath)) {
                     const lines = fs.readFileSync(csvPath, 'utf8').trim().split('\n');
                     const modMap = new Map();
+                    let topicCounter = 0;
+
+                    const parseCsvRow = (line) => {
+                        const fields = [];
+                        let cur = '';
+                        let inQuotes = false;
+                        for (let i = 0; i < line.length; i++) {
+                            const ch = line[i];
+                            if (ch === '"') {
+                                if (inQuotes && line[i + 1] === '"') {
+                                    cur += '"';
+                                    i++;
+                                } else {
+                                    inQuotes = !inQuotes;
+                                }
+                            } else if (ch === ',' && !inQuotes) {
+                                fields.push(cur.trim());
+                                cur = '';
+                            } else {
+                                cur += ch;
+                            }
+                        }
+                        fields.push(cur.trim());
+                        return fields;
+                    };
+
+                    const cleanSyllabusName = (str) => {
+                        if (!str) return '';
+                        return str.replace(/^["'\s]+|["'\s]+$/g, '').trim();
+                    };
+
+                    const EXCLUDED_SYLLABUS_PATTERNS = [
+                        /^\s*text\s*books?\s*$/i,
+                        /^\s*references?\s*$/i,
+                        /scheme and syllabi/i,
+                        /\|\s*page\s*\d*/i,
+                        /page\s*\d+/i,
+                        /^\s*\d+\.\s*[A-Z].*(mitchell|bishop|goodfellow|courville)/i
+                    ];
+
                     for (let i = 1; i < lines.length; i++) {
                         const line = lines[i].trim();
                         if (!line) continue;
-                        const parts = line.split(',');
-                        const modName = parts[2] || `Unit ${Math.ceil(i/8)}`;
-                        const topName = parts[3] || `Topic ${i}`;
-                        const subName = parts[4] || topName;
+                        const parts = parseCsvRow(line);
+                        const modName = cleanSyllabusName(parts[2]) || `Unit ${Math.ceil(i/8)}`;
+                        const rawTopName = cleanSyllabusName(parts[3]) || `Topic ${i}`;
+                        const rawSubName = cleanSyllabusName(parts[4]) || rawTopName;
+
+                        if (EXCLUDED_SYLLABUS_PATTERNS.some(pat => pat.test(rawTopName) || pat.test(rawSubName))) {
+                            continue;
+                        }
+                        if (!rawTopName) continue;
+
+                        topicCounter++;
                         if (!modMap.has(modName)) {
                             modMap.set(modName, { id: `mod_${modMap.size+1}`, name: modName, topics: [] });
                         }
                         const m = modMap.get(modName);
-                        m.topics.push({ id: `top_${i}`, name: topName, subtopics: [{ id: `${courseName.toLowerCase()}_l${i}`, name: subName }] });
+                        m.topics.push({
+                            id: `top_${topicCounter}`,
+                            name: rawTopName,
+                            subtopics: [{ id: `${courseName.toLowerCase()}_l${topicCounter}`, name: rawSubName }]
+                        });
                     }
                     if (modMap.size > 0) {
                         return { modules: Array.from(modMap.values()) };

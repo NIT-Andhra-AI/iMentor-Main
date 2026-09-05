@@ -313,13 +313,13 @@ const api = {
   },
   getOrchestratorStatus: async () => {
     try {
-      const response = await apiClient.get("/network/ip");
+      await apiClient.get("/network/ip");
       return {
         status: "ok",
-        message: `Backend Online at ${response.data.ips[0]}`,
+        message: "System Operational",
       };
     } catch (e) {
-      return { status: "error", message: "Backend Unreachable" };
+      return { status: "error", message: "Service Unavailable" };
     }
   },
   getDebugFeatureFlags: async () => {

@@ -1221,9 +1221,9 @@ The student has struggled ${consecutiveWrongNow} times. You MUST:
 5. Include a SHORT mermaid flowchart or pseudocode to visualise the concept if helpful. Use fenced code block:
    \`\`\`mermaid
    flowchart TD
-       A[Start] --> B[Step]
+       A["Start"] --> B["Compute h[k] * x[n-k]"]
    \`\`\`
-   Keep it under 8 nodes.
+   CRITICAL: ALWAYS enclose node labels in double quotes (e.g., id["label"]), especially if labels contain array brackets, math, or punctuation. Keep it under 8 nodes.
 6. Then ask ONE simple comprehension check question (must be very easy — just verifying they followed)
 7. Remind them: "Don't worry, this is a tough concept. It's completely normal to need a few tries."
 
@@ -1238,9 +1238,9 @@ The student has struggled twice. You MUST:
 5. Include a SHORT mermaid flowchart OR pseudocode block to visualise the concept. Use a fenced code block like:
    \`\`\`mermaid
    flowchart TD
-       A[Start] --> B[Step]
+       A["Start"] --> B["Step"]
    \`\`\`
-   Keep it under 8 nodes. Only include a diagram if it meaningfully clarifies the concept.
+   CRITICAL: ALWAYS enclose node labels in double quotes (e.g., id["label"]). Keep it under 8 nodes. Only include a diagram if it meaningfully clarifies the concept.
 6. Ask ONE simpler, more-guided question (break the original question into a smaller piece)
 ` : `
 ADAPTIVE INSTRUCTION (70% SCAFFOLDING / 30% SOCRATIC):

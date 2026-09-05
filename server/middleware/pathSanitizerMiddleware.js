@@ -18,22 +18,48 @@ function sanitizeString(str) {
     .replace(/redis:\/\/127\.0\.0\.1:\d+/g, '[Cache Endpoint]');
 }
 
-function sanitizeObject(obj) {
+function sanitizeObject(obj, seen = new WeakSet(), depth = 0) {
   if (obj === null || obj === undefined) return obj;
+  if (depth > 20) return obj;
   if (typeof obj === 'string') return sanitizeString(obj);
-  if (Array.isArray(obj)) return obj.map(sanitizeObject);
-  if (typeof obj === 'object') {
-    const cleaned = {};
-    for (const key of Object.keys(obj)) {
-      // Omit stack traces or internal server paths and local IPs in public JSON
-      if (key === 'stack' || key === 'filePath' || key === 'absolutePath' || key === 'internalPath' || key === 'localIp' || key === 'internalIp') {
-        continue;
-      }
-      cleaned[key] = sanitizeObject(obj[key]);
-    }
-    return cleaned;
+  if (typeof obj !== 'object') return obj;
+
+  // Handle Date, RegExp, Buffer, ObjectId
+  if (obj instanceof Date || obj instanceof RegExp || (obj._bsontype && obj._bsontype === 'ObjectID')) {
+    return obj;
   }
-  return obj;
+
+  // Prevent circular references
+  if (seen.has(obj)) {
+    return '[Circular]';
+  }
+  seen.add(obj);
+
+  // If this is a Mongoose document or has toObject/toJSON, unwrap to plain object
+  let target = obj;
+  if (typeof target.toObject === 'function') {
+    try {
+      target = target.toObject();
+    } catch (_) {}
+  } else if (typeof target.toJSON === 'function') {
+    try {
+      target = target.toJSON();
+    } catch (_) {}
+  }
+
+  if (Array.isArray(target)) {
+    return target.map(item => sanitizeObject(item, seen, depth + 1));
+  }
+
+  const cleaned = {};
+  for (const key of Object.keys(target)) {
+    // Omit internal Mongoose private properties, stack traces, internal paths, and local IPs
+    if (key.startsWith('$') || key === 'stack' || key === 'filePath' || key === 'absolutePath' || key === 'internalPath' || key === 'localIp' || key === 'internalIp') {
+      continue;
+    }
+    cleaned[key] = sanitizeObject(target[key], seen, depth + 1);
+  }
+  return cleaned;
 }
 
 function pathSanitizerMiddleware(req, res, next) {

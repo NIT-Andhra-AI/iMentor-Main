@@ -32,11 +32,15 @@ router.get('/profile', async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const [stats, skillTreeStats, streakStats] = await Promise.all([
+        const [statsRes, skillTreeRes, streakRes] = await Promise.allSettled([
             gamificationService.getUserStats(userId),
             skillTreeService.getSkillTreeStats(userId),
             streakService.getStreakStats(userId)
         ]);
+
+        const stats = statsRes.status === 'fulfilled' ? statsRes.value : {};
+        const skillTreeStats = skillTreeRes.status === 'fulfilled' ? skillTreeRes.value : null;
+        const streakStats = streakRes.status === 'fulfilled' ? streakRes.value : null;
 
         res.json({
             ...stats,

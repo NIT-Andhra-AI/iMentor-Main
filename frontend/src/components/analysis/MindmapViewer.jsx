@@ -51,20 +51,39 @@ const MindmapViewer = forwardRef(({ mermaidCode }, ref) => {
             
             // --- THIS IS THE FIX ---
             // New, more robust regex to find the diagram code.
-            // It looks for a code block that CONTAINS a known diagram type (e.g., 'graph', 'mindmap').
-            // It is no longer anchored to the start (^) of the string, so it can find the
-            // block even if there's leading garbage or extra backticks from the LLM.
             const fenceRegex = /```(?:mermaid)?\s*([\s\S]*?(?:graph|mindmap|flowchart|sequenceDiagram)[\s\S]*?)\s*```/i;
             const match = codeToRender.match(fenceRegex);
 
             if (match && match[1]) {
-                // If we found a fenced block, use its content.
                 codeToRender = match[1].trim();
             } else {
-                // Fallback for cases where LLM might forget the fences entirely.
-                // We still trim to remove potential whitespace.
                 codeToRender = codeToRender.trim();
             }
+
+            // Auto-quote unquoted node labels with brackets, math, or indices e.g. C[Calculate h[k] * x[3-k]]
+            const sanitizeMermaidLabels = (code) => {
+                if (!code) return '';
+                let clean = code
+                    .replace(/\\[(]/g, '(')
+                    .replace(/\\[)]/g, ')')
+                    .replace(/\\[\[]/g, '[')
+                    .replace(/\\[\]]/g, ']')
+                    .replace(/\$\$?[^$]*\$\$?/g, ''); // strip inline $$...$$
+
+                // Match node definitions with rectangular brackets like A[...] or A(...)
+                clean = clean.replace(/([a-zA-Z0-9_-]+)\[([^"\n\r]+)\]/g, (m, id, text) => {
+                    if (text.startsWith('"') && text.endsWith('"')) return m;
+                    // If text contains internal brackets, parentheses, or math operations, wrap in double quotes
+                    if (text.includes('[') || text.includes(']') || text.includes('*') || text.includes('/') || text.includes('=') || text.includes('+') || text.includes('-')) {
+                        const safe = text.replace(/"/g, "'").trim();
+                        return `${id}["${safe}"]`;
+                    }
+                    return m;
+                });
+                return clean.trim();
+            };
+
+            codeToRender = sanitizeMermaidLabels(codeToRender);
             // --- END OF FIX ---
 
             try {
@@ -88,12 +107,22 @@ const MindmapViewer = forwardRef(({ mermaidCode }, ref) => {
                     }
                 }
             } catch (e) {
-                console.error("Error rendering Mermaid diagram with input:", codeToRender, e);
-                const errorMsg = e.message || "Failed to render mind map. Invalid Mermaid syntax?";
+                console.warn("Handled Mermaid syntax parsing exception:", e.message);
+                // Clean up any stray error SVG Mermaid v11 may have appended directly to document.body
+                try {
+                    const strayErrors = document.querySelectorAll(`[id*="${uniqueId}"], [id^="d${uniqueId}"]`);
+                    strayErrors.forEach(el => {
+                        if (el && el.parentNode && el !== svgContainerRef.current && el.parentNode === document.body) {
+                            el.parentNode.removeChild(el);
+                        }
+                    });
+                } catch (_) {}
+
+                const errorMsg = e.message || "Failed to render diagram";
                 setError(errorMsg);
                 if (svgContainerRef.current) {
-                    const codeSnippet = escapeHtml(codeToRender.substring(0, 200) + (codeToRender.length > 200 ? "..." : ""));
-                    svgContainerRef.current.innerHTML = `<div class="p-4 text-center text-red-500 dark:text-red-400 text-xs break-all"><strong>Error rendering:</strong> ${escapeHtml(errorMsg)}<br><strong class='mt-2 block'>Input Code (first 200 chars):</strong><pre class='text-left text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded mt-1 whitespace-pre-wrap'>${codeSnippet}</pre></div>`;
+                    const codeSnippet = escapeHtml(codeToRender.substring(0, 300) + (codeToRender.length > 300 ? "..." : ""));
+                    svgContainerRef.current.innerHTML = `<div class="p-3 text-left text-xs bg-slate-800/80 rounded border border-slate-700 font-mono text-slate-300"><div class="text-amber-400 font-semibold mb-1">Diagram Architecture:</div><pre class="whitespace-pre-wrap">${codeSnippet}</pre></div>`;
                 }
             } finally {
                 setIsLoading(false);

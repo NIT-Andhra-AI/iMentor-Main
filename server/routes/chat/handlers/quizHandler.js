@@ -1,6 +1,7 @@
 // server/routes/chat/handlers/quizHandler.js
 // Handles the quiz fast-path when a system prompt marks a request as quiz evaluation.
 const ChatHistory = require('../../../models/ChatHistory');
+const { callWithFallback } = require('../../../services/llmFallbackService');
 const groqService = require('../../../services/groqService');
 const geminiService = require('../../../services/geminiService');
 const log = require('../../../utils/logger');
@@ -22,25 +23,41 @@ async function handle(res, ctx) {
 
     try {
         let evalText = null;
-        const groqKey = process.env.GROQ_API_KEY;
-        const geminiKey = process.env.GEMINI_API_KEY;
+        const isLocalGpuOnly = process.env.LOCAL_GPU_ONLY === 'true';
 
-        if (groqKey) {
-            try {
-                evalText = await groqService.generateContentWithHistory(
-                    [], query.trim(), clientProvidedSystemInstruction,
-                    { model: 'llama-3.1-8b-instant', apiKey: groqKey, maxOutputTokens: 300, temperature: 0.4 }
-                );
-            } catch (e) {
-                log.warn('CHAT', `Quiz evaluation fallback: ${e.message}`);
-            }
+        try {
+            const fb = await callWithFallback({
+                userQuery: query.trim(),
+                systemPrompt: clientProvidedSystemInstruction,
+                preferredProvider: 'sglang',
+                preferLocalFirst: true,
+                options: { maxOutputTokens: 350, temperature: 0.3, enableThinking: false }
+            });
+            evalText = (fb?.text || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+        } catch (localErr) {
+            if (isLocalGpuOnly) throw localErr;
+            log.warn('CHAT', `Quiz local evaluation fallback: ${localErr.message}`);
         }
 
-        if (!evalText && geminiKey) {
-            evalText = await geminiService.generateContentWithHistory(
-                [], query.trim(), clientProvidedSystemInstruction,
-                { geminiModel: 'gemini-2.0-flash', apiKey: geminiKey, maxOutputTokens: 300 }
-            );
+        if (!evalText && !isLocalGpuOnly) {
+            const groqKey = process.env.GROQ_API_KEY;
+            const geminiKey = process.env.GEMINI_API_KEY;
+            if (groqKey) {
+                try {
+                    evalText = await groqService.generateContentWithHistory(
+                        [], query.trim(), clientProvidedSystemInstruction,
+                        { model: 'llama-3.1-8b-instant', apiKey: groqKey, maxOutputTokens: 300, temperature: 0.4 }
+                    );
+                } catch (e) {
+                    log.warn('CHAT', `Quiz evaluation fallback: ${e.message}`);
+                }
+            }
+            if (!evalText && geminiKey) {
+                evalText = await geminiService.generateContentWithHistory(
+                    [], query.trim(), clientProvidedSystemInstruction,
+                    { geminiModel: 'gemini-2.0-flash', apiKey: geminiKey, maxOutputTokens: 300 }
+                );
+            }
         }
         if (!evalText) throw new Error('No LLM available');
 

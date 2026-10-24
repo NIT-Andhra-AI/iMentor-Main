@@ -156,11 +156,16 @@ OUTPUT ONLY the title. No quotes, no explanation, no commentary.`;
         const responseText = await LLMRouter.generate({
             query: prompt,
             userId: userId,
-            systemPrompt: 'You are an academic title generator. Output ONLY the title — no quotes, no explanation, no extra text. One line only.'
+            systemPrompt: 'You are an academic title generator. Output ONLY the title — no quotes, no explanation, no extra text. One line only.',
+            enableThinking: false,
+            maxOutputTokens: 96
         });
 
-        // Clean response
-        let title = responseText.trim();
+        // Clean response (strip any residual <think> blocks first)
+        const rawStr = typeof responseText === 'string'
+            ? responseText
+            : (responseText?.finalAnswer || responseText?.content || String(responseText));
+        let title = rawStr.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').replace(/<think(?:ing)?>[\s\S]*$/gi, '').trim();
 
         // Remove surrounding quotes if present
         title = title.replace(/^["'""]|["'""]$/g, '');

@@ -319,25 +319,68 @@ const citationEnrichmentService = {
      * Quantitative Results, and Limitations are visible during synthesis.
      */
     buildSourceContextForLLM(enrichedSources) {
-        return enrichedSources.map(s => {
-            const authors = s.authors?.length > 0 ? s.authors.join(', ') : 'Unknown';
+        if (!Array.isArray(enrichedSources) || enrichedSources.length === 0) return '';
+
+        // Dynamically size evidence corpus to fit SGLang modelMaxContext (e.g. 24,576 tokens)
+        // with zero overflow and 100% RadixAttention staticPrefix stability across all synthesis stages.
+        let modelMaxContext = 24576;
+        try {
+            const sglangCaps = require('./sglangCapabilities');
+            modelMaxContext = sglangCaps.getModelMaxContext(24576);
+        } catch (_) {}
+
+        // Reserve ~8,400 tokens for: SHARED_RADIX_SYSTEM_PROMPT + citationMap (~2,200) +
+        // section/matrix task instructions (~2,200) + reasoning/prose completion (~3,400) + BPE margin (~600).
+        const availableSourceTokens = Math.max(4500, modelMaxContext - 8400);
+        // Dense academic text (DOIs, inline citations, equations) averages ~2.75 chars/token on Qwen BPE.
+        const maxTotalChars = Math.floor(availableSourceTokens * 2.75);
+
+        const weights = enrichedSources.map(s => (s.hasFullText ? 1.45 : 0.85));
+        const totalWeight = weights.reduce((a, b) => a + b, 0) || enrichedSources.length;
+        const estimatedHeaderCharsPerSource = 290;
+        const netContentPool = Math.max(
+            enrichedSources.length * 260,
+            maxTotalChars - (enrichedSources.length * estimatedHeaderCharsPerSource)
+        );
+
+        let usedChars = 0;
+        const blocks = [];
+
+        for (let i = 0; i < enrichedSources.length; i++) {
+            const s = enrichedSources[i];
+            const authors = s.authors?.length > 0
+                ? (s.authors.length > 4 ? `${s.authors.slice(0, 3).join(', ')} et al.` : s.authors.join(', '))
+                : 'Unknown';
             const year = s.year || s.publishedYear || 'n.d.';
             const venue = s.journal || s.publisher || s.venue || 'N/A';
             const ftStatus = s.hasFullText
                 ? `FULL-TEXT PARSED (${s.pdfHarvestMethod || 'PDF'}) — Methodology, Setup, Metrics & Limitations extracted`
                 : 'Abstract + Bibliographic Metadata';
 
-            const rawContent = s.content || s.abstract || 'No content available.';
-            const contentSlice = rawContent.substring(0, 3200);
+            const weightedBudget = Math.floor((weights[i] / totalWeight) * netContentPool);
+            const perSourceCap = Math.max(260, Math.min(3200, weightedBudget));
+            const remainingSources = enrichedSources.length - i - 1;
+            const remainingHardAllowance = Math.max(
+                240,
+                maxTotalChars - usedChars - estimatedHeaderCharsPerSource - (remainingSources * 420)
+            );
+            const sliceLimit = Math.min(perSourceCap, remainingHardAllowance);
 
-            return `=== SOURCE [${s.citationIndex}] ===
+            const rawContent = s.content || s.abstract || 'No content available.';
+            const contentSlice = rawContent.substring(0, sliceLimit);
+
+            const block = `=== SOURCE [${s.citationIndex}] ===
 Title: ${s.title}
 Authors: ${authors} | Year: ${year} | Venue: ${venue} | DOI: ${s.doi || 'N/A'}
 Evidence Depth: ${ftStatus} | Credibility: ${s.credibilityScore || 80}/100${s.citationCount ? ` | Citations: ${s.citationCount}` : ''}
 Content & Extracted Sections:
 ${contentSlice}
 ===`;
-        }).join('\n\n');
+            usedChars += block.length + 2;
+            blocks.push(block);
+        }
+
+        return blocks.join('\n\n');
     }
 };
 

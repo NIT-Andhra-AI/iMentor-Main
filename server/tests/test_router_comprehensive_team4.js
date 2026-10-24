@@ -414,11 +414,21 @@ addTest('History Truncation - Preserves system message and final user prompt', (
 // Test Section 5: Universal Fallback Chain Processing
 // -------------------------------------------------------------
 addTest('Fallback chain priority resolver list', () => {
-    const chainL = buildFallbackChain('sglang', true);
-    assert.deepStrictEqual(chainL, ['sglang', 'gemini', 'groq']);
+    const prevLocalOnly = process.env.LOCAL_GPU_ONLY;
+    try {
+        process.env.LOCAL_GPU_ONLY = 'true';
+        assert.deepStrictEqual(buildFallbackChain('sglang', true), ['sglang']);
 
-    const chainC = buildFallbackChain('gemini', false);
-    assert.deepStrictEqual(chainC, ['gemini', 'groq', 'sglang']);
+        process.env.LOCAL_GPU_ONLY = 'false';
+        const chainL = buildFallbackChain('sglang', true);
+        assert.deepStrictEqual(chainL, ['sglang', 'gemini', 'groq']);
+
+        const chainC = buildFallbackChain('gemini', false);
+        assert.deepStrictEqual(chainC, ['gemini', 'groq', 'sglang']);
+    } finally {
+        if (prevLocalOnly === undefined) delete process.env.LOCAL_GPU_ONLY;
+        else process.env.LOCAL_GPU_ONLY = prevLocalOnly;
+    }
 });
 
 addTest('Thinking Model Detection', () => {

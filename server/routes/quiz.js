@@ -5,12 +5,13 @@ const User = require('../models/User');
 const { callWithFallback } = require('../services/llmFallbackService');
 const log = require('../utils/logger');
 const conceptQuestionBankService = require('../services/conceptQuestionBankService');
+const questionGeneratorService = require('../services/questionGeneratorService');
 
-const QUIZ_GENERATE_TIMEOUT_MS = 40000; // Total timeout for quiz generation
-const QUIZ_EVAL_PER_QUESTION_TIMEOUT_MS = 8000; // Per-question AI evaluation timeout
-const QUIZ_SUBMIT_HARD_TIMEOUT_MS = 15000; // Hard outer timeout for entire submit request
+const QUIZ_GENERATE_TIMEOUT_MS = 60000; // Total timeout for quiz generation
+const QUIZ_EVAL_PER_QUESTION_TIMEOUT_MS = 20000; // Per-question AI evaluation timeout (classroom-safe)
+const QUIZ_SUBMIT_HARD_TIMEOUT_MS = 45000; // Hard outer timeout for entire submit request
 
-const PYTHON_RAG_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2005';
+const PYTHON_RAG_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006';
 
 /**
  * Continuously calculates and updates student's learning stage.
@@ -271,19 +272,22 @@ JSON format:
                 // Hard per-question timeout + rule-based fallback
                 const evalStart = Date.now();
                 const evalPromise = (async () => {
+                    const isLocalOnly = process.env.LOCAL_GPU_ONLY === 'true';
                     const providerHealth = require('../services/providerHealthCache');
                     const healthyProviders = providerHealth.getHealthyProviders(['sglang', 'groq', 'gemini', 'openai', 'ollama']);
-                    const preferredProvider = healthyProviders.length > 0
-                      ? healthyProviders[0]
-                      : (process.env.NODE_ENV === 'development' ? 'ollama' : 'sglang');
+                    const preferredProvider = isLocalOnly
+                      ? 'sglang'
+                      : (healthyProviders.length > 0 ? healthyProviders[0] : 'sglang');
                     const fallbackResult = await callWithFallback({
                         userQuery: evalPrompt,
                         preferredProvider,
-                        preferLocalFirst: true
+                        preferLocalFirst: true,
+                        options: { maxOutputTokens: 280, temperature: 0.2, enableThinking: false, jsonMode: true }
                     });
-                    const responseText = fallbackResult.text;
+                    const responseText = (fallbackResult.text || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '');
                     let cleanText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-                    return JSON.parse(cleanText);
+                    const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+                    return JSON.parse(jsonMatch ? jsonMatch[0] : cleanText);
                 })();
 
                 const evalTimeout = new Promise((_, reject) =>
@@ -323,10 +327,6 @@ JSON format:
                     }
                     log.info('QUIZ', `[SUBMIT] Q${i} rule-based fallback: correct=${isCorrect} score=${score} overlap=${overlapRatio.toFixed(2)}`);
                 }
-
-                isCorrect = evalResult.result === 'correct' || evalResult.score >= 70;
-                score = evalResult.score;
-                feedbackText = evalResult.feedbackText;
             }
 
             if (isCorrect) {
@@ -418,11 +418,12 @@ JSON format:
         };
 
         try {
+            const isLocalOnly = process.env.LOCAL_GPU_ONLY === 'true';
             const providerHealth = require('../services/providerHealthCache');
             const healthyProviders = providerHealth.getHealthyProviders(['sglang', 'groq', 'gemini', 'openai', 'ollama']);
-            const preferredProvider = healthyProviders.length > 0
-              ? healthyProviders[0]
-              : (process.env.NODE_ENV === 'development' ? 'ollama' : 'sglang');
+            const preferredProvider = isLocalOnly
+              ? 'sglang'
+              : (healthyProviders.length > 0 ? healthyProviders[0] : 'sglang');
             const remediationPrompt = `You are a Socratic learning auditor.
 Evaluate the student's overall performance on this quiz for the course "${courseName}" and module "${moduleName || 'all'}".
 Here is the breakdown of the quiz questions, student's answers, and evaluation feedback:
@@ -441,10 +442,13 @@ JSON format:
             const fallbackRemediation = await callWithFallback({
                 userQuery: remediationPrompt,
                 preferredProvider,
-                preferLocalFirst: true
+                preferLocalFirst: true,
+                options: { maxOutputTokens: 320, temperature: 0.2, enableThinking: false, jsonMode: true }
             });
-            let cleanRemediation = fallbackRemediation.text.replace(/```json/g, '').replace(/```/g, '').trim();
-            remediation = JSON.parse(cleanRemediation);
+            const rawRem = (fallbackRemediation.text || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '');
+            let cleanRemediation = rawRem.replace(/```json/g, '').replace(/```/g, '').trim();
+            const remMatch = cleanRemediation.match(/\{[\s\S]*\}/);
+            remediation = JSON.parse(remMatch ? remMatch[0] : cleanRemediation);
         } catch (remError) {
             log.warn('QUIZ', `Failed generating remediation: ${remError.message}`);
         }

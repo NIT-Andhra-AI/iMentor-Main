@@ -2,13 +2,14 @@
 const assert = require('assert');
 const path = require('path');
 
-// 1. Mock geminiService BEFORE requiring socraticTutorService
+// 1. Mock geminiService & sglangService BEFORE requiring socraticTutorService
 const geminiService = require('../services/geminiService');
+const sglangService = require('../services/sglangService');
 
 let capturedPrompt = '';
 let capturedSystemPrompt = '';
 
-geminiService.generateContentWithHistory = async function (chatHistory, currentQuery, systemPromptText, options) {
+const mockAssessLlm = async function (chatHistory, currentQuery, systemPromptText, options) {
     capturedPrompt = currentQuery;
     capturedSystemPrompt = systemPromptText;
     
@@ -26,6 +27,8 @@ geminiService.generateContentWithHistory = async function (chatHistory, currentQ
         reasoning: "The student response accurately defines the concept."
     });
 };
+geminiService.generateContentWithHistory = mockAssessLlm;
+sglangService.generateContentWithHistory = mockAssessLlm;
 
 // 2. Import socraticTutorService
 const { assessStudentResponse } = require('../services/socraticTutorService');

@@ -85,12 +85,13 @@ if (socraticContent.includes(duplicateStr1)) {
 }
 fs.writeFileSync(tempSocraticPath, socraticContent, 'utf8');
 
-// Mock geminiService BEFORE importing socraticTutorService
+// Mock geminiService & sglangService BEFORE importing socraticTutorService
 const geminiService = require('../services/geminiService');
+const sglangService = require('../services/sglangService');
 let capturedPrompt = '';
 let capturedSystemPrompt = '';
 
-geminiService.generateContentWithHistory = async function (chatHistory, currentQuery, systemPromptText, options) {
+const mockAssessLlm = async function (chatHistory, currentQuery, systemPromptText, options) {
     capturedPrompt = currentQuery;
     capturedSystemPrompt = systemPromptText;
     
@@ -107,6 +108,8 @@ geminiService.generateContentWithHistory = async function (chatHistory, currentQ
         reasoning: "The student response accurately defines the concept."
     });
 };
+geminiService.generateContentWithHistory = mockAssessLlm;
+sglangService.generateContentWithHistory = mockAssessLlm;
 
 try {
     const { assessStudentResponse } = require('../services/socraticTutorService_temp_test');

@@ -583,7 +583,7 @@ async function selectLLM(query, context = {}) {
 }
 
 const LLMRouter = {
-  async generate({ query, systemPrompt = null, chatHistory = [], userId = null, deepResearchContext = false, onToken = null }) {
+  async generate({ query, systemPrompt = null, chatHistory = [], userId = null, deepResearchContext = false, onToken = null, enableThinking = undefined, jsonMode = false, maxOutputTokens: explicitMaxTokens = null }) {
     try {
       const { chosenModel, routingDecision } = await selectLLM(query, { userId, deepResearchContext });
 
@@ -600,17 +600,19 @@ const LLMRouter = {
         reasoningMode: deepResearchContext ? 'deep_research' : 'standard'
       });
       const temperature = tunedParams.temperature ?? (deepResearchContext ? 0.2 : 0.7);
-      const maxOutputTokens = tunedParams.maxOutputTokens ?? (deepResearchContext ? 8192 : 4096);
+      const maxOutputTokens = explicitMaxTokens ?? tunedParams.maxOutputTokens ?? (deepResearchContext ? 8192 : 4096);
 
       const llmOptions = {
         apiKey,
         model: chosenModel.modelId,
         temperature,
         maxOutputTokens,
-        ollamaUrl: chosenModel.workingUrl 
+        ollamaUrl: chosenModel.workingUrl,
+        ...(enableThinking !== undefined ? { enableThinking } : {}),
+        ...(jsonMode ? { jsonMode: true } : {})
       };
 
-      let maxLimit = 24000;
+      let maxLimit = 68000;
       if (chosenModel.provider === 'gemini') maxLimit = 400000;
       else if (chosenModel.provider === 'groq' && chosenModel.modelId && chosenModel.modelId.includes('70b')) maxLimit = 120000;
 
@@ -621,10 +623,11 @@ const LLMRouter = {
         const truncatedChatHistory = streamMessages.slice(0, -1);
 
         if (chosenModel.provider === 'sglang') {
-          const allText = truncatedChatHistory.map(m => m.content).join(' ') + truncatedUserQuery + (systemPrompt || '');
-          const estimatedInputTokens = Math.ceil(allText.length / 4);
+          const allText = truncatedChatHistory.map(m => m.content || '').join(' ') + truncatedUserQuery + (systemPrompt || '');
+          // Conservative 3.1 chars/token estimate for dense academic citations, DOIs, LaTeX & code
+          const estimatedInputTokens = Math.ceil(allText.length / 3.1);
           const modelMaxContext = sglangCaps.getModelMaxContext();
-          const safetyBuffer = 200;
+          const safetyBuffer = 384;
           const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
           const adjustedMaxTokens = Math.min(llmOptions.maxOutputTokens || 4096, availableForCompletion);
           const svc = chosenModel._sglangService || sglangService;
@@ -633,7 +636,7 @@ const LLMRouter = {
           
           return await svc.streamChat(
             truncatedChatHistory, truncatedUserQuery, systemPrompt,
-            { ...llmOptions, model: chosenModel.modelId, ollamaUrl: chosenModel.workingUrl, maxTokens: adjustedMaxTokens },
+            { ...llmOptions, model: chosenModel.modelId, ollamaUrl: chosenModel.workingUrl, maxTokens: adjustedMaxTokens, maxOutputTokens: adjustedMaxTokens },
             onToken
           );
         }
@@ -657,6 +660,22 @@ const LLMRouter = {
       const llmService = (chosenModel.provider === 'sglang' && chosenModel._sglangService)
           ? chosenModel._sglangService
           : sglangService;
+
+      if (chosenModel.provider === 'sglang') {
+        const allText = finalChatHistory.map(m => m.content || '').join(' ') + finalUserQuery + (systemPrompt || '');
+        const estimatedInputTokens = Math.ceil(allText.length / 3.1);
+        const modelMaxContext = sglangCaps.getModelMaxContext();
+        const safetyBuffer = 384;
+        const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
+        const adjustedMaxTokens = Math.min(llmOptions.maxOutputTokens || 4096, availableForCompletion);
+        log.info('AI', `[SGLang Sync] Token budget: input≈${estimatedInputTokens} + completion=${adjustedMaxTokens} ≈ ${estimatedInputTokens + adjustedMaxTokens} / ${modelMaxContext}`);
+        return await llmService.generateContentWithHistory(
+          finalChatHistory,
+          finalUserQuery,
+          systemPrompt,
+          { ...llmOptions, maxTokens: adjustedMaxTokens, maxOutputTokens: adjustedMaxTokens }
+        );
+      }
 
       return await llmService.generateContentWithHistory(finalChatHistory, finalUserQuery, systemPrompt, llmOptions);
     } catch (error) {

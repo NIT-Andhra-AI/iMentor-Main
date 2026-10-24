@@ -26,9 +26,19 @@ describe('Scaling and Self-Healing End-to-End Verifications', () => {
         assert.strictEqual(decision.strategy, 'sglang_default');
     });
 
-    it('3. Universal fallback chain ordering', () => {
-        const fallbackChain = buildFallbackChain('sglang', true);
-        assert.deepStrictEqual(fallbackChain, ['sglang', 'gemini', 'groq']);
+    it('3. Universal fallback chain ordering (multi-provider & LOCAL_GPU_ONLY)', () => {
+        const prevLocalOnly = process.env.LOCAL_GPU_ONLY;
+        try {
+            process.env.LOCAL_GPU_ONLY = 'true';
+            assert.deepStrictEqual(buildFallbackChain('sglang', true), ['sglang']);
+
+            process.env.LOCAL_GPU_ONLY = 'false';
+            const fallbackChain = buildFallbackChain('sglang', true);
+            assert.deepStrictEqual(fallbackChain, ['sglang', 'gemini', 'groq']);
+        } finally {
+            if (prevLocalOnly === undefined) delete process.env.LOCAL_GPU_ONLY;
+            else process.env.LOCAL_GPU_ONLY = prevLocalOnly;
+        }
     });
 
     it('4. Socratic Strict Formatter retains 70% Scaffolding + 30% Inquiry', () => {

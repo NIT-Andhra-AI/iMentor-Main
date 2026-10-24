@@ -33,7 +33,7 @@ function streamingService() { return _streaming || (_streaming = require('./llmS
 // [Optimization] Prevents concurrent users from hammering the same provider.
 // Each provider gets its own limiter. When one provider's queue is full,
 // the request overflows to the next provider in the fallback chain.
-const LOCAL_GPU_ONLY     = process.env.LOCAL_GPU_ONLY !== 'false';
+function isLocalGpuOnly() { return process.env.LOCAL_GPU_ONLY !== 'false'; }
 const CONCURRENCY_SGLANG = parseInt(process.env.LLM_CONCURRENCY_SGLANG, 10) || 50;
 const CONCURRENCY_GEMINI = parseInt(process.env.LLM_CONCURRENCY_GEMINI, 10) || 3;
 const CONCURRENCY_GROQ   = parseInt(process.env.LLM_CONCURRENCY_GROQ,   10) || 3;
@@ -187,7 +187,7 @@ const CLOUD_FIRST_CHAIN  = ['sglang'];
  * Build an ordered provider chain with user preference first.
  */
 function buildFallbackChain(preferredProvider = 'sglang', preferLocalFirst = true) {
-    if (LOCAL_GPU_ONLY) {
+    if (isLocalGpuOnly()) {
         return ['sglang'];
     }
     const norm = (preferredProvider || 'sglang').toLowerCase().trim();
@@ -402,7 +402,7 @@ function resolveModelForProvider(provider, options = {}) {
  * Priority: SGLang (local GPU) → Groq (fast cloud) → Gemini.
  */
 async function getFastModel(userApiKeys = {}, ollamaUrlHint = null) {
-    if (LOCAL_GPU_ONLY) {
+    if (isLocalGpuOnly()) {
         return {
             provider: 'sglang',
             model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',

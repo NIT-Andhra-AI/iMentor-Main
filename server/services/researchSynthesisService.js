@@ -91,10 +91,13 @@ CRITICAL RULES:
 4. TOPIC GUARDRAIL: Every section MUST be strictly about "${query}". Do NOT drift into unrelated finance/geopolitics.`;
 
     const planResponse = await LLMRouter.generate({
-      query: planningPrompt + "\n/no_think",
+      query: planningPrompt,
       userId: userId,
       deepResearchContext: false,
-      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
+      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT,
+      enableThinking: false,
+      jsonMode: true,
+      maxOutputTokens: 2400
     });
 
     const rawText = typeof planResponse === 'string'
@@ -239,10 +242,13 @@ Output STRICT JSON only:
 }`;
 
       const rawResp = await LLMRouter.generate({
-        query: matrixPrompt + "\n/no_think",
+        query: matrixPrompt,
         userId,
         deepResearchContext: false,
-        systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
+        systemPrompt: SHARED_RADIX_SYSTEM_PROMPT,
+        enableThinking: false,
+        jsonMode: true,
+        maxOutputTokens: 2800
       });
 
       const text = typeof rawResp === 'string'

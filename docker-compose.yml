@@ -116,15 +116,17 @@ services:
               capabilities: [gpu]
     command: [
       "python3", "-m", "sglang.launch_server",
-      "--model-path", "Qwen/Qwen2.5-7B-Instruct-AWQ",
-      "--quantization", "awq",
+      "--model-path", "Qwen/Qwen3-8B-AWQ",
+      "--quantization", "awq_marlin",
       "--host", "0.0.0.0",
       "--port", "30000",
-      "--mem-fraction-static", "0.70",
-      "--context-length", "8192",
-      "--chunked-prefill-size", "512",
-      "--max-running-requests", "4",
-      "--schedule-policy", "lpm"
+      "--mem-fraction-static", "0.82",
+      "--kv-cache-dtype", "fp8_e5m2",
+      "--context-length", "32768",
+      "--chunked-prefill-size", "2048",
+      "--max-running-requests", "16",
+      "--schedule-policy", "lpm",
+      "--enable-hierarchical-cache"
     ]
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:30000/v1/models || exit 1"]

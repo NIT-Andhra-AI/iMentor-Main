@@ -47,7 +47,8 @@ async function queryPythonRagService(
         const relevantDocs = response.data?.retrieved_documents_list || [];
         const references = relevantDocs.map((doc, index) => ({
             number: index + 1,
-            source: doc.metadata?.file_name || doc.metadata?.original_name || 'Unknown Document',
+            source: doc.metadata?.file_name || doc.metadata?.original_name || doc.metadata?.source || doc.metadata?.course_code || 'Unknown Document',
+            score: typeof doc.score === 'number' ? doc.score : (typeof doc.metadata?.score === 'number' ? doc.metadata.score : 1.0),
             content_preview: (doc.page_content || "").substring(0, 100) + "...",
             metadata: doc.metadata // Pass full metadata including section_context
         }));

@@ -395,13 +395,18 @@ def _load_marker():
         return
     _marker_loaded = True
 
-    # New API (marker >= 0.3)
+    # New API (marker >= 0.3) — Share singleton model dict with pdf_processor to avoid 2x 3GB RAM duplication
     try:
         from marker.converters.pdf import PdfConverter
-        from marker.models import create_model_dict
-        _marker_converter = PdfConverter(artifact_dict=create_model_dict())
+        try:
+            from pdf_processor import _get_marker_models
+            shared_models = _get_marker_models()
+        except Exception:
+            from marker.models import create_model_dict
+            shared_models = create_model_dict()
+        _marker_converter = PdfConverter(artifact_dict=shared_models)
         _MARKER_AVAILABLE = True
-        logger.info("Pipeline: marker-pdf (new API) loaded ✓")
+        logger.info("Pipeline: marker-pdf (new API, singleton shared models) loaded ✓")
         return
     except Exception:
         pass

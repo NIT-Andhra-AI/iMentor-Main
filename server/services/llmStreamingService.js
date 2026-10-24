@@ -34,8 +34,14 @@ async function streamCompletion({
     }
 
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
-    const optimizedMessages = tokenOptimizer.optimizeIncomingMessages(messages || []);
+    const isSglangProvider = (provider === 'sglang' && SGLANG_ENABLED);
+    // sglangService.streamChat already runs minifyPrompt, optimizeIncomingMessages, StreamingTokenExpander & expandOutgoingResponse internally
+    const optimizedSystemPrompt = isSglangProvider
+        ? systemPrompt
+        : tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
+    const optimizedMessages = isSglangProvider
+        ? (messages || [])
+        : tokenOptimizer.optimizeIncomingMessages(messages || []);
 
     // Wrap onToken to handle thinking tags if requested
     let finalOnToken = onToken;
@@ -91,7 +97,15 @@ async function streamCompletion({
     const providerOnToken = (chunk) => {
         const text = (chunk && typeof chunk === 'object' && typeof chunk.content === 'string') ? chunk.content : chunk;
         if (text && typeof text === 'string') {
-            expander.processChunk(text);
+            if (isSglangProvider) {
+                if (options.handleThinkingTags) {
+                    finalOnToken(text);
+                } else {
+                    finalOnToken({ type: 'token', content: text });
+                }
+            } else {
+                expander.processChunk(text);
+            }
         }
     };
 
@@ -122,7 +136,7 @@ async function streamCompletion({
             onToken({ type: isThinking ? 'thought' : 'token', content: buffer });
         }
 
-        return tokenOptimizer.expandOutgoingResponse(result);
+        return isSglangProvider ? result : tokenOptimizer.expandOutgoingResponse(result);
     } catch (error) {
         const status = error.status || error.response?.status || 500;
         log.warn('AI', `Stream error (${provider}): ${error.message?.split('\n')[0]}`);

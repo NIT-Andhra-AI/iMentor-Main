@@ -221,7 +221,7 @@ class VectorDBService:
         for extra_col in [getattr(config, "STN_QDRANT_COLLECTION", None), getattr(config, "PEDAGOGICAL_QDRANT_COLLECTION", None)]:
             if extra_col and extra_col not in collections_to_index:
                 collections_to_index.append(extra_col)
-        indexed_fields = ["user_id", "course_name", "syllabus_course", "course", "file_name", "topic"]
+        indexed_fields = ["user_id", "course_name", "syllabus_course", "course", "file_name", "topic", "course_code", "source", "document_id"]
         for col_name in collections_to_index:
             try:
                 for field_name in indexed_fields:
@@ -233,6 +233,19 @@ class VectorDBService:
                         )
                     except Exception:
                         pass
+                try:
+                    self.client.update_collection(
+                        collection_name=col_name,
+                        quantization_config=models.ScalarQuantization(
+                            scalar=models.ScalarQuantizationConfig(
+                                type=models.ScalarType.INT8,
+                                quantile=0.99,
+                                always_ram=True,
+                            )
+                        ),
+                    )
+                except Exception:
+                    pass
             except Exception:
                 pass
 

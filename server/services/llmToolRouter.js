@@ -101,9 +101,10 @@ async function _callSGLangRouter(query) {
     const resp = await axios.post(`${baseURL}/chat/completions`, {
         model,
         messages,
-        max_tokens:  80,
+        max_tokens:  120,
         temperature: 0.0,
         stream:      false,
+        response_format: { type: 'json_object' },
         chat_template_kwargs: { enable_thinking: false },
     }, { timeout: 10000 });
 
@@ -139,7 +140,7 @@ async function routeWithLLM(query) {
     let source  = 'none';
 
     // Try SGLang router first (no separate router instance needed — use chat endpoint)
-    if (process.env.SGLANG_ENABLED === 'true') {
+    if (process.env.SGLANG_ENABLED !== 'false') {
         try {
             rawText = await _callSGLangRouter(query);
             source  = 'sglang_router';

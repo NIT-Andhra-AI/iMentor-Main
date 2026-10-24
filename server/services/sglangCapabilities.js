@@ -31,7 +31,7 @@
 const log = require('../utils/logger');
 
 // ── Cached state ──────────────────────────────────────────────────────────────
-let _maxContextTokens = 16384;   // default context limit (Qwen 3.5 9B supports up to 32k/131k)
+let _maxContextTokens = 24576;   // default context limit (Qwen 3.5 9B supports up to 32k/131k)
 let _fetchPromise     = null;
 let _fetched          = false;
 let _cachedModelId    = null;
@@ -56,7 +56,7 @@ function _baseUrl() {
  * @param {number} [fallback=8192]
  * @returns {number}
  */
-function getModelMaxContext(fallback = 16384) {
+function getModelMaxContext(fallback = 24576) {
     return _fetched ? _maxContextTokens : fallback;
 }
 

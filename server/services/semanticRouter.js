@@ -27,10 +27,31 @@ function _embedUrls() {
     if (primaryPort === '2001') urls.push('http://localhost:2005/embed'); // dev fallback
     return [...new Set(urls)];
 }
+const http = require('http');
+const _embedHttpAgent = new http.Agent({ keepAlive: true, maxSockets: 128, keepAliveMsecs: 60000 });
+const _embedLruCache = new Map();
+const EMBED_LRU_MAX = 512;
+
 async function _postEmbed(payload, timeout) {
+    const singleKey = (payload && typeof payload.text === 'string' && !payload.texts)
+        ? payload.text.trim().toLowerCase()
+        : null;
+    if (singleKey && _embedLruCache.has(singleKey)) {
+        return { data: _embedLruCache.get(singleKey) };
+    }
     let lastErr;
     for (const url of _embedUrls()) {
-        try { return await axios.post(url, payload, { timeout }); }
+        try {
+            const resp = await axios.post(url, payload, { timeout, httpAgent: _embedHttpAgent });
+            if (singleKey && resp?.data?.embedding) {
+                if (_embedLruCache.size >= EMBED_LRU_MAX) {
+                    const oldest = _embedLruCache.keys().next().value;
+                    _embedLruCache.delete(oldest);
+                }
+                _embedLruCache.set(singleKey, resp.data);
+            }
+            return resp;
+        }
         catch (e) { lastErr = e; }
     }
     throw lastErr || new Error('All embed endpoints failed');

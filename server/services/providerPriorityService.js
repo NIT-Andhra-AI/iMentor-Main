@@ -4,6 +4,7 @@ const BASE_PROVIDER_PRIORITY = ['gemini', 'groq', 'sglang'];
 const PROVIDER_FALLBACK_ORDER = BASE_PROVIDER_PRIORITY.slice();
 
 function normalizeProvider(provider) {
+    if (process.env.LOCAL_GPU_ONLY !== 'false') return 'sglang';
     if (typeof provider !== 'string') return 'sglang';
     const normalized = provider.trim().toLowerCase();
     if (normalized === 'local_llm' || normalized === 'ollama') return 'sglang';
@@ -12,6 +13,7 @@ function normalizeProvider(provider) {
 }
 
 function getProviderChain(preferredProvider) {
+    if (process.env.LOCAL_GPU_ONLY !== 'false') return ['sglang'];
     const preferred = normalizeProvider(preferredProvider);
     // Build chain starting with preferred, then append remaining providers in BASE_PROVIDER_PRIORITY order.
     const list = BASE_PROVIDER_PRIORITY.slice();

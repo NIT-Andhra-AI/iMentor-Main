@@ -16,7 +16,8 @@ const { getIntelligentRoutingDecision, TASK_TYPES, COMPLEXITY_LEVELS, ROUTING_MO
 const { truncateContextToWindow } = require('../utils/tokenOptimizer');
 
 // SGLang — lazy-imported so the server starts cleanly when SGLANG_ENABLED=false
-const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
+const SGLANG_ENABLED = process.env.SGLANG_ENABLED !== 'false';
+const LOCAL_GPU_ONLY = process.env.LOCAL_GPU_ONLY !== 'false';
 // [Optimization] LOW_RAM_MODE: skip SGLang entirely on student laptops with insufficient RAM/VRAM
 const LOW_RAM_MODE = process.env.LOW_RAM_MODE === 'true';
 
@@ -117,7 +118,41 @@ function groqFallbackModel(logic = 'groq_fallback') {
 /**
  * Intelligently selects the best LLM for a given query and context.
  */
-async function selectLLM(query, context) {
+async function selectLLM(query, context = {}) {
+  // Strict Local-GPU-Only fast path: always use local Qwen/Qwen3-8B-AWQ on SGLang without cloud leakage
+  if (LOCAL_GPU_ONLY && SGLANG_ENABLED && !LOW_RAM_MODE) {
+    const semanticRoute = context.semanticRoute || context.queryIntent?.semanticRoute || null;
+    const semanticIntent = context.semanticRouting?.intent || null;
+    let endpoint = 'chat';
+    if (semanticRoute === 'tot' || context.criticalThinkingEnabled || context.useReAct
+        || semanticIntent === 'MATHEMATICAL_REASONING' || semanticIntent === 'TECHNICAL_CODING'
+        || semanticRoute === 'deep_research' || semanticIntent === 'DEEP_RESEARCH') {
+      endpoint = 'reason';
+    }
+    const endpointEnvMap = {
+      chat:   { model: process.env.SGLANG_CHAT_MODEL   || 'Qwen/Qwen3-8B-AWQ',
+                url:   process.env.SGLANG_CHAT_URL     || 'http://127.0.0.1:8000/v1' },
+      reason: { model: process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                url:   process.env.SGLANG_REASON_URL   || 'http://127.0.0.1:8000/v1' },
+      heavy:  { model: process.env.SGLANG_HEAVY_MODEL  || 'Qwen/Qwen3-8B-AWQ',
+                url:   process.env.SGLANG_HEAVY_URL    || 'http://127.0.0.1:8000/v1' },
+    };
+    const target = endpointEnvMap[endpoint] || endpointEnvMap.chat;
+    log.info('AI', `[SGLang Local-Only] endpoint=${endpoint} model=${target.model} (intent=${semanticIntent || 'standard'})`);
+    return {
+      chosenModel: {
+        modelId:         target.model,
+        provider:        'sglang',
+        displayName:     `Local GPU (${target.model})`,
+        workingUrl:      target.url,
+        _sglangEndpoint: endpoint,
+        _sglangService:  sglangService,
+      },
+      logic: `local_gpu_only_${endpoint}`,
+      modelRoutingMode: 'local_gpu_only',
+    };
+  }
+
   let user = context.user;
   const { userId, subject } = context;
 
@@ -367,11 +402,11 @@ async function selectLLM(query, context) {
       }
 
       const endpointEnvMap = {
-        chat:   { model: process.env.SGLANG_CHAT_MODEL   || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+        chat:   { model: process.env.SGLANG_CHAT_MODEL   || 'Qwen/Qwen3-8B-AWQ',
                   url:   process.env.SGLANG_CHAT_URL     || 'http://localhost:8000/v1' },
-        reason: { model: process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+        reason: { model: process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen3-8B-AWQ',
                   url:   process.env.SGLANG_REASON_URL   || 'http://localhost:8000/v1' },
-        heavy:  { model: process.env.SGLANG_HEAVY_MODEL  || 'Qwen/Qwen2.5-14B-Instruct-AWQ',
+        heavy:  { model: process.env.SGLANG_HEAVY_MODEL  || 'Qwen/Qwen3-8B-AWQ',
                   url:   process.env.SGLANG_HEAVY_URL    || 'http://localhost:8000/v1' },
       };
       const target = endpointEnvMap[endpoint] || endpointEnvMap.chat;

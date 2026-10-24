@@ -11,8 +11,8 @@ const connectDB = async (mongoUri) => {
   try {
     // [Optimization] Explicit pool settings — Mongoose default (5) is too low for 50+ concurrent users
     const conn = await mongoose.connect(mongoUri, {
-      maxPoolSize: parseInt(process.env.MONGO_MAX_POOL_SIZE, 10) || 20,
-      minPoolSize: parseInt(process.env.MONGO_MIN_POOL_SIZE, 10) || 2,
+      maxPoolSize: parseInt(process.env.MONGO_MAX_POOL_SIZE, 10) || 60,
+      minPoolSize: parseInt(process.env.MONGO_MIN_POOL_SIZE, 10) || 10,
       socketTimeoutMS:
         parseInt(process.env.MONGO_SOCKET_TIMEOUT_MS, 10) || 45000,
       serverSelectionTimeoutMS: 5000,

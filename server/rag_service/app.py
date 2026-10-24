@@ -17,7 +17,7 @@ import threading
 import warnings
 from contextlib import asynccontextmanager
 from functools import partial
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 
 # Suppress noisy HuggingFace warnings when no HF_TOKEN is set
 if not os.environ.get("HF_TOKEN"):
@@ -992,6 +992,39 @@ async def classify_intent(body: ClassifyIntentRequest):
         "latency_ms": latency_ms,
     }
 
+_EMBED_LRU_CACHE: Dict[str, List[float]] = {}
+_EMBED_LRU_ORDER: List[str] = []
+_EMBED_LRU_MAX = 1024
+_MICRO_BATCH_QUEUE: List[ Any ] = []
+_MICRO_BATCH_TASK: Optional[asyncio.Task] = None
+
+async def _flush_micro_batch():
+    global _MICRO_BATCH_TASK
+    await asyncio.sleep(0.012)  # 12ms window to coalesce 50 concurrent user requests into 1 SIMD batch
+    batch = _MICRO_BATCH_QUEUE[:]
+    _MICRO_BATCH_QUEUE.clear()
+    _MICRO_BATCH_TASK = None
+    if not batch:
+        return
+    embed_model = config.get_embedding_model()
+    texts = [item[0] for item in batch]
+    try:
+        vecs = await run_sync(embed_model.encode, texts, normalize_embeddings=True)
+        for (txt, fut), v in zip(batch, vecs):
+            lst = v.tolist()
+            if txt not in _EMBED_LRU_CACHE:
+                _EMBED_LRU_CACHE[txt] = lst
+                _EMBED_LRU_ORDER.append(txt)
+                if len(_EMBED_LRU_ORDER) > _EMBED_LRU_MAX:
+                    ev = _EMBED_LRU_ORDER.pop(0)
+                    _EMBED_LRU_CACHE.pop(ev, None)
+            if not fut.done():
+                fut.set_result((lst, int(v.shape[0])))
+    except Exception as ex:
+        for _, fut in batch:
+            if not fut.done():
+                fut.set_exception(ex)
+
 @app.post("/embed")
 async def embed_text(body: EmbedRequest):
     """
@@ -1021,11 +1054,24 @@ async def embed_text(body: EmbedRequest):
                 "count":      len(body.texts),
             }
         elif body.text:
-            # Single mode
-            vec = await run_sync(embed_model.encode, body.text, normalize_embeddings=True)
+            # Single mode with LRU cache + 12ms dynamic micro-batching for 50-user bursts
+            norm_key = body.text.strip()
+            if norm_key in _EMBED_LRU_CACHE:
+                cached_vec = _EMBED_LRU_CACHE[norm_key]
+                return {
+                    "embedding": cached_vec,
+                    "dim":       len(cached_vec),
+                }
+            global _MICRO_BATCH_TASK
+            loop = asyncio.get_running_loop()
+            fut = loop.create_future()
+            _MICRO_BATCH_QUEUE.append((norm_key, fut))
+            if _MICRO_BATCH_TASK is None or _MICRO_BATCH_TASK.done():
+                _MICRO_BATCH_TASK = asyncio.create_task(_flush_micro_batch())
+            vec_list, dim = await fut
             return {
-                "embedding": vec.tolist(),
-                "dim":       int(vec.shape[0]),
+                "embedding": vec_list,
+                "dim":       dim,
             }
         else:
             raise HTTPException(status_code=422, detail="Provide 'text' (single) or 'texts' (batch)")

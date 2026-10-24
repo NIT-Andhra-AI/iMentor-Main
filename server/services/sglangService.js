@@ -20,6 +20,7 @@ const _sglangHttpAgent = new http.Agent({ keepAlive: true, maxSockets: 250, keep
 const DEFAULT_PART_TOKEN_BUDGET = 1400; // Optimal coherence window per part (~1,050 words)
 const MAX_CONTINUATION_PARTS    = 3;    // Up to 3 stateful parts (~4,200 tokens / ~3,150 words total)
 const CONTEXT_SAFETY_BUFFER     = 512;  // Safety buffer below model max_model_len
+let _activeSglangStreams        = 0; // Read-only concurrency telemetry (zero quality throttling)
 
 // ── Lazy-initialized clients per endpoint ────────────────────────────────────
 let _chatClient   = null;
@@ -82,6 +83,10 @@ function evaluateThinkingStrategy(userQuery = '', endpoint = 'chat', options = {
     // 3. Explicit user force-enable
     if (options.enableThinking === true) {
         return { enableThinking: true, reason: 'explicit_enabled' };
+    }
+    // 3b. Explicit concise/brief request -> Instant Direct Mode (No Think)
+    if (/\b(briefly|in \d+ bullet|short|concise|tl;?dr|in brief|2-3 sentences|summary only)\b/i.test(q)) {
+        return { enableThinking: false, reason: 'concise_direct_query' };
     }
 
     // 4. Subjective Question Complexity Analysis (Gemini App adaptive strategy)
@@ -153,6 +158,8 @@ async function _retryWithBackoff(fn, maxRetries = 2, baseDelayMs = 400) {
  * Generate a response (non-streaming) with Multi-Turn Chunked Continuation.
  */
 async function generateContentWithHistory(chatHistory, userQuery, systemPrompt = null, options = {}) {
+    _activeSglangStreams++;
+    try {
     const endpoint = options.endpoint || 'chat';
     const model    = options.model
         || (endpoint === 'heavy'  ? process.env.SGLANG_HEAVY_MODEL  : null)
@@ -175,7 +182,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
     messages.push({ role: 'user', content: optimizedUserQuery + thinkSuffix });
 
-    const modelMaxContext = sglangCaps.getModelMaxContext(16384);
+    const modelMaxContext = sglangCaps.getModelMaxContext(24576);
     const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 2560;
     const allowMultiPart = !options.response_format && !options.jsonMode && !options.tools && reqMaxTokens > 800;
     const maxParts = allowMultiPart ? MAX_CONTINUATION_PARTS : 1;
@@ -245,6 +252,9 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
         enhanced.status = err.status || 503;
         throw enhanced;
     }
+    } finally {
+        _activeSglangStreams = Math.max(0, _activeSglangStreams - 1);
+    }
 }
 
 /**
@@ -255,6 +265,9 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
  *      never get cut off mid-sentence and never overflow the context window.
  */
 async function streamChat(chatHistory, userQuery, systemPrompt = null, options = {}, onToken = null) {
+    _activeSglangStreams++;
+    try {
+    await new Promise(r => setImmediate(r));
     const endpoint = options.endpoint || 'chat';
     const model    = options.model
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
@@ -276,7 +289,7 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
     messages.push({ role: 'user', content: optimizedUserQuery + thinkSuffix });
 
-    const modelMaxContext = sglangCaps.getModelMaxContext(16384);
+    const modelMaxContext = sglangCaps.getModelMaxContext(24576);
     const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 3072;
     const allowMultiPart = !options.response_format && !options.jsonMode && !options.tools && reqMaxTokens > 800;
     const maxParts = allowMultiPart ? MAX_CONTINUATION_PARTS : 1;
@@ -439,6 +452,9 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
         }
         throw err;
     }
+    } finally {
+        _activeSglangStreams = Math.max(0, _activeSglangStreams - 1);
+    }
 }
 
 /**
@@ -451,12 +467,13 @@ async function checkHealth(endpoint = 'chat') {
     if (!SGLANG_ENABLED) return false;
     const now = Date.now();
     const cached = _healthCache.get(endpoint);
-    if (cached && (now - cached.ts) < HEALTH_CACHE_TTL_MS) {
+    const ttl = cached?.ok ? HEALTH_CACHE_TTL_MS : 2000;
+    if (cached && (now - cached.ts) < ttl) {
         return cached.ok;
     }
     try {
         const client = _getClient(endpoint);
-        await client.models.list({ timeout: 2000 });
+        await client.models.list({ timeout: 4000 });
         _healthCache.set(endpoint, { ok: true, ts: now });
         return true;
     } catch (e) {
@@ -472,5 +489,6 @@ module.exports = {
     checkHealth,
     evaluateThinkingStrategy,
     estimateTokensConservative,
+    getActiveStreams: () => _activeSglangStreams,
     SGLANG_ENABLED,
 };

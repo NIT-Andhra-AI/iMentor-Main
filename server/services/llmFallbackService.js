@@ -33,10 +33,11 @@ function streamingService() { return _streaming || (_streaming = require('./llmS
 // [Optimization] Prevents concurrent users from hammering the same provider.
 // Each provider gets its own limiter. When one provider's queue is full,
 // the request overflows to the next provider in the fallback chain.
-const CONCURRENCY_SGLANG = parseInt(process.env.LLM_CONCURRENCY_SGLANG, 10) || 8;
+const LOCAL_GPU_ONLY     = process.env.LOCAL_GPU_ONLY !== 'false';
+const CONCURRENCY_SGLANG = parseInt(process.env.LLM_CONCURRENCY_SGLANG, 10) || 50;
 const CONCURRENCY_GEMINI = parseInt(process.env.LLM_CONCURRENCY_GEMINI, 10) || 3;
 const CONCURRENCY_GROQ   = parseInt(process.env.LLM_CONCURRENCY_GROQ,   10) || 3;
-const HIGH_WATER_MARK    = parseInt(process.env.LLM_QUEUE_MAX_DEPTH,     10) || 20;
+const HIGH_WATER_MARK    = parseInt(process.env.LLM_QUEUE_MAX_DEPTH,     10) || 150;
 const QUEUE_WARN_THRESHOLD = 10;
 
 const providerLimiters = {
@@ -129,8 +130,8 @@ async function isSglangUp() {
 }
 
 function invalidateSglangHealth() {
-    _sglangHealthy = false;
-    _sglangHealthTs = Date.now();
+    _sglangHealthy = null;
+    _sglangHealthTs = 0;
 }
 
 // ─── API KEY AVAILABILITY ──────────────────────────────────────────────────
@@ -170,7 +171,7 @@ function getApiKey(provider, userKeys = {}) {
 
 // ─── PER-PROVIDER TIMEOUTS (ms) ────────────────────────────────────────────
 const PROVIDER_TIMEOUTS = {
-    sglang: 60_000,
+    sglang: 180_000,
     groq:   15_000,
     gemini: 90_000,
     agy:    90_000,
@@ -186,6 +187,9 @@ const CLOUD_FIRST_CHAIN  = ['sglang'];
  * Build an ordered provider chain with user preference first.
  */
 function buildFallbackChain(preferredProvider = 'sglang', preferLocalFirst = true) {
+    if (LOCAL_GPU_ONLY) {
+        return ['sglang'];
+    }
     const norm = (preferredProvider || 'sglang').toLowerCase().trim();
     let chain = [];
 
@@ -398,6 +402,13 @@ function resolveModelForProvider(provider, options = {}) {
  * Priority: SGLang (local GPU) → Groq (fast cloud) → Gemini.
  */
 async function getFastModel(userApiKeys = {}, ollamaUrlHint = null) {
+    if (LOCAL_GPU_ONLY) {
+        return {
+            provider: 'sglang',
+            model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+            sglangUrl: process.env.SGLANG_CHAT_URL || 'http://127.0.0.1:8000/v1',
+        };
+    }
     // 1) SGLang — primary for all LLM calls
     if (process.env.SGLANG_ENABLED === 'true') {
         const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';

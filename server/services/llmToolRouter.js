@@ -150,7 +150,7 @@ async function routeWithLLM(query) {
     }
 
     // Fall back to Gemini Flash only if admin has validated the key
-    if (!rawText && process.env.GEMINI_API_VALIDATED === 'true') {
+    if (!rawText && process.env.LOCAL_GPU_ONLY === 'false' && process.env.GEMINI_API_VALIDATED === 'true') {
         try {
             rawText = await _callGeminiFlash(query);
             source  = 'gemini_flash';

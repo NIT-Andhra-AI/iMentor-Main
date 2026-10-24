@@ -104,6 +104,8 @@ services:
       - "127.0.0.1:8000:30000"   # LLM inference — localhost only
     volumes:
       - huggingface_cache:/root/.cache/huggingface
+      - sglang_jit_cache:/root/.cache/tvm-ffi
+      - sglang_flashinfer_cache:/root/.cache/flashinfer
     environment:
       - HF_HOME=/root/.cache/huggingface
       - SGLANG_PORT=30000
@@ -120,13 +122,11 @@ services:
       "--quantization", "awq_marlin",
       "--host", "0.0.0.0",
       "--port", "30000",
-      "--mem-fraction-static", "0.82",
-      "--kv-cache-dtype", "fp8_e5m2",
-      "--context-length", "32768",
+      "--mem-fraction-static", "0.84",
+      "--context-length", "24576",
       "--chunked-prefill-size", "2048",
-      "--max-running-requests", "16",
-      "--schedule-policy", "lpm",
-      "--enable-hierarchical-cache"
+      "--max-running-requests", "24",
+      "--schedule-policy", "lpm"
     ]
     healthcheck:
       test: ["CMD-SHELL", "curl -sf http://localhost:30000/v1/models || exit 1"]
@@ -252,3 +252,5 @@ volumes:
   chatbot_prometheus_data:
   chatbot_grafana_data:
   huggingface_cache:
+  sglang_jit_cache:
+  sglang_flashinfer_cache:

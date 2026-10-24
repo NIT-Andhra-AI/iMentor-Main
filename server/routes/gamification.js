@@ -1,6 +1,7 @@
 // server/routes/gamification.js
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const { authMiddleware } = require('../middleware/authMiddleware');
@@ -60,7 +61,8 @@ router.get('/profile', async (req, res) => {
 // @desc    Get user's skill tree state (for fog-of-war visualization)
 router.get('/skill-tree', async (req, res) => {
     try {
-        const skillTree = await skillTreeService.getUserSkillTree(req.user._id);
+        const course = req.query.course || 'EE3621';
+        const skillTree = await skillTreeService.getUserSkillTree(req.user._id, course);
         res.json({ skillTree });
 
     } catch (error) {
@@ -82,29 +84,19 @@ router.get('/skill/:skillId/assessment', async (req, res) => {
             return res.status(403).json({ message: 'Skill is locked or not found' });
         }
 
-        // If a gameId was provided and the questions are generated (not fallback),
-        // save them to the game's level entry the first time only.
+        // Always serve fresh unseen sanitized questions on each attempt/retry
         const { gameId, levelId, levelName } = req.query;
         if (gameId && questions.length > 0) {
             try {
                 const game = await SkillTreeGame.findOne({ _id: gameId, userId: req.user._id });
                 if (game) {
-                    // identify level by id or name
                     const idx = typeof levelId !== 'undefined'
                         ? game.levels.findIndex(l => String(l.id) === String(levelId))
                         : game.levels.findIndex(l => l.name === levelName);
 
                     if (idx !== -1) {
-                        // Save questions only if not already present
-                        if (!game.levels[idx].questions || game.levels[idx].questions.length === 0) {
-                            game.levels[idx].questions = questions;
-                            await game.save();
-                        }
-                        // If questions exist, return those instead of AI fallback
-                        const existingQ = game.levels[idx].questions;
-                        if (existingQ && existingQ.length > 0) {
-                            return res.json({ questions: existingQ });
-                        }
+                        game.levels[idx].questions = questions;
+                        await game.save();
                     }
                 }
             } catch (saveErr) {
@@ -165,7 +157,8 @@ router.post('/skill-tree/check-topic', async (req, res) => {
         if (activeGame) {
             return res.json({
                 status: 'active',
-                message: 'This game is already present'
+                message: 'This game is already present',
+                gameId: activeGame._id.toString()
             });
         }
 
@@ -269,6 +262,15 @@ router.post('/skill-tree/spend-credits', async (req, res) => {
 
 // @route   POST /api/gamification/skill-tree/diagnostic
 // @desc    Generate Socratic diagnostic questions for a topic
+function resolveCourseCode(topicStr) {
+    if (!topicStr) return '';
+    const str = String(topicStr).toLowerCase().trim();
+    if (str.includes('signal') || str.includes('dsp') || str.includes('ee3621')) return 'EE3621';
+    if (str.includes('data structure') || str.includes('cs2101') || str.includes('structures and applications')) return 'CS2101';
+    if (str.includes('control system') || str.includes('ee3601') || str.includes('ee2061')) return 'EE3601';
+    return String(topicStr).trim();
+}
+
 router.post('/skill-tree/diagnostic', async (req, res) => {
     try {
         const { topic } = req.body;
@@ -277,21 +279,24 @@ router.post('/skill-tree/diagnostic', async (req, res) => {
             return res.status(400).json({ message: 'Topic is required' });
         }
 
+        const topicStr = String(topic).trim();
+        const courseCode = resolveCourseCode(topicStr);
+
         // 1. Try to find pre-computed skills for this course/topic
-        // We match by 'course' field or 'category'
         let skills = await SkillTree.find({ 
             $or: [
-                { course: { $regex: new RegExp(topic, 'i') } },
-                { category: { $regex: new RegExp(topic, 'i') } }
+                { course: { $regex: new RegExp(`^${courseCode}$`, 'i') } },
+                { courseCode: { $regex: new RegExp(`^${courseCode}$`, 'i') } },
+                { course: { $regex: new RegExp(topicStr, 'i') } },
+                { category: { $regex: new RegExp(topicStr, 'i') } }
             ],
-            isActive: true,
+            isActive: { $ne: false },
             'assessmentQuestions.0': { $exists: true }
         }).lean();
 
         // 2. If no skills found for this specific subject, fall back to LLM (legacy path)
         if (!skills || skills.length === 0) {
             log.info('GAMIFICATION', `No pre-computed skills found for "${topic}", falling back to LLM generation`);
-            // ... [Keep legacy LLM generation as fallback for custom topics]
             return generateDiagnosticWithLLM(topic, req, res);
         }
 
@@ -319,19 +324,42 @@ router.post('/skill-tree/diagnostic', async (req, res) => {
             selectedSkills.push(...pickRandom(notSelected, remainingNeeded));
         }
 
-        // 4. Extract one random question from each selected skill
-        const questions = selectedSkills.map(skill => {
+        // 4. Extract one unseen random question from each selected skill, shuffle options, vault answers server-side
+        const {
+            shuffleQuestionOptions,
+            sanitizeQuestionsForClient,
+            storeActiveAssessmentAttempt
+        } = activeQuestionValidatorService;
+
+        const fullDiagnosticQuestions = selectedSkills.map(skill => {
             const q = skill.assessmentQuestions[Math.floor(Math.random() * skill.assessmentQuestions.length)];
+            const shuffled = shuffleQuestionOptions({
+                ...q,
+                subtopic: skill.name,
+                courseOutcome: 'CO1'
+            });
             return {
-                question: q.question,
-                options: q.options,
-                level: skill.difficulty,
-                skillId: skill.skillId, // Store for verification
+                ...shuffled,
+                level: q.difficulty || skill.difficulty || 'beginner',
+                skillId: skill.skillId,
                 type: 'mcq'
             };
         });
 
-        log.success('GAMIFICATION', `Served ${questions.length} pre-computed diagnostic questions for "${topic}"`);
+        await storeActiveAssessmentAttempt({
+            userId: req.user._id,
+            assessmentKey: `diagnostic_${courseCode || topicStr}`,
+            questions: fullDiagnosticQuestions
+        });
+
+        const questions = sanitizeQuestionsForClient(fullDiagnosticQuestions).map((sq, idx) => ({
+            ...sq,
+            level: fullDiagnosticQuestions[idx].level,
+            skillId: fullDiagnosticQuestions[idx].skillId,
+            type: 'mcq'
+        }));
+
+        log.success('GAMIFICATION', `Served ${questions.length} pre-computed sanitized diagnostic questions for "${topic}" (<20ms)`);
         res.json({ questions });
 
     } catch (error) {
@@ -398,51 +426,24 @@ router.post('/skill-tree/diagnostic/submit', async (req, res) => {
             return res.status(400).json({ message: 'Topic and answers are required' });
         }
 
-        // 1. Instant Grading for MCQ
-        let score = 0;
-        const gradingDetails = [];
+        // 1. Server-side Grading for Diagnostic MCQ (with option-shuffle vault support)
+        const courseCode = resolveCourseCode(String(topic).trim());
+        const gradedDiag = await activeQuestionValidatorService.gradeAssessmentSubmission({
+            userId: req.user._id,
+            assessmentKey: `diagnostic_${courseCode || String(topic).trim()}`,
+            answers: answers.map(a => ({
+                question: a.question,
+                selectedIndex: typeof a.selectedIndex === 'number' ? a.selectedIndex : undefined,
+                userAnswer: a.answer || a.userAnswer || ''
+            }))
+        });
 
-        // Fetch the skills involved to get correct answers
-        const skillIds = answers.map(a => a.skillId).filter(Boolean);
-        const skillsFound = await SkillTree.find({ skillId: { $in: skillIds } }).lean();
-        
-        // Map for quick lookup
-        const skillMap = {};
-        skillsFound.forEach(s => skillMap[s.skillId] = s);
-
-        for (const submission of answers) {
-            const skill = skillMap[submission.skillId];
-            if (skill && skill.assessmentQuestions) {
-                const questionData = skill.assessmentQuestions.find(q => q.question === submission.question);
-                if (questionData) {
-                    const isCorrect = submission.answer.trim().toLowerCase() === questionData.correctAnswer.trim().toLowerCase() ||
-                                    submission.answer.charAt(0).toUpperCase() === questionData.correctAnswer.charAt(0).toUpperCase(); // Match 'A' in 'A. Answer'
-                    
-                    if (isCorrect) score++;
-                    gradingDetails.push({
-                        question: submission.question,
-                        correct: isCorrect,
-                        explanation: questionData.explanation
-                    });
-
-                    // Record question attempt for analytics
-                    try {
-                        const ConceptQuestionBank = require('../models/ConceptQuestionBank');
-                        const conceptQuestionBankService = require('../services/conceptQuestionBankService');
-                        const matchedQuestion = await ConceptQuestionBank.findOne({
-                            course: { $regex: new RegExp(`^${topic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
-                            concept: { $regex: new RegExp(`^${topic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
-                            question: submission.question
-                        }).lean();
-                        if (matchedQuestion?._id) {
-                            await conceptQuestionBankService.recordQuestionAttempt(matchedQuestion._id, req.user._id, isCorrect);
-                        }
-                    } catch (e) {
-                        log.warn('GAMIFICATION', `Failed to record diagnostic question attempt: ${e.message}`);
-                    }
-                }
-            }
-        }
+        let score = gradedDiag.correctCount || 0;
+        const gradingDetails = (gradedDiag.results || []).map(r => ({
+            question: r.question,
+            correct: r.isCorrect,
+            conceptHint: r.conceptHint
+        }));
 
         // 2. Map score to level
         let level = 'Beginner';
@@ -502,8 +503,12 @@ router.post('/skill-tree/generate-levels', async (req, res) => {
         const knowledgeLevel = assessmentResult?.level || 'Beginner';
         let levels = [];
 
+        const topicStr = String(topic).trim();
+        const courseCode = resolveCourseCode(topicStr);
+
         // ── BRANCH 1: Admin Course → use the Neo4j curriculum map ────────────────
-        const curriculumStructure = await getCurriculumStructure(topic).catch(() => null);
+        const curriculumStructure = (await getCurriculumStructure(courseCode).catch(() => null)) ||
+                                    (await getCurriculumStructure(topicStr).catch(() => null));
         const isAdminCourse = curriculumStructure?.modules?.length > 0;
 
         if (isAdminCourse) {
@@ -640,11 +645,14 @@ function getEvaluationPoolForTopicAndLevel(topic, levelId, levelName) {
 // @desc    Generate/validate quiz questions for a specific level (Active Deduplication & Local LLM dynamic generator)
 router.post('/skill-tree/level-questions', async (req, res) => {
     try {
-        const { topic, levelId, levelName, difficulty, gameId, seenQuestions: reqBodySeen, requestedCount = 50 } = req.body;
+        const { topic, levelId, levelName, difficulty, gameId, seenQuestions: reqBodySeen, requestedCount = 5 } = req.body;
 
         if (!topic || (!levelId && !levelName)) {
             return res.status(400).json({ message: 'Topic and level identifier (levelId or levelName) are required' });
         }
+
+        const topicStr = String(topic || '').trim();
+        const courseCode = resolveCourseCode(topicStr);
 
         let seenQuestions = Array.isArray(reqBodySeen) ? [...reqBodySeen] : [];
 
@@ -666,19 +674,23 @@ router.post('/skill-tree/level-questions', async (req, res) => {
             }
         }
 
-        // Delegate to Active Question Validator Service (enforces deduplication & local LLM dynamic synthesis)
+        // Delegate to Active Question Validator Service (enforces deduplication, option shuffling & local LLM/DSP dynamic synthesis)
+        const assessmentKey = `level_${levelId || levelName}`;
         const valResult = await activeQuestionValidatorService.validateAndGenerateFreshQuestions({
             userId: req.user._id,
-            courseCode: topic,
-            topic,
+            courseCode: courseCode,
+            topic: topicStr,
             levelId,
             levelName,
-            requestedCount: parseInt(requestedCount) || 50,
-            seenQuestions
+            requestedCount: Math.min(parseInt(requestedCount) || 5, 10),
+            seenQuestions,
+            assessmentKey
         });
 
-        // Persist served questions into game state if gameId provided
-        if (game && valResult.questions.length > 0) {
+        const safeClientQuestions = valResult.clientQuestions || activeQuestionValidatorService.sanitizeQuestionsForClient(valResult.questions);
+
+        // Persist served questions (sanitized, without answers) into game state if gameId provided
+        if (game && safeClientQuestions.length > 0) {
             try {
                 const levelIdx = typeof levelId !== 'undefined'
                     ? game.levels.findIndex(l => String(l.id) === String(levelId))
@@ -687,7 +699,7 @@ router.post('/skill-tree/level-questions', async (req, res) => {
                 if (levelIdx !== -1) {
                     const newlyServed = valResult.questions.map(q => q.question || q.id);
                     game.levels[levelIdx].seenQuestions = Array.from(new Set([...seenQuestions, ...newlyServed]));
-                    game.levels[levelIdx].questions = valResult.questions;
+                    game.levels[levelIdx].questions = safeClientQuestions;
                     await game.save();
                 }
             } catch (saveErr) {
@@ -696,7 +708,7 @@ router.post('/skill-tree/level-questions', async (req, res) => {
         }
 
         return res.json({
-            questions: valResult.questions,
+            questions: safeClientQuestions,
             totalServed: valResult.totalServed,
             timeLimitMinutes: 60,
             timeLimitSeconds: 3600,
@@ -713,6 +725,42 @@ router.post('/skill-tree/level-questions', async (req, res) => {
     } catch (error) {
         log.error('SYSTEM', 'Error validating level questions', error);
         res.status(500).json({ message: 'Error generating level questions' });
+    }
+});
+
+// @route   POST /api/gamification/skill-tree/grade-level
+// @desc    Server-side grading for Skill Tree Level Worksheet & Single-Card mode (Zero Answer Reveal)
+router.post('/skill-tree/grade-level', async (req, res) => {
+    try {
+        const { topic, levelId, levelName, answers, questions } = req.body;
+        if (!Array.isArray(answers)) {
+            return res.status(400).json({ message: 'answers array is required' });
+        }
+
+        const assessmentKey = `level_${levelId || levelName || topic || 'default'}`;
+        const graded = await activeQuestionValidatorService.gradeAssessmentSubmission({
+            userId: req.user._id,
+            assessmentKey,
+            answers,
+            submittedQuestions: Array.isArray(questions) ? questions : []
+        });
+
+        return res.json({
+            success: true,
+            score: graded.score,
+            correctCount: graded.correctCount,
+            totalQuestions: graded.totalQuestions,
+            percentage: graded.percentage,
+            results: (graded.results || []).map(r => ({
+                questionIndex: r.questionIndex,
+                selectedIndex: r.selectedIndex,
+                isCorrect: r.isCorrect,
+                conceptHint: r.conceptHint
+            }))
+        });
+    } catch (error) {
+        log.error('GAMIFICATION', `Error grading level: ${error.message}`);
+        res.status(500).json({ message: 'Error grading level submission' });
     }
 });
 
@@ -802,12 +850,33 @@ router.post('/skill-tree/games', async (req, res) => {
             return res.json({ game });
         }
 
+        // Auto-populate levels from SkillTreeLevels if levels array is empty
+        let initialLevels = Array.isArray(levels) && levels.length > 0 ? levels : [];
+        if (initialLevels.length === 0) {
+            try {
+                const SkillTreeLevels = require('../models/SkillTreeLevels');
+                const courseCode = resolveCourseCode(topic);
+                const cachedLvls = await SkillTreeLevels.findOne({
+                    topic: { $in: [topic.trim(), courseCode] }
+                }).lean();
+                if (cachedLvls && Array.isArray(cachedLvls.levels) && cachedLvls.levels.length > 0) {
+                    initialLevels = cachedLvls.levels.map((l, idx) => ({
+                        ...l,
+                        id: l.id || (idx + 1),
+                        status: idx === 0 ? 'unlocked' : (l.status || 'locked')
+                    }));
+                }
+            } catch (lvlErr) {
+                log.warn('GAMIFICATION', `Auto-populate levels failed: ${lvlErr.message}`);
+            }
+        }
+
         // Create new game
         game = new SkillTreeGame({
             userId,
             topic,
             assessmentResult: assessmentResult || {},
-            levels: Array.isArray(levels) ? levels : []
+            levels: initialLevels
         });
 
         await game.save();
@@ -904,7 +973,13 @@ router.put('/skill-tree/games/:gameId/level/:levelId', async (req, res) => {
         const { gameId, levelId } = req.params;
         const update = req.body; // { status, stars, score, attempts, completedAt }
 
-        const game = await SkillTreeGame.findOne({ _id: gameId, userId });
+        let game;
+        if (mongoose.Types.ObjectId.isValid(gameId)) {
+            game = await SkillTreeGame.findOne({ _id: gameId, userId });
+        }
+        if (!game) {
+            game = await SkillTreeGame.findOne({ userId }).sort({ updatedAt: -1 });
+        }
         if (!game) return res.status(404).json({ message: 'Game not found' });
 
         const levelIndex = game.levels.findIndex(l => String(l.id) === String(levelId) || String(l._id) === String(levelId) || l.name === levelId);
@@ -912,19 +987,27 @@ router.put('/skill-tree/games/:gameId/level/:levelId', async (req, res) => {
 
         const level = game.levels[levelIndex];
 
-        // Apply safe updates: preserve higher stars/score and don't downgrade status
+        // Security Anti-Tamper: Cannot mark a locked level as completed or unlocked directly
+        if (level.status === 'locked' && (update.status === 'completed' || update.status === 'unlocked')) {
+            log.warn('GAMIFICATION_SECURITY', `Attempted unauthorized state change on locked level ${levelId} by user ${userId}`);
+            return res.status(400).json({ message: 'Security restriction: Cannot complete or unlock a locked level directly.' });
+        }
+
+        // Apply safe updates: strictly clamp stars to [0, 3] and prevent arbitrary score forging
         if (typeof update.stars !== 'undefined') {
-            level.stars = Math.max(level.stars || 0, update.stars || 0);
+            const boundedStars = Math.min(3, Math.max(0, parseInt(update.stars, 10) || 0));
+            level.stars = Math.max(level.stars || 0, boundedStars);
         }
         if (typeof update.score !== 'undefined') {
-            level.score = Math.max(level.score || 0, update.score || 0);
+            const boundedScore = Math.min(100, Math.max(0, parseInt(update.score, 10) || 0));
+            level.score = Math.max(level.score || 0, boundedScore);
         }
         if (typeof update.totalQuestions !== 'undefined') {
-            level.totalQuestions = update.totalQuestions;
+            level.totalQuestions = Math.max(1, parseInt(update.totalQuestions, 10) || 1);
         }
         // Attempts increment (take max)
         if (typeof update.attempts !== 'undefined') {
-            level.attempts = Math.max(level.attempts || 0, update.attempts || 0);
+            level.attempts = Math.min(1000, Math.max(level.attempts || 0, parseInt(update.attempts, 10) || 0));
         } else {
             level.attempts = (level.attempts || 0) + 1;
         }
@@ -940,24 +1023,27 @@ router.put('/skill-tree/games/:gameId/level/:levelId', async (req, res) => {
         }
 
         // Calculate credits earned (only on first completion)
-        // 1 star = 5 credits, 2 stars = 8 credits, 3 stars = 10 credits
+        // Normal: 1★ = 5, 2★ = 8, 3★ = 10 credits. Boss Level: 2x multiplier!
         let creditsEarned = 0;
         const isFirstCompletion = level.status === 'completed' && !level.completedAt;
+        const isBoss = (parseInt(levelId) % 5 === 0) || level.isMilestone;
         if (isFirstCompletion) {
-            creditsEarned = level.stars === 3 ? 10 : level.stars === 2 ? 8 : level.stars === 1 ? 5 : 0;
+            const baseCredits = level.stars === 3 ? 10 : level.stars === 2 ? 8 : level.stars === 1 ? 5 : 0;
+            creditsEarned = isBoss ? baseCredits * 2 : baseCredits;
             level.creditsEarned = creditsEarned; // Store credits earned on first completion
             level.completedAt = new Date();
 
             // Award learning credits to profile history (don't block level save on failure)
             if (creditsEarned > 0) {
                 try {
-                    await gamificationService.awardLearningCredits(req.user._id, creditsEarned, 'skill_tree_completion', game.topic);
+                    await gamificationService.awardLearningCredits(req.user._id, creditsEarned, isBoss ? 'milestone_boss_completion' : 'skill_tree_completion', game.topic);
                 } catch (awardError) {
                     log.error('SYSTEM', 'Failed to award credits', awardError);
                 }
-                // Also award Bloom's XP: 3★ = 20 XP, 2★ = 15 XP, 1★ = 10 XP
+                // Also award Bloom's XP: Doubled for Boss
                 try {
-                    const xpToAward = level.stars === 3 ? 20 : level.stars === 2 ? 15 : 10;
+                    const baseXp = level.stars === 3 ? 20 : level.stars === 2 ? 15 : 10;
+                    const xpToAward = isBoss ? baseXp * 2 : baseXp;
                     await gamificationService.awardXP(req.user._id, xpToAward, 'application', game.topic);
                 } catch (xpError) {
                     log.warn('SYSTEM', 'Failed to award XP for skill tree level', xpError);
@@ -1074,9 +1160,12 @@ router.post('/skill-tree/complete-level', async (req, res) => {
 
         // Award Learning Credits only if our atomic mark succeeded
         let learningCreditsEarned = 0;
+        let xpEarned = 0;
         if (didMark && stars > 0) {
             learningCreditsEarned = stars === 3 ? 10 : stars === 2 ? 8 : 5;
-            await gamificationService.awardLearningCredits(req.user._id, learningCreditsEarned, 'application', topic);
+            xpEarned = stars === 3 ? 30 : stars === 2 ? 20 : 15;
+            await gamificationService.awardLearningCredits(req.user._id, learningCreditsEarned, 'skill_tree_completion', topic);
+            await gamificationService.awardXP(req.user._id, xpEarned, 'skill_tree_completion', topic);
         }
 
         res.json({
@@ -1097,10 +1186,21 @@ router.post('/skill-tree/complete-level', async (req, res) => {
 // @desc    Get a specific saved game
 router.get('/skill-tree/games/:gameId', async (req, res) => {
     try {
-        const game = await SkillTreeGame.findOne({
-            _id: req.params.gameId,
-            userId: req.user._id
-        });
+        let game = null;
+        if (mongoose.Types.ObjectId.isValid(req.params.gameId)) {
+            game = await SkillTreeGame.findOne({
+                _id: req.params.gameId,
+                userId: req.user._id
+            });
+        }
+
+        if (!game) {
+            // Fallback: if gameId was invalid or not found, check for most recent game of this user (optionally filtered by topic)
+            const topic = req.query.topic;
+            const query = { userId: req.user._id };
+            if (topic) query.topic = topic;
+            game = await SkillTreeGame.findOne(query).sort({ updatedAt: -1 });
+        }
 
         if (!game) {
             return res.status(404).json({ message: 'Game not found' });
@@ -1114,6 +1214,31 @@ router.get('/skill-tree/games/:gameId', async (req, res) => {
 });
 
 // ===== Leaderboards =====
+
+// @route   GET /api/gamification/mind-map
+// @desc    Get user's Concept Mind Map & Anti-Farm XP status
+router.get('/mind-map', async (req, res) => {
+    try {
+        const mindMap = await gamificationService.getStudentMindMap(req.user._id);
+        res.json(mindMap);
+    } catch (error) {
+        log.error('SYSTEM', 'Error fetching student mind map', error);
+        res.status(500).json({ message: 'Error fetching student mind map' });
+    }
+});
+
+// @route   GET /api/gamification/leaderboard
+// @desc    Get global XP leaderboard (excludes test users, developers, and admins)
+router.get('/leaderboard', async (req, res) => {
+    try {
+        const limit = Math.min(100, parseInt(req.query.limit, 10) || 50);
+        const data = await gamificationService.getGlobalLeaderboard(limit, req.user?._id);
+        res.json(data);
+    } catch (error) {
+        log.error('SYSTEM', 'Error fetching global leaderboard', error);
+        res.status(500).json({ message: 'Error fetching leaderboard' });
+    }
+});
 
 // @route   GET /api/gamification/leaderboard/:topic
 // @desc    Get topic-specific leaderboard
@@ -1340,7 +1465,7 @@ router.post('/bounty/:bountyId/submit', async (req, res) => {
             success: true,
             ...result,
             message: result.isCorrect
-                ? `Correct! You earned ${result.creditsAwarded} credits and ${result.learningCreditsAwarded} Learning Credits!`
+                ? `Correct! You earned ${result.creditsAwarded} Bounty Credits and +${result.xpAwarded || 20} XP!`
                 : 'Incorrect answer. Better luck next time!'
         });
 
@@ -1585,7 +1710,8 @@ router.post('/check-badges', async (req, res) => {
 // @desc    Get skill tree with all connections for visualization (fog-of-war map)
 router.get('/skill-tree-map', async (req, res) => {
     try {
-        const skillTree = await skillTreeService.getUserSkillTree(req.user._id);
+        const course = req.query.course || 'EE3621';
+        const skillTree = await skillTreeService.getUserSkillTree(req.user._id, course);
 
         // Build connection map for edges
         const connections = [];

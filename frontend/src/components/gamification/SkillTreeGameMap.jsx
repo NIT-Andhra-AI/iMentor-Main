@@ -3,15 +3,18 @@ import Animate from '../core/Animate.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
     Lock, Star, CheckCircle2, Play, Trophy, Zap,
-    ArrowLeft, ArrowRight, Target, Crown, Sparkles, Flame, Gift, Check, X, Loader2
+    ArrowLeft, ArrowRight, Target, Crown, Sparkles, Flame, Gift, Check, X, Loader2,
+    Layers, Square, Flag, BookOpen, GitBranch, MessageSquare
 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import MathRenderer from '../common/MathRenderer.jsx';
 
 const SkillTreeGameMap = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const scrollRef = useRef(null);
+    const questionCardRefs = useRef({});
 
     const stateData = location.state || {};
 
@@ -56,7 +59,25 @@ const SkillTreeGameMap = () => {
 
     const recoveredState = getRecoveredState();
     const { topic, assessmentResult, answers, savedLevels } = recoveredState;
-    const initialGameId = recoveredState.gameId || null;
+    const rawInitialId = recoveredState.gameId || (recoveredState.game && recoveredState.game._id) || null;
+    const parseGameId = (val) => {
+        if (!val) return null;
+        if (typeof val === 'string') {
+            const s = val.trim();
+            if (s === '[object Object]' || s === 'null' || s === 'undefined' || !s) return null;
+            return s;
+        }
+        if (typeof val === 'object') {
+            if (val._id) return parseGameId(val._id);
+            if (val.id) return parseGameId(val.id);
+            if (val[0] !== undefined) {
+                const joined = Object.values(val).join('');
+                if (joined.length === 24) return joined;
+            }
+        }
+        return null;
+    };
+    const initialGameId = parseGameId(rawInitialId);
 
     const [levels, setLevels] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -65,6 +86,11 @@ const SkillTreeGameMap = () => {
     const [playingLevel, setPlayingLevel] = useState(null);
     const [levelQuestions, setLevelQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [quizViewMode, setQuizViewMode] = useState('section'); // 'section' | 'single'
+    const [levelAnswers, setLevelAnswers] = useState([]);
+    const [gradedResults, setGradedResults] = useState([]);
+    const [sectionSubmitted, setSectionSubmitted] = useState(false);
+    const [flaggedQuestions, setFlaggedQuestions] = useState({});
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [score, setScore] = useState(0);
     const [finalScore, setFinalScore] = useState(0);
@@ -79,7 +105,7 @@ const SkillTreeGameMap = () => {
     // Data fetching
     useEffect(() => {
         if (topic) {
-            if (initialGameId) {
+            if (initialGameId && initialGameId !== '[object Object]') {
                 refetchGameFromDB(initialGameId);
             } else {
                 generateLevels();
@@ -92,26 +118,34 @@ const SkillTreeGameMap = () => {
     // Refetch game from DB to get latest progress
     const refetchGameFromDB = async (gId) => {
         try {
+            const cleanGId = (typeof gId === 'object' && gId !== null)
+                ? (gId._id ? String(gId._id) : (gId.toString ? gId.toString() : ''))
+                : String(gId || '');
+
+            if (!cleanGId || cleanGId === '[object Object]') {
+                await generateLevels();
+                return;
+            }
+
             const token = localStorage.getItem('authToken');
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/games/${gId}`,
+                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/games/${cleanGId}?topic=${encodeURIComponent(topic || '')}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             const game = response.data.game;
             if (game && game.levels?.length > 0) {
                 setLevels(game.levels);
-                setCurrentGameId(game._id);
+                setCurrentGameId(String(game._id));
                 setLoading(false);
             } else {
                 // No levels in DB — generate them
-                if (game?._id) setCurrentGameId(game._id);
+                if (game?._id) setCurrentGameId(String(game._id));
                 await generateLevels();
             }
         } catch (error) {
             console.error('[SkillTreeGameMap] Error refetching game:', error);
-            const msg = error.response?.data?.message || 'Failed to load game. Please try again.';
-            setLevelLoadError(msg);
-            setLoading(false);
+            // If refetch fails, fall back to generating/loading levels directly instead of getting stuck!
+            await generateLevels();
         }
     };
 
@@ -239,6 +273,10 @@ const SkillTreeGameMap = () => {
         setCurrentQuestionIndex(0);
         setScore(0);
         setSelectedAnswer(null);
+        setLevelAnswers([]);
+        setGradedResults([]);
+        setSectionSubmitted(false);
+        setFlaggedQuestions({});
         setShowResults(false);
         setLevelLoadError('');
         
@@ -257,21 +295,97 @@ const SkillTreeGameMap = () => {
         }
     };
 
-    const handleAnswerSelect = (index) => {
+    const handleWorksheetAnswerSelect = (qIdx, optIdx) => {
+        if (sectionSubmitted) return;
+        setLevelAnswers(prev => {
+            const next = [...prev];
+            next[qIdx] = optIdx;
+            return next;
+        });
+    };
+
+    const toggleFlagQuestion = (qIdx) => {
+        setFlaggedQuestions(prev => ({ ...prev, [qIdx]: !prev[qIdx] }));
+    };
+
+    const jumpToLevelQuestion = (qIdx) => {
+        setCurrentQuestionIndex(qIdx);
+        if (quizViewMode === 'section' && questionCardRefs.current[qIdx]) {
+            questionCardRefs.current[qIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
+    const handleSubmitWorksheet = async () => {
+        const answeredCount = levelAnswers.filter(a => a !== undefined && a !== null).length;
+        if (answeredCount < levelQuestions.length) {
+            toast.error(`Please answer all ${levelQuestions.length} questions before checking solutions!`);
+            return;
+        }
+        try {
+            const token = localStorage.getItem('authToken');
+            const res = await axios.post(
+                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/grade-level`,
+                {
+                    topic,
+                    levelId: playingLevel?.id,
+                    levelName: playingLevel?.name,
+                    answers: levelAnswers,
+                    questions: levelQuestions
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            const results = res.data?.results || [];
+            const totalCorrect = typeof res.data?.score === 'number'
+                ? res.data.score
+                : results.filter(r => r.isCorrect).length;
+            setGradedResults(results);
+            setScore(totalCorrect);
+            setSectionSubmitted(true);
+            toast.success(`Graded ${levelQuestions.length} questions! Score: ${totalCorrect}/${levelQuestions.length}`);
+        } catch (err) {
+            console.error('[SkillTreeGameMap] Error grading worksheet:', err);
+            toast.error('Failed to grade worksheet. Please try again.');
+        }
+    };
+
+    const handleAnswerSelect = async (index) => {
         if (selectedAnswer !== null || answerSubmitted) return;
         setSelectedAnswer(index);
         setAnswerSubmitted(true);
-        
-        const currentQuestion = levelQuestions?.[currentQuestionIndex];
-        const isCorrect = index === currentQuestion?.correctIndex;
-        const newScore = isCorrect ? score + 1 : score;
-        const earnedXp = isCorrect ? 10 : 2;
-        
-        if (isCorrect) {
-            setScore(newScore);
+
+        const nextAnswers = [...levelAnswers];
+        nextAnswers[currentQuestionIndex] = index;
+        setLevelAnswers(nextAnswers);
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const res = await axios.post(
+                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/grade-level`,
+                {
+                    topic,
+                    levelId: playingLevel?.id,
+                    levelName: playingLevel?.name,
+                    answers: nextAnswers,
+                    questions: levelQuestions
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            const results = res.data?.results || [];
+            const qRes = results[currentQuestionIndex] || { isCorrect: false };
+            setGradedResults(results);
+            const isCorrect = !!qRes.isCorrect;
+            if (typeof res.data?.score === 'number') {
+                setScore(res.data.score);
+            } else if (isCorrect) {
+                setScore(prev => prev + 1);
+            }
+            setQuestionXp(isCorrect ? 10 : 2);
+            setShowExplanation(true);
+        } catch (err) {
+            console.error('[SkillTreeGameMap] Error grading card answer:', err);
+            setQuestionXp(2);
+            setShowExplanation(true);
         }
-        setQuestionXp(earnedXp);
-        setShowExplanation(true);
     };
 
     const handleNextQuestion = () => {
@@ -316,8 +430,9 @@ const SkillTreeGameMap = () => {
             try {
                 const token = localStorage.getItem('authToken');
                 console.log('[SkillTree] Saving level completion:', { gameId: currentGameId, levelId: playingLevel.id, stars: earnedStars, score: completedScore, totalQuestions });
+                const safeGameId = parseGameId(currentGameId) || 'latest';
                 const response = await axios.put(
-                    `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/games/${currentGameId}/level/${playingLevel.id}`,
+                    `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree/games/${safeGameId}/level/${playingLevel.id}`,
                     {
                         stars: earnedStars,
                         score: completedScore,
@@ -368,6 +483,10 @@ const SkillTreeGameMap = () => {
     const closeLevel = () => {
         setPlayingLevel(null);
         setLevelQuestions([]);
+        setLevelAnswers([]);
+        setGradedResults([]);
+        setSectionSubmitted(false);
+        setFlaggedQuestions({});
         setShowResults(false);
         setScore(0);
         setFinalScore(0);
@@ -384,6 +503,9 @@ const SkillTreeGameMap = () => {
 
         if (nextLevel && nextLevel.status === 'unlocked') {
             setLevelQuestions([]);
+            setLevelAnswers([]);
+            setSectionSubmitted(false);
+            setFlaggedQuestions({});
             setShowResults(false);
             setScore(0);
             setFinalScore(0);
@@ -428,7 +550,8 @@ const SkillTreeGameMap = () => {
                 levelId: level.id,
                 levelName: level.name,
                 difficulty: level.difficulty,
-                gameId: currentGameId // Pass gameId to retrieve saved questions or save new ones
+                gameId: currentGameId,
+                requestedCount: 5
             };
 
             const response = await axios.post(
@@ -443,7 +566,11 @@ const SkillTreeGameMap = () => {
                 return msg;
             }
 
-            setLevelQuestions(response.data.questions || []);
+            const fetchedQs = response.data.questions || [];
+            setLevelQuestions(fetchedQs);
+            setLevelAnswers(new Array(fetchedQs.length).fill(null));
+            setGradedResults([]);
+            setSectionSubmitted(false);
             return null;
         } catch (error) {
             console.error('[SkillTreeGameMap] Error fetching questions:', error);
@@ -500,8 +627,7 @@ const SkillTreeGameMap = () => {
     const renderStars = (count, size = 'sm') => {
         const sizeClass = size === 'lg' ? 'w-6 h-6' : 'w-4 h-4';
         return (
-            <div className="f
-            lex gap-0.5">
+            <div className="flex gap-0.5">
                 {[1, 2, 3].map(star => (
                     <Star
                         key={star}
@@ -631,38 +757,59 @@ const SkillTreeGameMap = () => {
                             )}
                         </div>
 
-                        <h2 className="text-3xl font-bold text-white mb-2">
-                            {earnedStars >= 2 ? 'Excellent!' : earnedStars === 1 ? 'Good Job!' : isNearMiss ? 'So Close!' : 'Keep Trying!'}
-                        </h2>
+                        {(() => {
+                            const isCurrentBoss = (playingLevel.id % 5 === 0) || playingLevel.isMilestone;
+                            return (
+                                <>
+                                    <h2 className="text-3xl font-bold text-white mb-2">
+                                        {earnedStars >= 2
+                                            ? (isCurrentBoss ? '👑 Boss Defeated!' : 'Excellent!')
+                                            : earnedStars === 1
+                                                ? (isCurrentBoss ? '👑 Boss Overcome!' : 'Good Job!')
+                                                : isNearMiss ? 'So Close!' : 'Keep Trying!'}
+                                    </h2>
 
-                        {isNearMiss && (
-                            <p className="text-amber-300 text-sm mb-2 font-medium">
-                                Just {Math.ceil(levelQuestions.length * 0.5) - finalScore} more correct answer{Math.ceil(levelQuestions.length * 0.5) - finalScore !== 1 ? 's' : ''} to pass — you can do it!
-                            </p>
-                        )}
+                                    {isCurrentBoss && earnedStars > 0 && (
+                                        <div className="mb-3 px-3 py-1 bg-amber-500/20 border border-amber-500/40 rounded-full text-amber-300 text-xs font-bold inline-flex items-center gap-1">
+                                            <Crown className="w-3.5 h-3.5 text-amber-400" /> Milestone Boss Conquered: 2x Rewards
+                                        </div>
+                                    )}
 
-                        <p className="text-slate-400 mb-4">{playingLevel.name} Complete</p>
-                        
-                        <div className="flex justify-center mb-6" data-testid="stars-earned" data-stars={earnedStars}>
-                            {renderStars(earnedStars, 'lg')}
-                        </div>
+                                    {isNearMiss && (
+                                        <p className="text-amber-300 text-sm mb-2 font-medium">
+                                            Just {Math.ceil(levelQuestions.length * 0.5) - finalScore} more correct answer{Math.ceil(levelQuestions.length * 0.5) - finalScore !== 1 ? 's' : ''} to pass — you can do it!
+                                        </p>
+                                    )}
 
-                        <div className="bg-slate-900/50 rounded-xl p-4 mb-6">
-                            <div className="flex justify-between text-sm text-slate-400 mb-2">
-                                <span>Score</span>
-                                <span className="text-white font-bold">{finalScore}/{levelQuestions.length}</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-slate-400 mb-2">
-                                <span>Accuracy</span>
-                                <span className="text-white font-bold">{Math.round(percentage)}%</span>
-                            </div>
-                            {earnedStars > 0 && (
-                                <div className="flex justify-between text-sm text-slate-400">
-                                    <span>Credits Earned</span>
-                                    <span className="text-blue-300 font-bold">+{earnedStars === 3 ? 10 : earnedStars === 2 ? 8 : 5} Credits</span>
-                                </div>
-                            )}
-                        </div>
+                                    <p className="text-slate-400 mb-4">{playingLevel.name} Complete</p>
+                                    
+                                    <div className="flex justify-center mb-6" data-testid="stars-earned" data-stars={earnedStars}>
+                                        {renderStars(earnedStars, 'lg')}
+                                    </div>
+
+                                    <div className="bg-slate-900/50 rounded-xl p-4 mb-6">
+                                        <div className="flex justify-between text-sm text-slate-400 mb-2">
+                                            <span>Score</span>
+                                            <span className="text-white font-bold">{finalScore}/{levelQuestions.length}</span>
+                                        </div>
+                                        <div className="flex justify-between text-sm text-slate-400 mb-2">
+                                            <span>Accuracy</span>
+                                            <span className="text-white font-bold">{Math.round(percentage)}%</span>
+                                        </div>
+                                        {earnedStars > 0 && (
+                                            <div className="flex justify-between text-sm text-slate-400">
+                                                <span>Credits Earned</span>
+                                                <span className="text-amber-300 font-bold">
+                                                    +{isCurrentBoss
+                                                        ? (earnedStars === 3 ? 20 : earnedStars === 2 ? 16 : 10)
+                                                        : (earnedStars === 3 ? 10 : earnedStars === 2 ? 8 : 5)} Credits {isCurrentBoss ? '(2x Boss Bonus)' : ''}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            );
+                        })()}
 
                         <div className="flex gap-3">
                             <button
@@ -686,6 +833,10 @@ const SkillTreeGameMap = () => {
                                         setAnswerSubmitted(false);
                                         setQuestionXp(0);
                                         setLevelLoadError('');
+                                        setLevelAnswers([]);
+                                        setGradedResults({});
+                                        setSectionSubmitted(false);
+                                        setFlaggedQuestions({});
                                         // Re-fetch fresh questions so retry never repeats the same set
                                         const errorMsg = await fetchLevelQuestions(playingLevel);
                                         if (errorMsg) {
@@ -721,164 +872,406 @@ const SkillTreeGameMap = () => {
             );
         }
 
+        const answeredCount = levelAnswers.filter(a => a !== undefined && a !== null).length;
+
         return (
-            <div className="min-h-screen max-h-screen overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-black p-6">
-                <div className="max-w-2xl mx-auto h-full flex flex-col">
+            <div className="min-h-screen max-h-screen overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-black p-4 md:p-6">
+                <div className="max-w-3xl mx-auto h-full flex flex-col">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-4 flex-shrink-0">
-                        <button
-                            onClick={closeLevel}
-                            className="p-2 rounded-lg bg-slate-800/50 text-slate-400 hover:text-white transition-colors"
-                        >
-                            <ArrowLeft className="w-6 h-6" />
-                        </button>
-                        <div className="text-center">
-                            <h3 className="text-lg font-semibold text-white">{playingLevel.name}</h3>
-                            <p className="text-sm text-slate-400">{topic}</p>
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-3 flex-shrink-0">
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={closeLevel}
+                                className="p-2 rounded-lg bg-slate-800/50 text-slate-400 hover:text-white transition-colors"
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                            </button>
+                            <div>
+                                <h3 className="text-base md:text-lg font-bold text-white flex items-center gap-1.5">
+                                    {((playingLevel.id % 5 === 0) || playingLevel.isMilestone) && <Crown className="w-5 h-5 text-amber-400 inline fill-amber-400" />}
+                                    {playingLevel.name}
+                                </h3>
+                                <p className="text-xs text-slate-400">{topic} • {answeredCount}/{levelQuestions.length} Answered</p>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 bg-slate-800/50 rounded-lg px-3 py-1">
-                            <Zap className="w-4 h-4 text-blue-300" />
-                            <span className="text-white font-bold">{score}</span>
+
+                        <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700">
+                                <button
+                                    type="button"
+                                    onClick={() => setQuizViewMode('section')}
+                                    className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                                        quizViewMode === 'section'
+                                            ? 'bg-blue-600 text-white shadow'
+                                            : 'text-slate-400 hover:text-white'
+                                    }`}
+                                >
+                                    <Layers className="w-3.5 h-3.5" /> Worksheet
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setQuizViewMode('single')}
+                                    className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                                        quizViewMode === 'single'
+                                            ? 'bg-blue-600 text-white shadow'
+                                            : 'text-slate-400 hover:text-white'
+                                    }`}
+                                >
+                                    <Square className="w-3.5 h-3.5" /> Single Card
+                                </button>
+                            </div>
+
+                            <div className="flex items-center gap-1.5 bg-slate-800/60 rounded-lg px-3 py-1.5 border border-slate-700">
+                                <Zap className="w-4 h-4 text-blue-300" />
+                                <span className="text-white font-bold text-sm">{score}</span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Progress */}
-                    <div className="mb-4 flex-shrink-0">
-                        <div className="flex justify-between text-sm text-slate-400 mb-2">
-                            <span>Question {currentQuestionIndex + 1} of {levelQuestions.length}</span>
+                    {/* Milestone Boss Banner */}
+                    {((playingLevel.id % 5 === 0) || playingLevel.isMilestone) && (
+                        <div className="mb-3 py-2 px-4 bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 border border-amber-500/40 rounded-xl flex items-center justify-between text-xs text-amber-300 font-bold shadow-lg shadow-amber-950/20 flex-shrink-0">
+                            <span className="flex items-center gap-1.5 uppercase tracking-wider">
+                                <Crown className="w-4 h-4 text-amber-400 fill-amber-400" /> Milestone Boss Battle • 2x Rewards
+                            </span>
+                            <span className="text-amber-200/90 font-mono flex items-center gap-1">
+                                Boss HP:
+                                <span className="text-amber-400 font-bold ml-1">
+                                    {levelQuestions.length - score}/{levelQuestions.length}
+                                </span>
+                            </span>
                         </div>
-                        <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                    )}
+
+                    {/* Sticky Question Navigator Palette */}
+                    <div className="mb-3 p-3 rounded-xl bg-slate-900/90 border border-slate-700/70 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-xs font-semibold text-slate-400 mr-1">Questions:</span>
+                            {levelQuestions.map((qItem, idx) => {
+                                const ans = levelAnswers[idx];
+                                const isAns = ans !== undefined && ans !== null;
+                                const isFlg = !!flaggedQuestions[idx];
+                                const isCurr = quizViewMode === 'single' && currentQuestionIndex === idx;
+                                const isRight = sectionSubmitted && !!gradedResults[idx]?.isCorrect;
+                                const isWrong = sectionSubmitted && isAns && !gradedResults[idx]?.isCorrect;
+                                return (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        onClick={() => jumpToLevelQuestion(idx)}
+                                        className={`w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center border transition-all ${
+                                            sectionSubmitted
+                                                ? isRight
+                                                    ? 'border-emerald-500 bg-emerald-500/20 text-emerald-300'
+                                                    : isWrong
+                                                        ? 'border-red-500 bg-red-500/20 text-red-300'
+                                                        : 'border-slate-700 bg-slate-800 text-slate-400'
+                                                : isCurr
+                                                    ? 'border-blue-400 bg-blue-600 text-white ring-2 ring-blue-400/30'
+                                                    : isFlg
+                                                        ? 'border-amber-500 bg-amber-500/20 text-amber-300'
+                                                        : isAns
+                                                            ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300'
+                                                            : 'border-slate-700 bg-slate-800 text-slate-400 hover:border-slate-500'
+                                        }`}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <div className="w-32 h-2 bg-slate-800 rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-slate-500 to-slate-400"
-                               
-                                style={{ width: `${((currentQuestionIndex + 1) / levelQuestions.length) * 100}%` }}
+                                className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-300"
+                                style={{ width: `${(answeredCount / levelQuestions.length) * 100}%` }}
                             />
                         </div>
                     </div>
 
-                    {/* Question + Explanation - Scrollable */}
-                    <div className="flex-1 overflow-y-auto pr-2 game-scrollbar">
-                        <div
-                            key={currentQuestionIndex}
-                            className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/50 mb-4"
-                        >
-                            <h2 className="text-xl font-semibold text-white mb-6 leading-relaxed">
-                                {currentQuestion?.question || ''}
-                            </h2>
-                            <div className="space-y-3">
-                                {(currentQuestion?.options || []).map((option, idx) => {
-                                    const isSelected = selectedAnswer === idx;
-                                    const isCorrect = idx === currentQuestion.correctIndex;
-                                    const showResult = selectedAnswer !== null;
+                    {/* Question(s) + Explanation - Scrollable */}
+                    <div className="flex-1 overflow-y-auto pr-2 game-scrollbar space-y-5 pb-6">
+                        {quizViewMode === 'section' ? (
+                            <>
+                                {levelQuestions.map((qItem, qIdx) => {
+                                    const userChoice = levelAnswers[qIdx];
+                                    const isAnswered = userChoice !== undefined && userChoice !== null;
+                                    const isCorrect = !!gradedResults[qIdx]?.isCorrect;
+                                    const conceptHint = gradedResults[qIdx]?.conceptHint;
 
                                     return (
-                                        <button
-                                            key={idx}
-                                            onClick={() => handleAnswerSelect(idx)}
-                                            disabled={selectedAnswer !== null}
-                                            className={`w-full p-4 rounded-xl text-left transition-all ${
-                                                showResult
+                                        <div
+                                            key={qIdx}
+                                            ref={el => (questionCardRefs.current[qIdx] = el)}
+                                            className={`bg-slate-800/70 backdrop-blur-sm rounded-2xl p-6 border transition-all ${
+                                                sectionSubmitted
                                                     ? isCorrect
-                                                        ? 'bg-emerald-500/10 border-2 border-emerald-500 text-emerald-300'
-                                                        : isSelected
-                                                            ? 'bg-red-500/10 border-2 border-red-500 text-red-300'
-                                                            : 'bg-slate-700/50 border border-slate-600 text-slate-500'
-                                                    : 'bg-slate-700/50 border border-slate-600 text-white hover:bg-slate-700 hover:border-slate-500'
+                                                        ? 'border-emerald-500/60'
+                                                        : 'border-red-500/60'
+                                                    : isAnswered
+                                                        ? 'border-blue-500/50'
+                                                        : 'border-slate-600/50'
                                             }`}
                                         >
-                                            <div className="flex items-center gap-3">
-                                                <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                                                    showResult && isCorrect ? 'bg-emerald-500 text-white' :
-                                                    showResult && isSelected ? 'bg-red-500 text-white' :
-                                                    'bg-slate-600 text-slate-300'
-                                                }`}>
-                                                    {String.fromCharCode(65 + idx)}
-                                                </span>
-                                                <span className="flex-1">{option}</span>
-                                                {showResult && isCorrect && <Check className="w-5 h-5 text-emerald-400" />}
-                                                {showResult && isSelected && !isCorrect && <span className="text-red-400 text-sm font-medium">✗</span>}
+                                            <div className="flex items-start justify-between gap-3 mb-4">
+                                                <div className="flex items-start gap-3">
+                                                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 mt-0.5 ${
+                                                        sectionSubmitted
+                                                            ? isCorrect
+                                                                ? 'bg-emerald-500 text-white'
+                                                                : 'bg-red-500 text-white'
+                                                            : isAnswered
+                                                                ? 'bg-blue-600 text-white'
+                                                                : 'bg-slate-700 text-slate-300'
+                                                    }`}>
+                                                        Q{qIdx + 1}
+                                                    </span>
+                                                    <div>
+                                                        <h2 className="text-base md:text-lg font-semibold text-white leading-relaxed">
+                                                            <MathRenderer content={qItem?.question || ''} />
+                                                        </h2>
+                                                        <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                                                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                                                                {qItem?.courseOutcome || 'CO1'}
+                                                            </span>
+                                                            <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                                                                {qItem?.bloomCode || `Bloom's: ${(qItem?.bloomLevel || 'apply').toUpperCase()}`}
+                                                            </span>
+                                                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                                                                (qItem?.difficulty || 'medium') === 'easy'
+                                                                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                                                    : (qItem?.difficulty || 'medium') === 'hard'
+                                                                        ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                                                                        : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                                                            }`}>
+                                                                {qItem?.difficulty || 'medium'}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => toggleFlagQuestion(qIdx)}
+                                                    className={`p-1.5 rounded-lg transition-colors ${
+                                                        flaggedQuestions[qIdx] ? 'text-amber-400 bg-amber-500/10' : 'text-slate-500 hover:text-slate-300'
+                                                    }`}
+                                                    title="Flag for review"
+                                                >
+                                                    <Flag className="w-4 h-4" />
+                                                </button>
                                             </div>
-                                        </button>
-                                    );
-                                })}
-                            </div>
 
-                            {/* ── Explanation Screen ── */}
-                            {showExplanation && (
-                                <div className="mt-6 pt-6 border-t border-slate-600/40 space-y-4">
-                                    {/* Correct/Incorrect */}
-                                    <div className={`flex items-center gap-3 p-3 rounded-xl ${
-                                        selectedAnswer === currentQuestion.correctIndex
-                                            ? 'bg-emerald-500/10 border border-emerald-500/30'
-                                            : 'bg-red-500/10 border border-red-500/30'
-                                    }`}>
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                                            selectedAnswer === currentQuestion.correctIndex
-                                                ? 'bg-emerald-500/20 text-emerald-400'
-                                                : 'bg-red-500/20 text-red-400'
-                                        }`}>
-                                            {selectedAnswer === currentQuestion.correctIndex ? (
-                                                <Check className="w-5 h-5" />
-                                            ) : (
-                                                <span className="text-lg font-bold">✗</span>
+                                            <div className="space-y-2.5">
+                                                {(qItem?.options || []).map((option, optIdx) => {
+                                                    const isSelected = userChoice === optIdx;
+
+                                                    return (
+                                                        <button
+                                                            key={optIdx}
+                                                            type="button"
+                                                            onClick={() => handleWorksheetAnswerSelect(qIdx, optIdx)}
+                                                            disabled={sectionSubmitted}
+                                                            className={`w-full p-3.5 rounded-xl text-left transition-all ${
+                                                                sectionSubmitted
+                                                                    ? isSelected && isCorrect
+                                                                        ? 'bg-emerald-500/15 border-2 border-emerald-500 text-emerald-300'
+                                                                        : isSelected && !isCorrect
+                                                                            ? 'bg-red-500/15 border-2 border-red-500 text-red-300'
+                                                                            : 'bg-slate-800/50 border border-slate-700 text-slate-500'
+                                                                    : isSelected
+                                                                        ? 'bg-blue-600/20 border-2 border-blue-500 text-white'
+                                                                        : 'bg-slate-700/50 border border-slate-600 text-white hover:bg-slate-700 hover:border-slate-500'
+                                                            }`}
+                                                        >
+                                                            <div className="flex items-center gap-3">
+                                                                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                                                                    sectionSubmitted && isSelected && isCorrect ? 'bg-emerald-500 text-white' :
+                                                                    sectionSubmitted && isSelected && !isCorrect ? 'bg-red-500 text-white' :
+                                                                    isSelected ? 'bg-blue-500 text-white' :
+                                                                    'bg-slate-600 text-slate-300'
+                                                                }`}>
+                                                                    {String.fromCharCode(65 + optIdx)}
+                                                                </span>
+                                                                <span className="flex-1 text-sm"><MathRenderer content={option} inline /></span>
+                                                                {sectionSubmitted && isSelected && isCorrect && <Check className="w-5 h-5 text-emerald-400" />}
+                                                                {sectionSubmitted && isSelected && !isCorrect && <span className="text-red-400 text-sm font-medium">✗</span>}
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            {/* Inline Feedback after Batch Submit (Never reveals the correct answer) */}
+                                            {sectionSubmitted && (
+                                                <div className="mt-4 pt-4 border-t border-slate-600/40 space-y-3">
+                                                    <div className={`flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold ${
+                                                        isCorrect
+                                                            ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+                                                            : 'bg-red-500/10 border border-red-500/30 text-red-300'
+                                                    }`}>
+                                                        <span>
+                                                            {isCorrect
+                                                                ? '✓ Correct! (+10 XP)'
+                                                                : '✗ Incorrect (+2 XP)'}
+                                                        </span>
+                                                    </div>
+                                                    {conceptHint && (
+                                                        <div className="bg-slate-900/60 rounded-xl p-3.5 text-sm text-slate-200 leading-relaxed">
+                                                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                                                                Study Guidance
+                                                            </span>
+                                                            <MathRenderer content={conceptHint} />
+                                                        </div>
+                                                    )}
+                                                </div>
                                             )}
                                         </div>
-                                        <div>
-                                            <p className={`font-semibold ${
-                                                selectedAnswer === currentQuestion.correctIndex
-                                                    ? 'text-emerald-300' : 'text-red-300'
-                                            }`}>
-                                                {selectedAnswer === currentQuestion.correctIndex ? 'Correct!' : 'Incorrect'}
-                                            </p>
-                                            <p className="text-sm text-slate-400">
-                                                {selectedAnswer === currentQuestion.correctIndex
-                                                    ? `+${questionXp} XP`
-                                                    : `Correct answer: ${String.fromCharCode(65 + (currentQuestion.correctIndex ?? 0))}`}
-                                            </p>
-                                        </div>
-                                        <div className="ml-auto text-xs text-slate-500">
-                                            +{questionXp} XP
-                                        </div>
-                                    </div>
+                                    );
+                                })}
 
-                                    {/* Detailed Explanation */}
-                                    {currentQuestion.explanation && (
-                                        <div className="bg-slate-900/50 rounded-xl p-4">
-                                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Explanation</p>
-                                            <p className="text-sm text-slate-200 leading-relaxed">{currentQuestion.explanation}</p>
-                                        </div>
+                                {/* Worksheet Action Footer */}
+                                <div className="sticky bottom-0 z-10 bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex items-center justify-between gap-4 shadow-2xl">
+                                    {!sectionSubmitted ? (
+                                        <>
+                                            <span className="text-xs text-slate-400">
+                                                {answeredCount === levelQuestions.length
+                                                    ? 'All questions answered! Ready to submit.'
+                                                    : `Answer all ${levelQuestions.length} questions (${levelQuestions.length - answeredCount} left) — you can freely change options above.`}
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={handleSubmitWorksheet}
+                                                disabled={answeredCount < levelQuestions.length}
+                                                className="px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all shadow-lg"
+                                            >
+                                                Submit Level Worksheet ({answeredCount}/{levelQuestions.length})
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="text-sm font-bold text-emerald-300">
+                                                Worksheet Score: {score}/{levelQuestions.length} ({Math.round((score / levelQuestions.length) * 100)}%)
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={() => completeLevel(score)}
+                                                className="px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white transition-all shadow-lg"
+                                            >
+                                                Continue to Level Summary & Rewards →
+                                            </button>
+                                        </>
                                     )}
-
-                                    {/* Why other options are wrong */}
-                                    <div className="bg-slate-900/50 rounded-xl p-4">
-                                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Why Other Options Are Incorrect</p>
-                                        <div className="space-y-2">
-                                            {(currentQuestion?.options || []).map((option, idx) => {
-                                                if (idx === currentQuestion.correctIndex) return null;
-                                                const isUsersChoice = selectedAnswer === idx;
-                                                return (
-                                                    <div key={idx} className={`text-sm p-2 rounded-lg ${
-                                                        isUsersChoice ? 'bg-red-500/10 border border-red-500/20' : ''
-                                                    }`}>
-                                                        <span className="text-slate-400 font-mono mr-2">{String.fromCharCode(65 + idx)}.</span>
-                                                        <span className={isUsersChoice ? 'text-red-300' : 'text-slate-400'}>{option}</span>
-                                                        {isUsersChoice && <span className="ml-2 text-red-400 text-xs">(your choice)</span>}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* Next Question Button */}
-                                    <button
-                                        onClick={handleNextQuestion}
-                                        className="w-full py-3 bg-gradient-to-r from-slate-500 to-slate-400 hover:from-slate-400 hover:to-slate-300 text-white rounded-xl font-semibold transition-all"
-                                    >
-                                        {currentQuestionIndex < levelQuestions.length - 1 ? 'Next Question →' : 'See Results'}
-                                    </button>
                                 </div>
-                            )}
-                        </div>
+                            </>
+                        ) : (
+                            /* Single Card Focus Mode */
+                            <div
+                                key={currentQuestionIndex}
+                                className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/50 mb-4"
+                            >
+                                <div className="mb-6">
+                                    <h2 className="text-xl font-semibold text-white leading-relaxed">
+                                        <MathRenderer content={currentQuestion?.question || ''} />
+                                    </h2>
+                                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                                            {currentQuestion?.courseOutcome || 'CO1'}
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                                            {currentQuestion?.bloomCode || `Bloom's: ${(currentQuestion?.bloomLevel || 'apply').toUpperCase()}`}
+                                        </span>
+                                        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${
+                                            (currentQuestion?.difficulty || 'medium') === 'easy'
+                                                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                                : (currentQuestion?.difficulty || 'medium') === 'hard'
+                                                    ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                                                    : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                                        }`}>
+                                            {currentQuestion?.difficulty || 'medium'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    {(currentQuestion?.options || []).map((option, idx) => {
+                                        const isSelected = selectedAnswer === idx;
+                                        const isSingleCorrect = !!gradedResults[currentQuestionIndex]?.isCorrect;
+                                        const showResult = selectedAnswer !== null && gradedResults[currentQuestionIndex] !== undefined;
+
+                                        return (
+                                            <button
+                                                key={idx}
+                                                onClick={() => handleAnswerSelect(idx)}
+                                                disabled={selectedAnswer !== null}
+                                                className={`w-full p-4 rounded-xl text-left transition-all ${
+                                                    showResult
+                                                        ? isSelected && isSingleCorrect
+                                                            ? 'bg-emerald-500/10 border-2 border-emerald-500 text-emerald-300'
+                                                            : isSelected && !isSingleCorrect
+                                                                ? 'bg-red-500/10 border-2 border-red-500 text-red-300'
+                                                                : 'bg-slate-700/50 border border-slate-600 text-slate-500'
+                                                        : 'bg-slate-700/50 border border-slate-600 text-white hover:bg-slate-700 hover:border-slate-500'
+                                                }`}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                                                        showResult && isSelected && isSingleCorrect ? 'bg-emerald-500 text-white' :
+                                                        showResult && isSelected && !isSingleCorrect ? 'bg-red-500 text-white' :
+                                                        'bg-slate-600 text-slate-300'
+                                                    }`}>
+                                                        {String.fromCharCode(65 + idx)}
+                                                    </span>
+                                                    <span className="flex-1"><MathRenderer content={option} inline /></span>
+                                                    {showResult && isSelected && isSingleCorrect && <Check className="w-5 h-5 text-emerald-400" />}
+                                                    {showResult && isSelected && !isSingleCorrect && <span className="text-red-400 text-sm font-medium">✗</span>}
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                {showExplanation && (
+                                    <div className="mt-6 pt-6 border-t border-slate-600/40 space-y-4">
+                                        <div className={`flex items-center gap-3 p-3 rounded-xl ${
+                                            gradedResults[currentQuestionIndex]?.isCorrect
+                                                ? 'bg-emerald-500/10 border border-emerald-500/30'
+                                                : 'bg-red-500/10 border border-red-500/30'
+                                        }`}>
+                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                                gradedResults[currentQuestionIndex]?.isCorrect
+                                                    ? 'bg-emerald-500/20 text-emerald-400'
+                                                    : 'bg-red-500/20 text-red-400'
+                                            }`}>
+                                                {gradedResults[currentQuestionIndex]?.isCorrect ? (
+                                                    <Check className="w-5 h-5" />
+                                                ) : (
+                                                    <span className="text-lg font-bold">✗</span>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <p className={`font-semibold ${
+                                                    gradedResults[currentQuestionIndex]?.isCorrect
+                                                        ? 'text-emerald-300' : 'text-red-300'
+                                                }`}>
+                                                    {gradedResults[currentQuestionIndex]?.isCorrect ? 'Correct!' : 'Incorrect'}
+                                                </p>
+                                                <p className="text-sm text-slate-400">
+                                                    {gradedResults[currentQuestionIndex]?.conceptHint || (gradedResults[currentQuestionIndex]?.isCorrect ? `+${questionXp} XP` : 'Review this subtopic and try a fresh set on retry.')}
+                                                </p>
+                                            </div>
+                                            <div className="ml-auto text-xs text-slate-500">
+                                                +{questionXp} XP
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            onClick={handleNextQuestion}
+                                            className="w-full py-3 bg-gradient-to-r from-slate-500 to-slate-400 hover:from-slate-400 hover:to-slate-300 text-white rounded-xl font-semibold transition-all"
+                                        >
+                                            {currentQuestionIndex < levelQuestions.length - 1 ? 'Next Question →' : 'See Results'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -904,7 +1297,7 @@ const SkillTreeGameMap = () => {
             {/* Header */}
             <div className="sticky top-0 z-20 bg-gradient-to-b from-slate-900 via-slate-900/95 to-transparent pb-4">
                 <div className="bg-slate-900/90 backdrop-blur-sm border-b border-slate-600/30 p-4">
-                    <div className="max-w-4xl mx-auto flex items-center justify-between">
+                    <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
                         <button
                             onClick={() => navigate('/gamification/skill-tree')}
                             className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
@@ -914,13 +1307,31 @@ const SkillTreeGameMap = () => {
                         </button>
                         <div className="text-center">
                             <h1 className="text-xl font-bold text-white capitalize">{formatTopic(topic)}</h1>
-                            <p className="text-sm text-slate-400">Skill Tree Adventure</p>
+                            <p className="text-xs text-slate-400">Skill Tree Adventure • Multi-Question Worksheet Mode</p>
                         </div>
-                        <div className="flex items-center gap-2 bg-gradient-to-r from-slate-700/50 to-slate-600/50 rounded-lg px-3 py-1.5 border border-slate-600/50">
-                            <Trophy className="w-4 h-4 text-blue-300" />
-                            <span className="text-white font-bold">
-                                {levels.filter(l => l.status === 'completed').length}/{levels.length}
-                            </span>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => navigate('/skill-tree')}
+                                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold border border-slate-700 transition-colors"
+                                title="Switch to Interactive Dependency Graph"
+                            >
+                                <GitBranch className="w-3.5 h-3.5 text-cyan-400" />
+                                Dependency Graph
+                            </button>
+                            <button
+                                onClick={() => navigate('/socratic-tutor', { state: { topic } })}
+                                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 text-xs font-semibold border border-indigo-500/30 transition-colors"
+                                title="Study in Guided Learning Mode"
+                            >
+                                <MessageSquare className="w-3.5 h-3.5 text-indigo-400" />
+                                Ask Tutor
+                            </button>
+                            <div className="flex items-center gap-2 bg-gradient-to-r from-slate-700/50 to-slate-600/50 rounded-lg px-3 py-1.5 border border-slate-600/50">
+                                <Trophy className="w-4 h-4 text-blue-300" />
+                                <span className="text-white font-bold">
+                                    {levels.filter(l => l.status === 'completed').length}/{levels.length}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -931,9 +1342,7 @@ const SkillTreeGameMap = () => {
                         <div className="flex-1 h-3 bg-slate-800/80 rounded-full overflow-hidden border border-slate-600/30">
                             <div
                                 className="h-full bg-gradient-to-r from-slate-500 via-slate-400 to-slate-300"
-                               
                                 style={{ width: `${(levels.filter(l => l.status === 'completed').length / levels.length) * 100}%` }}
-                               
                             />
                         </div>
                         <div className="flex items-center gap-1">
@@ -1202,135 +1611,151 @@ const SkillTreeGameMap = () => {
                             className="relative bg-gradient-to-b from-slate-800 to-slate-900 rounded-3xl p-6 max-w-sm w-full border border-slate-600/50 shadow-2xl shadow-slate-900/50"
                             onClick={e => e.stopPropagation()}
                         >
-                            {/* Decorative top banner */}
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                                <div className={`text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg ${
-                                    selectedLevel.difficulty === 'hard'
-                                        ? 'bg-gradient-to-r from-slate-600 to-slate-700'
-                                        : selectedLevel.difficulty === 'medium'
-                                            ? 'bg-gradient-to-r from-slate-500 to-slate-600'
-                                            : 'bg-gradient-to-r from-slate-400 to-slate-500'
-                                }`}>
-                                    {selectedLevel.difficulty?.toUpperCase() || 'EASY'}
-                                </div>
-                            </div>
+                            {(() => {
+                                const isBoss = (selectedLevel.id % 5 === 0) || selectedLevel.isMilestone;
+                                return (
+                                    <>
+                                        {/* Decorative top banner */}
+                                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 whitespace-nowrap">
+                                            <div className={`text-xs font-black px-4 py-1 rounded-full shadow-lg flex items-center gap-1.5 ${
+                                                isBoss
+                                                    ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-500 text-black uppercase tracking-wider'
+                                                    : selectedLevel.difficulty === 'hard'
+                                                        ? 'bg-gradient-to-r from-slate-600 to-slate-700 text-white'
+                                                        : selectedLevel.difficulty === 'medium'
+                                                            ? 'bg-gradient-to-r from-slate-500 to-slate-600 text-white'
+                                                            : 'bg-gradient-to-r from-slate-400 to-slate-500 text-white'
+                                            }`}>
+                                                {isBoss && <Crown className="w-3.5 h-3.5 fill-current" />}
+                                                {isBoss ? '👑 MILESTONE BOSS CHALLENGE' : (selectedLevel.difficulty?.toUpperCase() || 'EASY')}
+                                            </div>
+                                        </div>
 
-                            <div className="text-center mb-6 pt-2">
-                                {/* Level icon with animation */}
-                                <div
-                                    className={`w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center relative ${
-                                        selectedLevel.status === 'completed'
-                                            ? 'bg-gradient-to-br from-slate-200 to-slate-400'
-                                            : 'bg-gradient-to-br from-slate-600 via-slate-500 to-slate-400'
-                                    }`}
-                                   
-                                   
-                                >
-                                    {selectedLevel.status === 'completed' ? (
-                                        <Trophy className="w-12 h-12 text-blue-300" />
-                                    ) : (
-                                        <span className="text-4xl font-black text-white drop-shadow-lg">{selectedLevel.id}</span>
-                                    )}
-
-                                    {/* Sparkles around */}
-                                    <div
-                                        className="absolute -top-2 -right-2"
-                                       
-                                       
-                                    >
-                                        <Sparkles className="w-6 h-6 text-blue-300" />
-                                    </div>
-                                </div>
-
-                                <h3 className="text-2xl font-bold text-white mb-2">{selectedLevel.name}</h3>
-                                <p className="text-slate-400 text-sm">{selectedLevel.description}</p>
-                                
-                                {selectedLevel.status === 'completed' && (
-                                    <div
-                                        className="flex justify-center mt-4 gap-1"
-                                       
-                                       
-                                       
-                                    >
-                                        {[1, 2, 3].map(star => (
+                                        <div className="text-center mb-6 pt-2">
+                                            {/* Level icon with animation */}
                                             <div
-                                                key={star}
-                                               
-                                               
-                                               
+                                                className={`w-24 h-24 rounded-full mx-auto mb-4 flex items-center justify-center relative ${
+                                                    selectedLevel.status === 'completed'
+                                                        ? 'bg-gradient-to-br from-slate-200 to-slate-400'
+                                                        : isBoss
+                                                            ? 'bg-gradient-to-br from-amber-500 via-orange-500 to-red-600 shadow-[0_0_30px_rgba(245,158,11,0.5)] border-2 border-amber-300'
+                                                            : 'bg-gradient-to-br from-slate-600 via-slate-500 to-slate-400'
+                                                }`}
                                             >
-                                                <Star
-                                                    className={`w-8 h-8 ${star <= selectedLevel.stars ? 'text-blue-300 fill-blue-300' : 'text-gray-600'}`}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                                                {selectedLevel.status === 'completed' ? (
+                                                    <Trophy className="w-12 h-12 text-blue-300" />
+                                                ) : isBoss ? (
+                                                    <Crown className="w-12 h-12 text-white fill-white" />
+                                                ) : (
+                                                    <span className="text-4xl font-black text-white drop-shadow-lg">{selectedLevel.id}</span>
+                                                )}
 
-                            {/* Stats grid */}
-                            <div className="grid grid-cols-2 gap-3 mb-6">
-                                <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-slate-700/50">
-                                    <Target className="w-5 h-5 text-blue-300 mx-auto mb-1" />
-                                    <p className="text-xs text-slate-400">Questions</p>
-                                    <p className="text-lg font-bold text-white">5</p>
-                                </div>
-                                <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-slate-700/50">
-                                    <Zap className="w-5 h-5 text-blue-300 mx-auto mb-1" />
-                                    <p className="text-xs text-slate-400">Credits Reward</p>
-                                    <p className="text-lg font-bold text-white">
-                                        {selectedLevel.status === 'completed' ? '✓' : '5-10'}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Credits breakdown */}
-                            {selectedLevel.status !== 'completed' && (
-                                <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-xl p-3 mb-6 border border-slate-600/30">
-                                    <p className="text-xs text-center text-slate-400 mb-2">Credits based on stars earned</p>
-                                    <div className="flex justify-around">
-                                        <div className="text-center">
-                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300 mx-auto" />
-                                            <p className="text-sm font-bold text-white">5 Credits</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="flex">
-                                                <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
-                                                <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                {/* Sparkles around */}
+                                                <div className="absolute -top-2 -right-2">
+                                                    <Sparkles className="w-6 h-6 text-blue-300" />
+                                                </div>
                                             </div>
-                                            <p className="text-sm font-bold text-white">8 Credits</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <div className="flex">
-                                                <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
-                                                <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
-                                                <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
-                                            </div>
-                                            <p className="text-sm font-bold text-white">10 Credits</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
 
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => setShowLevelModal(false)}
-                                    className="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold text-white transition-colors"
-                                   
-                                   
-                                >
-                                    Close
-                                </button>
-                                <button
-                                    onClick={startLevel}
-                                    className="flex-1 px-4 py-3 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-400 rounded-xl font-semibold text-white flex items-center justify-center gap-2 shadow-lg shadow-slate-900/50"
-                                   
-                                   
-                                >
-                                    <Play className="w-5 h-5" />
-                                    {selectedLevel.status === 'completed' ? 'Replay' : 'Play!'}
-                                </button>
-                            </div>
+                                            <h3 className="text-2xl font-bold text-white mb-2">{selectedLevel.name}</h3>
+                                            <p className="text-slate-400 text-sm">
+                                                {isBoss
+                                                    ? `Milestone synthesis challenge testing mastery of preceding topics. Defeat the boss for 2x Credits and bonus Bloom's XP!`
+                                                    : selectedLevel.description}
+                                            </p>
+                                            
+                                            {selectedLevel.status === 'completed' && (
+                                                <div className="flex justify-center mt-4 gap-1">
+                                                    {[1, 2, 3].map(star => (
+                                                        <div key={star}>
+                                                            <Star
+                                                                className={`w-8 h-8 ${star <= selectedLevel.stars ? 'text-blue-300 fill-blue-300' : 'text-gray-600'}`}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Stats grid */}
+                                        <div className="grid grid-cols-2 gap-3 mb-6">
+                                            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-slate-700/50">
+                                                <Target className="w-5 h-5 text-blue-300 mx-auto mb-1" />
+                                                <p className="text-xs text-slate-400">Questions</p>
+                                                <p className="text-lg font-bold text-white">5</p>
+                                            </div>
+                                            <div className="bg-slate-800/50 rounded-xl p-3 text-center border border-slate-700/50">
+                                                <Zap className="w-5 h-5 text-amber-400 mx-auto mb-1" />
+                                                <p className="text-xs text-slate-400">{isBoss ? 'Boss Reward (2x)' : 'Credits Reward'}</p>
+                                                <p className="text-lg font-bold text-amber-300">
+                                                    {selectedLevel.status === 'completed' ? '✓' : isBoss ? '10-20 ⭐' : '5-10'}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Credits breakdown */}
+                                        {selectedLevel.status !== 'completed' && (
+                                            <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-xl p-3 mb-6 border border-slate-600/30">
+                                                <p className="text-xs text-center text-slate-400 mb-2">
+                                                    {isBoss ? '👑 2x Boss Rewards based on stars' : 'Credits based on stars earned'}
+                                                </p>
+                                                <div className="flex justify-around">
+                                                    <div className="text-center">
+                                                        <Star className="w-4 h-4 text-blue-300 fill-blue-300 mx-auto" />
+                                                        <p className="text-sm font-bold text-white">{isBoss ? '10 Credits' : '5 Credits'}</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <div className="flex">
+                                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                        </div>
+                                                        <p className="text-sm font-bold text-white">{isBoss ? '16 Credits' : '8 Credits'}</p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <div className="flex">
+                                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                            <Star className="w-4 h-4 text-blue-300 fill-blue-300" />
+                                                        </div>
+                                                        <p className="text-sm font-bold text-white">{isBoss ? '20 Credits' : '10 Credits'}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowLevelModal(false);
+                                                navigate('/socratic-tutor', { state: { topic: `${topic}: ${selectedLevel.name}` } });
+                                            }}
+                                            className="w-full mb-3 px-4 py-2.5 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 rounded-xl text-xs font-semibold text-indigo-300 flex items-center justify-center gap-2 transition-colors"
+                                        >
+                                            <BookOpen className="w-4 h-4 text-indigo-400" />
+                                            Study "{selectedLevel.name}" in Guided Learning Mode First
+                                        </button>
+
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => setShowLevelModal(false)}
+                                                className="flex-1 px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-semibold text-white transition-colors"
+                                            >
+                                                Close
+                                            </button>
+                                            <button
+                                                onClick={startLevel}
+                                                className={`flex-1 px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg ${
+                                                    isBoss
+                                                        ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-400 hover:to-red-400 text-white shadow-amber-900/40'
+                                                        : 'bg-gradient-to-r from-slate-600 via-slate-500 to-slate-400 rounded-xl font-semibold text-white shadow-slate-900/50'
+                                                }`}
+                                            >
+                                                {isBoss ? <Crown className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5" />}
+                                                {selectedLevel.status === 'completed' ? 'Replay' : isBoss ? 'Fight Boss!' : 'Play Worksheet!'}
+                                            </button>
+                                        </div>
+                                    </>
+                                );
+                            })()}
                         </div>
                     </div>
                 )}

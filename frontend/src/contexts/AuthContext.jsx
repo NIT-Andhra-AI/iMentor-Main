@@ -48,8 +48,31 @@ export const AuthProvider = ({ children }) => {
             const storedToken = localStorage.getItem('authToken');
 
             if (adminSessionActive) {
-                // Keep the token, mark loading done — admin auth is handled by adminAuthMiddleware.
-                if (storedToken) setTokenState(storedToken);
+                if (storedToken) {
+                    setTokenState(storedToken);
+                    try {
+                        const me = await api.getMe();
+                        setUser({
+                            id: me?._id || 'admin',
+                            email: me?.email || 'admin@admin.com',
+                            username: me?.username || 'admin',
+                            isAdmin: true,
+                            isFaculty: true,
+                            department: me?.department || 'Administration',
+                            hasCompletedOnboarding: true
+                        });
+                    } catch {
+                        setUser({
+                            id: 'admin',
+                            email: 'admin@admin.com',
+                            username: 'admin',
+                            isAdmin: true,
+                            isFaculty: true,
+                            department: 'Administration',
+                            hasCompletedOnboarding: true
+                        });
+                    }
+                }
                 setLoading(false);
                 return;
             }
@@ -93,10 +116,17 @@ export const AuthProvider = ({ children }) => {
         try {
             const data = await api.login(credentials);
             if (data && data.isAdminLogin && data.token) {
-                // Admin login: Set token for API calls, but DON'T set user object.
-                // This is intentional - admin routes check isAdminSessionActive from AppState,
-                // and the missing user object prevents regularUserToken && regularUser checks from passing.
                 setToken(data.token);
+                setUser({
+                    id: data._id || 'admin',
+                    email: data.email || 'admin@admin.com',
+                    username: data.username || 'admin',
+                    isAdmin: true,
+                    isFaculty: true,
+                    department: data.department || 'Administration',
+                    hasCompletedOnboarding: true
+                });
+                sessionStorage.setItem('activeViewMode', 'admin');
                 return data;
             }
 

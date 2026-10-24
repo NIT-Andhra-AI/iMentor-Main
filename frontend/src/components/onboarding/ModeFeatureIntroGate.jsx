@@ -19,7 +19,7 @@ const FEATURE_INTROS = [
         match: (path) => path.startsWith('/tutor'),
         icon: GraduationCap,
         title: 'Tutor Mode',
-        description: 'This mode uses a Socratic teaching flow. You will get guided explanations, targeted questions, and adaptive follow-ups based on your responses.',
+        description: 'Guided Learning Mode acknowledges your understanding, reframes your ideas with supportive hints, and clearly explains each new subtopic before asking a check question.',
         highlights: [
             'Learn through guided questions instead of answer dumps',
             'Track progress across topics and subtopics',

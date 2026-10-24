@@ -1507,10 +1507,11 @@ router.get('/negative-feedback', async (req, res) => {
 });
 
 
-// ── User Product Feedback ──────────────────────────────────────────────────────
+// ── User Product Feedback & Performance Bounty Management ──────────────────────
 
 // @route   GET /api/admin/user-feedback
 // @desc    List all product-level feedback (bugs, features, general) submitted by users
+//          plus Performance Bounty summary stats and high-latency telemetry alerts (>30s).
 // @query   sortBy: 'createdAt'|'email'  order: 'asc'|'desc'  page: number  limit: number
 router.get('/user-feedback', async (req, res) => {
   try {
@@ -1519,8 +1520,8 @@ router.get('/user-feedback', async (req, res) => {
 
     // Fetch with user email populated
     const items = await UserFeedback.find()
-      .populate('userId', 'email name')
-      .select('-adminNote -__v')
+      .populate('userId', 'email name profile')
+      .select('-__v')
       .lean();
 
     // Sort in-memory so we can sort by populated user.email
@@ -1539,7 +1540,45 @@ router.get('/user-feedback', async (req, res) => {
     const total = items.length;
     const paginated = items.slice(skip, skip + Number(limit));
 
-    return res.json({ total, page: Number(page), limit: Number(limit), feedback: paginated });
+    // Aggregate Performance Bounty program summary
+    const bountySummary = items.reduce((acc, item) => {
+      const isEligible = item.bountyEligible || item.category === 'Performance' || item.type === 'bug' || item.category === 'AI Quality';
+      if (isEligible) acc.totalEligible += 1;
+      if (item.bountyStatus === 'awarded') {
+        acc.awardedCount += 1;
+        acc.totalCreditsAwarded += (item.bountyCreditsAwarded || 0);
+        acc.totalXpAwarded += (item.bountyXpAwarded || 0);
+      } else if (isEligible && item.status === 'open') {
+        acc.pendingReview += 1;
+      }
+      return acc;
+    }, { totalEligible: 0, pendingReview: 0, awardedCount: 0, totalCreditsAwarded: 0, totalXpAwarded: 0 });
+
+    // Also fetch auto-detected high-latency (>30s) or negative feedback LLM telemetry logs
+    let slowTelemetryAlerts = [];
+    try {
+      slowTelemetryAlerts = await LLMPerformanceLog.find({
+        $or: [
+          { responseTimeMs: { $gte: 30000 } },
+          { userFeedback: 'negative' }
+        ]
+      })
+        .populate('userId', 'email profile.name')
+        .sort({ createdAt: -1 })
+        .limit(25)
+        .lean();
+    } catch (telErr) {
+      log.warn('ADMIN', `Failed to load slowTelemetryAlerts: ${telErr.message}`);
+    }
+
+    return res.json({
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      feedback: paginated,
+      bountySummary,
+      slowTelemetryAlerts,
+    });
   } catch (err) {
     log.error('ADMIN', `user-feedback list error: ${err.message}`);
     return res.status(500).json({ message: 'Failed to fetch user feedback.' });
@@ -1547,22 +1586,128 @@ router.get('/user-feedback', async (req, res) => {
 });
 
 // @route   PATCH /api/admin/user-feedback/:id
-// @desc    Update feedback status and optional admin note
+// @desc    Update feedback status, optional admin note, and verify/award Performance Bounty Credits & XP
 router.patch('/user-feedback/:id', async (req, res) => {
   try {
-    const { status, adminNote } = req.body;
+    const { status, adminNote, awardBounty, customCredits, customXp } = req.body;
     const allowed = ['open', 'acknowledged', 'resolved', 'wont-fix'];
     if (status && !allowed.includes(status)) {
       return res.status(400).json({ message: 'Invalid status value.' });
     }
-    const update = {};
-    if (status) { update.status = status; if (status === 'resolved') update.resolvedAt = new Date(); }
-    if (adminNote !== undefined) update.adminNote = adminNote;
 
-    const doc = await UserFeedback.findByIdAndUpdate(req.params.id, update, { new: true })
-      .populate('userId', 'email name').lean();
-    if (!doc) return res.status(404).json({ message: 'Feedback entry not found.' });
-    return res.json(doc);
+    const existing = await UserFeedback.findById(req.params.id);
+    if (!existing) return res.status(404).json({ message: 'Feedback entry not found.' });
+
+    const targetStatus = status || existing.status;
+    if (status) {
+      existing.status = status;
+      if (status === 'resolved') existing.resolvedAt = new Date();
+    }
+    if (adminNote !== undefined) existing.adminNote = adminNote;
+
+    // Determine whether this report qualifies for Performance Bounty payout
+    const isBountyCandidate = existing.bountyEligible ||
+      existing.category === 'Performance' ||
+      existing.type === 'bug' ||
+      existing.category === 'AI Quality' ||
+      Boolean(awardBounty);
+
+    let bountyJustAwarded = false;
+    let deltaCredits = 0;
+    let deltaXp = 0;
+
+    if (targetStatus === 'wont-fix' && !awardBounty) {
+      existing.bountyStatus = 'rejected';
+    } else if (isBountyCandidate && (targetStatus === 'acknowledged' || targetStatus === 'resolved' || awardBounty)) {
+      const targetCredits = customCredits !== undefined
+        ? Number(customCredits)
+        : (targetStatus === 'resolved' || awardBounty ? 50 : 25);
+      const targetXp = customXp !== undefined
+        ? Number(customXp)
+        : (targetStatus === 'resolved' || awardBounty ? 100 : 50);
+
+      const alreadyCredits = existing.bountyCreditsAwarded || 0;
+      const alreadyXp = existing.bountyXpAwarded || 0;
+
+      deltaCredits = Math.max(0, targetCredits - alreadyCredits);
+      deltaXp = Math.max(0, targetXp - alreadyXp);
+
+      if (deltaCredits > 0 || deltaXp > 0) {
+        let profile = await GamificationProfile.findOne({ userId: existing.userId });
+        if (!profile) {
+          profile = new GamificationProfile({ userId: existing.userId });
+        }
+
+        if (deltaCredits > 0) {
+          profile.learningCredits = (profile.learningCredits || 0) + deltaCredits;
+          profile.totalLearningCredits = (profile.totalLearningCredits || 0) + deltaCredits;
+          profile.creditsHistory.push({
+            amount: deltaCredits,
+            reason: 'bounty_completed',
+            bountyId: `perf_bounty_${existing._id}`,
+            timestamp: new Date(),
+          });
+          profile.learningCreditsHistory.push({
+            amount: deltaCredits,
+            reason: 'bounty_completed',
+            bountyId: `perf_bounty_${existing._id}`,
+            topic: `Performance Bounty (${existing.category})`,
+            timestamp: new Date(),
+          });
+        }
+
+        if (deltaXp > 0) {
+          profile.totalXP = Math.max(0, (profile.totalXP || 0) + deltaXp);
+          profile.xpLevel = profile.calculateXPLevel();
+          if (deltaXp > 0) {
+            profile.xpHistory = profile.xpHistory || [];
+            profile.xpHistory.push({ amount: deltaXp, reason: 'bounty_verified', topic: 'performance_bounty', timestamp: new Date() });
+          }
+          profile.xpHistory.push({
+            amount: deltaXp,
+            reason: 'bounty_question',
+            topic: `Performance Bounty (${existing.category})`,
+            timestamp: new Date(),
+          });
+        }
+
+        // Unlock Performance Bounty Hunter badge on first verified bounty
+        const hasBadge = (profile.badges || []).some(b => b.badgeId === 'perf_bounty_hunter');
+        if (!hasBadge) {
+          profile.badges.push({
+            badgeId: 'perf_bounty_hunter',
+            name: 'Performance Bounty Hunter 🎯',
+            earnedAt: new Date(),
+          });
+        }
+
+        profile.level = profile.calculateLevel();
+        profile.xpLevel = profile.calculateXPLevel();
+        await profile.save();
+
+        existing.bountyEligible = true;
+        existing.bountyStatus = 'awarded';
+        existing.bountyCreditsAwarded = alreadyCredits + deltaCredits;
+        existing.bountyXpAwarded = alreadyXp + deltaXp;
+        existing.bountyAwardedAt = new Date();
+        bountyJustAwarded = true;
+
+        log.info('ADMIN', `Awarded Performance Bounty to user ${existing.userId}: +${deltaCredits} Credits, +${deltaXp} XP for feedback ${existing._id}`);
+      }
+    }
+
+    await existing.save();
+
+    const doc = await UserFeedback.findById(existing._id)
+      .populate('userId', 'email name profile')
+      .lean();
+
+    return res.json({
+      ...doc,
+      bountyJustAwarded,
+      deltaCredits,
+      deltaXp,
+    });
   } catch (err) {
     log.error('ADMIN', `user-feedback update error: ${err.message}`);
     return res.status(500).json({ message: 'Failed to update feedback.' });

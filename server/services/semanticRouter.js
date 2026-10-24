@@ -572,11 +572,15 @@ function mapIntentToRoute(intent) {
         case 'MATHEMATICAL_REASONING': return 'tot';
         case 'TECHNICAL_CODING':       return 'tot';
         case 'CONCEPTUAL_EXPLANATION': return 'tot';
+        case 'SOCRATIC_TUTORING':      return 'tutor';
+        case 'GREETING':               return 'direct_answer';
         case 'MEMORY_RECALL':          return 'direct_answer';
         case 'ACADEMIC_SEARCH':        return 'academic_search';
         case 'DEEP_RESEARCH':          return 'deep_research';
+        case 'WEB_SEARCH':             return 'web_search';
+        case 'DOCUMENT_RAG':           return 'rag';
         case 'direct_answer':          return 'direct_answer';
-        default:                       return 'direct_answer';
+        default:                       return 'standard';
     }
 }
 function isDirectAnswer(routeResult, thresholds) {

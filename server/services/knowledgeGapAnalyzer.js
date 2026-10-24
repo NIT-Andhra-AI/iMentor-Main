@@ -7,6 +7,12 @@
 const geminiService = require('./geminiService');
 const sglangService = require('./sglangService');
 
+function getAnalyzerLLMService(llmConfig = {}) {
+    const provider = (llmConfig?.llmProvider || llmConfig?.provider || 'sglang').toLowerCase();
+    const isLocal = provider === 'sglang' || provider === 'local_llm' || provider === 'ollama' || llmConfig?.tutorMode;
+    return isLocal ? sglangService : geminiService;
+}
+
 /**
  * Analyzes student's response to identify knowledge gaps
  * @param {String} studentResponse - The student's answer or question
@@ -16,7 +22,7 @@ const sglangService = require('./sglangService');
  * @returns {Object} - { gaps: [String], comprehensionLevel: Number, misconceptions: [String] }
  */
 async function analyzeKnowledgeGaps(studentResponse, correctAnswer, conversationHistory = [], llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
+    const llmService = getAnalyzerLLMService(llmConfig);
 
     // Build analysis prompt with rich context
     const analysisPrompt = `
@@ -92,7 +98,7 @@ ${conversationHistory.slice(-3).map(msg => `${msg.role}: ${msg.content}`).join('
  * @returns {String} - The extracted learning goal
  */
 async function extractLearningGoal(query, llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
+    const llmService = getAnalyzerLLMService(llmConfig);
 
     const goalPrompt = `
 Extract the core learning goal from this student's question. Be concise and specific.
@@ -127,7 +133,7 @@ What is the student trying to learn or understand? Answer in one clear sentence.
  * @returns {String} - 'helpful', 'neutral', 'confusing'
  */
 async function assessHintEffectiveness(hint, studentFollowUp, llmConfig = {}) {
-    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
+    const llmService = getAnalyzerLLMService(llmConfig);
 
     const assessPrompt = `
 Evaluate if this hint was effective in helping the student.

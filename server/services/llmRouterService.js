@@ -396,19 +396,24 @@ async function selectLLM(query, context) {
     log.info('AI', `[Router] LOW_RAM_MODE=true — skipping SGLang, routing to cloud providers`);
   }
 
-  // PRIORITY 0: Tutor Mode
+  // PRIORITY 0: Tutor Mode — Dedicated Local LLM (SGLang / Local SLM)
   if (context.tutorMode) {
-    const customTutorModel = catalogFind({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' }) 
-        || await LLMConfiguration.findOne({ modelId: 'ai-tutor-custom:latest', provider: 'sglang' });
-      if (customTutorModel && isLocalLlmActuallyUp) {
-        log.info('AI', `Routing to specialized tutor model: ${customTutorModel.modelId}`);
-        const chosen = customTutorModel.toObject ? customTutorModel.toObject() : customTutorModel;
-        return { 
-          chosenModel: { ...chosen, workingUrl: workingLocalLlmUrl }, 
-          logic: 'tutor_mode_priority' 
-        };
-      }
-    }
+    const localTutorModelId = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
+    const localTutorUrl = process.env.SGLANG_CHAT_URL || 'http://127.0.0.1:8000/v1';
+    log.info('AI', `[Tutor Mode] Routing directly to dedicated local LLM: ${localTutorModelId} on ${localTutorUrl}`);
+    return {
+      chosenModel: {
+        modelId: localTutorModelId,
+        provider: 'sglang',
+        displayName: `Local Tutor SLM (${localTutorModelId})`,
+        workingUrl: localTutorUrl,
+        _sglangEndpoint: 'chat',
+        _sglangService: require('./sglangService'),
+      },
+      logic: 'tutor_mode_local_llm_priority',
+      modelRoutingMode: routingMode,
+    };
+  }
   
     // PRIORITY 0.5: Course-Specific Mapping
     if (context.courseId) {
@@ -532,7 +537,7 @@ async function selectLLM(query, context) {
   }
 
   const defaultModelId = (SGLANG_ENABLED || preferredProvider === 'ollama' || preferredProvider === 'local_llm')
-    ? (process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ')
+    ? (process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ')
     : (process.env.GEMINI_MODEL || 'gemini-2.0-flash');
 
   return {

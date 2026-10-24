@@ -28,7 +28,6 @@ function streamEvent(res, eventData) {
 
     let outboundEvent = eventData;
     if (
-        res?.locals?.isDebugMode === true &&
         eventData?.type === 'final_answer' &&
         eventData?.content &&
         typeof eventData.content === 'object' &&
@@ -38,7 +37,8 @@ function streamEvent(res, eventData) {
             ...eventData,
             content: {
                 ...eventData.content,
-                debug: buildDebugMetadata(res.locals.debugContext || {})
+                ...(res?.locals?.agenticAdaptation ? { agenticAdaptation: res.locals.agenticAdaptation } : {}),
+                ...(res?.locals?.isDebugMode === true ? { debug: buildDebugMetadata(res.locals.debugContext || {}) } : {})
             }
         };
     }

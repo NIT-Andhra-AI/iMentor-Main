@@ -18,6 +18,8 @@ function BountyCreditsPage() {
     });
     const [loading, setLoading] = useState(true);
     const [submittingBounty, setSubmittingBounty] = useState(null);
+    const [activeBountyModal, setActiveBountyModal] = useState(null);
+    const [selectedAnswer, setSelectedAnswer] = useState('');
     const [showLevelUp, setShowLevelUp] = useState(false);
     const [levelUpData, setLevelUpData] = useState(null);
 
@@ -70,6 +72,33 @@ function BountyCreditsPage() {
         }
     };
 
+    const handleOpenBountyModal = (bountyId) => {
+        const bounty = bounties.find(b => b.bountyId === bountyId);
+        if (!bounty) return;
+        setActiveBountyModal(bounty);
+        setSelectedAnswer('');
+    };
+
+    const handleDirectSubmitBounty = async () => {
+        if (!activeBountyModal || !selectedAnswer.trim()) {
+            toast.error('Please select or enter an answer first.');
+            return;
+        }
+        try {
+            setSubmittingBounty(activeBountyModal.bountyId);
+            const result = await api.submitBounty(activeBountyModal.bountyId, selectedAnswer.trim());
+            await handleBountyComplete(result);
+            if (result.isCorrect) {
+                setActiveBountyModal(null);
+                setSelectedAnswer('');
+            }
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message || 'Failed to submit bounty answer');
+        } finally {
+            setSubmittingBounty(null);
+        }
+    };
+
     const handleSubmitBounty = async (bountyId) => {
         // Find the bounty details
         const bounty = bounties.find(b => b.bountyId === bountyId);
@@ -100,13 +129,17 @@ function BountyCreditsPage() {
             </div>
         ), { duration: 3000 });
 
+        const formattedOptions = Array.isArray(bounty.options) && bounty.options.length > 0
+            ? '\n\n' + bounty.options.map((opt, idx) => `${String.fromCharCode(65 + idx)}) ${opt}`).join('\n')
+            : '';
         // Navigate to chat with the bounty question
         navigate('/', {
             state: {
-                bountyQuestion: bounty.questionText,
+                bountyQuestion: bounty.questionText + formattedOptions,
                 bountyId: bountyId,
-                bountyCredits: bounty.creditReward,
-                bountyXP: bounty.xpBonus,
+                bountyCredits: bounty.creditReward || 5,
+                bountyLearningCredits: bounty.xpBonus || bounty.learningCreditsBonus || 10,
+                bountyXP: bounty.xpBonus || bounty.learningCreditsBonus || 10,
                 bountyTopic: bounty.topic,
                 bountyDifficulty: bounty.difficulty
             }
@@ -199,6 +232,118 @@ function BountyCreditsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[#0f0f0f] p-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-200 dark:scrollbar-track-gray-900">
+                        {/* Interactive Bounty Challenge Modal */}
+            {activeBountyModal && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4"
+                    onClick={() => setActiveBountyModal(null)}
+                >
+                    <div
+                        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl max-w-2xl w-full p-6 space-y-5"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-start justify-between gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
+                            <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="px-2.5 py-0.5 text-xs font-bold rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 uppercase">
+                                        {activeBountyModal.difficulty || 'medium'}
+                                    </span>
+                                    <span className="text-xs font-semibold text-yellow-400 flex items-center gap-1">
+                                        <Coins size={13} /> +{activeBountyModal.creditReward} Credits
+                                    </span>
+                                    <span className="text-xs font-semibold text-purple-400 flex items-center gap-1">
+                                        <Star size={13} /> +{activeBountyModal.xpBonus} XP
+                                    </span>
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                    🎯 {formatTopicName(activeBountyModal.topic, true)}
+                                </h3>
+                            </div>
+                            <button
+                                onClick={() => setActiveBountyModal(null)}
+                                className="text-gray-400 hover:text-white text-sm font-bold px-2 py-1 rounded-lg"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <p className="text-base text-gray-800 dark:text-gray-100 leading-relaxed font-medium">
+                            {activeBountyModal.questionText}
+                        </p>
+
+                        {Array.isArray(activeBountyModal.options) && activeBountyModal.options.length > 0 ? (
+                            <div className="space-y-2.5">
+                                {activeBountyModal.options.map((opt, idx) => {
+                                    const letter = String.fromCharCode(65 + idx);
+                                    const isSelected = selectedAnswer === opt;
+                                    return (
+                                        <button
+                                            key={idx}
+                                            type="button"
+                                            onClick={() => setSelectedAnswer(opt)}
+                                            className={'w-full text-left p-3.5 rounded-xl border transition-all flex items-start gap-3 ' + (
+                                                isSelected
+                                                    ? 'border-primary bg-primary/15 text-gray-900 dark:text-white ring-2 ring-primary/40'
+                                                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800/60'
+                                            )}
+                                        >
+                                            <span className={'flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ' + (
+                                                isSelected ? 'bg-primary text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                            )}>
+                                                {letter}
+                                            </span>
+                                            <span className="text-sm leading-relaxed pt-0.5">{opt}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <textarea
+                                rows={4}
+                                value={selectedAnswer}
+                                onChange={(e) => setSelectedAnswer(e.target.value)}
+                                placeholder="Type your solution or explanation..."
+                                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                            />
+                        )}
+
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-200 dark:border-gray-800">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const bId = activeBountyModal.bountyId;
+                                    setActiveBountyModal(null);
+                                    handleSubmitBounty(bId);
+                                }}
+                                className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            >
+                                💬 Discuss in AI Chat Instead
+                            </button>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveBountyModal(null)}
+                                    className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-500 hover:text-gray-300"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="button"
+                                    disabled={!selectedAnswer || submittingBounty === activeBountyModal.bountyId}
+                                    onClick={handleDirectSubmitBounty}
+                                    className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 disabled:opacity-50 transition-colors flex items-center gap-2"
+                                >
+                                    {submittingBounty === activeBountyModal.bountyId ? (
+                                        <><Loader2 size={15} className="animate-spin" /> Submitting...</>
+                                    ) : (
+                                        <><CheckCircle size={15} /> Submit Answer</>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* Level Up Animation */}
             <Animate show={showLevelUp && !!levelUpData} unmount animation="fade-in">
                     <div
@@ -332,7 +477,7 @@ function BountyCreditsPage() {
                                     </span>
                                 ) : (
                                     <button
-                                        onClick={() => handleSubmitBounty(bounty.bountyId)}
+                                        onClick={() => handleOpenBountyModal(bounty.bountyId)}
                                         className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/80 transition-colors"
                                     >
                                         <Target size={15} /> Attempt
@@ -344,13 +489,28 @@ function BountyCreditsPage() {
                 )}
                 </div>
 
+                {/* ── Performance & Bug Bounty Program Callout ── */}
+                <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 text-sm text-amber-200 space-y-2">
+                    <p className="font-semibold flex items-center gap-2 text-base text-amber-300">
+                        <Award size={18} /> 🎯 Performance &amp; Bug Bounty Program (Live!)
+                    </p>
+                    <p>
+                        Notice a slow response, high latency, or UI/AI bug? Click the <strong>Flag icon (⚑)</strong> in the top navigation bar and submit a <strong>Performance</strong> or <strong>Bug Report</strong>!
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 opacity-90 text-xs sm:text-sm">
+                        <li><strong>Immediate Submission Bonus:</strong> Earn <strong>+5 XP</strong> automatically (up to 3 reports/day) with auto-attached latency telemetry.</li>
+                        <li><strong>Acknowledged by Admin:</strong> Earn <strong>+25 Bounty Credits &amp; +50 XP</strong>.</li>
+                        <li><strong>Verified &amp; Resolved by Admin:</strong> Earn <strong>+50 Bounty Credits &amp; +100 XP</strong> + the <em>Performance Bounty Hunter 🎯</em> badge!</li>
+                    </ul>
+                </div>
+
                 {/* ── Info Box ── */}
                 <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/5 p-5 text-sm text-yellow-300/90 space-y-2">
                     <p className="font-semibold flex items-center gap-2 text-base">
                         <Coins size={16} /> How Bounty Credits Work
                     </p>
-                    <p>Complete bounty challenges to earn learning credits. Higher difficulty questions award more credits and XP. New bounties are generated daily at <strong>9:00 AM IST</strong>.</p>
-                    <p className="opacity-70">Use credits to unlock premium features and track your progress on the leaderboard.</p>
+                    <p>Complete daily bounty challenges or report verified performance issues to earn learning credits. New academic bounties are generated daily at <strong>9:00 AM IST</strong>.</p>
+                    <div className="flex flex-wrap items-center justify-between gap-2"><p className="opacity-70">Use credits to unlock premium features and track your progress on the leaderboard.</p><button onClick={() => navigate('/gamification/leaderboard')} className="px-3 py-1.5 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 text-xs font-bold transition-colors">🏆 View Student Leaderboard</button></div>
                 </div>
             </div>
         </div>

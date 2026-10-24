@@ -32,6 +32,7 @@ const QuizGeneratorPage    = React.lazy(() => import('./components/tools/QuizGen
 const AcademicIntegrityPage = React.lazy(() => import('./components/tools/AcademicIntegrityPage.jsx'));
 const AnalyticsDashboardPage = React.lazy(() => import('./components/admin/AnalyticsDashboardPage.jsx'));
 const BountyCreditsPage    = React.lazy(() => import('./components/gamification/BountyCreditsPage.jsx'));
+const LeaderboardPage      = React.lazy(() => import('./pages/LeaderboardPage.jsx'));
 const BossBattles          = React.lazy(() => import('./components/gamification/BossBattles.jsx'));
 const BadgesShowcase       = React.lazy(() => import('./components/gamification/BadgesShowcase.jsx'));
 const LearningProfile      = React.lazy(() => import('./components/learning/LearningProfile.jsx'));
@@ -381,11 +382,27 @@ function App() {
 
     useEffect(() => {
         const handleAuthAndSession = async () => {
-            if (isAdminSessionActive) {
+            if (isAdminSessionActive || regularUser?.isAdmin) {
                 setAppInitializing(false); setShowAuthModal(false);
-                // Ensure no overlays block admin dashboard
                 setIsSessionLoading(false);
-                if (!location.pathname.startsWith('/admin')) navigate('/admin/dashboard', { replace: true });
+                document.body.classList.remove('landing-page-body');
+                const activeMode = sessionStorage.getItem('activeViewMode') || 'admin';
+                if (activeMode === 'admin' && !location.pathname.startsWith('/admin')) {
+                    navigate('/admin/dashboard', { replace: true });
+                    return;
+                }
+                if (activeMode === 'faculty' && !location.pathname.startsWith('/faculty')) {
+                    navigate('/faculty/dashboard', { replace: true });
+                    return;
+                }
+                if (activeMode === 'student') {
+                    const shouldCreateSession = !currentSessionId && !location.pathname.startsWith('/tools') && !location.pathname.startsWith('/study-plan') && !location.pathname.startsWith('/faculty') && !location.pathname.startsWith('/admin');
+                    if (shouldCreateSession && !isCreatingSessionRef.current) {
+                        isCreatingSessionRef.current = true;
+                        await handleNewChat(() => { }, true, true);
+                        isCreatingSessionRef.current = false;
+                    }
+                }
                 return;
             }
             if (regularUserAuthLoading) {
@@ -430,6 +447,7 @@ function App() {
         setShowAuthModal(false);
         sessionStorage.removeItem('viewAsStudent'); // Clear student view override on new login
         if (authData?.isAdminLogin) {
+            sessionStorage.setItem('activeViewMode', 'admin');
             setIsAdminSessionActive(true);
         } else if (authData?.token) {
             setGlobalSessionId(null);
@@ -474,14 +492,10 @@ function App() {
 
             <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-black"><div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-black dark:border-white"></div></div>}>
             <Routes>
-                {isAdminSessionActive ? (
+                {(isAdminSessionActive || (regularUserToken && regularUser)) ? (
                     <>
                         <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboardPage /></AdminProtectedRoute>} />
                         <Route path="/admin/analytics" element={<AdminProtectedRoute><AnalyticsDashboardPage /></AdminProtectedRoute>} />
-                        <Route path="/*" element={<Navigate to="/admin/dashboard" replace />} />
-                    </>
-                ) : regularUserToken && regularUser ? (
-                    <>
                         <Route path="/tools/code-executor" element={<CodeExecutorPage />} />
                         <Route path="/study-plan" element={<StudyPlanPage handleNewChat={handleNewChat} />} />
                         <Route path="/tools/quiz-generator" element={<QuizGeneratorPage />} />
@@ -494,6 +508,8 @@ function App() {
                         <Route path="/assessment" element={<KnowledgeAssessmentPage />} />
                         {/* Gamification Routes */}
                         <Route path="/gamification/bounties" element={<BountyCreditsPage />} />
+                        <Route path="/gamification/leaderboard" element={<LeaderboardPage />} />
+                        <Route path="/leaderboard" element={<LeaderboardPage />} />
                         <Route path="/gamification/credits" element={<BountyCreditsPage />} />
                         <Route path="/gamification/boss-battles" element={<BossBattles />} />
                         <Route path="/gamification/badges" element={<BadgesShowcase />} />
@@ -505,7 +521,7 @@ function App() {
                         <Route path="/gamification/skill-tree/map" element={<SkillTreeGameMap />} />
                         <Route path="/gamification/skill-tree/classic" element={<SkillTreeMap />} />
                         <Route path="/gamification/skill-tree/analytics/:treeId" element={<LearningAnalyticsDashboard />} />
-                        <Route path="/admin/dashboard" element={<Navigate to="/" replace />} />
+                        
                         <Route path="/faculty/dashboard" element={<FacultyPortal />} />
                         <Route path="/tutor" element={
                             <TutorModePage

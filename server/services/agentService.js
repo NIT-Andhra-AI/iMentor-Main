@@ -893,7 +893,7 @@ async function processAgenticRequest(
       model: ollamaModel || process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b',
       think: true,
     }),
-    ...(llmProvider === "sglang" && { model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ' }),
+    ...(llmProvider === "sglang" && { model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ' }),
     ...(llmProvider === "gemini" && { geminiModel: requestContext.geminiModel || process.env.GEMINI_MODEL || 'gemini-2.0-flash' }),
     ...(llmProvider === "groq" && { model: requestContext.groqModel || process.env.GROQ_MODEL || 'llama-3.1-8b-instant' }),
     apiKey: apiKey,
@@ -934,8 +934,11 @@ async function processAgenticRequest(
     }
   }
 
+  const isBootstrapCourseCode = /^(ee3621|digital signal processing)$/i.test(String(requestContext?.documentContextName || '').trim());
+  const hasUploadedDocContext = Boolean(requestContext?.documentContextName && !isBootstrapCourseCode);
+
   const isRagActive = Boolean(
-    requestContext?.documentContextName ||
+    hasUploadedDocContext ||
     requestContext?.selectedDocumentForAnalysis ||
     requestContext?.selectedSubject ||
     requestContext?.isRagEnabled
@@ -963,18 +966,25 @@ async function processAgenticRequest(
     { userQuery, ...requestContext }
   );
 
-  log.info('AI', `Query Routing via ${llmProvider}...`);
-
-  // Router call — use fast model (classification task, doesn't need full model)
-  const routerResponseText = await fastLlmCall(
-    "Analyze the query and decide on an action.",
-    routerSystemPrompt,
-    [],
-    llmService,
-    llmOptions,
-    requestContext
-  );
-  let toolCall = parseToolCall(routerResponseText);
+  let toolCall = null;
+  const isExplicitFileOrStudyPlan = /\b(pptx|docx|presentation|slides?|powerpoint|word\s+doc(?:ument)?|download\s+file|generate\s+a\s+(?:file|document)|create\s+a\s+study\s+plan)\b/i.test(userQuery);
+  if (hasUploadedDocContext && !isExplicitFileOrStudyPlan) {
+    log.info('AI', `[RAG_FAST_ROUTE] documentContextName="${requestContext.documentContextName}" present — directly routing to rag_search without extra LLM router call`);
+    toolCall = { tool_name: 'rag_search', parameters: { query: userQuery } };
+  } else if ((requestContext.forceSimple === true || isBootstrapCourseCode) && !isExplicitFileOrStudyPlan && !hasUploadedDocContext && !requestContext.isWebSearchEnabled && !requestContext.isAcademicSearchEnabled) {
+    log.info('AI', `[AGENTIC_FAST_STREAM] Skipping redundant tool-router LLM call (forceSimple/bootstrapCourse=true) — streaming adapted persona directly`);
+  } else {
+    log.info('AI', `Query Routing via ${llmProvider}...`);
+    const routerResponseText = await fastLlmCall(
+      "Analyze the query and decide on an action.",
+      routerSystemPrompt,
+      [],
+      llmService,
+      llmOptions,
+      requestContext
+    );
+    toolCall = parseToolCall(routerResponseText);
+  }
 
   if (toolCall && (toolCall.tool_name === 'direct_answer' || toolCall.tool_name === 'none')) {
     log.info('AI', `Intercepted tool call "${toolCall.tool_name}" — treating as direct response`);
@@ -982,7 +992,7 @@ async function processAgenticRequest(
   }
 
   // --- DETERMINISTIC CODE OVERRIDE ---
-  if (requestContext?.intent === 'code' && !requestContext?.isWebSearchEnabled && !requestContext?.isAcademicSearchEnabled && !requestContext?.documentContextName) {
+  if (requestContext?.intent === 'code' && !requestContext?.isWebSearchEnabled && !requestContext?.isAcademicSearchEnabled && !hasUploadedDocContext) {
     log.info('AI', `[CODE_OVERRIDE] intent="code" — forcing direct_answer`);
     toolCall = null;
   }
@@ -1007,15 +1017,14 @@ async function processAgenticRequest(
     toolCall = null;
   }
 
-  if (toolCall?.tool_name === 'rag_search' && !requestContext?.documentContextName && !requestContext?.selectedDocumentForAnalysis && !requestContext?.selectedSubject && !requestContext?.isRagEnabled) {
+  if (toolCall?.tool_name === 'rag_search' && !hasUploadedDocContext && !requestContext?.selectedDocumentForAnalysis && !requestContext?.selectedSubject && !requestContext?.isRagEnabled) {
     log.info('AI', `Blocked unsolicited rag_search for general query — reverting to direct answer`);
     toolCall = null;
   }
 
   // --- DETERMINISTIC RAG OVERRIDE ---
-  // When a document is selected, the LLM router MUST pick rag_search.
-  // Small routing LLMs sometimes pick kg_search or direct_answer instead — override them.
-  if (requestContext?.documentContextName) {
+  // When an uploaded user document is selected, the LLM router MUST pick rag_search.
+  if (hasUploadedDocContext) {
     const picked = toolCall?.tool_name;
     if (picked !== 'rag_search') {
       log.info('AI', `[RAG_OVERRIDE] documentContextName="${requestContext.documentContextName}" set but LLM picked "${picked}" — forcing rag_search`);
@@ -1050,7 +1059,7 @@ async function processAgenticRequest(
     toolCall = null;
   }
 
-  if (requestContext.forceSimple === true || !toolCall || !toolCall.tool_name) {
+  if (!toolCall || !toolCall.tool_name) {
     const finalSystemPrompt = clientSystemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
 
     let directAnswer;
@@ -1147,7 +1156,7 @@ async function processAgenticRequest(
           // SGLang via direct REST
           const axios = require('axios');
           const sglUrl  = process.env.SGLANG_CHAT_URL   || 'http://localhost:8000/v1';
-          const sglModel = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+          const sglModel = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
           const msgs = [
             ...(finalSystemPrompt ? [{ role: 'system', content: finalSystemPrompt }] : []),
             ...chatHistory.map(m => ({ role: m.role === 'model' ? 'assistant' : m.role, content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content) })),
@@ -1320,7 +1329,7 @@ async function processAgenticRequest(
         } else {
           const axios = require('axios');
           const sglUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
-          const sglModel = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+          const sglModel = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
           const synthMsgs = [
             ...(finalSystemPrompt ? [{ role: 'system', content: finalSystemPrompt }] : []),
             ...chatHistory.map(m => ({ role: m.role === 'model' ? 'assistant' : m.role, content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content) })),

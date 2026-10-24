@@ -89,12 +89,13 @@ async function _callGeminiFlash(query) {
 // ── SGLang small-model call (optional) ───────────────────────────────────────
 async function _callSGLangRouter(query) {
     const baseURL = process.env.SGLANG_ROUTER_URL || process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
-    const model   = process.env.SGLANG_ROUTER_MODEL || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+    const model   = process.env.SGLANG_ROUTER_MODEL || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
 
+    const noThinkQuery = query.includes('/no_think') ? query : `${query} /no_think`;
     const messages = [
         { role: 'system', content: SYSTEM_PROMPT },
         ...FEW_SHOTS,
-        { role: 'user', content: query },
+        { role: 'user', content: noThinkQuery },
     ];
 
     const resp = await axios.post(`${baseURL}/chat/completions`, {
@@ -103,7 +104,8 @@ async function _callSGLangRouter(query) {
         max_tokens:  80,
         temperature: 0.0,
         stream:      false,
-    }, { timeout: 30000 });
+        chat_template_kwargs: { enable_thinking: false },
+    }, { timeout: 10000 });
 
     return resp.data?.choices?.[0]?.message?.content?.trim() || '';
 }

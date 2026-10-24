@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../core/Modal';
-import { Code, TreePine, GraduationCap, Sparkles } from 'lucide-react';
+import { Code, TreePine, GraduationCap, Sparkles, Trophy, Target } from 'lucide-react';
 
 const availableTools = [
     {
@@ -25,6 +25,22 @@ const availableTools = [
         description: 'Visualize your learning progress as a skill tree. Unlock new skills as you master topics.',
         icon: TreePine,
         path: '/gamification/skill-tree',
+        status: 'active',
+        category: 'gamification'
+    },
+    {
+        title: 'Student XP Leaderboard',
+        description: 'See top academic achievers across iMentor and track your live XP standing.',
+        icon: Trophy,
+        path: '/gamification/leaderboard',
+        status: 'active',
+        category: 'gamification'
+    },
+    {
+        title: 'Daily & Performance Bounties',
+        description: 'Solve personalized concept challenges and report performance issues to earn XP & Bounty Credits.',
+        icon: Target,
+        path: '/gamification/bounties',
         status: 'active',
         category: 'gamification'
     },

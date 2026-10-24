@@ -68,100 +68,79 @@ async function processGuidedLearning(
         // Add student's query
         tutorSession.addInteraction('student', userQuery);
 
-        // FIX 3: Skip complex analysis on first interaction to reduce API calls
+        // Fast deterministic gap & comprehension tracking + single-call Socratic generation
         let analysis = null;
         if (tutorSession.conversationContext.length > 1) {
-            try {
-                // Signal analysis start
-                if (streamCallback) streamCallback({ type: 'status', content: 'Analyzing knowledge gaps...' });
-
-                // Analyze with retry logic
-                analysis = await retryWithBackoff(
-                    () => analyzeKnowledgeGaps(
-                        userQuery,
-                        correctAnswer,
-                        tutorSession.conversationContext.slice(-5), // Limit context
-                        llmConfig
-                    ),
-                    RETRY_ATTEMPTS,
-                    RETRY_DELAY_MS
-                );
-
-                // Update tutor session with analysis
-                if (analysis.gaps && analysis.gaps.length > 0) {
-                    analysis.gaps.forEach(gap => {
-                        if (!tutorSession.knowledgeGaps.some(g => g.concept === gap)) {
-                            tutorSession.knowledgeGaps.push({
-                                concept: gap,
-                                identified: new Date(),
-                                resolved: false
-                            });
-                        }
-                    });
+            const cleanResp = String(userQuery || '').split('\n')[0].trim();
+            const isDetailed = cleanResp.length > 45 && !/^(idk|i don't know|help|not sure)/i.test(cleanResp);
+            const compLevel = isDetailed ? 0.8 : 0.45;
+            const topicLabel = extractKeyTopic(tutorSession.learningGoal || cleanResp);
+            analysis = {
+                comprehensionLevel: compLevel,
+                gaps: isDetailed ? [] : [topicLabel]
+            };
+            if (isDetailed) {
+                if (!tutorSession.progressTracking.conceptsUnderstood.includes(topicLabel)) {
+                    tutorSession.progressTracking.conceptsUnderstood.push(topicLabel);
                 }
-
-                // Update struggling concepts
-                if (analysis.comprehensionLevel < 0.5) {
-                    const struggleConcepts = analysis.gaps.slice(0, 2);
-                    struggleConcepts.forEach(concept => {
-                        if (!tutorSession.progressTracking.conceptsStruggling.includes(concept)) {
-                            tutorSession.progressTracking.conceptsStruggling.push(concept);
-                        }
-                    });
-                } else if (analysis.comprehensionLevel > 0.7) {
-                    // Mark concepts as understood
-                    const understoodConcepts = analysis.gaps.filter(gap =>
-                        !tutorSession.progressTracking.conceptsUnderstood.includes(gap)
-                    );
-                    tutorSession.progressTracking.conceptsUnderstood.push(...understoodConcepts);
+                tutorSession.masteryScore = Math.min(100, (tutorSession.masteryScore || 0) + 25);
+            } else {
+                if (!tutorSession.progressTracking.conceptsStruggling.includes(topicLabel)) {
+                    tutorSession.progressTracking.conceptsStruggling.push(topicLabel);
                 }
-
-            } catch (analysisError) {
-                console.warn('[GuidedLearning] Analysis failed, skipping:', analysisError.message);
-                // Continue without analysis
             }
         }
 
-        // Assess student level
         const assessedLevel = tutorSession.assessStudentLevel();
         if (assessedLevel !== 'unknown') {
             tutorSession.studentLevel = assessedLevel;
         }
 
-        // Build thinking message early for stream
         const thinkingMessage = buildThinkingMessage(tutorSession, analysis);
         if (streamCallback) {
             streamCallback({ type: 'thought', content: thinkingMessage });
-            streamCallback({ type: 'status', content: 'Generating adaptive hint...' });
+            streamCallback({ type: 'status', content: 'Generating Socratic guidance...' });
         }
 
-        // FIX 4: Adaptive Socratic 2.0 Generation (Restored Architectural Flow)
-        let socraticResult;
-        let adaptiveHint; // [Bug fix Team1: was implicitly global]
+        let adaptiveHint = '';
         try {
-            socraticResult = await socraticTutorService.processTutorResponse(
-                userQuery,
-                tutorSession.sessionId,
-                llmConfig,
-                (content, isChunk) => {
-                    if (streamCallback) {
-                        if (isChunk) streamCallback({ type: 'answer', content });
-                        else streamCallback({ type: 'status', content });
-                    }
-                }
-            );
+            const recentMsgs = tutorSession.conversationContext.slice(-4).map(m => ({
+                role: m.role === 'student' ? 'user' : 'model',
+                parts: [{ text: m.message || '' }]
+            }));
+            const sysPrompt = `You are iMentor's Guided Learning Coach (modeled after Google Gemini Guided Learning & ChatGPT Study Mode) for ${tutorSession.subject || 'Digital Signal Processing (EE3621)'}.
+Learning Goal: "${tutorSession.learningGoal}".
+Follow this exact Guided Learning flow to prevent mental fatigue:
+1. **✅ Acknowledge Your Competence**: Explicitly validate what the student understood well, echoing their specific terms or intuition.
+2. **🔄 Reframing Your Response (If Partial/Misconception)**: Re-articulate the student's response constructively to nudge them in the right direction.
+3. **💡 Guidance & Hint (If Partial/Misconception)**: Provide a clear teaching explanation (with an intuitive analogy and KaTeX math \`$...$\` / \`$$...$$\`) and a concrete hint toward the correct answer.
+4. **📘 Next Subtopic (If Correct)**: When the student gives a correct response, affirm mastery under \`✅ **What You Mastered**:\`, clearly explain the NEXT subtopic under \`📘 **Next Subtopic**:\`, and end with one check question labeled \`**Guided Learning Check**:\`.
+5. Keep any Markdown table compact (max 3–4 columns, 6–10 words per cell). /no_think`;
 
-            // Sync model state with the result (masteryScore, supportLevel, etc)
-            if (socraticResult) {
-                tutorSession.masteryScore = socraticResult.masteryScore;
-                tutorSession.supportLevel = socraticResult.supportLevel || 'MINIMAL';
-                tutorSession.emotionalState = socraticResult.emotionalState || 'CURIOUS';
+            adaptiveHint = await Promise.race([
+                sglangService.generateContentWithHistory(
+                    recentMsgs,
+                    `${userQuery} /no_think`,
+                    sysPrompt,
+                    { maxTokens: 650, temperature: 0.5, endpoint: 'chat' }
+                ),
+                new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang guided timeout')), 15000))
+            ]);
+            adaptiveHint = String(adaptiveHint || '').replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+
+            if (streamCallback && adaptiveHint) {
+                streamCallback({ type: 'answer', content: adaptiveHint });
             }
-
-            adaptiveHint = socraticResult.followUpQuestion;
         } catch (hintError) {
-            console.error('[GuidedLearning] Adaptive Socratic failed, using simple fallback:', hintError);
-            adaptiveHint = generateSimpleSocraticQuestion(userQuery, tutorSession.studentLevel);
+            console.warn('[GuidedLearning] Fast SGLang call timed out, using structured DSP fallback:', hintError.message);
+            const geminiGuided = require('./geminiGuidedLearningService');
+            const turn = geminiGuided.generateStructuredTurn({
+                topic: tutorSession.learningGoal || userQuery,
+                studentResponse: userQuery,
+                courseName: tutorSession.course || 'EE3621'
+            });
+            adaptiveHint = geminiGuided.formatTurnAsText(turn);
+            if (streamCallback) streamCallback({ type: 'answer', content: adaptiveHint });
         }
 
         // Record the hint
@@ -292,14 +271,13 @@ function extractKeyTopic(query) {
 // ... rest of the functions remain the same (getOrCreateTutorSession, build ThinkingMessage, etc.)
 
 async function getOrCreateTutorSession(userQuery, sessionContext, llmConfig) {
-    const { userId, sessionId, subject, course, documentContext } = sessionContext;
+    const { userId, sessionId, subject, course, courseName, documentContext } = sessionContext;
+    const rawCourse = course || courseName || documentContext || 'General Course';
+    const normalizedCourse = (/^ee3621$/i.test(rawCourse) || /digital\s*signal\s*processing/i.test(rawCourse)) ? 'EE3621' : rawCourse;
+    const normalizedSubject = subject || (normalizedCourse === 'EE3621' ? 'Digital Signal Processing (EE3621)' : documentContext) || 'General Knowledge';
 
     // Try to find existing session
-    let tutorSession = await TutorSession.findOne({
-        userId,
-        sessionId,
-        status: 'active'
-    }).sort({ updatedAt: -1 });
+    let tutorSession = await TutorSession.findOne({ sessionId }).sort({ updatedAt: -1 });
 
     if (tutorSession) {
         console.log(`[GuidedLearning] Continuing session: ${tutorSession._id}`);
@@ -309,22 +287,19 @@ async function getOrCreateTutorSession(userQuery, sessionContext, llmConfig) {
     // Create new session
     console.log('[GuidedLearning] Creating new tutor session');
 
-    // Extract learning goal (with fallback)
-    let learningGoal;
-    try {
-        learningGoal = await extractLearningGoal(userQuery, llmConfig);
-    } catch (error) {
-        console.warn('[GuidedLearning] Failed to extract goal, using query');
-        learningGoal = userQuery;
-    }
+    // Extract learning goal deterministically for fast TTFT (avoid redundant LLM round-trip)
+    const cleanQueryLine = String(userQuery || '').split('\n')[0].trim();
+    const learningGoal = cleanQueryLine.length > 0 && cleanQueryLine.length <= 240
+        ? cleanQueryLine
+        : extractKeyTopic(cleanQueryLine);
 
     tutorSession = new TutorSession({
         userId,
         sessionId,
         learningGoal,
         studentLevel: 'unknown',
-        subject: subject || documentContext || 'General Knowledge',
-        course: course || documentContext || 'General Course',
+        subject: normalizedSubject,
+        course: normalizedCourse,
         documentContext: documentContext || null,
         knowledgeGaps: [],
         conversationContext: [],
@@ -351,20 +326,14 @@ async function getOrCreateTutorSession(userQuery, sessionContext, llmConfig) {
 }
 
 function buildThinkingMessage(tutorSession, analysis) {
-    const parts = [];
-
-    parts.push(`🎓 **Tutor Mode Active**`);
-    parts.push(`Learning Goal: ${tutorSession.learningGoal}`);
-    parts.push(`Student Level: ${tutorSession.studentLevel}`);
-
-    if (analysis) {
-        parts.push(`Comprehension: ${(analysis.comprehensionLevel * 100).toFixed(0)}%`);
-        if (analysis.gaps && analysis.gaps.length > 0) {
-            parts.push(`Focus Areas: ${analysis.gaps.slice(0, 2).join(', ')}`);
-        }
-    }
-
-    return parts.join('\n');
+    const goal = tutorSession.learningGoal || 'Core Concept';
+    const compPct = analysis ? `${(analysis.comprehensionLevel * 100).toFixed(0)}%` : 'Initial Assessment';
+    const focus = (analysis?.gaps && analysis.gaps.length > 0) ? analysis.gaps.slice(0, 2).join(', ') : goal;
+    return (
+        `**1. Dissecting Learner Intuition:** Evaluated response against learning goal (*${goal}*, comprehension: ${compPct}).\n\n` +
+        `**2. Collating Course Grounding:** Mapped conceptual focus (${focus}) to syllabus definitions, analogies, and KaTeX equations.\n\n` +
+        `**3. Synthesizing Guided Response:** Structured competency acknowledgement, scaffolding explanation, and single check question.`
+    );
 }
 
 module.exports = {

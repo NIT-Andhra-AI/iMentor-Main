@@ -6,17 +6,16 @@ const XPHistorySchema = new mongoose.Schema({
     reason: {
         type: String,
         enum: [
-            // Legacy / credits reasons
             'remembering', 'understanding', 'applying', 'analyzing',
             'evaluating_creating', 'rote', 'application', 'crafting',
-            'boss_battle', 'streak_bonus', 'bounty_question',
-            // Tutor turn XP reasons (tutorXpService)
+            'boss_battle', 'streak_bonus', 'bounty_question', 'bounty_completed',
+            'bounty_submission', 'bounty_verified', 'daily_bonus', 'admin_award',
+            'spent', 'skill_tree_completion', 'milestone_boss_completion',
+            'diagnostic_completion', 'general_chat',
             'tutor_turn', 'tutor_correct', 'tutor_partial', 'tutor_wrong',
             'tutor_unknown', 'tutor_incomplete', 'tutor_vague',
             'tutor_misconception', 'tutor_no_foundation',
-            'tutor_mastery',
-            // Quality bonus from LLM eval
-            'quality_bonus', 'direct_answer'
+            'tutor_mastery', 'quality_bonus', 'direct_answer'
         ],
         required: true
     },
@@ -66,17 +65,17 @@ const GamificationProfileSchema = new mongoose.Schema({
         reason: {
             type: String,
             enum: [
-                'remembering', 'understanding', 'applying', 'analyzing',
-                'evaluating_creating', 'rote', 'application', 'crafting',
-                'boss_battle', 'bounty_question', 'bounty_completed',
-                'daily_bonus', 'admin_award', 'spent', 'skill_tree_completion',
-                'streak_bonus',
-                // Tutor reasons
-                'tutor_turn', 'tutor_correct', 'tutor_partial', 'tutor_wrong',
-                'tutor_unknown', 'tutor_incomplete', 'tutor_vague',
-                'tutor_misconception', 'tutor_no_foundation',
-                'tutor_mastery', 'quality_bonus', 'direct_answer'
-            ],
+            'remembering', 'understanding', 'applying', 'analyzing',
+            'evaluating_creating', 'rote', 'application', 'crafting',
+            'boss_battle', 'streak_bonus', 'bounty_question', 'bounty_completed',
+            'bounty_submission', 'bounty_verified', 'daily_bonus', 'admin_award',
+            'spent', 'skill_tree_completion', 'milestone_boss_completion',
+            'diagnostic_completion', 'general_chat',
+            'tutor_turn', 'tutor_correct', 'tutor_partial', 'tutor_wrong',
+            'tutor_unknown', 'tutor_incomplete', 'tutor_vague',
+            'tutor_misconception', 'tutor_no_foundation',
+            'tutor_mastery', 'quality_bonus', 'direct_answer'
+        ],
             required: true
         },
         bountyId: { type: String, default: '' },
@@ -107,6 +106,14 @@ const GamificationProfileSchema = new mongoose.Schema({
 
     // Skill Tree Progress
     unlockedSkills: [{ type: String }],
+    // Seen question texts (normalized/raw) to guarantee per-student & per-retry question uniqueness
+    seenQuestionTexts: [{ type: String }],
+    // Server-side vault of active assessment attempts (keyed by skillId / levelKey)
+    // Stores shuffled options + correctIndex/correctAnswer on the server so answers are never sent to the client
+    activeAssessments: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
     // Skill tree progress: topic -> { levels: { [levelId]: { stars, score, attempts, ... } } }
     skillTreeProgress: {
         type: Object,

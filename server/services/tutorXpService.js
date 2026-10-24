@@ -90,7 +90,7 @@ function computeTurnXp(classification, cognitiveLevel, hintsUsed = 0, isMastery 
  * @param {string} topic
  * @param {string} reason     - logged in xpHistory
  */
-function awardTurnXpAsync(userId, xpAmount, topic, reason = 'tutor_turn') {
+function awardTurnXpAsync(userId, xpAmount, topic, reason = 'tutor_turn', options = {}) {
     if (!userId || xpAmount === 0) return;
 
     setImmediate(async () => {
@@ -98,7 +98,7 @@ function awardTurnXpAsync(userId, xpAmount, topic, reason = 'tutor_turn') {
             const gamificationService = require('./gamificationService');
 
             if (xpAmount > 0) {
-                await gamificationService.awardXP(userId, xpAmount, reason, topic);
+                await gamificationService.awardXP(userId, xpAmount, reason, topic, options);
             } else {
                 // Penalty: apply manually so we can floor at 0
                 const GamificationProfile = require('../models/GamificationProfile');
@@ -162,7 +162,7 @@ function scheduleQualityBonusAsync(userId, userMessage, aiResponse, topic, llmCo
             const bonus = bonusMap[evaluation.score] ?? 0;
 
             if (bonus > 0) {
-                await awardXP(userId, bonus, 'quality_bonus', topic);
+                await awardXP(userId, bonus, 'quality_bonus', topic, { queryText: userMessage });
 
                 // Push a distinct event — frontend shows as toast, not updating existing message
                 socketService.emitToUser(userId.toString(), 'xp_quality_bonus', {

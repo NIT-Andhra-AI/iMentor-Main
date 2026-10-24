@@ -69,7 +69,7 @@ const CircularModuleGraph = ({
                         </div>
                     </div>
                 </div>
-                <p className="text-sm font-medium text-gray-400">General Socratic Tutor Active</p>
+                <p className="text-sm font-medium text-gray-400">Guided Learning Mode Active</p>
                 <p className="text-xs text-gray-600 mt-1 max-w-[160px] leading-relaxed">
                     Explore any topic. I’ll guide you Socratically.
                 </p>

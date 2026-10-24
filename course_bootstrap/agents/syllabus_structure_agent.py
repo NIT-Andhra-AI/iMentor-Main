@@ -6,6 +6,8 @@ partitioned across 5 modules, with granular subtopics, Course Outcomes (CO1-CO5)
 """
 
 import re
+import json
+import urllib.request
 from typing import Dict, List, Any, Optional
 
 class SyllabusStructureAgent:
@@ -38,7 +40,9 @@ class SyllabusStructureAgent:
         elif any(k in normalized_name or k in normalized_code for k in ["REINFORCEMENT", "RL", "CS702"]):
             lectures = self._build_rl_36_syllabus()
         else:
-            lectures = self._synthesize_generic_36(subject_name)
+            lectures = self._synthesize_llm_36_syllabus(course_code, subject_name, raw_syllabus)
+            if not lectures or len(lectures) < 36:
+                lectures = self._synthesize_generic_36(subject_name)
 
         return self._package_syllabus(course_code, subject_name, lectures)
 
@@ -196,6 +200,56 @@ class SyllabusStructureAgent:
     def _build_rl_36_syllabus(self) -> List[Dict[str, Any]]:
         """Accredited 36-lecture curriculum for Deep Reinforcement Learning."""
         return self._synthesize_generic_36("Deep Reinforcement Learning")
+
+
+    def _synthesize_llm_36_syllabus(self, course_code: str, subject_name: str, raw_syllabus: str = "") -> List[Dict[str, Any]]:
+        """Calls local SGLang Qwen3.5 LLM (/no_think) to synthesize a domain-specific 36-lecture B.Tech curriculum."""
+        try:
+            prompt = (
+                f"/no_think\nYou are an AICTE/ABET curriculum architect. Design a 36-lecture (5-Unit) B.Tech syllabus for:\n"
+                f"Course Code: {course_code}\nCourse Name: {subject_name}\n"
+                + (f"Outline/Notes: {raw_syllabus[:800]}\n" if raw_syllabus else "")
+                + "Return ONLY a valid JSON array of 36 objects (7 in Unit I, 7 in Unit II, 8 in Unit III, 7 in Unit IV, 7 in Unit V). "
+                + "Each object MUST have keys: \"module\" (\"Unit I\"..\"Unit V\"), \"title\" (specific technical lecture title), "
+                + "\"subtopics\" (comma-separated key concepts/equations), \"bloom\" (one of L2_UNDERSTAND, L3_APPLY, L4_ANALYZE, L5_EVALUATE, L6_CREATE)."
+            )
+            payload = json.dumps({
+                "model": "Qwen/Qwen3.5-9B",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.3,
+                "max_tokens": 3600
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "http://127.0.0.1:8000/v1/chat/completions",
+                data=payload,
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                body = json.loads(resp.read().decode("utf-8"))
+                content = body["choices"][0]["message"]["content"]
+                content = re.sub(r"<think>[\s\S]*?</think>", "", content).strip()
+                match = re.search(r"\[[\s\S]*\]", content)
+                if match:
+                    items = json.loads(match.group(0))
+                    if isinstance(items, list) and len(items) >= 20:
+                        topics = []
+                        for idx, it in enumerate(items[:36]):
+                            mod = str(it.get("module") or f"Unit {['I','II','III','IV','V'][min(4, idx // 7)]}")
+                            title = str(it.get("title") or f"Topic {idx+1} in {subject_name}")
+                            sub = str(it.get("subtopics") or title)
+                            bloom = str(it.get("bloom") or "L4_ANALYZE")
+                            prereq = "None" if idx == 0 else str(idx)
+                            topics.append((mod, title, sub, bloom, prereq))
+                        if len(topics) < 36:
+                            gen = self._synthesize_generic_36(subject_name)
+                            for k in range(len(topics), 36):
+                                g = gen[k]
+                                topics.append((g["module"], g["title"], g["subtopics"], g["bloom"], g["prereq"]))
+                        return self._format_topics_to_lectures(topics[:36])
+        except Exception as e:
+            print(f"[SyllabusStructureAgent] LLM synthesis fallback: {e}")
+        return []
 
     def _synthesize_generic_36(self, subject_name: str) -> List[Dict[str, Any]]:
         """Synthesizes an accredited 5-Unit / 36-Lecture 3-credit engineering curriculum for any subject."""

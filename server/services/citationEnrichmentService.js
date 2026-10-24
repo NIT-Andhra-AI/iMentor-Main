@@ -2,11 +2,10 @@ const log = require('../utils/logger');
 const axios = require('axios');
 
 /**
- * Citation Enrichment Service
- * Enriches research source metadata BEFORE synthesis.
+ * Citation Enrichment Service (PhD Literature Review Edition)
+ * Enriches research source metadata and builds full-text-aware context blocks for LLM synthesis.
  */
 
-// --- Title Similarity (Levenshtein-based) ---
 function similarityScore(a, b) {
     if (!a || !b) return 0;
     const s1 = a.toLowerCase().trim();
@@ -43,11 +42,8 @@ const citationEnrichmentService = {
     async enrichSources(sources) {
         if (!sources || sources.length === 0) return [];
 
-        // log.info('AI', `Enriching ${sources.length} sources...`);
-
         const enrichedSources = [];
-
-        const BATCH_SIZE = 5;
+        const BATCH_SIZE = 6;
         for (let i = 0; i < sources.length; i += BATCH_SIZE) {
             const batch = sources.slice(i, i + BATCH_SIZE);
             const enrichedBatch = await Promise.all(
@@ -56,32 +52,39 @@ const citationEnrichmentService = {
             enrichedSources.push(...enrichedBatch);
 
             if (i + BATCH_SIZE < sources.length) {
-                await new Promise(r => setTimeout(r, 300));
+                await new Promise(r => setTimeout(r, 200));
             }
         }
 
-        const indexed = this.assignCitationIndices(enrichedSources);
-        // const completeness = this.calculateMetadataCompleteness(indexed);
-        // log.info('AI', `Source enrichment complete (Completeness: ${completeness}%)`);
-
-        return indexed;
+        return this.assignCitationIndices(enrichedSources);
     },
 
     /**
-     * Enrich a single source object.
+     * Enrich a single source object while preserving all full-text and OA fields.
      */
     async enrichSingleSource(source) {
         const enriched = {
             ...source,
             title: source.title || 'Untitled Source',
-            authors: source.authors || [],
+            authors: Array.isArray(source.authors) ? source.authors : (source.authors ? [String(source.authors)] : []),
             year: source.publishedYear || source.year || this.extractYearFromDate(source.publishedDate),
-            publisher: source.publisher || source.journal || null,
+            publisher: source.publisher || source.journal || source.venue || null,
+            journal: source.journal || source.venue || source.publisher || null,
             doi: source.doi || null,
             url: source.url || (source.metadata?.url) || null,
+            openAccessUrl: source.openAccessUrl || source.pdf_url || null,
+            pdf_url: source.pdf_url || source.openAccessUrl || null,
+            isOpenAccess: Boolean(source.isOpenAccess || source.openAccessUrl || source.pdf_url),
+            hasFullText: Boolean(source.hasFullText),
+            hasLocalPdf: Boolean(source.hasLocalPdf),
+            localPdfPath: source.localPdfPath || null,
+            localPdfFilename: source.localPdfFilename || null,
+            pdfHarvestMethod: source.pdfHarvestMethod || null,
+            fullTextSections: source.fullTextSections || null,
+            snowballType: source.snowballType || null,
             sourceType: source.sourceType || 'web',
             enrichmentAttempted: false,
-            enrichmentSource: null
+            enrichmentSource: source.enrichmentSource || null
         };
 
         const needsEnrichment =
@@ -91,7 +94,7 @@ const citationEnrichmentService = {
 
         if (!needsEnrichment) {
             enriched.enrichmentAttempted = true;
-            enriched.enrichmentSource = 'original';
+            enriched.enrichmentSource = enriched.enrichmentSource || 'original';
             return enriched;
         }
 
@@ -101,19 +104,7 @@ const citationEnrichmentService = {
                 this.mergeMetadata(enriched, crossrefResult, 'crossref');
                 return enriched;
             }
-        } catch (err) {
-            // log.warn('AI', `Crossref lookup failed for paper: ${enriched.title?.substring(0, 40)}`);
-        }
-
-        try {
-            const s2Result = await this.querySemanticScholar(enriched.title);
-            if (s2Result) {
-                this.mergeMetadata(enriched, s2Result, 'semantic_scholar');
-                return enriched;
-            }
-        } catch (err) {
-            // log.warn('AI', `Semantic Scholar lookup failed for paper: ${enriched.title?.substring(0, 40)}`);
-        }
+        } catch (_) {}
 
         this.inferFromUrl(enriched);
 
@@ -132,9 +123,9 @@ const citationEnrichmentService = {
         const url = `https://api.crossref.org/works?query.title=${encodeURIComponent(searchTitle)}&rows=3&select=title,author,published-print,published-online,container-title,DOI,publisher,type`;
 
         const response = await axios.get(url, {
-            timeout: 5000,
+            timeout: 4500,
             headers: {
-                'User-Agent': 'iMentor-DeepResearch/1.0 (mailto:research@imentor.app)'
+                'User-Agent': 'iMentor-DeepResearch/2.0 (mailto:research@nitandhra.ac.in)'
             }
         });
 
@@ -169,56 +160,19 @@ const citationEnrichmentService = {
         return null;
     },
 
-    /**
-     * Query Semantic Scholar API for metadata by title.
-     */
-    async querySemanticScholar(title) {
-        if (!title || title.length < 10) return null;
-
-        const searchTitle = title.substring(0, 200);
-        const url = `https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(searchTitle)}&limit=3&fields=title,authors,year,venue,externalIds`;
-
-        const response = await axios.get(url, {
-            timeout: 5000,
-            headers: {
-                'User-Agent': 'iMentor-DeepResearch/1.0'
-            }
-        });
-
-        const papers = response.data?.data || [];
-        if (papers.length === 0) return null;
-
-        for (const paper of papers) {
-            const score = similarityScore(title, paper.title);
-
-            if (score >= SIMILARITY_THRESHOLD) {
-                return {
-                    title: paper.title || title,
-                    authors: (paper.authors || []).map(a => a.name).filter(Boolean),
-                    year: paper.year || null,
-                    publisher: paper.venue || null,
-                    journal: paper.venue || null,
-                    doi: paper.externalIds?.DOI || null,
-                    matchScore: score
-                };
-            }
-        }
-
-        return null;
-    },
-
-    /**
-     * Merge enrichment data into source, without overwriting existing data.
-     */
     mergeMetadata(source, enrichment, provider) {
         if (source.authors.length === 0 && enrichment.authors?.length > 0) {
             source.authors = enrichment.authors;
         }
         if (!source.year && enrichment.year) {
             source.year = enrichment.year;
+            source.publishedYear = enrichment.year;
         }
-        if (!source.publisher && (enrichment.publisher || enrichment.journal)) {
-            source.publisher = enrichment.publisher || enrichment.journal;
+        if (!source.publisher && (enrichment.journal || enrichment.publisher)) {
+            source.publisher = enrichment.journal || enrichment.publisher;
+        }
+        if (!source.journal && (enrichment.journal || enrichment.publisher)) {
+            source.journal = enrichment.journal || enrichment.publisher;
         }
         if (!source.doi && enrichment.doi) {
             source.doi = enrichment.doi;
@@ -228,9 +182,6 @@ const citationEnrichmentService = {
         source.enrichmentSource = provider;
     },
 
-    /**
-     * Infer metadata from the URL when API enrichment fails.
-     */
     inferFromUrl(source) {
         if (!source.url) return;
 
@@ -240,24 +191,23 @@ const citationEnrichmentService = {
             if (!source.publisher) {
                 const publisherMap = {
                     'arxiv.org': 'arXiv Preprint',
-                    'nature.com': 'Nature',
-                    'science.org': 'Science',
-                    'ieee.org': 'IEEE',
-                    'acm.org': 'ACM',
-                    'springer.com': 'Springer',
-                    'sciencedirect.com': 'Elsevier',
-                    'wiley.com': 'Wiley',
-                    'ncbi.nlm.nih.gov': 'PubMed',
+                    'openreview.net': 'OpenReview (ICLR/NeurIPS)',
+                    'nature.com': 'Nature Portfolio',
+                    'science.org': 'Science (AAAS)',
+                    'ieee.org': 'IEEE Xplore',
+                    'acm.org': 'ACM Digital Library',
+                    'springer.com': 'SpringerLink',
+                    'sciencedirect.com': 'Elsevier ScienceDirect',
+                    'wiley.com': 'Wiley Online Library',
+                    'tandfonline.com': 'Taylor & Francis',
+                    'ncbi.nlm.nih.gov': 'PubMed Central',
+                    'europepmc.org': 'Europe PMC',
                     'scholar.google.com': 'Google Scholar',
-                    'researchgate.net': 'ResearchGate',
                     'mdpi.com': 'MDPI',
                     'frontiersin.org': 'Frontiers',
                     'plos.org': 'PLOS',
-                    'biorxiv.org': 'bioRxiv Preprint',
-                    'medrxiv.org': 'medRxiv Preprint',
-                    'ssrn.com': 'SSRN',
-                    'medium.com': 'Medium',
-                    'towardsdatascience.com': 'Towards Data Science'
+                    'biorxiv.org': 'bioRxiv',
+                    'medrxiv.org': 'medRxiv'
                 };
 
                 for (const [domain, pub] of Object.entries(publisherMap)) {
@@ -285,15 +235,11 @@ const citationEnrichmentService = {
                     source.doi = `arXiv:${arxivMatch[1]}`;
                 }
             }
-
         } catch (e) {
             log.warn('CITATION', `Could not infer citation metadata from URL: ${e.message}`);
         }
     },
 
-    /**
-     * Extract year from a date string or Date object.
-     */
     extractYearFromDate(dateInput) {
         if (!dateInput) return null;
         try {
@@ -307,6 +253,7 @@ const citationEnrichmentService = {
 
     /**
      * Assign deterministic citation indices [1], [2], [3]...
+     * Prioritizes Academic -> Full-Text Parsed -> Open-Access -> Credibility Score.
      */
     assignCitationIndices(sources) {
         const sorted = [...sources].sort((a, b) => {
@@ -314,6 +261,11 @@ const citationEnrichmentService = {
             const typeA = typeOrder[a.sourceType] ?? 2;
             const typeB = typeOrder[b.sourceType] ?? 2;
             if (typeA !== typeB) return typeA - typeB;
+
+            const ftA = a.hasFullText ? 1 : 0;
+            const ftB = b.hasFullText ? 1 : 0;
+            if (ftA !== ftB) return ftB - ftA;
+
             return (b.credibilityScore || 0) - (a.credibilityScore || 0);
         });
 
@@ -323,15 +275,11 @@ const citationEnrichmentService = {
         }));
     },
 
-    /**
-     * Calculate metadata completeness percentage across all sources.
-     */
     calculateMetadataCompleteness(sources) {
-        if (sources.length === 0) return 0;
+        if (!sources || sources.length === 0) return 0;
 
         let totalFields = 0;
         let filledFields = 0;
-
         const requiredFields = ['title', 'authors', 'year', 'publisher', 'url'];
 
         for (const source of sources) {
@@ -356,29 +304,38 @@ const citationEnrichmentService = {
             const authors = s.authors?.length > 0
                 ? (s.authors.length > 3 ? `${s.authors[0]} et al.` : s.authors.join(', '))
                 : 'Unknown';
-            const year = s.year || 'n.d.';
-            const publisher = s.publisher || s.sourceType || 'Web';
+            const year = s.year || s.publishedYear || 'n.d.';
+            const publisher = s.journal || s.publisher || s.sourceType || 'Academic';
+            const ftTag = s.hasFullText ? '[FULL-TEXT PDF PARSED]' : (s.isOpenAccess ? '[OA METADATA+ABSTRACT]' : '[INDEXED ABSTRACT]');
+            const cites = s.citationCount ? ` | Citations: ${s.citationCount}` : '';
 
-            return `[${s.citationIndex}] ${authors} (${year}). "${s.title}". ${publisher}. Credibility: ${s.credibilityScore || 'N/A'}/100.`;
+            return `[${s.citationIndex}] ${authors} (${year}). "${s.title}". ${publisher}. ${ftTag}${cites} | Credibility: ${s.credibilityScore || 80}/100.`;
         }).join('\n');
     },
 
     /**
-     * Build a structured source context block for LLM consumption.
+     * Build a structured full-text-aware source context block for LLM consumption.
+     * Expands per-source evidence window to 3,200 chars so full-text Methodology, Datasets,
+     * Quantitative Results, and Limitations are visible during synthesis.
      */
     buildSourceContextForLLM(enrichedSources) {
         return enrichedSources.map(s => {
             const authors = s.authors?.length > 0 ? s.authors.join(', ') : 'Unknown';
-            const year = s.year || 'n.d.';
+            const year = s.year || s.publishedYear || 'n.d.';
+            const venue = s.journal || s.publisher || s.venue || 'N/A';
+            const ftStatus = s.hasFullText
+                ? `FULL-TEXT PARSED (${s.pdfHarvestMethod || 'PDF'}) — Methodology, Setup, Metrics & Limitations extracted`
+                : 'Abstract + Bibliographic Metadata';
+
+            const rawContent = s.content || s.abstract || 'No content available.';
+            const contentSlice = rawContent.substring(0, 3200);
 
             return `=== SOURCE [${s.citationIndex}] ===
 Title: ${s.title}
-Authors: ${authors}
-Year: ${year}
-Publisher: ${s.publisher || 'N/A'}
-Type: ${s.sourceType || 'web'} | Credibility: ${s.credibilityScore || 'N/A'}/100
-Content:
-${s.content ? s.content.substring(0, 1000) : 'No content available.'}
+Authors: ${authors} | Year: ${year} | Venue: ${venue} | DOI: ${s.doi || 'N/A'}
+Evidence Depth: ${ftStatus} | Credibility: ${s.credibilityScore || 80}/100${s.citationCount ? ` | Citations: ${s.citationCount}` : ''}
+Content & Extracted Sections:
+${contentSlice}
 ===`;
         }).join('\n\n');
     }

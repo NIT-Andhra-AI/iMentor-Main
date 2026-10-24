@@ -3,22 +3,9 @@
  *
  * ╔══════════════════════════════════════════════════════════════════════════╗
  * ║            SGLang Service — OpenAI-Compatible LLM Wrapper               ║
+ * ║   + Gemini-Style Question-Adaptive Thinking Router                      ║
+ * ║   + AgentWrite / Multi-Turn Chunked Continuation for Long Context       ║
  * ╚══════════════════════════════════════════════════════════════════════════╝
- *
- * SGLang exposes an OpenAI-compatible REST API. This service wraps the standard
- * OpenAI SDK with a configurable baseURL pointing to SGLang endpoints.
- *
- * Models (AWQ 4-bit quantized — ~2x smaller VRAM, near-identical quality):
- *   SGLANG_CHAT_URL    — Day-shift 14B-AWQ  (~9 GB, GPU 0)   standard + direct_answer
- *   SGLANG_REASON_URL  — Day-shift 14B-AWQ  (~9 GB, GPU 1)   ToT / complex reasoning
- *   SGLANG_HEAVY_URL   — Night-shift 32B-AWQ (~18 GB, GPU 2)  offline STN + KG jobs
- *                      (single GPU — no tensor-parallel needed vs old 35B FP on 2 GPUs)
- *
- * This service is a DROP-IN PEER to sglangService.js — it exposes the same
- * interface so llmRouterService.js can switch between them with a flag.
- *
- * Guard: SGLANG_ENABLED must be 'true' in .env or all calls throw a clear error.
- * During migration, keep Ollama as fallback; flip SGLANG_ENABLED=true when ready.
  */
 
 const log         = require('../utils/logger');
@@ -28,6 +15,11 @@ const http        = require('http');
 
 const SGLANG_ENABLED = process.env.SGLANG_ENABLED !== 'false';
 const _sglangHttpAgent = new http.Agent({ keepAlive: true, maxSockets: 250, keepAliveMsecs: 60000 });
+
+// Multi-Turn Chunked Continuation constants (AgentWrite / Progressive Generation)
+const DEFAULT_PART_TOKEN_BUDGET = 1400; // Optimal coherence window per part (~1,050 words)
+const MAX_CONTINUATION_PARTS    = 3;    // Up to 3 stateful parts (~4,200 tokens / ~3,150 words total)
+const CONTEXT_SAFETY_BUFFER     = 512;  // Safety buffer below model max_model_len
 
 // ── Lazy-initialized clients per endpoint ────────────────────────────────────
 let _chatClient   = null;
@@ -46,8 +38,6 @@ function _getClient(type = 'chat') {
     };
 
     const baseURL = urlMap[type] || urlMap.chat;
-
-    // SGLang doesn't require an API key but the OpenAI SDK mandates one — use dummy
     const opts = { baseURL, apiKey: 'sglang-no-auth', timeout: 120_000, httpAgent: _sglangHttpAgent };
 
     if (type === 'chat')   return _chatClient   || (_chatClient   = new OpenAI(opts));
@@ -57,11 +47,64 @@ function _getClient(type = 'chat') {
     return new OpenAI(opts);
 }
 
+/**
+ * Conservative token estimator that accounts for LaTeX, math symbols, and code punctuation
+ * (which tokenize at ~1 token per symbol in Qwen tokenizers).
+ */
+function estimateTokensConservative(text) {
+    if (!text) return 0;
+    const str = String(text);
+    const specialSymbols = (str.match(/[\\{}()[\]^_+=*/<>|&~`@#$%;:]/g) || []).length;
+    return Math.ceil(str.length / 3.2) + Math.ceil(specialSymbols * 0.55);
+}
+
+/**
+ * Gemini-Style Question-Adaptive Thinking Router:
+ * Determines whether to enable `<think>...</think>` dissection based on:
+ *   1. Explicit user UI toggle (`options.enableThinking === false` -> Answer Now / No Think)
+ *   2. Structured JSON / Socratic Tutor / short utility calls -> No Think
+ *   3. Subjective Question Complexity (derivations, proofs, filter design, math calculations,
+ *      multi-dimensional trade-off analysis, and algorithm debugging -> Enable Bounded Thinking;
+ *      greetings, definitions, conceptual overviews, and simple queries -> Fast Direct Answer).
+ */
+function evaluateThinkingStrategy(userQuery = '', endpoint = 'chat', options = {}) {
+    const q = String(userQuery || '').trim();
+
+    // 1. Explicit override: user clicked "Answer Now" or caller disabled thinking
+    if (options.enableThinking === false || q.includes('/no_think')) {
+        return { enableThinking: false, reason: 'explicit_disabled' };
+    }
+    // 2. Utility / JSON schema / Socratic short turns never use raw <think> blocks
+    const effectiveMaxTok = options.maxTokens || options.maxOutputTokens;
+    if (options.response_format || options.jsonMode || options.isTutorMode || (effectiveMaxTok && effectiveMaxTok <= 600)) {
+        return { enableThinking: false, reason: 'utility_or_short_turn' };
+    }
+    // 3. Explicit user force-enable
+    if (options.enableThinking === true) {
+        return { enableThinking: true, reason: 'explicit_enabled' };
+    }
+
+    // 4. Subjective Question Complexity Analysis (Gemini App adaptive strategy)
+    // Short factual definitions, "what is", "define", "explain briefly", greetings -> Instant Direct Mode (No Think)
+    const fastDirectPattern = /^(hi|hello|hey|thanks|thank you|ok|okay|what\s+is\s+(the\s+|a\s+|an\s+)?[\w\s-]{2,40}\??$|define\s+[\w\s-]{2,40}\.?$|who\s+|when\s+|list\s+the\s+)/i;
+    if (q.length <= 60 && fastDirectPattern.test(q) && !/[=+*/^∑∫]|\s-\s|\d-\d/.test(q) && !/\b(derive|prove|calculate|implement|python|code|step-by-step)\b/i.test(q)) {
+        return { enableThinking: false, reason: 'simple_direct_query' };
+    }
+
+    const deepReasoningPattern = /\b(derive|derivation|prove|proof|calculate|compute|solve|design\s+a|transfer\s+function|difference\s+equation|z-transform|butterfly|radix-2|region\s+of\s+convergence|bilinear|chebyshev|butterworth|poles?\s+and\s+zeros?|implement|python|matlab|algorithm|debug|why\s+does|compare\s+and\s+contrast|step-by-step|matrix|eigen)/i;
+    const hasMathSymbols = /[=^∑∫]|(\b[xXyYhH]\([nNzZωt]\))/.test(q);
+
+    if (deepReasoningPattern.test(q) || hasMathSymbols || (endpoint === 'reason' && q.length >= 45)) {
+        return { enableThinking: true, reason: 'complex_analytical_query' };
+    }
+
+    return { enableThinking: false, reason: 'standard_conversational_query' };
+}
+
 // ── Format history for OpenAI messages array with Radix prefix canonicalization ──
 function _formatHistory(chatHistory = [], systemPrompt = null) {
     const messages = [];
     if (systemPrompt) {
-        // Canonicalize system prompt (normalize line endings and trim) to maximize SGLang Radix-tree cache hits
         const canonicalSystemPrompt = typeof systemPrompt === 'string'
             ? systemPrompt.replace(/\r\n/g, '\n').trim()
             : systemPrompt;
@@ -69,7 +112,7 @@ function _formatHistory(chatHistory = [], systemPrompt = null) {
     }
     for (const msg of chatHistory) {
         messages.push({
-            role:    msg.role === 'model' ? 'assistant' : 'user',
+            role:    msg.role === 'model' ? 'assistant' : (msg.role || 'user'),
             content: msg.parts?.[0]?.text || msg.content || '',
         });
     }
@@ -107,14 +150,7 @@ async function _retryWithBackoff(fn, maxRetries = 2, baseDelayMs = 400) {
 }
 
 /**
- * Generate a response (non-streaming).
- * Interface matches OpenAI / standard LLM service.
- *
- * @param {Array}   chatHistory     - [{ role, parts: [{ text }] }]
- * @param {string}  userQuery       - Current user message
- * @param {string}  systemPrompt    - Optional system instruction
- * @param {object}  options         - { model, maxTokens, temperature, endpoint: 'chat'|'reason'|'heavy' }
- * @returns {Promise<string>} The assistant's response text
+ * Generate a response (non-streaming) with Multi-Turn Chunked Continuation.
  */
 async function generateContentWithHistory(chatHistory, userQuery, systemPrompt = null, options = {}) {
     const endpoint = options.endpoint || 'chat';
@@ -122,48 +158,91 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
         || (endpoint === 'heavy'  ? process.env.SGLANG_HEAVY_MODEL  : null)
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+        || 'Qwen/Qwen3-8B-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
+    const thinkingDecision = evaluateThinkingStrategy(userQuery, endpoint, options);
+
+    let effectiveSystemPrompt = systemPrompt || '';
+    if (thinkingDecision.enableThinking) {
+        effectiveSystemPrompt += '\n[Thinking Strategy: Before answering, briefly dissect the core mathematical/engineering steps in 3-5 concise bullet points (<150 tokens) inside <think>...</think>, then present a clear, structured final response.]';
+    }
+
+    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(effectiveSystemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
+    const noThinkSuffix = !thinkingDecision.enableThinking && !optimizedUserQuery.includes('/no_think') ? ' /no_think' : '';
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
-    messages.push({ role: 'user', content: optimizedUserQuery });
+    messages.push({ role: 'user', content: optimizedUserQuery + noThinkSuffix });
 
-    // Estimate input tokens and adjust maxTokens to prevent context overflow
-    const allMessagesText = messages.map(m => m.content).join(' ');
-    const estimatedInputTokens = Math.ceil(allMessagesText.length / 3.5); // ~3.5 chars/token for Qwen
-    const modelMaxContext = sglangCaps.getModelMaxContext(); // live from /v1/models
-    const safetyBuffer = 256;
-    const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
-    const maxTokens = Math.min(options.maxTokens || 4096, availableForCompletion);
+    const modelMaxContext = sglangCaps.getModelMaxContext(16384);
+    const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 2560;
+    const allowMultiPart = !options.response_format && !options.jsonMode && !options.tools && reqMaxTokens > 800;
+    const maxParts = allowMultiPart ? MAX_CONTINUATION_PARTS : 1;
 
-    log.info('AI', `[SGLang] generate → endpoint=${endpoint} model=${model}`);
-    log.info('AI', `[SGLang] Token budget: input≈${estimatedInputTokens} + completion=${maxTokens} ≈ ${estimatedInputTokens + maxTokens} / ${modelMaxContext}`);
+    let combinedAnswer = '';
+    let partIndex = 1;
 
     try {
-        const body = {
-            model,
-            messages,
-            max_tokens:  maxTokens,
-            temperature: options.temperature || 0.7,
-            stream:      false,
-        };
-        if (options.response_format) body.response_format = options.response_format;
-        if (options.tools) body.tools = options.tools;
-        if (options.tool_choice) body.tool_choice = options.tool_choice;
+        while (partIndex <= maxParts) {
+            const allMessagesText = messages.map(m => m.content).join(' ');
+            const estimatedInputTokens = estimateTokensConservative(allMessagesText);
+            const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - CONTEXT_SAFETY_BUFFER);
+            const targetPartTokens = allowMultiPart
+                ? Math.min(options.partTokenBudget || DEFAULT_PART_TOKEN_BUDGET, options.maxTokens || 2560)
+                : (options.maxTokens || 2048);
+            const maxTokens = Math.min(targetPartTokens, availableForCompletion);
 
-        const completion = await _retryWithBackoff(() => client.chat.completions.create(body));
+            const useThinkingThisPart = partIndex === 1 && thinkingDecision.enableThinking;
 
-        const text = completion.choices?.[0]?.message?.content?.trim() || '';
-        log.success('AI', `[SGLang] response received (${text.length} chars)`);
-        return tokenOptimizer.expandOutgoingResponse(text);
+            log.info('AI', `[SGLang] generate (Part ${partIndex}/${maxParts}) → endpoint=${endpoint} model=${model} thinking=${useThinkingThisPart} (${thinkingDecision.reason}) budget=${maxTokens}/${availableForCompletion}`);
+
+            const body = {
+                model,
+                messages,
+                max_tokens:  maxTokens,
+                temperature: options.temperature || 0.7,
+                stream:      false,
+                chat_template_kwargs: { enable_thinking: useThinkingThisPart },
+            };
+            if (options.response_format) body.response_format = options.response_format;
+            if (options.tools) body.tools = options.tools;
+            if (options.tool_choice) body.tool_choice = options.tool_choice;
+
+            const completion = await _retryWithBackoff(() => client.chat.completions.create(body));
+            const choice = completion.choices?.[0];
+            const rawText = choice?.message?.content?.trim() || '';
+            const finishReason = choice?.finish_reason || 'stop';
+
+            const cleanedPart = rawText.replace(/<(?:think|thinking)>[\s\S]*?<\/(?:think|thinking)>\s*/gi, '').trim();
+            combinedAnswer += (combinedAnswer && cleanedPart ? '\n\n' : '') + cleanedPart;
+
+            if (finishReason !== 'length' || !allowMultiPart || partIndex >= maxParts || !cleanedPart) {
+                break;
+            }
+
+            // Stateful Multi-Turn Continuation (AgentWrite rolling window)
+            log.info('AI', `[SGLang] Part ${partIndex} hit token boundary (finish_reason=length, ${cleanedPart.length} chars). Auto-continuing Part ${partIndex + 1}...`);
+            const tailSnippet = cleanedPart.slice(-140).replace(/\s+/g, ' ');
+            messages.push({ role: 'assistant', content: cleanedPart });
+            messages.push({
+                role: 'user',
+                content: `Continue writing Part ${partIndex + 1} seamlessly from the exact point where Part ${partIndex} stopped ("...${tailSnippet}"). Do NOT repeat earlier headings or text; finish all remaining derivations, code blocks, or tables and conclude cleanly. /no_think`,
+            });
+            partIndex++;
+        }
+
+        log.success('AI', `[SGLang] response complete across ${partIndex} part(s) (${combinedAnswer.length} chars)`);
+        return tokenOptimizer.expandOutgoingResponse(combinedAnswer);
 
     } catch (err) {
         log.error('AI', `[SGLang] generate failed: ${err.message}`);
+        if (combinedAnswer.length > 0) {
+            log.warn('AI', `[SGLang] Returning partial multi-part answer (${combinedAnswer.length} chars)`);
+            return tokenOptimizer.expandOutgoingResponse(combinedAnswer);
+        }
         const enhanced = new Error(`SGLang error: ${err.message}`);
         enhanced.status = err.status || 503;
         throw enhanced;
@@ -171,88 +250,196 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
 }
 
 /**
- * Streaming generation.
- * Yields tokens via onToken callback.
- *
- * @param {Array}    chatHistory
- * @param {string}   userQuery
- * @param {string}   systemPrompt
- * @param {object}   options       - { model, maxTokens, temperature, endpoint }
- * @param {Function} onToken       - Called with each token string or event object
- * @returns {Promise<{ finalAnswer: string }>}
+ * Streaming generation with:
+ *   1. Gemini-Style Question-Adaptive Thinking (emits `{ type: 'thinking', content }` during `<think>` phase
+ *      when thinking is enabled for complex questions, or skips `<think>` completely for fast queries).
+ *   2. Stateful Multi-Turn Chunked Continuation (`Part 1 -> Part 2 -> Part 3`) so long-form answers
+ *      never get cut off mid-sentence and never overflow the context window.
  */
 async function streamChat(chatHistory, userQuery, systemPrompt = null, options = {}, onToken = null) {
     const endpoint = options.endpoint || 'chat';
     const model    = options.model
         || (endpoint === 'reason' ? process.env.SGLANG_REASON_MODEL : null)
         || process.env.SGLANG_CHAT_MODEL
-        || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+        || 'Qwen/Qwen3-8B-AWQ';
 
     const client   = _getClient(endpoint);
     const tokenOptimizer = require('../utils/tokenOptimizer');
-    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPrompt, options));
+    const thinkingDecision = evaluateThinkingStrategy(userQuery, endpoint, options);
+
+    let effectiveSystemPrompt = systemPrompt || '';
+    if (thinkingDecision.enableThinking) {
+        effectiveSystemPrompt += '\n[Thinking Strategy: Dissect the problem and outline your plan in 3-5 concise bullet points (<160 tokens) inside <think>...</think>, then write the complete response.]';
+    }
+
+    const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(effectiveSystemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
+    const noThinkSuffix = !thinkingDecision.enableThinking && !optimizedUserQuery.includes('/no_think') ? ' /no_think' : '';
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
-    messages.push({ role: 'user', content: optimizedUserQuery });
+    messages.push({ role: 'user', content: optimizedUserQuery + noThinkSuffix });
 
-    log.info('AI', `[SGLang] stream → endpoint=${endpoint} model=${model}`);
-
-    // Compute safe token budget using live SGLang model capabilities
-    const allText = messages.map(m => m.content).join(' ');
-    const estimatedInputTokens = Math.ceil(allText.length / 3.5);
     const modelMaxContext = sglangCaps.getModelMaxContext(16384);
-    const safetyBuffer = 256;
-    const availableForCompletion = Math.max(1024, modelMaxContext - estimatedInputTokens - safetyBuffer);
-    const maxTokensForStream = Math.min(options.maxTokens || 8192, availableForCompletion);
-
-    const chunks   = [];
-    const body = {
-        model,
-        messages,
-        max_tokens:  maxTokensForStream,
-        temperature: options.temperature || 0.7,
-        stream:      true,
-    };
-    if (options.response_format) body.response_format = options.response_format;
-    if (options.tools) body.tools = options.tools;
-    if (options.tool_choice) body.tool_choice = options.tool_choice;
+    const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 3072;
+    const allowMultiPart = !options.response_format && !options.jsonMode && !options.tools && reqMaxTokens > 800;
+    const maxParts = allowMultiPart ? MAX_CONTINUATION_PARTS : 1;
 
     const streamStart = Date.now();
     let firstTokenTime = null;
+    let totalTokensCount = 0;
+    let combinedAnswer = '';
+    let combinedThinking = '';
+    let partIndex = 1;
 
     try {
-        const stream = await _retryWithBackoff(() => client.chat.completions.create(body));
+        while (partIndex <= maxParts) {
+            const allText = messages.map(m => m.content).join(' ');
+            const estimatedInputTokens = estimateTokensConservative(allText);
+            const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - CONTEXT_SAFETY_BUFFER);
+            const targetPartTokens = allowMultiPart
+                ? Math.min(options.partTokenBudget || DEFAULT_PART_TOKEN_BUDGET, options.maxTokens || 3072)
+                : Math.min(options.maxTokens || options.maxOutputTokens || 2048, availableForCompletion);
+            const maxTokensForPart = Math.min(targetPartTokens, availableForCompletion);
 
-        for await (const chunk of stream) {
-            const delta = chunk.choices?.[0]?.delta?.content;
-            if (delta) {
-                if (firstTokenTime === null) {
-                    firstTokenTime = Date.now() - streamStart;
-                    log.info('AI', `[SGLang] TTFT (Time To First Token): ${firstTokenTime}ms`);
+            const useThinkingThisPart = partIndex === 1 && thinkingDecision.enableThinking;
+
+            log.info('AI', `[SGLang] stream (Part ${partIndex}/${maxParts}) → endpoint=${endpoint} model=${model} thinking=${useThinkingThisPart} (${thinkingDecision.reason}) budget=${maxTokensForPart}/${availableForCompletion}`);
+
+            const body = {
+                model,
+                messages,
+                max_tokens:  maxTokensForPart,
+                temperature: options.temperature || 0.7,
+                stream:      true,
+                chat_template_kwargs: { enable_thinking: useThinkingThisPart },
+            };
+            if (options.response_format) body.response_format = options.response_format;
+            if (options.tools) body.tools = options.tools;
+            if (options.tool_choice) body.tool_choice = options.tool_choice;
+
+            const partChunks = [];
+            let finishReason = 'stop';
+            let thinkState = 'detecting'; // 'detecting' | 'in_think' | 'done'
+            let prefixBuffer = '';
+            let emittedThinkLen = 0;
+
+            const stream = await _retryWithBackoff(() => client.chat.completions.create(body));
+
+            for await (const chunk of stream) {
+                const choice = chunk.choices?.[0];
+                if (choice?.finish_reason) {
+                    finishReason = choice.finish_reason;
                 }
-                chunks.push(delta);
-                if (typeof onToken === 'function') {
-                    onToken({ type: 'token', content: delta });
+                const reasoningDelta = choice?.delta?.reasoning_content;
+                if (reasoningDelta && typeof onToken === 'function') {
+                    combinedThinking += reasoningDelta;
+                    onToken({ type: 'thinking', content: reasoningDelta });
+                }
+
+                const delta = choice?.delta?.content;
+                if (delta) {
+                    if (firstTokenTime === null) {
+                        firstTokenTime = Date.now() - streamStart;
+                        log.info('AI', `[SGLang] TTFT (Time To First Token): ${firstTokenTime}ms`);
+                    }
+                    totalTokensCount++;
+                    partChunks.push(delta);
+
+                    if (typeof onToken === 'function') {
+                        if (thinkState === 'detecting') {
+                            prefixBuffer += delta;
+                            if (/^\s*<(?:think|thinking)>/i.test(prefixBuffer)) {
+                                thinkState = 'in_think';
+                                const openMatch = prefixBuffer.match(/^\s*<(?:think|thinking)>\s*/i);
+                                prefixBuffer = prefixBuffer.slice(openMatch ? openMatch[0].length : 0);
+                            } else if (prefixBuffer.trim().length > 10 || (!prefixBuffer.trim().startsWith('<') && prefixBuffer.trim().length > 0)) {
+                                thinkState = 'done';
+                                onToken({ type: 'token', content: prefixBuffer });
+                                prefixBuffer = '';
+                            }
+                        } else if (thinkState === 'in_think') {
+                            prefixBuffer += delta;
+                        } else {
+                            onToken({ type: 'token', content: delta });
+                        }
+
+                        if (thinkState === 'in_think') {
+                            const closeMatch = prefixBuffer.match(/<\/(?:think|thinking)>\s*/i);
+                            if (closeMatch) {
+                                const thinkBody = prefixBuffer.slice(0, closeMatch.index);
+                                const unemittedThink = thinkBody.slice(emittedThinkLen);
+                                if (unemittedThink && useThinkingThisPart) {
+                                    combinedThinking += unemittedThink;
+                                    onToken({ type: 'thinking', content: unemittedThink });
+                                }
+                                const remainder = prefixBuffer.slice(closeMatch.index + closeMatch[0].length);
+                                thinkState = 'done';
+                                prefixBuffer = '';
+                                if (remainder) {
+                                    onToken({ type: 'token', content: remainder });
+                                }
+                            } else {
+                                // Stream thinking tokens live while keeping a 12-char lookbehind for '</think>'
+                                const safeEnd = Math.max(emittedThinkLen, prefixBuffer.length - 12);
+                                if (safeEnd > emittedThinkLen) {
+                                    const liveThinkChunk = prefixBuffer.slice(emittedThinkLen, safeEnd);
+                                    emittedThinkLen = safeEnd;
+                                    if (useThinkingThisPart && liveThinkChunk) {
+                                        combinedThinking += liveThinkChunk;
+                                        onToken({ type: 'thinking', content: liveThinkChunk });
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
+            if (thinkState !== 'done' && prefixBuffer && typeof onToken === 'function') {
+                const cleanedPrefix = prefixBuffer.replace(/<\/?(?:think|thinking)>/gi, '');
+                if (cleanedPrefix) {
+                    onToken({ type: 'token', content: cleanedPrefix });
+                }
+            }
+
+            const rawPart = partChunks.join('');
+            const cleanedPart = rawPart
+                .replace(/<(?:think|thinking)>[\s\S]*?<\/(?:think|thinking)>\s*/gi, '')
+                .replace(/<(?:think|thinking)>[\s\S]*$/gi, '')
+                .replace(/<\/(?:think|thinking)>/gi, '')
+                .trim();
+            combinedAnswer += (combinedAnswer && cleanedPart ? '\n' : '') + cleanedPart;
+
+            // Check if we need a Multi-Turn Continuation pass
+            if (finishReason !== 'length' || !allowMultiPart || partIndex >= maxParts || !cleanedPart) {
+                break;
+            }
+
+            log.info('AI', `[SGLang] Stream Part ${partIndex} reached length boundary (${cleanedPart.length} chars). Auto-stitching Part ${partIndex + 1}...`);
+            if (typeof onToken === 'function') {
+                onToken({ type: 'token', content: '\n' });
+            }
+
+            const tailSnippet = cleanedPart.slice(-140).replace(/\s+/g, ' ');
+            messages.push({ role: 'assistant', content: cleanedPart });
+            messages.push({
+                role: 'user',
+                content: `Continue writing Part ${partIndex + 1} seamlessly from the exact point where Part ${partIndex} stopped ("...${tailSnippet}"). Do NOT repeat any headings or sentences already written; complete the remaining equations, code, or sections and conclude cleanly. /no_think`,
+            });
+            partIndex++;
         }
 
         const totalStreamTime = Date.now() - streamStart;
-        const tokensCount = chunks.length;
-        const speed = totalStreamTime > 0 ? ((tokensCount / totalStreamTime) * 1000).toFixed(2) : 0;
-        const rawAnswer = chunks.join('');
-        const finalAnswer = tokenOptimizer.expandOutgoingResponse(rawAnswer);
-        log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars) | Total Time: ${totalStreamTime}ms | TTFT: ${firstTokenTime || totalStreamTime}ms | Speed: ${speed} tok/s`);
-        return { finalAnswer };
+        const speed = totalStreamTime > 0 ? ((totalTokensCount / totalStreamTime) * 1000).toFixed(2) : 0;
+        const finalAnswer = tokenOptimizer.expandOutgoingResponse(combinedAnswer.trim());
+        log.success('AI', `[SGLang] stream complete (${finalAnswer.length} chars, ${partIndex} part(s)) | Total Time: ${totalStreamTime}ms | TTFT: ${firstTokenTime || totalStreamTime}ms | Speed: ${speed} tok/s`);
+        return { finalAnswer, thinking: combinedThinking.trim(), partsGenerated: partIndex };
     } catch (err) {
         log.error('AI', `[SGLang] stream error: ${err.message}`);
-        if (chunks.length > 0) {
-            // Self-healing: return what we got so far instead of losing complete output
-            const partial = chunks.join('');
-            log.warn('AI', `[SGLang] Recovered partial stream (${partial.length} chars) before failure`);
-            return { finalAnswer: partial };
+        if (combinedAnswer.length > 0) {
+            log.warn('AI', `[SGLang] Recovered partial multi-part stream (${combinedAnswer.length} chars) before failure`);
+            return { finalAnswer: combinedAnswer, thinking: combinedThinking.trim(), partsGenerated: partIndex };
         }
         throw err;
     }
@@ -260,9 +447,6 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
 
 /**
  * Check SGLang endpoint health (ping /models).
- *
- * @param {'chat'|'reason'|'heavy'} endpoint
- * @returns {Promise<boolean>}
  */
 async function checkHealth(endpoint = 'chat') {
     if (!SGLANG_ENABLED) return false;
@@ -280,5 +464,7 @@ module.exports = {
     generateContentWithHistory,
     streamChat,
     checkHealth,
+    evaluateThinkingStrategy,
+    estimateTokensConservative,
     SGLANG_ENABLED,
 };

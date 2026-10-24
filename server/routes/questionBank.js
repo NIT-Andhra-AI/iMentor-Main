@@ -3,6 +3,17 @@ const router = express.Router();
 const QuestionBank = require('../models/QuestionBank');
 const log = require('../utils/logger');
 
+function isPrivilegedUser(req) {
+    const u = req.user;
+    if (!u) return false;
+    return !!(u.isAdmin || u.role === 'admin' || u.role === 'faculty' || u.role === 'developer');
+}
+
+function stripAnswersIfStudent(req, questions = []) {
+    if (isPrivilegedUser(req)) return questions;
+    return (questions || []).map(({ correctAnswer, correctIndex, explanation, ...rest }) => rest);
+}
+
 // @route   GET /api/question-bank
 // @desc    List all questions, optionally filtered by course/difficulty/bloom
 router.get('/', async (req, res) => {
@@ -19,7 +30,7 @@ router.get('/', async (req, res) => {
             QuestionBank.countDocuments(filter),
         ]);
 
-        res.json({ success: true, questions, total, offset: +offset, limit: +limit });
+        res.json({ success: true, questions: stripAnswersIfStudent(req, questions), total, offset: +offset, limit: +limit });
     } catch (err) {
         log.error('DB', `QuestionBank list failed: ${err.message}`);
         res.status(500).json({ success: false, message: err.message });
@@ -51,7 +62,7 @@ router.get('/:course', async (req, res) => {
         if (type) filter.type = type;
 
         const questions = await QuestionBank.find(filter).sort({ difficulty: 1, bloomLevel: 1 }).limit(+limit).lean();
-        res.json({ success: true, course, questions, total: questions.length });
+        res.json({ success: true, course, questions: stripAnswersIfStudent(req, questions), total: questions.length });
     } catch (err) {
         log.error('DB', `QuestionBank fetch for course failed: ${err.message}`);
         res.status(500).json({ success: false, message: err.message });
@@ -62,6 +73,9 @@ router.get('/:course', async (req, res) => {
 // @desc    Add one or more questions to the QuestionBank
 router.post('/', async (req, res) => {
     try {
+        if (!isPrivilegedUser(req)) {
+            return res.status(403).json({ success: false, message: 'Admin or faculty privilege required' });
+        }
         const { questions } = req.body;
         if (!questions || !Array.isArray(questions) || questions.length === 0) {
             return res.status(400).json({ success: false, message: 'questions array is required' });
@@ -97,6 +111,9 @@ router.post('/', async (req, res) => {
 // @desc    Delete a question by ID
 router.delete('/:id', async (req, res) => {
     try {
+        if (!isPrivilegedUser(req)) {
+            return res.status(403).json({ success: false, message: 'Admin or faculty privilege required' });
+        }
         const result = await QuestionBank.findByIdAndDelete(req.params.id);
         if (!result) return res.status(404).json({ success: false, message: 'Question not found' });
         res.json({ success: true, message: 'Question deleted' });
@@ -153,7 +170,7 @@ router.get('/concept/:course/:concept', async (req, res) => {
       concept: { $regex: new RegExp(escapeRegex(concept), 'i') },
     });
 
-    res.json({ success: true, questions, total });
+    res.json({ success: true, questions: stripAnswersIfStudent(req, questions), total });
   } catch (err) {
     log.error('CONCEPT_QB', `Fetch failed: ${err.message}`);
     res.status(500).json({ success: false, message: err.message });
@@ -178,6 +195,9 @@ router.get('/concept/analytics', async (req, res) => {
 // @desc    Delete a concept bank question by ID
 router.delete('/concept/:id', async (req, res) => {
   try {
+    if (!isPrivilegedUser(req)) {
+      return res.status(403).json({ success: false, message: 'Admin or faculty privilege required' });
+    }
     const ConceptQuestionBank = require('../models/ConceptQuestionBank');
     const result = await ConceptQuestionBank.findByIdAndDelete(req.params.id);
     if (!result) return res.status(404).json({ success: false, message: 'Question not found' });

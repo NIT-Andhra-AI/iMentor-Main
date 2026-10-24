@@ -5,6 +5,12 @@ const User = require('../models/User');
 const DeveloperApiLog = require('../models/DeveloperApiLog');
 const log = require('../utils/logger');
 
+function getBaseUrl(req) {
+  const host = req.headers['x-forwarded-host'] || req.headers.host || '172.180.14.125';
+  const proto = req.headers['x-forwarded-proto'] || 'https';
+  return `${proto}://${host}/api/v1`;
+}
+
 const router = express.Router();
 
 function generateSecureKey() {
@@ -39,7 +45,7 @@ router.post('/key/generate', async (req, res) => {
       createdAt: user.developerApiKeyCreatedAt,
       status: user.developerKeyStatus,
       rateLimit: '60 requests / minute',
-      baseUrl: 'https://61.0.228.124/api/v1',
+      baseUrl: getBaseUrl(req),
       message: 'Developer API Key generated successfully. Keep it secure!'
     });
   } catch (err) {
@@ -69,7 +75,7 @@ router.post('/key/refresh', async (req, res) => {
       createdAt: user.developerApiKeyCreatedAt,
       status: user.developerKeyStatus,
       rateLimit: '60 requests / minute',
-      baseUrl: 'https://61.0.228.124/api/v1',
+      baseUrl: getBaseUrl(req),
       message: 'Developer API Key rotated successfully. Old key is immediately invalid.'
     });
   } catch (err) {
@@ -126,7 +132,7 @@ router.get('/key/status', async (req, res) => {
       totalApiRequests: user.totalApiRequests || 0,
       todayRequests: todayCount,
       lastActive: lastLog ? lastLog.timestamp : null,
-      baseUrl: 'https://61.0.228.124/api/v1',
+      baseUrl: getBaseUrl(req),
       supportedEndpoints: [
         '/api/v1/chat/completions (OpenAI SDK / Python / Java / cURL)',
         '/api/v1/messages (Claude SDK)',

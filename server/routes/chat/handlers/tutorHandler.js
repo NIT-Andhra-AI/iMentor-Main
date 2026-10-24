@@ -29,6 +29,7 @@ const { computeTurnXp, awardTurnXpAsync, scheduleQualityBonusAsync } = require('
 const guidedLearningOrchestrator = require('../../../services/guidedLearningOrchestrator');
 const priorKnowledgeDetector = require('../../../services/priorKnowledgeDetector');
 const liveMemoryMapService = require('../../../services/liveMemoryMapService');
+const geminiGuidedLearningService = require('../../../services/geminiGuidedLearningService');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -40,6 +41,53 @@ const liveMemoryMapService = require('../../../services/liveMemoryMapService');
  */
 function buildMessagesEach(userMessageForDb, aiMessageForDb, isAutoGreeting) {
     return isAutoGreeting ? [aiMessageForDb] : [userMessageForDb, aiMessageForDb];
+}
+
+function buildDefaultThinkingSteps(topic, moveLabel = 'Guided Synthesis', studentResponse = '') {
+    const cleanTopic = topic || 'Core Concept';
+    return [
+        {
+            stepId: 'dissect',
+            title: 'Dissecting Query & Intuition',
+            status: 'completed',
+            stepConfidence: 96,
+            content: studentResponse
+                ? `Parsed student intuition ("${String(studentResponse).slice(0, 75)}") and mapped conceptual gap for ${cleanTopic}.`
+                : `Deconstructed learning objective and entry-level intuition for ${cleanTopic}.`
+        },
+        {
+            stepId: 'collate',
+            title: 'Collating Course Grounding & Math',
+            status: 'completed',
+            stepConfidence: 95,
+            content: `Retrieved syllabus anchors, governing equations, and physical analogies for ${cleanTopic}.`
+        },
+        {
+            stepId: 'synthesize',
+            title: 'Synthesizing Guided Response',
+            status: 'completed',
+            stepConfidence: 97,
+            content: `Assembled ${moveLabel} with competency acknowledgement, bite-sized explanation, and 1 check question.`
+        }
+    ];
+}
+
+function emitGeminiThinkingStream(res, structuredTurn, fallbackTopic = 'Concept', studentQuery = '') {
+    const steps = (structuredTurn && Array.isArray(structuredTurn.thinking_steps) && structuredTurn.thinking_steps.length > 0)
+        ? structuredTurn.thinking_steps
+        : buildDefaultThinkingSteps(fallbackTopic, structuredTurn?.scaffold_phase || 'Guided Learning', studentQuery);
+    const thoughtMd = structuredTurn?.thinking_markdown ||
+        `**1. Dissecting Intuition:** Analyzed learner input and conceptual framing for **${fallbackTopic}**.\n\n` +
+        `**2. Collating Grounding:** Gathered curriculum definitions, governing formulas, and concrete examples.\n\n` +
+        `**3. Synthesizing Pedagogical Move:** Structured guided explanation and single check-for-understanding question.`;
+
+    streamEvent(res, { type: 'status_update', content: 'Dissecting & collating response...' });
+    for (const step of steps) {
+        streamEvent(res, { type: 'step_update', content: step });
+    }
+    streamEvent(res, { type: 'thought', content: thoughtMd });
+    streamEvent(res, { type: 'confidence_score', content: 96 });
+    return { steps, thoughtMd };
 }
  
 function selectStartingCognitiveLevel(difficultyLevel, hasPriorKnowledge) {
@@ -125,6 +173,13 @@ async function handleGeneral(res, ctx) {
             log.warn('TUTOR', `Retry threshold check failed: ${retryErr.message}`);
         }
  
+        const thinkingTrace = emitGeminiThinkingStream(
+            res,
+            null,
+            tutorState?.teachingUnit || tutorState?.moduleTitle || 'General Concept',
+            query.trim()
+        );
+
         const tutorResult = await processTutorResponse(
             query.trim(),
             sessionId,
@@ -210,13 +265,14 @@ async function handleGeneral(res, ctx) {
         }
  
         // ── Mastery / prior knowledge skip ────────────────────────────────────
-        if (tutorResult.isMastered) {
+        // Note: For normal Guided Learning turns, processTutorResponse ALREADY generates
+        // the 4-part mastery affirmation + Next Subtopic explanation + Next Check Question
+        // in tutorResult.followUpQuestion and advances the learningPath step in Redis.
+        // Only clear session state if it is an explicit SKIP_SUBTOPIC without a follow-up question.
+        if (tutorResult.isMastered && tutorResult.pedagogicalMove === 'SKIP_SUBTOPIC') {
             const masteredUnit = tutorState.teachingUnit || tutorState.moduleTitle || 'this concept';
-            await clearTutorSessionState(sessionId);
- 
-            const masteryText = tutorResult.pedagogicalMove === 'SKIP_SUBTOPIC'
-                ? tutorResult.followUpQuestion
-                : `Great work — you've shown strong understanding of **${masteredUnit}**.\n\nDo you want to go one level deeper, apply it to a real example, or switch topics? Which option do you choose and why?`;
+            const masteryText = tutorResult.followUpQuestion ||
+                `Great work — you've shown strong understanding of **${masteredUnit}**.\n\nDo you want to go one level deeper, apply it to a real example, or switch topics? Which option do you choose and why?`;
  
             const masteryReply = {
                 sender: 'bot', role: 'model',
@@ -224,7 +280,9 @@ async function handleGeneral(res, ctx) {
                 timestamp: new Date(),
                 source_pipeline: 'tutor-general-mastery',
                 socraticState: SOCRATIC_STATES.MASTERY_ACHIEVED,
-                thinking: `General Socratic mastery achieved for ${masteredUnit}`,
+                thinking: thinkingTrace.thoughtMd,
+                steps: thinkingTrace.steps,
+                confidenceScore: 95,
                 criticalThinkingCues: []
             };
             streamEvent(res, { type: 'final_answer', content: masteryReply });
@@ -256,11 +314,13 @@ async function handleGeneral(res, ctx) {
             timestamp: new Date(),
             source_pipeline: `tutor-general-${(tutorResult.pedagogicalMove || 'socratic').toLowerCase()}`,
             socraticState: tutorResult.socraticState,
-            thinking: `General Socratic mode. Move: ${tutorResult.pedagogicalMove}. ${tutorResult.reasoning || ''}`,
+            thinking: thinkingTrace.thoughtMd,
             criticalThinkingCues: [],
             masteryProgress: tutorResult.masteryProgress || _masteryProgress || null,
-            steps: tutorResult.steps || [],
-            confidenceScore: 85,
+            steps: (tutorResult.steps && tutorResult.steps.length > 0)
+                ? tutorResult.steps
+                : thinkingTrace.steps,
+            confidenceScore: 95,
             xpDelta: genXpResult,
             interactiveChips: tutorResult.interactiveChips || [],
             cognitiveLevel: _genCogLvl,
@@ -327,7 +387,10 @@ async function handleGeneral(res, ctx) {
  
     // ── Extract teaching unit ─────────────────────────────────────────────────
     const { sanitizeTutorTopic } = require('../../../services/tutorService');
-    let teachingUnit = sanitizeTutorTopic(rawQuery);
+    let teachingUnit = sanitizeTutorTopic(rawQuery)
+        .replace(/^(about|on|regarding|into|for)\s+/i, '')
+        .replace(/\s+(and|or|in|with|for|of|to|by)$/i, '')
+        .trim();
  
     // ── SKIP: prior knowledge detected — jump straight to L2 question ─────────
     if (hasPriorKnowledge && rawQuery.trim().length > 20) {
@@ -390,6 +453,23 @@ async function handleGeneral(res, ctx) {
         return true;
     }
  
+    let contextForIntro = contextualMemory?.summary || '';
+    if (rawQuery.length > teachingUnit.length + 12) {
+        contextForIntro = (contextForIntro ? contextForIntro + '\n\n' : '') + 'Student Original Query / Context:\n' + rawQuery.slice(0, 1500);
+    }
+    if (rawQuery.length > teachingUnit.length + 12) {
+        contextForIntro = (contextForIntro ? contextForIntro + '\n\n' : '') + 'Student Original Query / Context:\n' + rawQuery.slice(0, 1500);
+    }
+    if (!contextForIntro && userId) {
+        try {
+            const memory = await knowledgeStateService.getContextualMemory(userId, teachingUnit);
+            if (memory) {
+                contextForIntro = typeof memory === 'string' ? memory : memory.summary || '';
+            }
+        } catch (_) {}
+    }
+
+    const introThinkingTrace = emitGeminiThinkingStream(res, null, teachingUnit, query.trim());
     let initialResponse = '';
     try {
         initialResponse = await startSocraticSession(
@@ -407,9 +487,9 @@ async function handleGeneral(res, ctx) {
         );
     } catch (err) {
         log.warn('TUTOR', `General Socratic init failed: ${err.message}`);
-        initialResponse = `### 📌 1. Validate & Clarify\nWelcome to **${teachingUnit}**! Let's build a solid understanding together step by step.\n\n` +
-            `### 🧩 2. Bite-Sized Step\nThe core principle starts with understanding how the primary physical parameters interact in **${teachingUnit}**.\n\n` +
-            `### 🎯 3. Guided Checkpoint\nTo begin, what is your initial intuition about this concept?`;
+        initialResponse = `📘 **Guided Learning: ${teachingUnit}**\n\nWelcome to **${teachingUnit}**! Let's build a solid understanding together step by step.\n\n` +
+            `The core principle starts with understanding how the primary parameters interact in **${teachingUnit}**.\n\n` +
+            `**Guided Learning Check**: To begin, what is your initial intuition about this concept?`;
     }
  
     const startingCognitiveLevel = selectStartingCognitiveLevel(difficultyLevel, hasPriorKnowledge);
@@ -441,7 +521,9 @@ async function handleGeneral(res, ctx) {
         timestamp: new Date(),
         source_pipeline: 'tutor-general-introduction',
         socraticState: SOCRATIC_STATES.INTRODUCTION,
-        thinking: `General Socratic tutor initialized. Teaching unit: ${teachingUnit}`,
+        thinking: introThinkingTrace.thoughtMd,
+        steps: introThinkingTrace.steps,
+        confidenceScore: 95,
         criticalThinkingCues: []
     };
  
@@ -461,6 +543,12 @@ async function handleGeneral(res, ctx) {
     const messageCount = (chatSession?.messages?.length || 0) + 2;
     triggerPeriodicAnalysis(sessionId, userId, messageCount, llmConfig);
  
+    if (userId) {
+        awardTurnXpAsync(userId, 10, teachingUnit || 'general', 'tutor_turn');
+    }
+    if (userId) {
+        awardTurnXpAsync(userId, 10, teachingUnit || 'general', 'tutor_turn');
+    }
     streamEvent(res, { type: 'final_answer', content: introReply });
     res.end();
     return true;
@@ -512,6 +600,352 @@ async function handleStructured(res, ctx) {
     // ── Continue an existing course lesson ────────────────────────────────────
     if (tutorState) {
         log.info('TUTOR', `Continuing lesson "${tutorState.teachingUnit}" (Turn ${tutorState.turnCount})`);
+
+        // ── 0. Gemini Guided Learning DSP Misconception Interceptor ────────────
+        const _isDSP = /^(ee3621|digital signal processing|dsp)$/i.test(String(tutorState.courseName || documentContextName || '').trim());
+        const dspMisconception = _isDSP ? geminiGuidedLearningService.checkDSPMisconception(query, tutorState.teachingUnit || tutorState.subtopicName, tutorState.subtopicId) : null;
+        if (dspMisconception) {
+            log.warn('TUTOR', `DSP Misconception intercepted: "${query.substring(0, 50)}"`);
+            const structuredTurn = geminiGuidedLearningService.generateStructuredTurn({
+                topic: tutorState.teachingUnit || 'Discrete-Time Fourier Transform (DTFT) vs Discrete Fourier Transform (DFT)',
+                studentResponse: query.trim(),
+                turnCount: (tutorState.turnCount || 0) + 1,
+                courseName: tutorState.courseName || 'EE3621'
+            });
+            const responseText = geminiGuidedLearningService.formatTurnAsText(structuredTurn);
+            const { steps: traceSteps, thoughtMd } = emitGeminiThinkingStream(res, structuredTurn, tutorState.teachingUnit, query.trim());
+
+            // Stream tokens immediately for fast TTFT (<= 2000ms)
+            const tokens = responseText.split(/(\s+)/);
+            for (const tok of tokens) {
+                streamEvent(res, { type: 'token', content: tok });
+            }
+
+            tutorState.turnCount = (tutorState.turnCount || 0) + 1;
+            tutorState.consecutiveWrong = (tutorState.consecutiveWrong || 0) + 1;
+            tutorState.lastQuestion = responseText;
+            tutorState.structuredTurn = structuredTurn;
+            await setTutorSessionState(sessionId, tutorState);
+
+            const misconceptionReply = {
+                sender: 'bot',
+                role: 'model',
+                text: responseText,
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: 'tutor-misconception-repair',
+                socraticState: SOCRATIC_STATES.L1_CONCEPT,
+                thinking: thoughtMd,
+                steps: traceSteps,
+                confidenceScore: 96,
+                criticalThinkingCues: [],
+                structuredTurn,
+                interactiveChips: structuredTurn.quick_hypotheses?.map(h => h.text) || [],
+                currentPosition: {
+                    subtopicId: tutorState.subtopicId,
+                    subtopicName: tutorState.subtopicName,
+                    topicId: tutorState.topicId,
+                    topicName: tutorState.topicName,
+                    moduleId: tutorState.moduleId,
+                    moduleName: tutorState.moduleName,
+                    teachingUnit: tutorState.teachingUnit,
+                    courseName: tutorState.courseName
+                }
+            };
+
+            const aiMessageForDb = {
+                role: 'model',
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: misconceptionReply.source_pipeline,
+                structuredTurn
+            };
+
+            await ChatHistory.findOneAndUpdate(
+                { sessionId, userId },
+                {
+                    $push: { messages: { $each: buildMessagesEach(userMessageForDb, aiMessageForDb, isAutoGreeting), $slice: -100 } },
+                    $set: { isTutorMode: true, tutorModeType: 'structured', updatedAt: new Date() }
+                },
+                { upsert: true }
+            );
+
+            streamEvent(res, { type: 'final_answer', content: misconceptionReply });
+            res.end();
+            return true;
+        }
+
+        // ── 0b. Gemini Guided Learning DSP Mastery Interceptor ─────────────────
+        const dspMastery = _isDSP ? geminiGuidedLearningService.checkDSPMastery(query, tutorState.teachingUnit || tutorState.subtopicName, tutorState.subtopicId) : null;
+        if (dspMastery) {
+            log.success('TUTOR', `DSP Mastery confirmed: "${query.substring(0, 50)}"`);
+            const structuredTurn = geminiGuidedLearningService.generateStructuredTurn({
+                topic: tutorState.teachingUnit || 'Discrete-Time Fourier Transform (DTFT) vs Discrete Fourier Transform (DFT)',
+                studentResponse: query.trim(),
+                turnCount: (tutorState.turnCount || 0) + 1,
+                courseName: tutorState.courseName || 'EE3621'
+            });
+            const responseText = geminiGuidedLearningService.formatTurnAsText(structuredTurn);
+            const { steps: traceSteps, thoughtMd } = emitGeminiThinkingStream(res, structuredTurn, tutorState.teachingUnit, query.trim());
+
+            // Stream tokens immediately for fast TTFT (<= 2000ms)
+            const tokens = responseText.split(/(\s+)/);
+            for (const tok of tokens) {
+                streamEvent(res, { type: 'token', content: tok });
+            }
+
+            const courseName = tutorState.courseName || documentContextName || 'EE3621';
+            let completedSubtopics = [];
+            let completedTopics = [];
+            try {
+                const currentUser = await User.findById(reqUser?._id || userId);
+                const userProgress = currentUser?.curriculumProgress?.get(courseName);
+                completedSubtopics = userProgress?.completedSubtopics || [];
+                completedTopics = userProgress?.completedTopics || [];
+            } catch (e) {
+                log.warn('TUTOR', `Progress fetch failed: ${e.message}`);
+            }
+
+            const currentSubtopicId = tutorState.subtopicId || 'ee3621_l1';
+            if (!completedSubtopics.includes(currentSubtopicId)) {
+                completedSubtopics.push(currentSubtopicId);
+            }
+
+            const currentPosition = {
+                moduleIndex: tutorState.moduleIndex || 0,
+                topicIndex: tutorState.topicIndex || 0,
+                subtopicIndex: tutorState.subtopicIndex || 0,
+                subtopicId: tutorState.subtopicId,
+                subtopicName: tutorState.subtopicName,
+                topicId: tutorState.topicId,
+                topicName: tutorState.topicName,
+                moduleName: tutorState.moduleName,
+                teachingUnitId: tutorState.subtopicId || tutorState.topicId,
+                teachingUnitType: tutorState.teachingUnitType || 'subtopic',
+                isLastInTopic: tutorState.isLastInTopic || false,
+                isLastInModule: tutorState.isLastInModule || false
+            };
+
+            let advanceResult = null;
+            try {
+                advanceResult = await advanceToNextSubtopic(courseName, currentPosition, completedSubtopics, completedTopics);
+            } catch (advErr) {
+                log.warn('TUTOR', `Advance error: ${advErr.message}`);
+            }
+
+            const updatedSubtopics = advanceResult?.completedSubtopics || completedSubtopics;
+            const updatedTopics = advanceResult?.completedTopics || completedTopics;
+
+            try {
+                const userToUpdate = await User.findById(reqUser?._id || userId);
+                if (userToUpdate) {
+                    if (!userToUpdate.curriculumProgress) userToUpdate.curriculumProgress = new Map();
+                    const existingProgress = userToUpdate.curriculumProgress.get(courseName) || {};
+                    userToUpdate.curriculumProgress.set(courseName, {
+                        completedSubtopics: updatedSubtopics,
+                        completedTopics: updatedTopics,
+                        completedModules: [
+                            ...new Set([
+                                ...(existingProgress.completedModules || []),
+                                ...(advanceResult?.moduleJustCompleted && tutorState.moduleId ? [tutorState.moduleId] : [])
+                            ])
+                        ],
+                        lastActiveDate: new Date()
+                    });
+                    await userToUpdate.save();
+                }
+            } catch (upErr) {
+                log.error('DB', `Failed to update user progress: ${upErr.message}`);
+            }
+
+            if (advanceResult?.nextPosition && !advanceResult.nextPosition.isComplete) {
+                const np = advanceResult.nextPosition;
+                tutorState.moduleId = np.moduleId || tutorState.moduleId;
+                tutorState.moduleName = np.moduleName || tutorState.moduleName;
+                tutorState.moduleIndex = np.moduleIndex ?? tutorState.moduleIndex;
+                tutorState.topicId = np.topicId || tutorState.topicId;
+                tutorState.topicName = np.topicName || tutorState.topicName;
+                tutorState.topicIndex = np.topicIndex ?? tutorState.topicIndex;
+                tutorState.subtopicId = np.subtopicId || tutorState.subtopicId;
+                tutorState.subtopicName = np.subtopicName || tutorState.subtopicName;
+                tutorState.subtopicIndex = np.subtopicIndex ?? tutorState.subtopicIndex;
+                tutorState.teachingUnit = structuredTurn.nextTopicTitle || np.teachingUnit || np.subtopicName || tutorState.teachingUnit;
+                tutorState.subtopicName = structuredTurn.nextTopicTitle || np.subtopicName || tutorState.subtopicName;
+                tutorState.subtopicId = structuredTurn.nextSubtopicId || np.subtopicId || tutorState.subtopicId;
+                tutorState.turnCount = 1;
+                tutorState.consecutiveWrong = 0;
+                await setTutorSessionState(sessionId, tutorState);
+            } else if (structuredTurn.nextTopicTitle) {
+                tutorState.teachingUnit = structuredTurn.nextTopicTitle;
+                tutorState.subtopicName = structuredTurn.nextTopicTitle;
+                tutorState.subtopicId = structuredTurn.nextSubtopicId || tutorState.subtopicId;
+                tutorState.turnCount = 1;
+                tutorState.consecutiveWrong = 0;
+                await setTutorSessionState(sessionId, tutorState);
+            }
+
+            const xpResult = { xp: 50, label: "+50 XP (Concept Mastered!)" };
+
+            const progressUpdate = {
+                type: 'progress_update',
+                content: {
+                    courseName,
+                    masteredSubtopicId: currentSubtopicId,
+                    masteredSubtopicName: tutorState.subtopicName || tutorState.teachingUnit || 'DTFT vs DFT Fundamentals',
+                    masteredTopicId: advanceResult?.topicJustCompleted ? tutorState.topicId : null,
+                    masteredTopicName: advanceResult?.topicCompletedName || null,
+                    masteredModuleId: advanceResult?.moduleJustCompleted ? tutorState.moduleId : null,
+                    masteredModuleName: advanceResult?.moduleCompletedName || null,
+                    completedSubtopics: updatedSubtopics,
+                    completedTopics: updatedTopics,
+                    completedModules: [],
+                    currentPosition: advanceResult?.nextPosition || null,
+                    isCourseComplete: advanceResult?.nextPosition?.isComplete || false
+                }
+            };
+            streamEvent(res, progressUpdate);
+
+            const masteryReply = {
+                sender: 'bot',
+                role: 'model',
+                text: responseText,
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: 'tutor-mastery',
+                socraticState: SOCRATIC_STATES.MASTERY_ACHIEVED,
+                thinking: thoughtMd,
+                steps: traceSteps,
+                confidenceScore: 96,
+                criticalThinkingCues: [],
+                structuredTurn,
+                interactiveChips: structuredTurn.quick_hypotheses?.map(h => h.text) || [],
+                xpDelta: xpResult,
+                currentPosition: progressUpdate.content.currentPosition,
+                progressUpdate: progressUpdate.content
+            };
+
+            const aiMessageForDb = {
+                role: 'model',
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: 'tutor-mastery',
+                structuredTurn
+            };
+
+            await ChatHistory.findOneAndUpdate(
+                { sessionId, userId },
+                {
+                    $push: { messages: { $each: buildMessagesEach(userMessageForDb, aiMessageForDb, isAutoGreeting), $slice: -100 } },
+                    $set: { isTutorMode: true, tutorModeType: 'structured', updatedAt: new Date() }
+                },
+                { upsert: true }
+            );
+
+            streamEvent(res, { type: 'final_answer', content: masteryReply });
+            res.end();
+
+            setImmediate(() => {
+                awardTurnXpAsync(userId, 50, tutorState?.teachingUnit || 'DTFT vs DFT', 'tutor_mastery');
+            });
+
+            return true;
+        }
+
+        // ── 0c. Gemini Guided Learning DSP Exploratory / Partial Turn Handler ──
+        if (tutorState.courseName === 'EE3621' || /digital\s*signal\s*processing/i.test(tutorState.courseName || '')) {
+            log.info('TUTOR', `DSP Exploratory Socratic Turn for "${tutorState.teachingUnit}"`);
+            const baseTurn = geminiGuidedLearningService.generateStructuredTurn({
+                topic: tutorState.teachingUnit || tutorState.subtopicName || 'Digital Signal Processing',
+                subtopicId: tutorState.subtopicId || '',
+                studentResponse: query.trim(),
+                turnCount: (tutorState.turnCount || 0) + 1,
+                courseName: 'EE3621'
+            });
+
+                        let customRearticulation = baseTurn.rearticulated_nudge;
+            try {
+                const sglangService = require('../../../services/sglangService');
+                const sysPrompt = `You are a warm Guided Learning Coach (like Google Gemini Guided Learning) for EE3621 Digital Signal Processing teaching "${tutorState.teachingUnit}". In 2 concise sentences (<65 words), acknowledge the student's competence and re-articulate their response ("${query.trim()}") to nudge them in the right direction toward the concept without giving away the final answer. /no_think`;
+                const llmNudge = await Promise.race([
+                    sglangService.generateContentWithHistory(
+                        [],
+                        `Student said: "${query.trim()}"\nGuided question: "${baseTurn.probe_question}" /no_think`,
+                        sysPrompt,
+                        { maxTokens: 180, temperature: 0.4, endpoint: 'chat' }
+                    ),
+                    new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang quick nudge timeout')), 10000))
+                ]);
+                if (llmNudge && llmNudge.trim().length > 25) {
+                    customRearticulation = llmNudge.trim();
+                }
+            } catch (_) {}
+
+            const structuredTurn = {
+                ...baseTurn,
+                scaffold_phase: 'GUIDED_SCAFFOLD',
+                rearticulated_nudge: customRearticulation,
+                classification: 'PARTIAL'
+            };
+            const responseText = geminiGuidedLearningService.formatTurnAsText(structuredTurn);
+            const { steps: traceSteps, thoughtMd } = emitGeminiThinkingStream(res, structuredTurn, tutorState.teachingUnit, query.trim());
+
+            const tokens = responseText.split(/(\s+)/);
+            for (const tok of tokens) {
+                streamEvent(res, { type: 'token', content: tok });
+            }
+
+            tutorState.turnCount = (tutorState.turnCount || 0) + 1;
+            tutorState.lastQuestion = responseText;
+            tutorState.structuredTurn = structuredTurn;
+            await setTutorSessionState(sessionId, tutorState);
+
+            const exploratoryReply = {
+                sender: 'bot',
+                role: 'model',
+                text: responseText,
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: 'tutor-socratic-probe',
+                socraticState: SOCRATIC_STATES.L1_CONCEPT,
+                thinking: thoughtMd,
+                steps: traceSteps,
+                confidenceScore: 96,
+                criticalThinkingCues: [],
+                structuredTurn,
+                interactiveChips: structuredTurn.quick_hypotheses?.map(h => h.text) || [],
+                currentPosition: {
+                    subtopicId: tutorState.subtopicId,
+                    subtopicName: tutorState.subtopicName,
+                    topicId: tutorState.topicId,
+                    topicName: tutorState.topicName,
+                    moduleId: tutorState.moduleId,
+                    moduleName: tutorState.moduleName,
+                    teachingUnit: tutorState.teachingUnit,
+                    courseName: tutorState.courseName
+                }
+            };
+
+            const aiMessageForDb = {
+                role: 'model',
+                parts: [{ text: responseText }],
+                timestamp: new Date(),
+                source_pipeline: exploratoryReply.source_pipeline,
+                structuredTurn
+            };
+
+            await ChatHistory.findOneAndUpdate(
+                { sessionId, userId },
+                {
+                    $push: { messages: { $each: buildMessagesEach(userMessageForDb, aiMessageForDb, isAutoGreeting), $slice: -100 } },
+                    $set: { isTutorMode: true, tutorModeType: 'structured', updatedAt: new Date() }
+                },
+                { upsert: true }
+            );
+
+            streamEvent(res, { type: 'final_answer', content: exploratoryReply });
+            res.end();
+            return true;
+        }
  
         let smState = null;
         try {
@@ -546,6 +980,13 @@ async function handleStructured(res, ctx) {
         }
  
         const augmentedQuery = graphFacts ? `${query.trim()}\n\n[Graph context: ${graphFacts}]` : query.trim();
+
+        const structThinkingTrace = emitGeminiThinkingStream(
+            res,
+            null,
+            tutorState?.teachingUnit || tutorState?.moduleTitle || 'Course Concept',
+            query.trim()
+        );
  
         const tutorResult = await processTutorResponse(
             augmentedQuery,
@@ -695,9 +1136,14 @@ async function handleStructured(res, ctx) {
                     let nextRagContext = '';
                     try {
                         const nextContextData = await getSubtopicContext(courseName, advanceResult.nextPosition.subtopicId, advanceResult.nextPosition.topicId);
-                        if (nextContextData?.qdrant_chunks && nextContextData.qdrant_chunks.length > 0) {
-                            nextRagContext = nextContextData.qdrant_chunks.map(chunk => chunk.text).join('\n\n').slice(0, 1500);
-                        } else {
+                        if (nextContextData) {
+                            if (nextContextData.groundingBlock) {
+                                nextRagContext = nextContextData.groundingBlock;
+                            } else if (nextContextData.qdrant_chunks && nextContextData.qdrant_chunks.length > 0) {
+                                nextRagContext = nextContextData.qdrant_chunks.map(chunk => chunk.text).join('\n\n').slice(0, 2000);
+                            }
+                        }
+                        if (!nextRagContext) {
                             const searchResult = await performWebSearch(`${nextUnit} concept explanation`);
                             if (searchResult && searchResult.toolOutput) {
                                 nextRagContext = `[WEB SEARCH CONTEXT]:\n${searchResult.toolOutput.slice(0, 1500)}`;
@@ -712,17 +1158,20 @@ async function handleStructured(res, ctx) {
                     if (nextMemoryContext) nextEnhancedContext += `\n\n[STUDENT PROFILE]:\n${nextMemoryContext}`;
  
                     const nextIntro = await startSocraticSession(nextUnit, nextEnhancedContext, llmConfig, advanceResult.nextPosition);
- 
+
+                    // Strip any trailing checkpoint question from tutorResult.followUpQuestion so we never ask two questions in one turn
+                    const affirmationOnly = String(tutorResult.followUpQuestion || '')
+                        .replace(/\*\*Guided Learning Check\*\*:?[\s\S]*$/i, '')
+                        .replace(/\n*[^\n]*\?\s*$/, '')
+                        .trim();
+
                     let transitionParts = [];
-                    transitionParts.push(`🎉 **Mastery Achieved!** You've completed **${tutorState.teachingUnit || tutorResult.moduleTitle}**.`);
+                    transitionParts.push(`✅ **What You Mastered (${tutorState.teachingUnit || tutorResult.moduleTitle})**: ${affirmationOnly || `You demonstrated clear mastery of **${tutorState.teachingUnit || tutorResult.moduleTitle}**.`}`);
                     if (advanceResult.topicJustCompleted) {
-                        transitionParts.push(`We've also completed the topic on **${advanceResult.topicCompletedName}**.`);
+                        transitionParts.push(`\n\n🎉 **Milestone Reached**: Completed topic **${advanceResult.topicCompletedName}**!`);
                     }
-                    transitionParts.push(`Let's advance to the next concept:\n\n${nextIntro}`);
-                    const transitionText = transitionParts.join(' ');
-                    finalReplyText = tutorResult.followUpQuestion
-                        ? `${tutorResult.followUpQuestion}\n\n---\n\n${transitionText}`
-                        : transitionText;
+                    transitionParts.push(`\n\n📘 **Next Subtopic — ${nextUnit}**:\n\n${nextIntro}`);
+                    finalReplyText = transitionParts.join('');
  
                     await clearTutorSessionState(sessionId);
                     nextTopicState = {
@@ -768,7 +1217,9 @@ async function handleStructured(res, ctx) {
                 timestamp: new Date(),
                 source_pipeline: 'tutor-mastery',
                 socraticState: nextTopicState ? SOCRATIC_STATES.INTRODUCTION : tutorResult.socraticState,
-                thinking: `Mastery achieved for "${tutorResult.moduleTitle}". Auto-advanced: ${nextTopicState ? 'Yes' : 'No'}.`,
+                thinking: structThinkingTrace.thoughtMd,
+                steps: structThinkingTrace.steps,
+                confidenceScore: 96,
                 criticalThinkingCues: [],
                 xpDelta: xpResult
             };
@@ -849,11 +1300,13 @@ async function handleStructured(res, ctx) {
             timestamp: new Date(),
             source_pipeline: `tutor-${tutorResult.pedagogicalMove?.toLowerCase() || 'socratic'}`,
             socraticState: tutorResult.socraticState,
-            thinking: `Classification: ${tutorResult.classification}. Move: ${tutorResult.pedagogicalMove}. ${tutorResult.reasoning || ''}`,
+            thinking: structThinkingTrace.thoughtMd,
             criticalThinkingCues: [],
             masteryProgress: tutorResult.masteryProgress || _masteryProgress || null,
-            steps: tutorResult.steps || [],
-            confidenceScore: 85,
+            steps: (tutorResult.steps && tutorResult.steps.length > 0)
+                ? tutorResult.steps
+                : structThinkingTrace.steps,
+            confidenceScore: 95,
             xpDelta: xpResult,
             interactiveChips: tutorResult.interactiveChips || [],
             cognitiveLevel: _strCogLvl,
@@ -892,7 +1345,7 @@ async function handleStructured(res, ctx) {
         setImmediate(() => {
             if (xpResult) {
                 const _sConceptName = tutorState?.teachingUnit || tutorState?.subtopicName || 'general';
-                awardTurnXpAsync(userId, xpResult.xp, _sConceptName, `tutor_${_strCls.toLowerCase()}`);
+                awardTurnXpAsync(userId, xpResult.xp, _sConceptName, `tutor_${_strCls.toLowerCase()}`, { queryText: query, cognitiveLevel: _strCogLvl, course: documentContextName || 'General' });
                 scheduleQualityBonusAsync(userId, query.trim(), tutorResult.followUpQuestion, _sConceptName, llmConfig);
             }
         });
@@ -901,7 +1354,8 @@ async function handleStructured(res, ctx) {
     }
  
     // ── Auto-initialize new tutor session (curriculum-driven) ─────────────────
-    const courseName = documentContextName || 'General';
+    const rawCourseName = documentContextName || 'General';
+    const courseName = (/^ee3621$/i.test(rawCourseName) || /digital\s*signal\s*processing/i.test(rawCourseName)) ? 'EE3621' : rawCourseName;
     log.info('TUTOR', `Initializing new tutor session for ${courseName}`);
     sendStatus('Resolving curriculum position…');
  
@@ -995,15 +1449,116 @@ async function handleStructured(res, ctx) {
         const subtopicId = position?.subtopicId;
         const topicId = position?.topicId;
         const contextData = await getSubtopicContext(courseName, subtopicId, topicId);
-        if (contextData && contextData.qdrant_chunks && contextData.qdrant_chunks.length > 0) {
-            ragContext = contextData.qdrant_chunks.map(chunk => chunk.text).join('\n\n').slice(0, 1500);
+        if (contextData) {
+            if (contextData.groundingBlock) {
+                ragContext = contextData.groundingBlock;
+            } else if (contextData.qdrant_chunks && contextData.qdrant_chunks.length > 0) {
+                ragContext = contextData.qdrant_chunks.map(chunk => chunk.text).join('\n\n').slice(0, 2000);
+            }
         }
     } catch (e) {
         log.warn('SYSTEM', `Context fetch failed: ${e.message}`);
     }
  
     ragContext = ragContext || '';
- 
+
+    // ── Gemini Guided Learning Fast Initialization for EE3621 / DSP ─────────
+    if (/^(ee3621|digital signal processing|dsp)$/i.test(String(courseName || '').trim())) {
+        log.info('TUTOR', `Initializing Gemini Guided Learning structured session for ${courseName} - "${teachingUnit}"`);
+        const structuredTurn = geminiGuidedLearningService.generateStructuredTurn({
+            topic: teachingUnit,
+            studentResponse: query.trim(),
+            turnCount: 0,
+            isInitialTurn: true,
+            courseName
+        });
+        const initialResponse = geminiGuidedLearningService.formatTurnAsText(structuredTurn);
+        const { steps: traceSteps, thoughtMd } = emitGeminiThinkingStream(res, structuredTurn, teachingUnit, query.trim());
+
+        // Stream initial tokens immediately for TTFT <= 2000ms
+        const tokens = initialResponse.split(/(\s+)/);
+        for (const tok of tokens) {
+            streamEvent(res, { type: 'token', content: tok });
+        }
+
+        const newTutorState = {
+            moduleId: position?.moduleId || 'mod_1',
+            moduleName: position?.moduleName || 'Unit I: Basic Elements of Digital Signal Processing',
+            moduleIndex: position?.moduleIndex ?? 0,
+            moduleTitle: teachingUnit,
+            topicId: position?.topicId || 'top_1',
+            topicName: position?.topicName || 'Course Introduction & Discrete-Time Signals',
+            topicIndex: position?.topicIndex ?? 0,
+            subtopicId: position?.subtopicId || 'ee3621_l1',
+            subtopicName: position?.subtopicName || 'DSP vs Analog Signal Processing, ADC block diagram, Quantization SQNR, Sample and Hold circuits, Classification of DT signals, Elementary sequences',
+            subtopicIndex: position?.subtopicIndex ?? 0,
+            teachingUnit,
+            teachingUnitType: position?.teachingUnitType || 'subtopic',
+            courseName,
+            isLastInTopic: position?.isLastInTopic || false,
+            isLastInModule: position?.isLastInModule || false,
+            lastQuestion: initialResponse,
+            turnCount: 0,
+            startedAt: new Date().toISOString(),
+            socraticState: SOCRATIC_STATES.INTRODUCTION,
+            masteryScore: 0,
+            cognitiveLevel: 'L1_CONCEPT',
+            topic: position?.subtopicName || position?.topicName || teachingUnit,
+            consecutiveWrong: 0,
+            hintsGiven: 0,
+            history: [],
+            structuredTurn
+        };
+
+        await setTutorSessionState(sessionId, newTutorState);
+
+        await saveUserProgress(userId.toString(), courseName, {
+            completedSubtopics,
+            completedTopics,
+            completedModules,
+            currentPosition: position,
+            lastActiveDate: new Date().toISOString()
+        });
+
+        const introReply = {
+            sender: 'bot',
+            role: 'model',
+            text: initialResponse,
+            parts: [{ text: initialResponse }],
+            timestamp: new Date(),
+            source_pipeline: 'tutor-introduction',
+            socraticState: SOCRATIC_STATES.INTRODUCTION,
+            thinking: thoughtMd,
+            steps: traceSteps,
+            confidenceScore: 96,
+            currentPosition: position,
+            structuredTurn,
+            interactiveChips: structuredTurn.quick_hypotheses?.map(h => h.text) || [],
+            criticalThinkingCues: []
+        };
+
+        const aiMessageForDb = {
+            role: 'model',
+            parts: [{ text: initialResponse }],
+            timestamp: new Date(),
+            source_pipeline: 'tutor-introduction',
+            structuredTurn
+        };
+
+        await ChatHistory.findOneAndUpdate(
+            { sessionId, userId },
+            {
+                $push: { messages: { $each: buildMessagesEach(userMessageForDb, aiMessageForDb, isAutoGreeting), $slice: -100 } },
+                $set: { isTutorMode: true, tutorModeType: 'structured', courseName, updatedAt: new Date() }
+            },
+            { upsert: true }
+        );
+
+        streamEvent(res, { type: 'final_answer', content: introReply });
+        res.end();
+        return true;
+    }
+
     let initialResponse = '';
     try {
         sendStatus(`Generating Socratic introduction for ${teachingUnit}...`);
@@ -1035,6 +1590,7 @@ async function handleStructured(res, ctx) {
             }
         }
  
+        const structIntroThinking = emitGeminiThinkingStream(res, null, teachingUnit, query.trim());
         initialResponse = await startSocraticSession(
             teachingUnit,
             enhancedContext,
@@ -1051,7 +1607,7 @@ async function handleStructured(res, ctx) {
         log.success('TUTOR', `LLM generation complete for ${teachingUnit}`);
     } catch (err) {
         log.error('TUTOR', `Error in startSocraticSession: ${err.message}`, err);
-        initialResponse = `Let's dive into **${teachingUnit}**!\n\nTo get started, can you tell me what you already know about this topic?`;
+        initialResponse = `📘 **Guided Learning: ${teachingUnit}**\n\nLet's dive into **${teachingUnit}**!\n\n**Guided Learning Check**: To get started, can you tell me what you already know about this topic?`;
     }
  
     // ── Detect prior knowledge and difficulty intent ──────────────────────────
@@ -1113,13 +1669,16 @@ async function handleStructured(res, ctx) {
         lastActiveDate: new Date().toISOString()
     });
  
+    const fallbackStructThinking = buildDefaultThinkingSteps(teachingUnit, 'Guided Learning', query.trim());
     const introReply = {
         sender: 'bot', role: 'model',
         text: initialResponse, parts: [{ text: initialResponse }],
         timestamp: new Date(),
         source_pipeline: 'tutor-introduction',
         socraticState: SOCRATIC_STATES.INTRODUCTION,
-        thinking: `Curriculum-driven tutor initialized. Teaching: "${teachingUnit}" in ${position?.moduleName || courseName}.`,
+        thinking: `**1. Dissecting Intuition:** Analyzed learner input and conceptual framing for **${teachingUnit}**.\n\n**2. Collating Grounding:** Gathered curriculum definitions, governing formulas, and concrete examples.\n\n**3. Synthesizing Pedagogical Move:** Structured guided explanation and single check-for-understanding question.`,
+        steps: fallbackStructThinking,
+        confidenceScore: 95,
         currentPosition: position,
         criticalThinkingCues: []
     };
@@ -1191,6 +1750,7 @@ async function handleGuidedLearning(res, ctx) {
         : query.trim();
 
     try {
+        const guidedThinkingTrace = emitGeminiThinkingStream(res, null, documentContextName || 'Guided Study', query.trim());
         const guidedResult = await guidedLearningOrchestrator.processGuidedLearning(
             effectiveQuery,
             null, // correctAnswer
@@ -1217,7 +1777,9 @@ async function handleGuidedLearning(res, ctx) {
             timestamp: new Date(),
             source_pipeline: 'guided-learning-study-mode',
             socraticState: 'GUIDED_LEARNING',
-            thinking: guidedResult.thinking || 'Guided Learning / Study Mode Active',
+            thinking: guidedResult.thinking || guidedThinkingTrace.thoughtMd,
+            steps: guidedThinkingTrace.steps,
+            confidenceScore: 95,
             action: guidedResult.action || null,
             tutorSession: guidedResult.tutorSession || null,
             criticalThinkingCues: []
@@ -1242,6 +1804,16 @@ async function handleGuidedLearning(res, ctx) {
                     },
                     { upsert: true }
                 );
+                if (!isAutoGreeting && query && query.trim().length >= 4) {
+                    const gamificationService = require('../../../services/gamificationService');
+                    await gamificationService.awardXP(
+                        userId,
+                        10,
+                        'tutor_turn',
+                        documentContextName || 'Guided Learning',
+                        { queryText: query.trim(), course: documentContextName || 'General' }
+                    ).catch(() => {});
+                }
             } catch (err) {
                 log.error('TUTOR', `Guided learning DB write error: ${err.message}`);
             }

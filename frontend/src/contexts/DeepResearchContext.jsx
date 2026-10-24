@@ -20,10 +20,19 @@ export function DeepResearchProvider({ children }) {
   const [finalReportData, setFinalReportData] = useState(null);
   const [meta, setMeta] = useState(null);
   const [citationGraph, setCitationGraph] = useState(null);
+  const [activityLog, setActivityLog] = useState([]);
 
   // Expose a method for the Chat/Socket to push updates to this context
   const handleResearchUpdate = useCallback((event) => {
-    const { phase, message, plan, sourceData, token, fullReport, metaData, graphData } = event;
+    const { phase, message, plan, sourceData, token, fullReport, metaData, graphData, activityLog: incomingLog, badge } = event;
+    if (Array.isArray(incomingLog) && incomingLog.length > 0) {
+      setActivityLog(incomingLog);
+    } else if (message && phase !== 'token') {
+      setActivityLog(prev => [
+        ...prev.slice(-29),
+        { id: Date.now() + Math.random(), timestamp: new Date().toISOString(), phase: phase || 'info', message, badge: badge || (phase || 'INFO').toUpperCase() }
+      ]);
+    }
 
     if (message) setProgressMessage(message);
 
@@ -65,6 +74,7 @@ export function DeepResearchProvider({ children }) {
     setFinalReportData(null);
     setMeta(null);
     setCitationGraph(null);
+    setActivityLog([]);
   }, []);
   
   const restoreFromHistory = useCallback((historyEntry) => {
@@ -97,6 +107,7 @@ export function DeepResearchProvider({ children }) {
     finalReportData,
     meta,
     citationGraph,
+    activityLog,
     handleResearchUpdate,
     resetResearch,
     restoreFromHistory

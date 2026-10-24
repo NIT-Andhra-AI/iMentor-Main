@@ -191,24 +191,47 @@ router.get('/', async (req, res) => {
             }
         }
 
+        const rawStyle = knowledgeState.learningProfile?.dominantLearningStyle;
+        const userStyle = user?.profile?.learningStyle;
+        const effectiveStyle = (rawStyle && rawStyle.toLowerCase() !== 'unknown' && rawStyle.toLowerCase() !== 'not specified')
+            ? rawStyle
+            : ((userStyle && userStyle !== 'Not Specified') ? userStyle.toLowerCase() : 'visual & analytical');
+
+        const derivedFocusAreas = (knowledgeState.currentFocusAreas && knowledgeState.currentFocusAreas.length > 0)
+            ? knowledgeState.currentFocusAreas
+            : knowledgeState.concepts
+                .filter(c => (c.masteryScore ?? 0) < 75)
+                .sort((a, b) => new Date(b.lastInteractionDate || 0) - new Date(a.lastInteractionDate || 0))
+                .slice(0, 3)
+                .map(c => ({
+                    topic: c.conceptName,
+                    reason: (c.masteryScore ?? 0) < 50 ? 'Building foundational mastery (' + Math.round(c.masteryScore || 0) + '%)' : 'Consolidating concept (' + Math.round(c.masteryScore || 0) + '%)',
+                    startedAt: c.lastInteractionDate || new Date()
+                }));
+
         res.status(200).json({
             profile: {
-                learningStyle: knowledgeState.learningProfile.dominantLearningStyle,
-                learningPace: knowledgeState.learningProfile.learningPace,
-                preferredDepth: knowledgeState.learningProfile.preferredDepth,
-                challengeResponse: knowledgeState.learningProfile.challengeResponse
+                learningStyle: effectiveStyle,
+                learningPace: knowledgeState.learningProfile.learningPace || 'moderate',
+                preferredDepth: knowledgeState.learningProfile.preferredDepth || 'balanced',
+                challengeResponse: knowledgeState.learningProfile.challengeResponse || 'asks_when_stuck'
             },
             summary,
-            concepts: knowledgeState.concepts.map(c => ({
-                name: c.conceptName,
-                mastery: c.masteryScore,
-                difficulty: c.difficulty,
-                understandingLevel: c.understandingLevel,
-                lastPracticed: c.lastInteractionDate,
-                learningVelocity: c.learningVelocity
-            })),
+            concepts: knowledgeState.concepts.map(c => {
+                const m = c.masteryScore ?? 0;
+                const level = m >= 85 ? 'mastered' : (m >= 50 ? 'learning' : 'struggling');
+                return {
+                    name: c.conceptName,
+                    mastery: m,
+                    difficulty: c.difficulty,
+                    understandingLevel: level,
+                    highestBloomLevel: c.highestBloomLevel || 1,
+                    lastPracticed: c.lastInteractionDate,
+                    learningVelocity: c.learningVelocity
+                };
+            }),
             sessionInsights: timelineEvents,
-            currentFocusAreas: knowledgeState.currentFocusAreas || [],
+            currentFocusAreas: derivedFocusAreas,
             recurringStruggles: compiledStruggles,
             engagementMetrics: knowledgeState.engagementMetrics,
             lastUpdated: knowledgeState.lastUpdated,

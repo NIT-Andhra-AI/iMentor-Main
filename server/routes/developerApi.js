@@ -201,14 +201,24 @@ router.post('/chat/completions', async (req, res) => {
     const completionText = typeof result === 'string' ? result : (result?.finalAnswer || result?.text || '');
     const completionTokens = estimateTokenCount(completionText);
 
-    // Check for JSON tool calls in the output
+    // Check for JSON tool calls in the output (with auto-repair for 8B model brace omissions)
     let toolCalls = null;
-    if (Array.isArray(tools) && tools.length > 0) {
-      const match = completionText.match(/"tool_calls"\s*:\s*(\[[^\]]+\])/);
-      if (match) {
-        try {
-          toolCalls = JSON.parse(match[1]);
-        } catch (e) {}
+    if (Array.isArray(tools) && tools.length > 0 && completionText.includes('"tool_calls"')) {
+      const startIdx = completionText.indexOf('"tool_calls"');
+      const arrStart = completionText.indexOf('[', startIdx);
+      const arrEnd = completionText.lastIndexOf(']');
+      if (arrStart !== -1 && arrEnd > arrStart) {
+        let candidate = completionText.slice(arrStart, arrEnd + 1).trim();
+        for (const suffix of ['', '}', '}}']) {
+          try {
+            const fixed = suffix ? candidate.slice(0, -1) + suffix + ']' : candidate;
+            const parsed = JSON.parse(fixed);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              toolCalls = parsed;
+              break;
+            }
+          } catch (e) {}
+        }
       }
     }
 

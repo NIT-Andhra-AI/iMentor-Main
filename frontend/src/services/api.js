@@ -628,6 +628,13 @@ const api = {
     return response.data;
   },
 
+  getLeaderboard: async (limit = 50) => {
+    const response = await apiClient.get('/gamification/leaderboard', {
+      params: { limit }
+    });
+    return response.data;
+  },
+
   getGamificationUsers: async (page = 1, limit = 20) => {
     const response = await apiClient.get('/admin/gamification/users', {
       params: { page, limit }
@@ -697,6 +704,11 @@ const api = {
 
 
   // Gamification User APIs
+  submitBounty: async (bountyId, answer) => {
+    const response = await apiClient.post('/gamification/bounty/' + bountyId + '/submit', { answer });
+    return response.data;
+  },
+
   getBounties: async () => {
     const response = await apiClient.get('/gamification/bounties');
     return response.data;
@@ -800,6 +812,53 @@ const api = {
   },
   getResearchDetail: async (id) => {
     const response = await apiClient.get(`/research/${id}`);
+    return response.data;
+  },
+
+  // ===== Gemini-Inspired PhD Deep Research Interactive Workbench APIs =====
+  refineResearchStrategy: async (query, currentPlan, instruction, seedPapers = [], nature = 'academic', depth = 'medium') => {
+    const response = await apiClient.post('/deep-research/strategize/refine', {
+      query,
+      currentPlan,
+      instruction,
+      seedPapers,
+      nature,
+      depth
+    }, { timeout: 45000 });
+    return response.data;
+  },
+  askResearchCorpus: async (reportId, question) => {
+    const response = await apiClient.post(`/research/${reportId}/ask`, { question }, { timeout: 60000 });
+    return response.data;
+  },
+  addCustomMatrixColumn: async (reportId, columnName, columnDescription = '') => {
+    const response = await apiClient.post(`/research/${reportId}/matrix/custom-column`, {
+      columnName,
+      columnDescription
+    }, { timeout: 60000 });
+    return response.data;
+  },
+  refineResearchSection: async (reportId, sectionIndex, instruction) => {
+    const response = await apiClient.post(`/research/${reportId}/sections/${sectionIndex}/refine`, {
+      instruction
+    }, { timeout: 90000 });
+    return response.data;
+  },
+  strategizeResearch: async ({ query, nature = 'academic', depth = 'medium' }) => {
+    const response = await apiClient.post('/deep-research/strategize', { query, nature, depth });
+    return response.data;
+  },
+  exportResearchFormat: async (id, format = 'pdf') => {
+    const response = await apiClient.get(`/research/${id}/export`, {
+      params: { format },
+      responseType: 'blob'
+    });
+    return response.data;
+  },
+  downloadSourcePaperPdf: async (reportId, citationIndex) => {
+    const response = await apiClient.get(`/research/${reportId}/papers/${citationIndex}/pdf`, {
+      responseType: 'blob'
+    });
     return response.data;
   },
   exportResearchPDF: async (id) => {

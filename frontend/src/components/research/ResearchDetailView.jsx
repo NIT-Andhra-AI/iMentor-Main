@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { ArrowLeft, Clock, Download } from 'lucide-react';
+import { ArrowLeft, Clock, Download, FileText, Archive } from 'lucide-react';
 import toast from 'react-hot-toast';
 import ResearchReport from './ResearchReport';
 
@@ -27,12 +27,12 @@ const ResearchDetailView = () => {
         if (id) fetchReport();
     }, [id]);
 
-    const handleDownloadPDF = async () => {
+    const handleDownloadFormat = async (format, ext, label) => {
         try {
-            toast.loading("Generating academic PDF...", { id: 'pdf-toast' });
-
-            const blobData = await api.exportResearchPDF(id);
-            console.log("[PDF Export] Blob data received size:", blobData.size);
+            toast.loading(`Generating ${label}...`, { id: 'export-toast' });
+            const blobData = format === 'pdf'
+                ? await api.exportResearchPDF(id)
+                : await api.exportResearchFormat(id, format);
 
             if (blobData.type === 'application/json') {
                 const text = await blobData.text();
@@ -40,14 +40,13 @@ const ResearchDetailView = () => {
                 throw new Error(errorData.message || "Server error.");
             }
 
-            // Explicitly wrap in a new Blob with the correct PDF mime type
-            const pdfBlob = new Blob([blobData], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(pdfBlob);
+            const blob = new Blob([blobData], { type: blobData.type || 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
 
             const link = document.createElement('a');
             link.href = url;
-            const fileName = `Research_${researchData?.title || 'Report'}`.replace(/[^a-z0-9]/gi, '_');
-            link.setAttribute('download', `${fileName}.pdf`);
+            const fileName = `PhD_Review_${researchData?.title || researchData?.query || 'Report'}`.replace(/[^a-z0-9]/gi, '_').slice(0, 45);
+            link.setAttribute('download', `${fileName}.${ext}`);
             document.body.appendChild(link);
             link.click();
 
@@ -56,15 +55,15 @@ const ResearchDetailView = () => {
                 window.URL.revokeObjectURL(url);
             }, 200);
 
-            toast.success("PDF Downloaded!", { id: 'pdf-toast' });
+            toast.success(`${label} Downloaded!`, { id: 'export-toast' });
         } catch (error) {
-            console.error("PDF download failed:", error);
-            toast.error("Failed to generate PDF.", { id: 'pdf-toast' });
+            console.error(`${label} download failed:`, error);
+            toast.error(`Failed to generate ${label}.`, { id: 'export-toast' });
         }
     };
 
     if (isLoading) {
-        return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-gray-500 italic">Retrieved scholarly data...</div>;
+        return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-gray-500 italic">Retrieving scholarly literature review &amp; comparison matrix...</div>;
     }
 
     if (!researchData) {
@@ -94,20 +93,38 @@ const ResearchDetailView = () => {
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2.5">
                     <button
-                        onClick={handleDownloadPDF}
+                        onClick={() => handleDownloadFormat('docx', 'docx', 'Word Manuscript (.docx)')}
+                        className="flex items-center px-3 py-2 bg-[#161B24] border border-blue-500/30 text-blue-300 text-xs font-bold uppercase tracking-wider rounded hover:bg-[#1F2735] transition-colors"
+                    >
+                        <FileText className="w-3.5 h-3.5 mr-1.5" />
+                        Word (.docx)
+                    </button>
+                    <button
+                        onClick={() => handleDownloadFormat('zip', 'zip', 'Complete PhD Research Bundle (.zip)')}
+                        className="flex items-center px-3 py-2 bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider rounded hover:bg-emerald-600/30 transition-colors"
+                    >
+                        <Archive className="w-3.5 h-3.5 mr-1.5" />
+                        Full ZIP Bundle
+                    </button>
+                    <button
+                        onClick={() => handleDownloadFormat('pdf', 'pdf', 'Academic PDF')}
                         className="flex items-center px-4 py-2 bg-white text-black text-xs font-bold uppercase tracking-wider rounded hover:bg-gray-200 transition-colors shadow-lg"
                     >
-                        <Download className="w-4 h-4 mr-2" />
+                        <Download className="w-4 h-4 mr-1.5" />
                         Download PDF
                     </button>
                 </div>
             </header>
 
             <main className="flex-1 overflow-y-auto bg-[#0A0A0A] p-6 lg:p-12 relative scrollbar-thin scrollbar-thumb-gray-800">
-                <div className="max-w-4xl mx-auto pb-20">
-                    <ResearchReport researchReport={researchData.researchReport} sources={researchData.sources} />
+                <div className="max-w-5xl mx-auto pb-20">
+                    <ResearchReport
+                        researchReport={researchData.researchReport}
+                        sources={researchData.researchReport?.sourcesUsed || researchData.sources}
+                        reportId={id}
+                    />
                 </div>
             </main>
 

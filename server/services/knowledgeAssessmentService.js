@@ -7,7 +7,18 @@ const log = require('../utils/logger');
 const { runQuery: neo4jRun } = require('../config/neo4j');
 const { resolveCourseTitle } = require('./courseIdentityService');
 
+
+function normalizeAssessmentCourse(course) {
+  if (!course) return '';
+  const c = String(course).trim();
+  if (/^ee3621$/i.test(c) || /digital\s*signal\s*processing/i.test(c)) {
+    return 'EE3621';
+  }
+  return c;
+}
+
 async function fetchCurriculumConcepts(course) {
+  course = normalizeAssessmentCourse(course) || course;
   try {
     const result = await neo4jRun(
       `MATCH (m:Module)
@@ -33,6 +44,7 @@ async function fetchCurriculumConcepts(course) {
 }
 
 async function reuseOrGenerateQuestions({ course, module, topic, count = 5 }) {
+  const canonicalCourse = normalizeAssessmentCourse(course);
   const searchTerm = topic || course || '';
   if (!searchTerm) return null;
 
@@ -41,9 +53,11 @@ async function reuseOrGenerateQuestions({ course, module, topic, count = 5 }) {
     const keywords = searchTerm.split(/[\s,]+/).filter(w => w.length > 3).map(escapeRegex);
     const keywordRegexes = keywords.map(k => new RegExp(k, 'i'));
 
+    const canonicalRegex = canonicalCourse ? new RegExp('^' + escapeRegex(canonicalCourse) + '$', 'i') : null;
     const qbFilter = {
       $or: [
         { course: { $regex: new RegExp(escapeTerm, 'i') } },
+        ...(canonicalRegex ? [{ course: { $regex: canonicalRegex } }, { courseName: { $regex: new RegExp(escapeTerm, 'i') } }] : []),
         { topic: { $regex: new RegExp(escapeTerm, 'i') } },
         ...(keywordRegexes.length > 0 ? [{ topic: { $in: keywordRegexes } }] : []),
       ]
@@ -57,6 +71,7 @@ async function reuseOrGenerateQuestions({ course, module, topic, count = 5 }) {
     const cqbFilter = {
       $or: [
         { course: { $regex: new RegExp(escapeTerm, 'i') } },
+        ...(canonicalRegex ? [{ course: { $regex: canonicalRegex } }, { courseName: { $regex: new RegExp(escapeTerm, 'i') } }] : []),
         { concept: { $regex: new RegExp(escapeTerm, 'i') } },
         { topic: { $regex: new RegExp(escapeTerm, 'i') } },
         ...(keywordRegexes.length > 0 ? [{ concept: { $in: keywordRegexes } }] : []),

@@ -6,7 +6,6 @@ const apiClient = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
 });
 
-// Add auth token to requests
 apiClient.interceptors.request.use((config) => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -16,11 +15,9 @@ apiClient.interceptors.request.use((config) => {
 });
 
 /**
- * Hook to fetch and cache user's gamification level
- * @param {string} userId - Optional user ID (defaults to current user)
- * @returns {object} { level, loading, error }
+ * Hook to fetch and cache user's gamification level & totalXP
  */
-export function useUserLevel(userId = null) {
+export function useUserLevel(userId = null, refreshCounter = 0) {
     const [level, setLevel] = useState(null);
     const [totalXP, setTotalXP] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -31,27 +28,19 @@ export function useUserLevel(userId = null) {
 
         const fetchLevel = async () => {
             try {
-                setLoading(true);
-
-                // Fetch from gamification profile (baseURL already includes /api)
                 const response = await apiClient.get('/gamification/profile');
-
                 if (response && response.data && isMounted) {
-                    // Prioritize XP level as it's the primary visible metric in the UI
-                    const newLevel = response.data.xpLevel || response.data.level || 1;
-                    const xp = response.data.totalXP || response.data.totalXp || response.data.xp || 0;
+                    const xp = Number(response.data.totalXP ?? response.data.totalXp ?? response.data.xp ?? 0);
+                    const calcLevel = Math.floor(Math.sqrt(Math.max(0, xp) / 50)) + 1;
+                    const newLevel = response.data.xpLevel || calcLevel || 1;
                     setLevel(newLevel);
                     setTotalXP(xp);
                     setError(null);
                 }
             } catch (err) {
-                if (import.meta.env.DEV) {
-                    console.error('[useUserLevel] Error fetching level:', err);
-                }
                 if (isMounted) {
                     setError(err.message);
-                    setLevel(1); // Default to level 1 if error
-                    setTotalXP(0);
+                    setLevel((prev) => prev || 1);
                 }
             } finally {
                 if (isMounted) {
@@ -60,17 +49,14 @@ export function useUserLevel(userId = null) {
             }
         };
 
-        // Fetch immediately
         fetchLevel();
-
-        // Refresh every 30 seconds to avoid frequent re-renders
-        const intervalId = setInterval(fetchLevel, 30000);
+        const intervalId = setInterval(fetchLevel, 20000);
 
         return () => {
             isMounted = false;
             clearInterval(intervalId);
         };
-    }, [userId]);
+    }, [userId, refreshCounter]);
 
     return { level, totalXP, loading, error };
 }

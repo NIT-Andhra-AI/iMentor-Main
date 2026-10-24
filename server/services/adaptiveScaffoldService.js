@@ -66,7 +66,9 @@ async function generateAdaptiveHint({
     llmConfig,
     emotionalState = null
 }) {
-    const llmService = llmConfig.provider === 'ollama' ? sglangService : geminiService;
+    const provider = (llmConfig?.llmProvider || llmConfig?.provider || 'sglang').toLowerCase();
+    const isLocal = provider === 'sglang' || provider === 'local_llm' || provider === 'ollama' || llmConfig?.tutorMode;
+    const llmService = isLocal ? sglangService : geminiService;
 
     const scaffoldLevel = determineScaffoldingLevel(tutorSession, emotionalState);
     const knowledgeGaps = tutorSession.knowledgeGaps.filter(g => !g.resolved).map(g => g.concept);

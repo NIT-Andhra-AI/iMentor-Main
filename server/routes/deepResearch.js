@@ -1,25 +1,101 @@
 // server/routes/deepResearch.js
-// Express route for the deep research orchestrator.
-// Exposes research functionality via REST API.
-// Protected by authMiddleware (mounted in server.js).
-
 const express = require('express');
 const router = express.Router();
 const deepResearchOrchestrator = require('../services/deepResearchOrchestrator');
+const researchPlanService = require('../services/researchPlanService');
+const researchIntelligenceService = require('../services/researchIntelligenceService');
 const factCheckingService = require('../services/factCheckingService');
 const ResearchCache = require('../models/ResearchCache');
 const ResearchJob = require('../models/ResearchJob');
 const { enqueueResearchJob, getJobStatus, listUserJobs } = require('../workers/researchWorker');
 
 /**
+ * POST /api/deep-research/strategize
+ * Phase 1 Interactive Strategy Blueprint:
+ * Deconstructs the research query into PICO/STEM dimensions, Boolean search strings,
+ * keyword taxonomy, synonym clusters, and academic sentence framing templates.
+ */
+router.post('/strategize', async (req, res) => {
+    const { query, nature = 'academic', depth = 'medium' } = req.body;
+    const userId = req.user?._id || req.user?.userId;
+
+    if (!query || typeof query !== 'string' || query.trim().length < 4) {
+        return res.status(400).json({
+            success: false,
+            message: 'Please enter a research query of at least 4 characters to strategize.'
+        });
+    }
+
+    try {
+        const rawPlan = await researchPlanService.generatePlan(query.trim(), userId);
+        const fullBlueprint = {
+            ...rawPlan,
+            ...researchIntelligenceService.buildQueryBlueprint(query.trim(), rawPlan),
+            nature,
+            depth
+        };
+
+        return res.status(200).json({
+            success: true,
+            data: fullBlueprint
+        });
+    } catch (err) {
+        console.error('[DeepResearch Strategize] Error:', err.message);
+        const fallback = researchPlanService.buildFallbackPlan(query.trim());
+        return res.status(200).json({
+            success: true,
+            data: fallback
+        });
+    }
+});
+
+/**
  * POST /api/deep-research/start
  * FIRE-AND-FORGET: Create a research job and return immediately.
- * Body: { query, nature, depth }
- * nature: 'general' | 'academic' | 'research'
- * depth:  'low' | 'medium' | 'high'
  */
+
+/**
+ * POST /api/deep-research/strategize/refine
+ * Conversational Plan Refinement (Gemini-style interactive plan adjustment + seed paper anchoring)
+ */
+router.post('/strategize/refine', async (req, res) => {
+    const { query, currentPlan = {}, instruction = '', seedPapers = [], nature = 'academic', depth = 'medium' } = req.body;
+    const userId = req.user?._id || req.user?.userId;
+
+    if (!query || typeof query !== 'string') {
+        return res.status(400).json({ success: false, message: 'Research query is required.' });
+    }
+
+    try {
+        const refinedPlan = await researchPlanService.refinePlanConversationally(
+            query.trim(),
+            currentPlan,
+            instruction.trim(),
+            Array.isArray(seedPapers) ? seedPapers : [],
+            userId
+        );
+        const fullBlueprint = {
+            ...refinedPlan,
+            ...researchIntelligenceService.buildQueryBlueprint(query.trim(), refinedPlan),
+            nature,
+            depth
+        };
+        return res.status(200).json({
+            success: true,
+            data: fullBlueprint
+        });
+    } catch (err) {
+        console.error('[DeepResearch Strategize Refine] Error:', err.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to refine research strategy.',
+            error: err.message
+        });
+    }
+});
+
 router.post('/start', async (req, res) => {
-    const { query, nature = 'academic', depth = 'medium' } = req.body;
+    const { query, nature = 'academic', depth = 'medium', approvedPlan = null } = req.body;
     const userId = req.user?._id || req.user?.userId;
 
     if (!query || typeof query !== 'string' || query.trim().length < 5) {
@@ -36,7 +112,7 @@ router.post('/start', async (req, res) => {
     }
 
     try {
-        const job = await enqueueResearchJob({ query: query.trim(), nature, depth, userId });
+        const job = await enqueueResearchJob({ query: query.trim(), nature, depth, userId, approvedPlan });
         return res.status(202).json({
             success: true,
             message: 'Research job queued. It will run in the background.',
@@ -54,7 +130,6 @@ router.post('/start', async (req, res) => {
 
 /**
  * GET /api/deep-research/jobs
- * List all research jobs for the authenticated user.
  */
 router.get('/jobs', async (req, res) => {
     const userId = req.user?._id || req.user?.userId;
@@ -68,7 +143,6 @@ router.get('/jobs', async (req, res) => {
 
 /**
  * GET /api/deep-research/jobs/:jobId
- * Get status and (if completed) result reference for a specific job.
  */
 router.get('/jobs/:jobId', async (req, res) => {
     const userId = req.user?._id || req.user?.userId;
@@ -77,7 +151,6 @@ router.get('/jobs/:jobId', async (req, res) => {
         if (!jobStatus) {
             return res.status(404).json({ success: false, message: 'Job not found.' });
         }
-        // If completed, also fetch the report from ResearchCache
         let report = null;
         if (jobStatus.status === 'completed' && jobStatus.resultId) {
             report = await ResearchCache.findById(jobStatus.resultId)
@@ -92,7 +165,6 @@ router.get('/jobs/:jobId', async (req, res) => {
 
 /**
  * GET /api/deep-research/jobs/:jobId/report
- * Fetch the full cached research report for a completed job.
  */
 router.get('/jobs/:jobId/report', async (req, res) => {
     const userId = req.user?._id || req.user?.userId;
@@ -110,9 +182,8 @@ router.get('/jobs/:jobId/report', async (req, res) => {
     }
 });
 
-
 router.post('/search', async (req, res) => {
-    const { query, depthLevel, conversationHistory } = req.body;
+    const { query, depthLevel, conversationHistory, approvedPlan } = req.body;
     const userId = req.user?._id || req.user?.userId;
 
     if (!query || typeof query !== 'string' || query.trim().length < 3) {
@@ -123,12 +194,11 @@ router.post('/search', async (req, res) => {
     }
 
     try {
-        console.log(`[DeepResearch Route] Research request from user ${userId}: "${query.substring(0, 80)}..."`);
-
         const result = await deepResearchOrchestrator.runDeepResearch(query.trim(), {
             userId,
             depthOverride: depthLevel,
             conversationHistory,
+            approvedPlan,
         });
 
         const bundle = result.researchBundle || {};
@@ -136,7 +206,9 @@ router.post('/search', async (req, res) => {
         return res.status(200).json({
             success: true,
             data: {
+                reportId: result.savedDocId || bundle._id,
                 synthesizedResult: report.executiveSummary?.analyticalOverview || report.title || 'Research complete.',
+                report,
                 sources: bundle.sources || [],
                 sourceBreakdown: {
                     total: bundle.sources?.length || 0,
@@ -160,14 +232,8 @@ router.post('/search', async (req, res) => {
     }
 });
 
-/**
- * POST /api/deep-research/report
- * Enhanced research with full report generation (Task 1.3.2).
- * Returns: synthesis, citation graph, contradictions, fact-check, markdown report.
- * Body: { query, depthLevel?, reportStyle?, includeFactCheck?, conversationHistory? }
- */
 router.post('/report', async (req, res) => {
-    const { query, depthLevel, reportStyle, includeFactCheck, conversationHistory } = req.body;
+    const { query, depthLevel, reportStyle, includeFactCheck, conversationHistory, approvedPlan } = req.body;
     const userId = req.user?._id || req.user?.userId;
 
     if (!query || typeof query !== 'string' || query.trim().length < 3) {
@@ -178,14 +244,13 @@ router.post('/report', async (req, res) => {
     }
 
     try {
-        console.log(`[DeepResearch Route] Enhanced report request from user ${userId}: "${query.substring(0, 80)}..."`);
-
         const result = await deepResearchOrchestrator.runDeepResearch(query.trim(), {
             userId,
             depthOverride: depthLevel || 'deep',
             reportStyle: reportStyle || 'academic',
             includeFactCheck: includeFactCheck !== false,
             conversationHistory,
+            approvedPlan,
         });
 
         const bundle = result.researchBundle || {};
@@ -193,6 +258,7 @@ router.post('/report', async (req, res) => {
         return res.status(200).json({
             success: true,
             data: {
+                reportId: result.savedDocId || bundle._id,
                 synthesizedResult: report.executiveSummary?.analyticalOverview || report.title || 'Research complete.',
                 report,
                 factCheck: bundle.verifiedClaimsData || [],
@@ -220,11 +286,6 @@ router.post('/report', async (req, res) => {
     }
 });
 
-/**
- * POST /api/deep-research/fact-check
- * Standalone fact-check endpoint for any text against sources.
- * Body: { text, sources?, query? }
- */
 router.post('/fact-check', async (req, res) => {
     const { text, sources, query } = req.body;
 
@@ -268,17 +329,10 @@ router.post('/fact-check', async (req, res) => {
     }
 });
 
-/**
- * GET /api/deep-research/history
- * Get user's research history — returns both job records and older cache entries.
- */
 router.get('/history', async (req, res) => {
     const userId = req.user?._id || req.user?.userId;
     try {
-        // Primary: ResearchJob records (includes status, nature, depth)
         const jobs = await listUserJobs(userId, 100);
-
-        // Legacy: ResearchCache entries not associated with a job
         const legacy = await ResearchCache.find({ userId })
             .select('query title overallConfidenceScore sources createdAt evidenceProfile')
             .sort({ createdAt: -1 })
@@ -290,12 +344,12 @@ router.get('/history', async (req, res) => {
             data: {
                 jobs,
                 legacy: legacy.map(h => ({
-                    _id:          h._id,
-                    query:        h.query,
-                    title:        h.title || h.query,
+                    _id:             h._id,
+                    query:           h.query,
+                    title:           h.title || h.query,
                     confidenceScore: h.overallConfidenceScore,
-                    totalSources: h.sources?.length || 0,
-                    createdAt:    h.createdAt,
+                    totalSources:    h.sources?.length || 0,
+                    createdAt:       h.createdAt,
                 })),
             },
         });
@@ -305,11 +359,6 @@ router.get('/history', async (req, res) => {
     }
 });
 
-
-/**
- * GET /api/deep-research/cache/:queryHash
- * Retrieve a specific cached research result.
- */
 router.get('/cache/:queryHash', async (req, res) => {
     const userId = req.user?._id || req.user?.userId;
     const { queryHash } = req.params;

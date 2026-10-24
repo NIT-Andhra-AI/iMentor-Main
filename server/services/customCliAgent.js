@@ -1,6 +1,6 @@
 // server/services/customCliAgent.js
 const mongoose = require('mongoose');
-const { exec } = require('child_process');
+const { exec, execFile } = require('child_process');
 const sglangService = require('./sglangService');
 const geminiService = require('./geminiService');
 const UploadedCurriculum = require('../models/UploadedCurriculum');
@@ -18,10 +18,49 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
     }
 }
 
-// Sandbox command execution
+// Sandbox command execution with strict allowlist, metacharacter validation, and execFile isolation
+const ALLOWED_COMMAND_PREFIXES = [
+    'ls',
+    'git status',
+    'git log',
+    'git diff',
+    'python3 --version',
+    'node -v',
+    'agy status',
+    'agy help',
+    'agy list'
+];
+
 function runSandboxCommand(cmd) {
     return new Promise((resolve) => {
-        exec(cmd, { timeout: 15000 }, (error, stdout, stderr) => {
+        if (!cmd || typeof cmd !== 'string') {
+            return resolve({ success: false, output: 'Invalid or empty command.' });
+        }
+        const trimmed = cmd.trim();
+
+        // 1. Block command chaining, redirection, subshells, newlines, and dangerous characters
+        const dangerousPattern = /[;&|`$><\\!\r\n\0]/;
+        if (dangerousPattern.test(trimmed)) {
+            log.warn('CUSTOM_CLI_SECURITY', `Blocked command containing illegal characters: ${trimmed}`);
+            return resolve({ success: false, output: 'Security violation: Command contains illegal shell operators, newlines, or chaining characters.' });
+        }
+
+        // 2. Validate against permitted safe commands
+        const isAllowed = ALLOWED_COMMAND_PREFIXES.some(prefix => trimmed === prefix || trimmed.startsWith(prefix + ' '));
+        if (!isAllowed) {
+            log.warn('CUSTOM_CLI_SECURITY', `Blocked unapproved command execution: ${trimmed}`);
+            return resolve({ 
+                success: false, 
+                output: `Security violation: Command not permitted. Allowed command prefixes: ${ALLOWED_COMMAND_PREFIXES.join(', ')}` 
+            });
+        }
+
+        // 3. Execute directly via execFile without shell interpolation
+        const tokens = trimmed.split(/\s+/).filter(Boolean);
+        const binary = tokens[0];
+        const args = tokens.slice(1);
+
+        execFile(binary, args, { timeout: 15000 }, (error, stdout, stderr) => {
             if (error) {
                 resolve({ success: false, output: stderr || error.message });
             } else {
@@ -156,5 +195,6 @@ Do not include any extra text. Output precisely the template above.
 }
 
 module.exports = {
-    runCliAgent
+    runCliAgent,
+    runSandboxCommand
 };

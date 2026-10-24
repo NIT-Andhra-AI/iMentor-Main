@@ -5,7 +5,7 @@ const axios = require('axios');
 const log = require('../utils/logger');
 const sglangService = require('./sglangService');
 const sglangCaps    = require('./sglangCapabilities');
-const SGLANG_ENABLED = process.env.SGLANG_ENABLED === 'true';
+const SGLANG_ENABLED = process.env.SGLANG_ENABLED !== 'false';
 
 /**
  * Unified streaming service for ALL LLM providers.
@@ -42,38 +42,39 @@ async function streamCompletion({
     let isThinking = false;
     let buffer = '';
 
-    if (options.handleThinkingTags) {
+        if (options.handleThinkingTags) {
+        const partialTagTailRx = /<\/?(?:t(?:h(?:i(?:n(?:k(?:i(?:n(?:g)?)?)?)?)?)?)?)?$/i;
         finalOnToken = (token) => {
             buffer += token;
 
-            // Handle start tag
-            if (!isThinking && buffer.includes('<think>')) {
+            // Handle start tag (<think> or <thinking>)
+            const startMatch = !isThinking && buffer.match(/<think(?:ing)?>/i);
+            if (startMatch) {
                 isThinking = true;
-                const parts = buffer.split('<think>');
-                if (parts[0]) onToken({ type: 'token', content: parts[0] });
-                buffer = parts[1] || '';
+                const idx = startMatch.index;
+                const before = buffer.slice(0, idx);
+                if (before) onToken({ type: 'token', content: before });
+                buffer = buffer.slice(idx + startMatch[0].length);
             }
 
-            // Handle end tag
-            if (isThinking && buffer.includes('</think>')) {
+            // Handle end tag (</think> or </thinking>)
+            const endMatch = isThinking && buffer.match(/<\/think(?:ing)?>/i);
+            if (endMatch) {
                 isThinking = false;
-                const parts = buffer.split('</think>');
-                if (parts[0]) onToken({ type: 'thought', content: parts[0] });
-                buffer = parts[1] || '';
+                const idx = endMatch.index;
+                const thoughtText = buffer.slice(0, idx);
+                if (thoughtText && thoughtText.trim()) onToken({ type: 'thought', content: thoughtText });
+                buffer = buffer.slice(idx + endMatch[0].length);
             }
 
-            // Stream current mode content
-            if (isThinking) {
-                // Buffer to avoid splitting tags
-                if (buffer.length > 0 && !buffer.includes('<') && !buffer.includes('/')) {
-                    onToken({ type: 'thought', content: buffer });
-                    buffer = '';
-                }
-            } else {
-                if (buffer.length > 0 && !buffer.includes('<')) {
+            // Only hold back characters at the very end if they could be the start of <think> or </think>
+            if (buffer.length > 0 && !partialTagTailRx.test(buffer)) {
+                if (isThinking) {
+                    if (buffer.trim()) onToken({ type: 'thought', content: buffer });
+                } else {
                     onToken({ type: 'token', content: buffer });
-                    buffer = '';
                 }
+                buffer = '';
             }
         };
     }
@@ -96,7 +97,7 @@ async function streamCompletion({
 
     try {
         let result;
-        if (provider === 'gemini') {
+        if (provider === 'gemini' || provider === 'agy') {
             result = await streamGemini({ messages: optimizedMessages, model, apiKey, systemPrompt: optimizedSystemPrompt, onToken: providerOnToken, options });
         } else if (provider === 'groq') {
             result = await streamGroq({ messages: optimizedMessages, model, apiKey, systemPrompt: optimizedSystemPrompt, onToken: providerOnToken, options });
@@ -133,59 +134,16 @@ async function streamCompletion({
  * Gemini Streaming Implementation
  */
 async function streamGemini({ messages, model, apiKey, systemPrompt, onToken, options }) {
-    const genAI = new GoogleGenerativeAI(apiKey);
-
-    // Format model name
-    let modelName = model || process.env.GEMINI_MODEL || 'gemini-2.0-flash';
-    if (modelName && !modelName.startsWith('models/')) {
-        modelName = `models/${modelName}`;
-    }
-
-    const generativeModel = genAI.getGenerativeModel({
-        model: modelName,
-        systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined,
+    const agyCliService = require('./agyCliService');
+    return await agyCliService.streamChat({
+        messages,
+        model,
+        systemPrompt,
+        onToken,
+        options
     });
-
-    // Format history: Gemini expects { role: 'user'|'model', parts: [{ text: '...' }] }
-    // We assume the last message is the current query, and the rest is history
-    const history = messages.slice(0, -1).map(msg => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-    }));
-
-    const currentQuery = messages[messages.length - 1].content;
-
-    const chat = generativeModel.startChat({
-        history: history,
-        generationConfig: {
-            temperature: options.temperature || 0.7,
-            maxOutputTokens: options.maxOutputTokens || 4096,
-        },
-    });
-
-    const result = await chat.sendMessageStream(currentQuery);
-
-    let fullText = '';
-    // log.info('AI', `Starting Gemini stream...`);
-    for await (const chunk of result.stream) {
-        const chunkText = chunk.text();
-        if (chunkText) {
-            fullText += chunkText;
-            if (options.handleThinkingTags) {
-                onToken(chunkText);
-            } else {
-                onToken({ type: 'token', content: chunkText });
-            }
-        }
-    }
-    // log.success('AI', `Gemini stream complete (${fullText.length} chars)`);
-
-    return fullText;
 }
 
-/**
- * Groq Streaming Implementation
- */
 async function streamGroq({ messages, model, apiKey, systemPrompt, onToken, options }) {
     const groq = new Groq({ apiKey, baseUrl: process.env.GROQ_API_BASE_URL || 'https://api.groq.com/openai/v1' });
 
@@ -309,7 +267,7 @@ async function streamOllama({ messages, model, systemPrompt, onToken, options })
 }
 
 /**
- * SGLang Streaming Implementation
+ * SGLang Streaming Implementation (with Gemini-style Adaptive Thinking & Multi-Turn Continuation)
  */
 async function streamSGLang({ messages, model, systemPrompt, onToken, options }) {
     // Convert messages to chat history format
@@ -319,17 +277,19 @@ async function streamSGLang({ messages, model, systemPrompt, onToken, options })
     }));
     const userQuery = messages[messages.length - 1].content;
 
-    // Estimate input tokens (rough approximation: 1 token ≈ 3.5 chars for Qwen)
+    // Conservative token estimate (accounts for LaTeX/math/code punctuation)
     const historyText = chatHistory.map(m => m.content).join(' ');
-    const estimatedInputTokens = Math.ceil((historyText.length + userQuery.length + (systemPrompt?.length || 0)) / 3.5);
+    const estimatedInputTokens = sglangService.estimateTokensConservative
+        ? sglangService.estimateTokensConservative(historyText + ' ' + userQuery + ' ' + (systemPrompt || ''))
+        : Math.ceil((historyText.length + userQuery.length + (systemPrompt?.length || 0)) / 3.0);
     
     // Read actual context window from the running SGLang server (cached)
-    const modelMaxContext = sglangCaps.getModelMaxContext();
-    const safetyBuffer = 256;
+    const modelMaxContext = sglangCaps.getModelMaxContext(16384);
+    const safetyBuffer = 512;
     const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
-    const maxTokens = Math.min(options.maxTokens || 4096, availableForCompletion);
+    const maxTokens = Math.min(options.maxTokens || 3600, availableForCompletion);
     
-    log.info('AI', `[SGLang] Token budget: input≈${estimatedInputTokens} + completion=${maxTokens} ≈ ${estimatedInputTokens + maxTokens} / ${modelMaxContext}`);
+    log.info('AI', `[SGLang] Token budget: input≈${estimatedInputTokens} + completion=${maxTokens} (multi-part 1400/part) ≈ ${estimatedInputTokens + maxTokens} / ${modelMaxContext}`);
 
     const result = await sglangService.streamChat(
         chatHistory,
@@ -338,12 +298,18 @@ async function streamSGLang({ messages, model, systemPrompt, onToken, options })
         {
             model: model,
             maxTokens: maxTokens,
+            partTokenBudget: options.partTokenBudget || 1400,
+            enableThinking: options.enableThinking,
+            isTutorMode: options.isTutorMode,
             temperature: options.temperature || 0.7,
             endpoint: options.endpoint || 'chat'
         },
         onToken
     );
 
+    if (result?.thinking) {
+        return `<thinking>\n${result.thinking}\n</thinking>\n${result.finalAnswer}`;
+    }
     return result.finalAnswer;
 }
 

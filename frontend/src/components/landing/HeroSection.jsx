@@ -114,7 +114,7 @@ const HeroSection = ({ onLoginClick }) => {
                         className="mt-8 max-w-xl mx-auto text-base lg:text-lg text-gray-500 leading-relaxed"
                     >
                         Learn through{' '}
-                        <span className="text-gray-300">Socratic dialogue</span>,{' '}
+                        <span className="text-gray-300">Guided Learning</span>,{' '}
                         <span className="text-gray-300">knowledge graphs</span>,{' '}
                         and{' '}
                         <span className="text-gray-300">gamified progression</span>.

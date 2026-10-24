@@ -55,8 +55,19 @@ async function updateDynamicLearningStage(user, courseName) {
 // @route   GET /api/quiz/generate
 // @desc    Generate adaptive Socratic questions based on course/module context
 // @access  Private
-router.get('/generate', async (req, res) => {
-    const { courseName, moduleId, moduleName } = req.query;
+
+function normalizeQuizCourse(course) {
+    if (!course) return '';
+    const s = String(course).trim();
+    if (/^ee3621$/i.test(s) || /digital\s*signal\s*processing/i.test(s)) return 'EE3621';
+    return s;
+}
+
+async function handleQuizGenerate(req, res) {
+    const rawCourse = req.query.courseName || req.query.course || req.body?.courseName || req.body?.course;
+    const courseName = normalizeQuizCourse(rawCourse);
+    const moduleId = req.query.moduleId || req.body?.moduleId;
+    const moduleName = req.query.moduleName || req.query.topic || req.body?.moduleName || req.body?.topic;
     const userId = req.user._id;
 
     if (!courseName) {
@@ -185,7 +196,10 @@ router.get('/generate', async (req, res) => {
         log.error('QUIZ', 'Failed to generate Socratic quiz', error);
         res.status(500).json({ message: error.message || 'Failed to generate quiz.' });
     }
-});
+}
+
+router.get('/generate', handleQuizGenerate);
+router.post('/generate', handleQuizGenerate);
 
 // @route   POST /api/quiz/submit
 // @desc    Evaluate student answers, update topic mastery, and adapt learning stage

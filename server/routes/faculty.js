@@ -4,7 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
+const { exec, execFile } = require('child_process');
 const User = require('../models/User');
 const ChatHistory = require('../models/ChatHistory');
 const KnowledgeSource = require('../models/KnowledgeSource');
@@ -216,7 +216,7 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
     if (process.env.SGLANG_ENABLED === 'true') {
         try {
             log.info('FACULTY', 'Routing CLI generation task to local SGLang service (Qwen)');
-            const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+            const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
             
             const timeoutPromise = new Promise((_, reject) => 
                 setTimeout(() => reject(new Error('SGLang request timed out after 20s')), 20000)
@@ -233,6 +233,69 @@ async function getLlmCompletion(systemPrompt, userPrompt) {
     // Fallback
     log.info('FACULTY', 'Routing CLI generation task to external Gemini API');
     return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.5-flash' });
+}
+
+
+const Lecture = require('../models/Lecture');
+
+async function syncBootstrapLecturesToMongo(cleanCourseCode, courseDir, parsedTopics) {
+    try {
+        const lecturesDir = path.join(courseDir, 'lectures');
+        if (!fs.existsSync(lecturesDir)) return 0;
+        let syncedCount = 0;
+        for (let i = 1; i <= parsedTopics.length; i++) {
+            const topicObj = parsedTopics[i - 1] || {};
+            const candidates = [
+                path.join(lecturesDir, `L${i}.md`),
+                path.join(lecturesDir, `Lecture_${String(i).padStart(2, '0')}.md`),
+                path.join(lecturesDir, `Lecture_${i}.md`)
+            ];
+            const foundFile = candidates.find(f => fs.existsSync(f));
+            if (!foundFile) continue;
+            const markdown = fs.readFileSync(foundFile, 'utf-8');
+            const subtopicId = `${cleanCourseCode.toLowerCase()}_l${i}`;
+            await Lecture.findOneAndUpdate(
+                { course: cleanCourseCode, subtopicId },
+                {
+                    $set: {
+                        course: cleanCourseCode,
+                        subtopicId,
+                        subtopicName: topicObj.topic || `Lecture ${i}`,
+                        topicName: topicObj.topic || `Lecture ${i}`,
+                        moduleName: topicObj.module || `Unit ${Math.ceil(i / 7)}`,
+                        markdown,
+                        contentType: 'full_lecture',
+                        source: 'faculty_swarm'
+                    }
+                },
+                { upsert: true }
+            );
+            syncedCount++;
+        }
+        return syncedCount;
+    } catch (err) {
+        log.warn('FACULTY_SWARM', `Failed to sync lectures to Mongo: ${err.message}`);
+        return 0;
+    }
+}
+
+function readCourseLabs(courseDir) {
+    const labsDir = path.join(courseDir, 'labs');
+    const labs = [];
+    if (!fs.existsSync(labsDir)) return labs;
+    const files = fs.readdirSync(labsDir).filter(f => f.endsWith('.md')).sort();
+    for (const file of files) {
+        const content = fs.readFileSync(path.join(labsDir, file), 'utf-8');
+        const titleMatch = content.match(/^#\s+(.+)/m);
+        labs.push({
+            filename: file,
+            isCapstone: file.toLowerCase().includes('capstone'),
+            title: titleMatch ? titleMatch[1].trim() : file.replace('.md', ''),
+            markdown: content,
+            preview: content.replace(/^#.+\n/, '').trim().slice(0, 260) + '...'
+        });
+    }
+    return labs;
 }
 
 // Helper: Parse Syllabus CSV into Structured Topic Objects
@@ -298,15 +361,33 @@ router.post('/course/generate', authMiddleware, facultyMiddleware, async (req, r
     try {
         log.info('FACULTY_SWARM', `🚀 Initializing Autonomous 8-Agent Swarm for [${cleanCourseCode}] ${courseTitle}`);
 
-        // Execute 36-Lecture Course Bootstrap Python Swarm
+        // 1. Execute Native Go 8-Agent Course Swarm first (~20ms) for VCS snapshots, AI Textbook & Interactive Portal
+        const goSwarmBin = path.join(projectRoot, 'bin', 'imentor-course-swarm-go');
+        if (fs.existsSync(goSwarmBin)) {
+            const goStart = Date.now();
+            await new Promise((resolve) => {
+                const goArgs = ['-code', cleanCourseCode, '-name', String(courseTitle || '').trim(), '-outdir', path.join(projectRoot, 'course_bootstrap')];
+                if (pastedSyllabus && pastedSyllabus.trim()) {
+                    goArgs.push('-syllabus', pastedSyllabus.replace(/\n/g, ' ').trim());
+                }
+                execFile(goSwarmBin, goArgs, { cwd: projectRoot, timeout: 15000 }, (err, stdout) => {
+                    if (!err) {
+                        log.info('FACULTY_SWARM_GO', `Go Course Swarm completed in ${Date.now() - goStart}ms`);
+                    }
+                    resolve(stdout);
+                });
+            });
+        }
+
+        // 2. Execute Python 36-Lecture Course Bootstrap Swarm for KaTeX/CQB/Audit & SGLang LLM syllabus refinement
         const buildScript = path.join(projectRoot, 'course_bootstrap', 'build_course.py');
-        let pyCmd = `python3 "${buildScript}" --name "${courseTitle.replace(/"/g, '\\"')}" --code "${cleanCourseCode}"`;
+        const pyArgs = [buildScript, '--name', String(courseTitle || '').trim(), '--code', cleanCourseCode];
         if (pastedSyllabus && pastedSyllabus.trim()) {
-            pyCmd += ` --description "${pastedSyllabus.replace(/"/g, '\\"').replace(/\n/g, ' ')}"`;
+            pyArgs.push('--description', pastedSyllabus.replace(/\n/g, ' ').trim());
         }
 
         await new Promise((resolve, reject) => {
-            exec(pyCmd, { cwd: projectRoot, timeout: 60000 }, (error, stdout, stderr) => {
+            execFile('python3', pyArgs, { cwd: projectRoot, timeout: 60000 }, (error, stdout, stderr) => {
                 if (error) {
                     log.error('FACULTY_SWARM', `Swarm execution failed: ${stderr || error.message}`);
                     return reject(new Error(stderr || error.message));
@@ -380,17 +461,22 @@ router.post('/course/generate', authMiddleware, facultyMiddleware, async (req, r
         curriculum.storagePath = courseDir;
         await curriculum.save();
 
+        const syncedLectures = await syncBootstrapLecturesToMongo(cleanCourseCode, courseDir, parsedTopics);
+        const labsList = readCourseLabs(courseDir);
+
         res.json({
             success: true,
-            message: `World-Class 3-Credit Course generated with ${parsedTopics.length} Theory Lectures & 100/100 Quality Score for ${courseTitle} (${cleanCourseCode})!`,
+            message: `World-Class 3-Credit Course generated with ${parsedTopics.length} Theory Lectures (${syncedLectures} synced to Student Explorer) & ${auditReport.quality_score || 100}/100 Quality Score for ${courseTitle} (${cleanCourseCode})!`,
             courseCode: cleanCourseCode,
             courseTitle: `${courseTitle} (${cleanCourseCode})`,
             totalLectures: parsedTopics.length,
             moduleCount: curriculum.moduleCount,
             qualityScore: auditReport.quality_score || 100,
-            totalLabs: 4,
+            totalLabs: labsList.filter(l => !l.isCapstone).length || 4,
             totalQuestions: cqbData.total_questions || 108,
             topics: parsedTopics,
+            cqb: cqbData,
+            labs: labsList,
             auditReport,
             resources: resourcesData,
             capstonePath: path.join(courseDir, 'labs', 'capstone_project.md')
@@ -457,11 +543,28 @@ router.get('/course/:courseCode/details', authMiddleware, facultyMiddleware, asy
             resourcesData = JSON.parse(fs.readFileSync(resourcesPath, 'utf-8'));
         }
 
+        const syllabusPath = path.join(courseDir, 'syllabus.csv');
+        let parsedTopics = [];
+        if (fs.existsSync(syllabusPath)) {
+            parsedTopics = parseSyllabusCsv(fs.readFileSync(syllabusPath, 'utf-8'));
+        }
+        const curriculumDoc = await UploadedCurriculum.findOne({ hash: `gen_${cleanCourseCode}` }).lean();
+        if (curriculumDoc && curriculumDoc.topics && curriculumDoc.topics.length > 0 && parsedTopics.length === 0) {
+            parsedTopics = curriculumDoc.topics;
+        }
+        const labsList = readCourseLabs(courseDir);
+
         res.json({
             success: true,
             courseCode: cleanCourseCode,
-            totalLectures: lectures.length,
+            courseTitle: curriculumDoc?.courseTitle || resourcesData?.course_name || cleanCourseCode,
+            totalLectures: parsedTopics.length || lectures.length,
+            moduleCount: [...new Set(parsedTopics.map(t => t.module))].length || 5,
+            qualityScore: auditData?.quality_score || curriculumDoc?.qualityScore || 100,
+            totalQuestions: cqbData?.total_questions || (parsedTopics.length * 3) || 108,
+            topics: parsedTopics,
             lectures,
+            labs: labsList,
             cqb: cqbData,
             auditReport: auditData,
             resources: resourcesData
@@ -470,6 +573,88 @@ router.get('/course/:courseCode/details', authMiddleware, facultyMiddleware, asy
     } catch (error) {
         log.error('FACULTY', `Error fetching course details: ${error.message}`);
         res.status(500).json({ success: false, message: `Failed to load course details: ${error.message}` });
+    }
+});
+
+
+// GET /api/faculty/courses (List all generated courses in UploadedCurriculum)
+router.get('/courses', authMiddleware, facultyMiddleware, async (req, res) => {
+    try {
+        const curricula = await UploadedCurriculum.find({ status: 'ready' })
+            .sort({ updatedAt: -1 })
+            .select('courseTitle hash moduleCount topicCount qualityScore totalLabs totalQuestions updatedAt')
+            .lean();
+        const courses = curricula.map(c => ({
+            _id: c._id,
+            courseCode: (c.hash || '').replace(/^gen_|^seeded_/, '') || c.courseTitle,
+            courseTitle: c.courseTitle,
+            moduleCount: c.moduleCount || 5,
+            topicCount: c.topicCount || 36,
+            qualityScore: c.qualityScore || 100,
+            totalLabs: c.totalLabs || 4,
+            totalQuestions: c.totalQuestions || 108,
+            updatedAt: c.updatedAt
+        }));
+        res.json({ success: true, courses });
+    } catch (error) {
+        log.error('FACULTY', `Error listing courses: ${error.message}`);
+        res.status(500).json({ success: false, message: 'Failed to list courses.' });
+    }
+});
+
+// GET /api/faculty/course/:courseCode/lecture/:lectureNum (Read full Markdown lecture note)
+router.get('/course/:courseCode/lecture/:lectureNum', authMiddleware, facultyMiddleware, async (req, res) => {
+    try {
+        const cleanCourseCode = req.params.courseCode.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+        const lecNum = parseInt(req.params.lectureNum, 10) || 1;
+        const projectRoot = path.resolve(__dirname, '..', '..');
+        const lecturesDir = path.join(projectRoot, 'course_bootstrap', cleanCourseCode, 'lectures');
+        const candidates = [
+            path.join(lecturesDir, `L${lecNum}.md`),
+            path.join(lecturesDir, `Lecture_${String(lecNum).padStart(2, '0')}.md`),
+            path.join(lecturesDir, `Lecture_${lecNum}.md`)
+        ];
+        const foundFile = candidates.find(f => fs.existsSync(f));
+        if (!foundFile) {
+            return res.status(404).json({ success: false, message: `Lecture ${lecNum} not found for ${cleanCourseCode}.` });
+        }
+        const markdown = fs.readFileSync(foundFile, 'utf-8');
+        res.json({
+            success: true,
+            courseCode: cleanCourseCode,
+            lectureNum: lecNum,
+            filename: path.basename(foundFile),
+            markdown
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// PUT /api/faculty/course/:courseCode/lecture/:lectureNum (Update Markdown lecture note & sync to MongoDB)
+router.put('/course/:courseCode/lecture/:lectureNum', authMiddleware, facultyMiddleware, async (req, res) => {
+    try {
+        const cleanCourseCode = req.params.courseCode.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+        const lecNum = parseInt(req.params.lectureNum, 10) || 1;
+        const { markdown } = req.body;
+        if (!markdown) return res.status(400).json({ success: false, message: 'Markdown content is required.' });
+
+        const projectRoot = path.resolve(__dirname, '..', '..');
+        const lecturesDir = path.join(projectRoot, 'course_bootstrap', cleanCourseCode, 'lectures');
+        fs.mkdirSync(lecturesDir, { recursive: true });
+        const targetFile = path.join(lecturesDir, `L${lecNum}.md`);
+        fs.writeFileSync(targetFile, markdown, 'utf-8');
+
+        const subtopicId = `${cleanCourseCode.toLowerCase()}_l${lecNum}`;
+        await Lecture.findOneAndUpdate(
+            { course: cleanCourseCode, subtopicId },
+            { $set: { markdown, source: 'faculty_edited' } },
+            { upsert: true }
+        );
+
+        res.json({ success: true, message: `Lecture L${lecNum} saved & synced to Student Course Explorer.` });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 });
 

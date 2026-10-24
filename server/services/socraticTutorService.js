@@ -17,6 +17,7 @@ const openaiService = require('./openaiService');
 const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
+const courseGroundingService = require('./courseGroundingService');
 const {
     SOCRATIC_CLASSIFICATION_PROMPT,
     SOCRATIC_QUESTION_GENERATION_PROMPT,
@@ -130,7 +131,7 @@ function generateLearningProfile(masteredTopics = []) {
 }
 
 function getPreferredTutorProvider(llmConfig) {
-    return llmConfig?.llmProvider || 'sglang';
+    return 'sglang';
 }
 
 /**
@@ -138,7 +139,7 @@ function getPreferredTutorProvider(llmConfig) {
  * Tries preferred provider first, then falls back through all available providers.
  */
 async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llmConfig, additionalOptions = {}) {
-    const preferredProvider = additionalOptions.preferredProvider || getPreferredTutorProvider(llmConfig);
+    const preferredProvider = 'sglang';
     const allProviders = ['sglang', 'groq', 'gemini', 'claude', 'openai'];
     const providers = [
         preferredProvider,
@@ -304,14 +305,15 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
 
     // [Team8] Prior knowledge keyword fast-path — detects self-reported mastery before LLM call
     const priorKnowledgeKeywords = [
-        /i (already |do |)(know|knew|understand|learned|studied)/i,
+        /i already (know|knew|understand|learned|studied)/i,
         /i have (knowledge|experience|worked on)/i,
         /i'?ve (implemented|used|built|written|done|solved|practiced)/i,
         /i (am|'?m) (familiar|comfortable|confident) with/i,
         /skip this|already covered|already know/i,
         /more than \d+ (problems|projects)/i
     ];
-    const hasPriorKnowledgeFastPath = priorKnowledgeKeywords.some(rx => rx.test(studentResponse));
+    const isStudentQuestion = /\?/.test(String(studentResponse || "")) || /\b(but|however|why|how|what|confused|don't|do not|help)\b/i.test(String(studentResponse || ""));
+    const hasPriorKnowledgeFastPath = !isStudentQuestion && priorKnowledgeKeywords.some(rx => rx.test(studentResponse));
     if (hasPriorKnowledgeFastPath) {
         log.info('TUTOR', 'Prior knowledge fast-path: ' + studentResponse.substring(0, 60));
         return {
@@ -328,7 +330,7 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
     try {
 
         const priorKnowledgeKeywords = [
-    /i (already |do |)(know|knew|understand|learned|studied)/i,
+    /i already (know|knew|understand|learned|studied)/i,
     /i have knowledge/i,
     /i have experience/i,
     /i have worked on/i,
@@ -340,8 +342,9 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
     /already covered/i,
     /already know/i
 ];
-        const keywordMatch = priorKnowledgeKeywords.some(rx => rx.test(studentResponse));
-        if (keywordMatch ){
+        const isAskingQuestion = /\?\s*$/.test(String(studentResponse || '').trim()) || /\b(but|however|why|how|what|confused|don't|do not|help)\b/i.test(String(studentResponse || ''));
+        const keywordMatch = !isAskingQuestion && priorKnowledgeKeywords.some(rx => rx.test(studentResponse));
+        if (keywordMatch) {
             log.info('TUTOR',
                  `⚡ Prior knowledge Check => ${keywordMatch} | Input: ${studentResponse}`
             );
@@ -361,7 +364,7 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
             prompt,
             'You are an expert educational assessor. Respond with ONLY valid JSON.',
             llmConfig,
-            { jsonMode: true, maxOutputTokens: 200 } // [Optimization] Assessment returns small JSON, cap output
+            { jsonMode: true, enableThinking: false, maxTokens: 180, maxOutputTokens: 180 } // [Optimization] Assessment returns small JSON, cap output
         );
 
         const jsonMatch = responseText.match(/\{[\s\S]*\}/);
@@ -388,6 +391,7 @@ AND set "understanding": "CORRECT" and "confidence": "HIGH".`;
                 reasoning: parsed.reasoning || 'Assessment parsed with defaults'
             };
 
+            if (isAskingQuestion) result.priorKnowledge = false;
             if (result.priorKnowledge) {
                 result.understanding = 'CORRECT';
                 result.confidence = 'HIGH';
@@ -487,28 +491,35 @@ function cleanResponse(text) {
  * getLLMService — kept for backward compat with startSocraticSession streaming path.
  * All new code should use generateWithFallback() instead.
  */
-function getLLMService(llmConfig) {
+function getLLMService(llmConfig = {}) {
+    const provider = (llmConfig.llmProvider || 'sglang').toLowerCase();
+    const isLocal = provider === 'sglang' || provider === 'local_llm' || provider === 'ollama';
+
     let llmService;
-    if (llmConfig.llmProvider === 'ollama') {
+    if (isLocal) {
         llmService = sglangService;
-    } else if (llmConfig.llmProvider === 'groq') {
+    } else if (provider === 'groq') {
         llmService = groqService;
-    } else if (llmConfig.llmProvider === 'claude') {
+    } else if (provider === 'claude') {
         llmService = claudeService;
-    } else if (llmConfig.llmProvider === 'openai') {
+    } else if (provider === 'openai') {
         llmService = openaiService;
     } else {
-        llmService = geminiService;
+        llmService = sglangService; // Strict tutor mode: local LLM is the default
     }
 
+    const defaultLocalModel = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
+    const defaultLocalEndpoint = process.env.SGLANG_ENDPOINT || 'http://127.0.0.1:8000/v1';
+
     const llmOptions = {
-        ...(llmConfig.llmProvider === 'ollama' && { model: llmConfig.ollamaModel }),
-        ...(llmConfig.llmProvider === 'groq' && { model: llmConfig.groqModel }),
-        ...(llmConfig.llmProvider === 'gemini' && { geminiModel: llmConfig.geminiModel || process.env.GEMINI_MODEL }),
-        ...(llmConfig.llmProvider === 'claude' && { model: llmConfig.claudeModel }),
-        ...(llmConfig.llmProvider === 'openai' && { model: llmConfig.openaiModel }),
+        model: isLocal
+            ? (llmConfig.sglangModel || llmConfig.ollamaModel || defaultLocalModel)
+            : (llmConfig.groqModel || llmConfig.claudeModel || llmConfig.openaiModel || llmConfig.geminiModel),
+        endpoint: isLocal ? (llmConfig.sglangEndpoint || llmConfig.sglangUrl || defaultLocalEndpoint) : undefined,
         apiKey: llmConfig.apiKey,
-        ollamaUrl: llmConfig.ollamaUrl
+        ollamaUrl: llmConfig.ollamaUrl || defaultLocalEndpoint,
+        temperature: llmConfig.temperature !== undefined ? llmConfig.temperature : 0.6,
+        maxOutputTokens: llmConfig.maxOutputTokens || 2048
     };
     return { llmService, llmOptions };
 }
@@ -518,20 +529,39 @@ function fallbackLearningSteps() {
 }
 
 /**
- * Fetch pre-computed Socratic content from Redis (written by Python rag_service).
- * Cache key format matches Python: im_cache:socratic_precompute:{course}:{topic_id}
+ * Fetch pre-computed Socratic content from Redis (written by Python rag_service)
+ * or fall back to offline courseGroundingService.
  */
 async function getPrecomputedContent(courseName, topicId) {
     if (!courseName || !topicId) return null;
     try {
         const key = `im_cache:socratic_precompute:${courseName.toLowerCase()}:${topicId.toLowerCase()}`;
         const client = getRedisClient();
-        if (!client) return null;
-        const cached = await client.get(key);
-        return cached ? JSON.parse(cached) : null;
-    } catch (_) {
-        return null;
-    }
+        if (client) {
+            const cached = await client.get(key);
+            if (cached) return JSON.parse(cached);
+        }
+    } catch (_) { }
+
+    // Disk-based bootstrap fallback via courseGroundingService
+    try {
+        const grounding = await courseGroundingService.resolveCourseGrounding(courseName, topicId, topicId);
+        if (grounding && grounding.found) {
+            return {
+                intro_summary: grounding.intuition || grounding.definition || '',
+                summary: grounding.definition || '',
+                questions: {
+                    easy: grounding.shortAnswers?.map(sa => ({ question: sa.question, expected_answer_nature: sa.model_answer })) || [],
+                    medium: grounding.mcqs?.map(m => ({ question: m.question, expected_answer_nature: m.options?.[m.correct_option] || '' })) || [],
+                    hard: [],
+                    expert: []
+                },
+                grounding
+            };
+        }
+    } catch (_) { }
+
+    return null;
 }
 
 /**
@@ -782,52 +812,60 @@ async function generateAndCritiqueSocraticResponse(prompt, systemPrompt, llmConf
  */
 async function startSocraticSession(topic, context, llmConfig, position = null, onToken = null) {
     const { sanitizeTutorTopic } = require('./tutorService');
-    const cleanTopic = sanitizeTutorTopic(topic);
+    const cleanTopic = sanitizeTutorTopic(topic)
+        .replace(/^(about|on|regarding|into|for)\s+/i, '')
+        .replace(/\s+(and|or|in|with|for|of|to|by)$/i, '')
+        .trim();
 
-    // ── Fast path: use precomputed content from Redis ──────────────────────────
     const courseName = position?.courseName || position?.course;
-    const topicId = position?.topicId || position?.subtopicId;
-    if (courseName && topicId) {
+    const lookupTopicId = position?.subtopicId || position?.topicId || cleanTopic;
+    let groundingBlock = '';
+    let suggestedQuestion = '';
+
+    const effectiveCourseForGrounding = (courseName && courseName !== 'General') ? courseName : null;
+    if (effectiveCourseForGrounding && lookupTopicId) {
         try {
-            const precomputed = await getPrecomputedContent(courseName, topicId);
-            if (precomputed?.intro_summary && precomputed?.questions?.easy?.length) {
-                const firstQ = precomputed.questions.easy[0];
-                const response = `${precomputed.intro_summary}\n\n${firstQ.question}`;
-                log.info('TUTOR', `startSocraticSession: using precomputed content for ${courseName}/${topicId}`);
-                return sanitizeGeneratedText(response);
+            const grounding = await courseGroundingService.resolveCourseGrounding(effectiveCourseForGrounding, lookupTopicId, position?.topicId);
+            if (grounding?.found && grounding?.groundingBlock) {
+                groundingBlock = grounding.groundingBlock;
             }
-        } catch (_) { /* fall through to LLM */ }
+            if (grounding?.found && grounding?.shortAnswers?.length > 0) {
+                suggestedQuestion = grounding.shortAnswers[0].question;
+            } else if (grounding?.found && grounding?.mcqs?.length > 0) {
+                suggestedQuestion = grounding.mcqs[0].question;
+            }
+        } catch (_) {}
     }
 
-    // ── Slow path: generate via LLM ───────────────────────────────────────────
     const { llmService, llmOptions } = getLLMService(llmConfig);
-    const prompt = `Start a Study Mode Socratic lesson on: ${safe(cleanTopic)}`;
+    const prompt = `Start a Gemini Guided Learning Socratic lesson on: ${safe(cleanTopic)}`;
 
-    let systemPrompt = `You are iMentor's Guided Learning Coach, designed to feel like the interactive tutoring features of ChatGPT Study Mode and Gemini Learning Coach.
+    let systemPrompt = `You are iMentor's Guided Learning Coach, embodying the premier interactive experience of Gemini Learning Coach and Google LearnLM.
+Your role is to guide the student toward deep conceptual mastery through interactive, bite-sized Socratic inquiry.
 
-PEDAGOGICAL RULES:
-1. NEVER dump the complete solution or full multi-step derivation all at once.
-2. NEVER answer a student's genuine question with only another question. Always address their doubt directly.
-3. CONVERSATIONAL SCAFFOLDING (Do NOT output block titles, prefixes, or headers like "BLOCK 1:", "BLOCK 2:", "BLOCK 3:", or "Step 1:"):
-   - First paragraph (1-2 sentences): Begin with "Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step." Introduce the core intuitive mental model or high-level intuition.
-   - Second paragraph (2-4 sentences max): Walk through a single bite-sized step with an everyday analogy or concrete example.
-   - Third paragraph (1 targeted question): Ask a single low-friction, scaffolded checkpoint question that invites the student to apply what was just explained (do not reveal the answer inside the question).
-4. COGNITIVE LOAD CONTROL:
-   - Keep total response length strictly under 180-220 words. Avoid giant walls of text or repeating boilerplate lifecycle lists.
-5. ADAPTIVE RESPONSES:
-   - If the student answers correctly: Validate with positive reinforcement, explain why their logic was sound, and introduce the next concept milestone.
-   - If the student is stuck or confused: Break down the step further with an everyday analogy or give a partial hint.
+MANDATORY GUIDED LEARNING PROTOCOL:
+1. Grounding in Syllabus & Course Content:
+${groundingBlock ? `${groundingBlock}\n\nStrictly anchor your definitions, core formulas, analogies, and questions in the official course grounding above.` : (context ? `Context for facts:\n${safe(context)}` : `Teach using your deep inherent academic knowledge and first-principles technical reasoning.`)}
 
-TOPIC TO INTRODUCE: "${safe(cleanTopic)}"
+2. Conversational 4-Phase Micro-Turn Structure (150–220 words total):
+   - Phase 1: Affirm & Frame (1-2 sentences): Begin with a warm, encouraging welcome to **${safe(cleanTopic)}**. Introduce the overarching mental model or why this concept matters in real engineering.
+   - Phase 2: Everyday Analogy / Core Intuition (2-3 sentences): Break down the core physical intuition using an everyday analogy or concrete intuitive picture.
+   - Phase 3: Mathematical / Algorithmic Scaffolding (2-3 sentences): State the governing formula in KaTeX ($...$), canonical definition, or architectural flow concisely so it is theoretically precise.
+   - Phase 4: Metacognitive Checkpoint (Exactly 1 question): End with a single, low-friction, targeted check question inviting the student to take their first active reasoning step. (Do NOT reveal the answer inside the question).
 
-CONTEXT FOR FACTS:
-${safe(context)}`;
+3. Strict Execution Constraints:
+   - Output style: Clean, structured Guided Learning markdown with "📘 **Guided Learning: ...**" for the concept introduction and "**Guided Learning Check**:" for the single closing question.
+   - Length constraint: Strictly 150 to 220 words. Keep it bite-sized to prevent cognitive overload.
+   - Grounding: Be technically precise. Always wrap inline math in $...$ and display math in $$...$$. If course grounding is present, honor its terminology and notation.`;
+
+    if (suggestedQuestion) {
+        systemPrompt += `\n\nCURRICULUM BENCHMARK CHECKPOINT: Guide the student towards reflecting on this question in Phase 4:\n"${suggestedQuestion}"`;
+    }
 
     if (position) {
         systemPrompt += `\n\n📍 POSITION: ${safe(position.moduleName || 'General')} -> ${safe(position.topicName || cleanTopic)}`;
     }
 
-    // Inject dynamic instructions based on topic content/query characteristics (prompt injection)
     systemPrompt += getAdaptivePromptInjection(cleanTopic);
 
     try {
@@ -838,7 +876,7 @@ ${safe(context)}`;
         log.error('TUTOR', `Start session error: ${error.message}`, error);
         return sanitizeGeneratedText(
             `Welcome to **${safe(cleanTopic)}**! Let's build a solid understanding together step by step.\n\n` +
-            `The core principle starts with understanding how the primary physical parameters interact in **${safe(cleanTopic)}**.\n\n` +
+            `The core principle starts with understanding the fundamental mechanism behind **${safe(cleanTopic)}**.\n\n` +
             `To begin, what is your initial intuition about this concept?`
         );
     }
@@ -896,14 +934,20 @@ async function processTutorResponse(studentResponse, sessionId, llmConfig, onPro
     };
 
     let unitContext = "";
-    if (state.courseName && (state.subtopicId || state.topicId)) {
+    let courseGrounding = null;
+    if (state.courseName && (state.subtopicId || state.topicId || topic)) {
         try {
-            const contextData = await getSubtopicContext(state.courseName, state.subtopicId, state.topicId);
-            if (contextData?.qdrant_chunks?.length > 0) {
-                unitContext = contextData.qdrant_chunks
-                .map(c => c.text)
-                .join('\n\n')
-                .substring(0, 800);
+            const contextData = await getSubtopicContext(state.courseName, state.subtopicId, state.topicId || topic);
+            if (contextData) {
+                courseGrounding = contextData.grounding || null;
+                if (contextData.groundingBlock) {
+                    unitContext = contextData.groundingBlock;
+                } else if (contextData.qdrant_chunks?.length > 0) {
+                    unitContext = contextData.qdrant_chunks
+                        .map(c => c.text)
+                        .join('\n\n')
+                        .substring(0, 2000);
+                }
             }
         } catch (ctxErr) {
             log.warn('TUTOR', `Context error: ${ctxErr.message}`);
@@ -1021,7 +1065,7 @@ async function processTutorResponse(studentResponse, sessionId, llmConfig, onPro
             stnContext: unitContext || topic
         },
         history,
-        unitContext.slice(-5)
+        courseGrounding?.groundTruth || unitContext || ""
     );
 
     if (isRepetitive) {
@@ -1243,33 +1287,51 @@ The student has struggled twice. You MUST:
    CRITICAL: ALWAYS enclose node labels in double quotes (e.g., id["label"]). Keep it under 8 nodes. Only include a diagram if it meaningfully clarifies the concept.
 6. Ask ONE simpler, more-guided question (break the original question into a smaller piece)
 ` : `
-ADAPTIVE INSTRUCTION (70% SCAFFOLDING / 30% SOCRATIC):
+GUIDED LEARNING MODE PROTOCOL (GOOGLE GEMINI / CHATGPT STUDY MODE STYLE — PREVENT MENTAL FATIGUE):
+You MUST structure your response using these clear Guided Learning callouts to prevent Q&A fatigue:
+1. **✅ Acknowledge Your Competence**: Explicitly validate what the student got right, echoing their specific terms or intuition.
+2. **🔄 Reframing Your Response (If Partial/Misconception)**: Re-articulate the student's own response constructively to nudge them in the right direction and show how their thought connects to the core mechanism.
+3. **💡 Guidance & Hint (If Partial/Misconception)**: Provide a clear teaching explanation (with an intuitive analogy or signal-chain diagram and KaTeX math \`$...$\`) and a concrete hint toward the correct answer before asking a gentle guiding question.
+4. **📘 Next Subtopic (If Correct)**: When the student gives a correct response, warmly affirm their mastery under \`✅ **What You Mastered**:\`, immediately provide a clear, bite-sized explanation of the NEXT subtopic/concept under \`📘 **Next Subtopic**:\` (intuition, analogy, governing formula), and conclude with one guided question under \`**Guided Learning Check**:\`.
+
+ADAPTIVE INSTRUCTION (70% GUIDED EXPLANATION / 30% CHECK QUESTION):
 - **70% Conceptual Scaffolding**:
-  ${classification.status === 'CORRECT' ? 'The student answered correctly. Warmly affirm their insight. Rearticulate and elevate their explanation with deeper intuition, real-world engineering context, or trade-offs to consolidate their mental model.' : ''}
-  ${classification.status === 'PARTIAL' ? 'The student has partial understanding. First, highlight the exact part they got right. Then, thoroughly explain the missing mechanism or concept using a concrete analogy or step-by-step example to bridge the gap.' : ''}
-  ${classification.status === 'WRONG' ? 'The student answered incorrectly. Be encouraging and empathetic. Break down why the common misconception happens, explain the actual concept from first principles using an intuitive everyday analogy or visual breakdown.' : ''}
-  ${classification.status === 'UNKNOWN' ? 'The student is unsure or doesn\'t know. Provide supportive, clear conceptual scaffolding from the ground up with an intuitive example.' : ''}
+  ${classification.status === 'CORRECT' ? 'The student answered correctly. Warmly affirm their insight under ✅ **What You Mastered**, then introduce and explain the next logical subtopic under 📘 **Next Subtopic** with an intuitive analogy and KaTeX equation.' : ''}
+  ${classification.status === 'PARTIAL' ? 'The student has partial understanding. First, highlight the exact part they got right under ✅ **Acknowledge Your Competence**. Then use 🔄 **Reframing Your Response** and 💡 **Guidance & Hint** with a concrete analogy to bridge the gap.' : ''}
+  ${classification.status === 'WRONG' ? 'The student answered incorrectly. Be encouraging under ✅ **Acknowledge Your Competence**. Use 🔄 **Reframing Your Response** and 💡 **Guidance & Hint** to explain the actual concept from first principles using an intuitive everyday analogy.' : ''}
+  ${classification.status === 'UNKNOWN' ? 'The student is unsure or doesn\'t know. Provide supportive, clear conceptual scaffolding from the ground up with an intuitive example under 💡 **Guidance & Hint**.' : ''}
 
 - **30% Socratic Guidance**:
-  Conclude with exactly ONE focused, engaging check question or application scenario that guides the student to take the next reasoning step.
+  Conclude with exactly ONE focused, engaging check question labeled \`**Guided Learning Check**:\` that guides the student to take the next reasoning step.
 
-You must respond like an inspiring, patient human tutor (matching ChatGPT & Gemini quality):
-1. Acknowledge and appreciate the student's effort in a natural, conversational way.
-2. Provide a thorough, well-structured explanation of the concept (70% of response), with real-world analogies, examples, and/or derivations.
-3. Conclude with ONE guiding question (30% of response). Stop and wait.
+You must respond like an inspiring, patient human tutor (matching Google Gemini Guided Learning & ChatGPT Study Mode quality):
+1. Acknowledge and appreciate the student's effort by referencing their exact reasoning.
+2. Provide a thorough, well-structured explanation of the concept (70% of response), with real-world analogies, examples, and properly delimited KaTeX (\`$...$\` and \`$$...$$\`).
+3. Conclude with ONE guiding question labeled \`**Guided Learning Check**:\` (30% of response). Stop and wait.
 `}
 
 CRITICAL RULES:
-- DO NOT use structural headings, phase markers, or block titles (like "### Phase 1", "Step 1:", "BLOCK 1:", "BLOCK 2:", etc.).
+- Use the clean Guided Learning callout badges (\`✅ **Acknowledge Your Competence**:\`, \`🔄 **Reframing Your Response**:\`, \`💡 **Guidance & Hint**:\`, \`📘 **Next Subtopic**:\`, and \`**Guided Learning Check**:\`).
+- Always wrap inline math in \`$...$\` and display equations in \`$$...$$\`. Never leave raw LaTeX commands (\`\\Delta\`, \`\\omega\`, \`\\sum\`, \`\\ge\`) un-delimited in prose.
+- COMPACT TABLE RULE: If you include a Markdown table, strictly use at most 3–4 columns and keep every cell concise (6–10 words max per cell) so rightmost columns never wrap or cramp.
 - Maintain 70% Scaffolding (supportive, clear explanation) and 30% Socratic (one guiding check question).
-- COGNITIVE LOAD & LENGTH: Keep your response concise, punchy, and bite-sized (150–220 words maximum). Do NOT overwhelm the student with long multi-step lifecycles or walls of text.
+- COGNITIVE LOAD & LENGTH: Keep your response concise, punchy, and bite-sized (150–240 words maximum). Do NOT overwhelm the student with walls of text.
 - Focus on ONE micro-concept or intuitive insight at a time.
-- If the student asks a question or shares a misconception, directly address and resolve their question first before asking the checkpoint question.
-- Write in natural, fluid paragraphs with clean formatting. Use paragraph breaks between explanation, analogy, and question.
+- If the student asks a multi-part question or shares a misconception, directly address and resolve each part of their question first before asking the checkpoint question.
 - DO NOT output internal thinking tags.
 - Be specific to the topic: "${safe(topic)}"
 - Adapt complexity to the student's preferred depth: ${knowledgeProfile?.learningProfile?.preferredDepth || 'balanced'}.
-- Ensure all technical terms and formulas are precise and mathematically sound.`;
+- Ensure all technical terms and formulas are precise and mathematically sound.
+
+${unitContext ? `
+## 📚 OFFICIAL COURSE SYLLABUS & CONTENT GROUNDING:
+${unitContext}
+
+Ground your explanations, analogies, formulas, and check questions directly in the above course material. If common misconceptions are listed above, actively clarify them if the student triggered them.
+` : `
+## 💡 INHERENT TECHNICAL REASONING MODE:
+No official course syllabus is loaded. Use your deep inherent academic knowledge and first-principles reasoning to teach this concept with rigorous precision, intuitive analogies, and clear structure.
+`}`;
 
     // Inject dynamic instructions based on student response (or the topic/history context) (prompt injection)
     let dynamicRigorPrompt = getAdaptivePromptInjection(studentResponse);
@@ -1277,7 +1339,7 @@ CRITICAL RULES:
         // Fall back to scanning the topic name if the student response doesn't trigger anything
         dynamicRigorPrompt = getAdaptivePromptInjection(topic);
     }
-    const systemPromptFinal = systemPrompt + dynamicRigorPrompt;
+    let systemPromptFinal = systemPrompt + dynamicRigorPrompt;
 
     const prompt = `Please respond to the student focusing on ${safe(topic)}.`;
 
@@ -1329,9 +1391,9 @@ CRITICAL RULES:
     }
 
     let followUpQuestion = "";
-    let usedCached = false;
 
-    // Check Redis-backed offline question bank first
+    // Check Redis / offline question bank for benchmark study questions
+    let benchmarkTargetQuestion = null;
     const course = state.courseName;
     const lookupId = state.topicId || state.subtopicId;
     if (course && lookupId) {
@@ -1348,15 +1410,15 @@ CRITICAL RULES:
                 const questions = pc.questions?.[bucket];
                 if (Array.isArray(questions) && questions.length > 0) {
                     const used = state.usedQuestions || [];
-                    const unusedQ = questions.find(q => q && q.question && !used.includes(q.question));
+                    const unusedQ = questions.find(q => {
+                        const qText = typeof q === 'string' ? q : q?.question;
+                        return qText && !used.includes(qText);
+                    });
                     if (unusedQ) {
-                        followUpQuestion = unusedQ.question;
-                        usedCached = true;
-                        if (!state.usedQuestions) {
-                            state.usedQuestions = [];
-                        }
-                        state.usedQuestions.push(unusedQ.question);
-                        log.info('TUTOR', `processTutorResponse: using cached question at level ${nextCognitiveLevel} for ${course}/${lookupId}`);
+                        benchmarkTargetQuestion = typeof unusedQ === 'string' ? unusedQ : unusedQ.question;
+                        if (!state.usedQuestions) state.usedQuestions = [];
+                        state.usedQuestions.push(benchmarkTargetQuestion);
+                        log.info('TUTOR', `processTutorResponse: target benchmark question selected at level ${nextCognitiveLevel} for ${course}/${lookupId}`);
                     }
                 }
             }
@@ -1365,14 +1427,18 @@ CRITICAL RULES:
         }
     }
 
-    if (!usedCached) {
+    if (llmConfig?.rawCachedQuestionOnly && benchmarkTargetQuestion) {
+        followUpQuestion = benchmarkTargetQuestion;
+    } else {
+        if (benchmarkTargetQuestion) {
+            systemPromptFinal += `\n\nCURRICULUM BENCHMARK CHECKPOINT: Guide the student towards reflecting on this official question for their Phase 4 Metacognitive Checkpoint:\n"${benchmarkTargetQuestion}"\nEnsure you provide your full conversational scaffolding (70% explanation with analogy/derivation) before asking this question!`;
+        }
+
         try {
             followUpQuestion = await generateAndCritiqueSocraticResponse(prompt, systemPromptFinal, llmConfig, llmOptions, onToken);
             followUpQuestion = sanitizeGeneratedText(cleanResponse(followUpQuestion));
         } catch (e) {
-            // Log to aid debugging — if this still triggers the LLM call is failing
             log.warn('TUTOR', `Question generation FAILED (provider=${llmConfig?.llmProvider}): ${e.message}`);
-            // Fallback must be topic-specific, never the generic "rethink" phrase
             const topicSafe = safe(topic) || 'this concept';
             followUpQuestion = sanitizeGeneratedText(
                 `Let me approach **${topicSafe}** from a different angle.\n\nThink about it this way: what would happen in a simple real-world scenario where ${topicSafe} is involved? Start with what you already know and describe it in your own words.`
@@ -1419,9 +1485,10 @@ CRITICAL RULES:
     const projectedMastery = Math.max(0, newMastery);
     const priorKnowledge = assessment.priorKnowledge || false;
     const isStuckProgress = consecutiveWrongNow >= 3;
-    // Mastery requires BOTH consecutive correct answers AND a minimum mastery score, OR being stuck/repetitive (forces progression)
+    // Guided Learning Mode advances immediately upon a verified CORRECT answer (preventing Q&A mental fatigue),
+    // or when stuck/repetitive (forces progression)
     const isMastered = priorKnowledge ||
-        (consecutiveCorrect >= 2 && projectedMastery >= 2.0) ||
+        (classification.status === 'CORRECT' && consecutiveCorrect >= 1 && projectedMastery >= 1.0) ||
         projectedMastery >= 3.5 ||
         isStuckProgress ||
         isRepetitive;
@@ -1521,7 +1588,7 @@ What do you know about ${nextTopic}?`
                 const creditsByLevel = { L1_CONCEPT: 10, L2_APPLICATION: 20, L3_CRITICAL: 30, L4_EVALUATION: 40 };
                 const credits = creditsByLevel[cogLevel] || 10;
                 const reasonMap = { L1_CONCEPT: 'remembering', L2_APPLICATION: 'applying', L3_CRITICAL: 'analyzing', L4_EVALUATION: 'evaluating_creating' };
-                await gamificationService.awardLearningCredits(state.userId, credits, reasonMap[cogLevel] || 'understanding', topic);
+                await gamificationService.awardXP(state.userId, credits, reasonMap[cogLevel] || 'understanding', topic, { cognitiveLevel: cogLevel });
                 log.info('TUTOR', `Awarded ${credits} credits to ${state.userId} for mastering ${topic}`);
                 // Mark mastery awarded to prevent double-awarding in same session
                 await setTutorSessionState(sessionId, { ...state, masteryAwarded: true });
@@ -1539,13 +1606,10 @@ What do you know about ${nextTopic}?`
         updatedUsedQuestions.push(followUpQuestion);
     }
 
-    // [Team3] Apply Socratic strict formatter: ensures followUpQuestion is clean prose
-    // (no bullet lists, no code fences, no headings, no <thinking> tags shown to student)
-    if (followUpQuestion && typeof formatSocraticStrict === 'function') {
-        try { followUpQuestion = formatSocraticStrict(followUpQuestion); }
-        catch (fmtErr) { log.warn('TUTOR', 'Socratic formatter error: ' + fmtErr.message); }
+    // Preserve Guided Learning callouts, bullet lists, KaTeX math, and Mermaid blocks while stripping internal thinking tags
+    if (followUpQuestion) {
+        followUpQuestion = sanitizeGeneratedText(followUpQuestion);
     }
-    // [/Team3]
 
     const newState = {
         ...state,
@@ -1708,11 +1772,41 @@ async function getTopicContext(course, topicId) {
  * Falls back to live Qdrant context if no STN is cached.
  */
 async function getSubtopicContext(course, subtopicId, topicId) {
+    // ── Priority 1: Course Grounding Service (Syllabus, Lecture Notes, Study Questions) ──
+    const lookupId = subtopicId || topicId;
+    const effectiveCourse = (course && course !== 'General') ? course : null;
+    if (effectiveCourse && lookupId) {
+        try {
+            const grounding = await courseGroundingService.resolveCourseGrounding(effectiveCourse, lookupId, topicId);
+            if (grounding && grounding.found && (grounding.groundingBlock || grounding.definition || grounding.rawNotes)) {
+                log.info('TUTOR', `Course Grounding HIT for ${effectiveCourse}/${lookupId} (source: ${grounding.source})`);
+                return {
+                    teaching_notes: {
+                        teaching_context: grounding.groundingBlock || grounding.rawNotes || grounding.definition,
+                        definition: grounding.definition,
+                        intuition: grounding.intuition,
+                        mathematical_foundation: grounding.mathematicalFoundation,
+                        worked_example: grounding.workedExample,
+                        common_misconceptions: grounding.commonMisconceptions,
+                        key_takeaways: grounding.keyTakeaways,
+                        diagram: grounding.diagram
+                    },
+                    qdrant_chunks: [{ text: grounding.groundingBlock || grounding.rawNotes || grounding.definition }],
+                    groundTruth: grounding.groundTruth,
+                    groundingBlock: grounding.groundingBlock,
+                    grounding: grounding,
+                    source: grounding.source || 'course_grounding'
+                };
+            }
+        } catch (gErr) {
+            log.warn('TUTOR', `Course grounding error for ${effectiveCourse}/${lookupId}: ${gErr.message}`);
+        }
+    }
+
     const pythonServiceUrl = process.env.PYTHON_RAG_SERVICE_URL;
     if (!pythonServiceUrl) return null;
 
-    // ── Fast path: STN cache ──────────────────────────────────────────────────
-    const lookupId = subtopicId || topicId;
+    // ── Priority 2: STN cache ──────────────────────────────────────────────────
     if (course && lookupId) {
         try {
             const stnUrl = `${pythonServiceUrl}/stn/${encodeURIComponent(course)}/${encodeURIComponent(lookupId)}`;
@@ -1720,17 +1814,18 @@ async function getSubtopicContext(course, subtopicId, topicId) {
             if (stnResp.data?.cached && stnResp.data?.data?.teaching_context) {
                 const notes = stnResp.data.data;
                 log.info('TUTOR', `STN cache HIT for ${course}/${lookupId}`);
-                // Return in the same shape the caller expects (qdrant_chunks)
                 return {
                     teaching_notes: notes,
                     qdrant_chunks: [{ text: notes.teaching_context }],
+                    groundTruth: notes.teaching_context,
+                    groundingBlock: notes.teaching_context,
                     source: 'stn_cache'
                 };
             }
         } catch (_) { /* fall through to live Qdrant */ }
     }
 
-    // ── Slow path: live Qdrant search ────────────────────────────────────────
+    // ── Priority 3: live Qdrant search ────────────────────────────────────────
     if (!topicId) return null;
     try {
         const url = `${pythonServiceUrl}/course/${encodeURIComponent(course)}/topic/${encodeURIComponent(topicId)}/context`;
@@ -1902,19 +1997,34 @@ async function getCurriculumStructure(courseName) {
         try {
             const fs = require('fs');
             const path = require('path');
-            const bDirs = [
-                path.join(__dirname, '..', '..', 'course_bootstrap'),
-                path.join(__dirname, '..', 'course_bootstrap')
+            const resolvedCourseDir = courseGroundingService.findCourseDirectory(courseName);
+            const courseDirsToCheck = [];
+            if (resolvedCourseDir) {
+                courseDirsToCheck.push(resolvedCourseDir);
+            }
+            const candidateBases = [
+                path.join(__dirname, '..', 'course_bootstrap'),
+                path.join(__dirname, '..', '..', 'course_bootstrap')
             ];
-            for (const bDir of bDirs) {
-                const specPath = path.join(bDir, courseName, 'curriculum_spec.json');
+            for (const bDir of candidateBases) {
+                const direct = path.join(bDir, courseName);
+                if (!courseDirsToCheck.includes(direct) && fs.existsSync(direct)) {
+                    courseDirsToCheck.push(direct);
+                }
+            }
+
+            for (const cDir of courseDirsToCheck) {
+                // 2a. curriculum_spec.json
+                const specPath = path.join(cDir, 'curriculum_spec.json');
                 if (fs.existsSync(specPath)) {
                     const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
                     if (spec.modules && spec.modules.length > 0) {
                         return { modules: spec.modules };
                     }
                 }
-                const csvPath = path.join(bDir, courseName, 'syllabus.csv');
+
+                // 2b. syllabus.csv with dynamic column headers
+                const csvPath = path.join(cDir, 'syllabus.csv');
                 if (fs.existsSync(csvPath)) {
                     const lines = fs.readFileSync(csvPath, 'utf8').trim().split('\n');
                     const modMap = new Map();
@@ -1958,13 +2068,25 @@ async function getCurriculumStructure(courseName) {
                         /^\s*\d+\.\s*[A-Z].*(mitchell|bishop|goodfellow|courville)/i
                     ];
 
-                    for (let i = 1; i < lines.length; i++) {
+                    let header = null;
+                    let modIdx = -1, topicIdx = -1, subtopicIdx = -1;
+
+                    for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
                         if (!line) continue;
                         const parts = parseCsvRow(line);
-                        const modName = cleanSyllabusName(parts[2]) || `Unit ${Math.ceil(i/8)}`;
-                        const rawTopName = cleanSyllabusName(parts[3]) || `Topic ${i}`;
-                        const rawSubName = cleanSyllabusName(parts[4]) || rawTopName;
+
+                        if (!header) {
+                            header = parts.map(f => f.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                            modIdx = header.findIndex(h => h.includes('module') || h.includes('unit'));
+                            topicIdx = header.findIndex(h => h.includes('lecturetopic') || h.includes('topic'));
+                            subtopicIdx = header.findIndex(h => h.includes('subtopic'));
+                            continue;
+                        }
+
+                        const rawModName = cleanSyllabusName(modIdx >= 0 ? parts[modIdx] : parts[2]) || `Unit ${Math.ceil(i/8)}`;
+                        const rawTopName = cleanSyllabusName(topicIdx >= 0 ? parts[topicIdx] : parts[3]) || `Topic ${i}`;
+                        const rawSubName = cleanSyllabusName(subtopicIdx >= 0 ? parts[subtopicIdx] : parts[4]) || rawTopName;
 
                         if (EXCLUDED_SYLLABUS_PATTERNS.some(pat => pat.test(rawTopName) || pat.test(rawSubName))) {
                             continue;
@@ -1972,10 +2094,10 @@ async function getCurriculumStructure(courseName) {
                         if (!rawTopName) continue;
 
                         topicCounter++;
-                        if (!modMap.has(modName)) {
-                            modMap.set(modName, { id: `mod_${modMap.size+1}`, name: modName, topics: [] });
+                        if (!modMap.has(rawModName)) {
+                            modMap.set(rawModName, { id: `mod_${modMap.size+1}`, name: rawModName, topics: [] });
                         }
-                        const m = modMap.get(modName);
+                        const m = modMap.get(rawModName);
                         m.topics.push({
                             id: `top_${topicCounter}`,
                             name: rawTopName,
@@ -1984,6 +2106,32 @@ async function getCurriculumStructure(courseName) {
                     }
                     if (modMap.size > 0) {
                         return { modules: Array.from(modMap.values()) };
+                    }
+                }
+
+                // 2c. Fallback: Lecture Notes subtopics markdown files
+                const subtopicsDir = path.join(cDir, 'lecture_notes', 'subtopics');
+                if (fs.existsSync(subtopicsDir)) {
+                    const files = fs.readdirSync(subtopicsDir).filter(f => f.endsWith('.md')).sort();
+                    if (files.length > 0) {
+                        const topics = files.map((file, idx) => {
+                            const slug = file.replace(/\.md$/, '');
+                            const name = slug.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                            return {
+                                id: `top_${idx + 1}`,
+                                name,
+                                subtopics: [{ id: slug, name, filename: file }]
+                            };
+                        });
+                        return {
+                            modules: [
+                                {
+                                    id: 'mod_1',
+                                    name: 'Course Topics',
+                                    topics
+                                }
+                            ]
+                        };
                     }
                 }
             }
@@ -2141,7 +2289,7 @@ function getAdaptivePromptInjection(queryText) {
 The student's query involves mathematical derivations, proofs, or equations. You MUST:
 - Provide a rigorous, step-by-step mathematical derivation of the concept.
 - Define every variable and constant clearly upon its first introduction.
-- Wrap all mathematical expressions, variables, subscripts, and formulas inside code formatting (e.g. \`V_i(t+1) = \\alpha \\cdot V_i(t)\`) to preserve clarity and formatting.
+- Always wrap inline mathematical expressions, variables, subscripts, and formulas inside KaTeX \`$...$\` and display equations inside \`$$...$$\` (never use code backticks for math).
 - Explain the physical significance or engineering intuition behind each term in the equations.`;
     }
 

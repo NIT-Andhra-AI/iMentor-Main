@@ -154,21 +154,30 @@ router.post('/course-matching/validate', authMiddleware, async (req, res) => {
   } catch (e) {
   }
 
-  const courses = (Array.isArray(inventory?.courses) ? inventory.courses : [])
-    .map(c => c.courseName || c.name || '').filter(Boolean);
+  const courses = Array.isArray(inventory?.courses) ? inventory.courses : [];
 
-  const exact = courses.find(c => c.toLowerCase() === qNorm);
-  if (exact) {
-    return res.json({ status: 'exact', canonical: exact, suggestions: [] });
+  // Check exact
+  for (const c of courses) {
+    const names = [c.courseName, c.name, ...(c.aliases || [])].filter(Boolean);
+    if (names.some(n => n.toLowerCase() === qNorm)) {
+      return res.json({ status: 'exact', canonical: c.name || c.courseName, courseCode: c.courseName, suggestions: [] });
+    }
   }
 
-  const alias = courses.find(c => c.toLowerCase().includes(qNorm) || qNorm.includes(c.toLowerCase()));
-  if (alias) {
-    return res.json({ status: 'alias', canonical: alias, suggestions: [] });
+  // Check alias / substring
+  for (const c of courses) {
+    const names = [c.courseName, c.name, ...(c.aliases || [])].filter(Boolean);
+    if (names.some(n => n.toLowerCase().includes(qNorm) || qNorm.includes(n.toLowerCase()))) {
+      return res.json({ status: 'alias', canonical: c.name || c.courseName, courseCode: c.courseName, suggestions: [] });
+    }
   }
 
   const suggestions = courses
-    .filter(c => c.toLowerCase().includes(qNorm) || qNorm.includes(c.toLowerCase()))
+    .filter(c => {
+      const names = [c.courseName, c.name, ...(c.aliases || [])].filter(Boolean);
+      return names.some(n => n.toLowerCase().includes(qNorm) || qNorm.includes(n.toLowerCase()));
+    })
+    .map(c => c.name || c.courseName)
     .slice(0, 6);
 
   res.json({ status: suggestions.length ? 'suggestions' : 'other', canonical: null, suggestions });
@@ -191,21 +200,31 @@ router.get('/course-matching/autocomplete', authMiddleware, async (req, res) => 
   } catch (e) {
   }
 
-  const courseNames = Array.isArray(inventory?.courses) ? inventory.courses.map(c => c.courseName || c.name || '').filter(Boolean) : [];
+  const courses = Array.isArray(inventory?.courses) ? inventory.courses : [];
 
-  const scored = courseNames
-    .map(name => {
-      const lower = name.toLowerCase();
-      let score = 0;
-      if (lower.startsWith(query)) score = 1;
-      else if (lower.includes(query)) score = 0.6;
-      return { type: 'course', value: name, label: name, score };
-    })
-    .filter(x => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 8);
+  const scored = [];
+  for (const c of courses) {
+    const displayName = c.name && c.name !== c.courseName ? `${c.courseName} - ${c.name}` : (c.name || c.courseName);
+    const names = [c.courseName, c.name, ...(c.aliases || [])].filter(Boolean);
+    let bestScore = 0;
+    for (const n of names) {
+      const lower = n.toLowerCase();
+      if (lower.startsWith(query)) bestScore = Math.max(bestScore, 1);
+      else if (lower.includes(query)) bestScore = Math.max(bestScore, 0.6);
+    }
+    if (bestScore > 0) {
+      scored.push({
+        type: 'course',
+        value: c.name || c.courseName,
+        courseCode: c.courseName,
+        label: displayName,
+        score: bestScore
+      });
+    }
+  }
 
-  res.json({ suggestions: scored });
+  scored.sort((a, b) => b.score - a.score);
+  res.json({ suggestions: scored.slice(0, 8) });
 });
 
 module.exports = router;

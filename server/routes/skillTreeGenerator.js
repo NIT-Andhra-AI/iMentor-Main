@@ -195,7 +195,19 @@ router.post('/generate', async (req, res) => {
     const startTime = Date.now();
     const genLog = [];
     try {
-        const { source, courseName, modules, curriculumId } = req.body;
+        let { source, courseName, courseCode, modules, curriculumId } = req.body;
+        if (!courseName && courseCode) courseName = courseCode;
+        if (courseName && (/^ee3621$/i.test(courseName) || /digital\s*signal\s*processing/i.test(courseName))) {
+            courseName = 'EE3621';
+        }
+        if (!source && courseName) source = 'course';
+        if (source === 'course' && courseName && (!modules || !Array.isArray(modules) || modules.length === 0)) {
+            const { getCurriculumStructure } = require('../services/socraticTutorService');
+            const struct = await getCurriculumStructure(courseName);
+            if (struct && Array.isArray(struct.modules)) {
+                modules = struct.modules;
+            }
+        }
         if (!source || !['course', 'csv'].includes(source)) return res.status(400).json({ message: 'source must be "course" or "csv"' });
 
         let title, rawTopics;
@@ -262,7 +274,7 @@ router.post('/generate', async (req, res) => {
                         outcomes: [`Explain ${sub.subtopic}`, `Apply ${sub.subtopic} concepts`, `Analyze problems involving ${sub.subtopic}`],
                         successCriteria: [`Complete quiz with >70%`, `Demonstrate understanding via reflection`],
                         masteryThreshold: 70,
-                        masteryStatus: 'locked', unlocked: false, mastered: false, stars: 0, xpAwarded: 0
+                        masteryStatus: (tier === 0 && topicIdx === 0 && subIdx === 0) ? 'available' : 'locked', unlocked: (tier === 0 && topicIdx === 0 && subIdx === 0), mastered: false, stars: 0, xpAwarded: 0
                     });
                 });
             });
@@ -313,7 +325,7 @@ router.post('/generate', async (req, res) => {
         if (source === 'csv') await UploadedCurriculum.findByIdAndUpdate(curriculumId, { status: 'ready' });
 
         logEvent('GENERATE_OK', `"${title}"`, { nodeCount, dependencyCount, elapsed });
-        res.json({ skillTree: { _id: skillTree._id, title, source, nodeCount, dependencyCount, generationTimeMs: elapsed, status: 'ready' } });
+        res.json({ skillTree: { _id: skillTree._id, title, source, nodeCount, dependencyCount, nodes, edges, generationTimeMs: elapsed, status: 'ready' } });
     } catch (error) {
         logErr('GENERATE_ERROR', error);
         res.status(500).json({ message: `Skill tree generation failed: ${error.message}` });
@@ -810,10 +822,42 @@ router.post('/node-assessment', async (req, res) => {
         const node = tree.nodes.find(n => n.id === nodeId);
         if (!node) return res.status(404).json({ message: 'Node not found.' });
 
+        // Fast-path: check pre-computed SkillTree or ConceptQuestionBank for this node/topic
+        const assessmentKey = `node_${treeId}_${nodeId}`;
+        try {
+            const {
+                validateAndGenerateFreshQuestions,
+                shuffleQuestionOptions,
+                sanitizeQuestionsForClient,
+                storeActiveAssessmentAttempt
+            } = require('../services/activeQuestionValidatorService');
+            const courseKey = (tree.courseName || tree.title || '').toLowerCase().includes('signal') || (tree.courseName || '').toUpperCase() === 'EE3621'
+                ? 'EE3621'
+                : (tree.courseName || tree.title || '');
+            const numMatch = String(node.id || node.topic || '').match(/(?:l|level_|node_)(\d+)/i);
+            const levelNum = numMatch ? parseInt(numMatch[1], 10) : (tree.nodes.findIndex(n => n.id === nodeId) + 1 || 1);
+            const preRes = await validateAndGenerateFreshQuestions({
+                course: courseKey,
+                skillId: node.id,
+                levelId: levelNum,
+                levelName: `${node.topic || ''} ${node.name || ''}`.trim(),
+                difficulty: node.difficulty || 'medium',
+                requestedCount: 5,
+                userId: req.user._id,
+                assessmentKey
+            });
+            const safeFastQs = preRes?.clientQuestions || [];
+            if (safeFastQs.length >= 3) {
+                logEvent('NODE_ASSESSMENT_OK', `"${node.name}" (precomputed sanitized)`, { questions: safeFastQs.length, timeMs: Date.now() - startTime });
+                return res.json({ questions: safeFastQs, treeId, nodeId, source: 'precomputed_bank' });
+            }
+        } catch (fastErr) {
+            log.warn('SKILL_TREE', `Fast-path node-assessment lookup failed: ${fastErr.message}`);
+        }
+
         const prompt = `Generate 3 quick assessment questions for the topic "${node.name}" in module "${node.module || ''}" at difficulty "${node.difficulty}".
 
-Mix types: 1 MCQ, 1 short answer, 1 scenario.
-Return ONLY valid JSON array:
+Return ONLY valid JSON array of 3 multiple-choice questions:
 [{"question":"","type":"mcq","options":["","","",""],"correctIndex":0,"correctAnswer":"","explanation":"","difficulty":"${node.difficulty}","bloomsLevel":"understand"}]`;
 
         const result = await callWithFallback({
@@ -832,20 +876,28 @@ Return ONLY valid JSON array:
 
         if (!Array.isArray(questions) || questions.length === 0) {
             questions = [
-                { question: `What is the main concept of ${node.name}?`, type: 'mcq', options: ['Definition A', 'Definition B', 'Definition C', 'Definition D'], correctIndex: 0, correctAnswer: 'Definition A', explanation: 'This is the core definition.', difficulty: node.difficulty, bloomsLevel: 'remember' },
-                { question: `Explain how ${node.name} applies to real-world problems.`, type: 'short_answer', correctAnswer: 'Application involves...', explanation: 'Practical application is key.', difficulty: node.difficulty, bloomsLevel: 'apply' }
+                { question: `What is the main principle of ${node.name}?`, type: 'mcq', options: ['Core system property', 'Unrelated approximation', 'Zero-input divergence', 'None of the above'], correctIndex: 0, correctAnswer: 'Core system property', explanation: 'This is the core definition.', difficulty: node.difficulty, bloomsLevel: 'remember' }
             ];
         }
 
-        logEvent('NODE_ASSESSMENT_OK', `"${node.name}"`, { questions: questions.length, timeMs: Date.now() - startTime });
-        res.json({ questions, treeId, nodeId });
+        const {
+            shuffleQuestionOptions,
+            sanitizeQuestionsForClient,
+            storeActiveAssessmentAttempt
+        } = require('../services/activeQuestionValidatorService');
+        const shuffledFallback = questions.map(q => shuffleQuestionOptions({ ...q, subtopic: node.name }));
+        await storeActiveAssessmentAttempt({ userId: req.user._id, assessmentKey, questions: shuffledFallback });
+        const safeQuestions = sanitizeQuestionsForClient(shuffledFallback);
+
+        logEvent('NODE_ASSESSMENT_OK', `"${node.name}"`, { questions: safeQuestions.length, timeMs: Date.now() - startTime });
+        res.json({ questions: safeQuestions, treeId, nodeId });
     } catch (error) {
         logErr('NODE_ASSESSMENT_ERROR', error);
         res.status(500).json({ message: 'Failed to generate node assessment.' });
     }
 });
 
-// ─── Submit Node-Level Assessment ──────────────────────────────────────────────
+// ─── Submit Node-Level Assessment (Server-Side Vaulted Grading) ───────────────
 router.post('/node-assessment/submit', async (req, res) => {
     try {
         const { treeId, nodeId, questions, answers, timeSpent } = req.body;
@@ -857,16 +909,21 @@ router.post('/node-assessment/submit', async (req, res) => {
         const node = tree.nodes.find(n => n.id === nodeId);
         if (!node) return res.status(404).json({ message: 'Node not found.' });
 
-        let correctCount = 0;
-        const results = [];
-        answers.forEach((ans, i) => {
-            const q = questions?.[i];
-            const isCorrect = q?.correctIndex != null
-                ? Number(ans.selectedIndex) === Number(q.correctIndex)
-                : String(ans.text || '').toLowerCase().trim() === String(q?.correctAnswer || '').toLowerCase().trim();
-            if (isCorrect) correctCount++;
-            results.push({ question: q?.question || '', correct: isCorrect, expected: q?.correctAnswer || '' });
+        const assessmentKey = `node_${treeId}_${nodeId}`;
+        const { gradeAssessmentSubmission } = require('../services/activeQuestionValidatorService');
+        const graded = await gradeAssessmentSubmission({
+            userId: req.user._id,
+            assessmentKey,
+            answers,
+            submittedQuestions: Array.isArray(questions) ? questions : []
         });
+
+        const correctCount = graded.correctCount || 0;
+        const results = (graded.results || []).map(r => ({
+            question: r.question || '',
+            correct: r.isCorrect,
+            conceptHint: r.conceptHint
+        }));
 
         const quizScore = Math.round((correctCount / answers.length) * 100);
         node.quizScore = quizScore;

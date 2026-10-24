@@ -6,6 +6,8 @@ const fs      = require('fs');
 const multer  = require('multer');
 const User = require('../models/User');
 const UserFeedback = require('../models/UserFeedback');
+const LLMPerformanceLog = require('../models/LLMPerformanceLog');
+const GamificationProfile = require('../models/GamificationProfile');
 const { redisClient } = require('../config/redisClient');
 const log = require('../utils/logger');
 const { auditLog } = require('../utils/logger');
@@ -45,7 +47,7 @@ router.get('/profile', async (req, res) => {
 
         res.json(profileData);
     } catch (error) {
-            log.error('AUTH', `Profile fetch error: ${error.message}`);
+        log.error('AUTH', `Profile fetch error: ${error.message}`);
         res.status(500).json({message: 'Server error while fetching profile.' });
     }
 });
@@ -53,11 +55,11 @@ router.get('/profile', async (req, res) => {
 router.put('/profile', async (req, res) => {
     const {name, college, universityNumber, degreeType, branch, year, learningStyle, currentGoals} = req.body;
 
-        if (!name || !college || !universityNumber || !degreeType || !branch || !year || !learningStyle) {
+    if (!name || !college || !universityNumber || !degreeType || !branch || !year || !learningStyle) {
         return res.status(400).json({message: 'All profile fields except goals are required.' });
     }
 
-        try {
+    try {
         const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(404).json({message: 'User not found.' });
@@ -82,21 +84,21 @@ router.put('/profile', async (req, res) => {
 
         if (redisClient && redisClient.isOpen) {
             const cacheKey = `user:${req.user._id}`;
-        await redisClient.del(cacheKey);
-        log.info('AUTH', `Invalidated cache for user ${req.user._id}`);
+            await redisClient.del(cacheKey);
+            log.info('AUTH', `Invalidated cache for user ${req.user._id}`);
         }
         res.json({
             message: 'Profile updated successfully!',
-        profile: user.profile
+            profile: user.profile
         });
 
     } catch (error) {
-            log.error('AUTH', `Profile update error: ${error.message}`);
+        log.error('AUTH', `Profile update error: ${error.message}`);
         res.status(500).json({message: 'Server error while updating profile.' });
     }
 });
 
-// ─── User Product Feedback ─────────────────────────────────────────────────────
+// ─── User Product Feedback & Performance Bounty Program ────────────────────────
 
 /**
  * GET /api/user/feedback/attachment/:filename
@@ -114,6 +116,8 @@ router.get('/feedback/attachment/:filename', (req, res) => {
  * POST /api/user/feedback
  * Submit product feedback (bugs, feature requests, general comments).
  * Accepts multipart/form-data with optional 'attachments' files (up to 3).
+ * Automatically captures recent LLM latency telemetry and registers Performance/Bug
+ * submissions for the iMentor Performance Bounty Program.
  */
 router.post('/feedback', feedbackUpload.array('attachments', 3), async (req, res) => {
     const { type, category, message } = req.body;
@@ -126,6 +130,8 @@ router.post('/feedback', feedbackUpload.array('attachments', 3), async (req, res
     }
     const validTypes      = ['bug', 'feature', 'general'];
     const validCategories = ['UI', 'Performance', 'Content', 'AI Quality', 'Other'];
+    const resolvedType     = validTypes.includes(type) ? type : 'general';
+    const resolvedCategory = validCategories.includes(category) ? category : 'Other';
 
     const attachments = (req.files || []).map(f => ({
         filename:     f.filename,
@@ -135,15 +141,86 @@ router.post('/feedback', feedbackUpload.array('attachments', 3), async (req, res
     }));
 
     try {
+        // 1. Capture latest LLMPerformanceLog telemetry snapshot for this user
+        let telemetrySnapshot = {
+            lastResponseTimeMs: null,
+            lastModelId:        '',
+            lastQuery:          '',
+            capturedAt:         new Date(),
+        };
+        try {
+            const recentLog = await LLMPerformanceLog.findOne({ userId: req.user._id })
+                .sort({ createdAt: -1 })
+                .lean();
+            if (recentLog) {
+                telemetrySnapshot = {
+                    lastResponseTimeMs: recentLog.responseTimeMs ?? null,
+                    lastModelId:        recentLog.chosenModelId || '',
+                    lastQuery:          (recentLog.query || '').slice(0, 200),
+                    capturedAt:         recentLog.createdAt || new Date(),
+                };
+            }
+        } catch (telErr) {
+            log.warn('USER', `Could not attach telemetry snapshot: ${telErr.message}`);
+        }
+
+        // 2. Determine Performance Bounty eligibility (Performance category or Bug report)
+        const isBountyEligible = resolvedCategory === 'Performance' || resolvedType === 'bug' || resolvedCategory === 'AI Quality';
+
         const feedback = await UserFeedback.create({
-            userId:      req.user._id,
-            type:        validTypes.includes(type) ? type : 'general',
-            category:    validCategories.includes(category) ? category : 'Other',
-            message:     message.trim(),
+            userId:            req.user._id,
+            type:              resolvedType,
+            category:          resolvedCategory,
+            message:           message.trim(),
             attachments,
+            bountyEligible:    isBountyEligible,
+            bountyStatus:      'pending',
+            telemetrySnapshot,
         });
-        log.info('USER', `Feedback submitted by ${req.user._id}: [${feedback.type}/${feedback.category}] attachments=${attachments.length}`);
-        return res.status(201).json({ message: 'Thank you for your feedback!', id: feedback._id });
+
+        // 3. Award +5 XP immediate participation bonus (capped at 3 reports per 24h to prevent spam)
+        let participationXpAwarded = 0;
+        if (isBountyEligible) {
+            try {
+                const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000);
+                const recentCount = await UserFeedback.countDocuments({
+                    userId:    req.user._id,
+                    createdAt: { $gte: since24h },
+                });
+                if (recentCount <= 3) {
+                    let profile = await GamificationProfile.findOne({ userId: req.user._id });
+                    if (!profile) {
+                        profile = new GamificationProfile({ userId: req.user._id });
+                    }
+                    participationXpAwarded = 5;
+                    profile.totalXP = (profile.totalXP || 0) + participationXpAwarded;
+                    profile.xpLevel = profile.calculateXPLevel();
+                    profile.xpHistory = profile.xpHistory || [];
+                    profile.xpHistory.push({ amount: participationXpAwarded, reason: 'bounty_submission', topic: category || 'feedback', timestamp: new Date() });
+                    profile.xpHistory.push({
+                        amount:    participationXpAwarded,
+                        reason:    'quality_bonus',
+                        topic:     `Performance Bounty Submission (${resolvedCategory})`,
+                        timestamp: new Date(),
+                    });
+                    profile.xpLevel = profile.calculateXPLevel();
+                    await profile.save();
+                }
+            } catch (xpErr) {
+                log.warn('USER', `Failed to award participation XP for feedback: ${xpErr.message}`);
+            }
+        }
+
+        log.info('USER', `Feedback submitted by ${req.user._id}: [${feedback.type}/${feedback.category}] bountyEligible=${isBountyEligible} lastLatency=${telemetrySnapshot.lastResponseTimeMs}ms attachments=${attachments.length}`);
+        return res.status(201).json({
+            message: isBountyEligible
+                ? `Bounty report submitted! +${participationXpAwarded} XP awarded now, and up to +50 Bounty Credits & +100 XP upon Admin verification.`
+                : 'Thank you for your feedback!',
+            id: feedback._id,
+            bountyEligible: isBountyEligible,
+            participationXpAwarded,
+            telemetrySnapshot,
+        });
     } catch (err) {
         if (err.name === 'ValidationError') {
             return res.status(400).json({ message: Object.values(err.errors).map(e => e.message).join('. ') });
@@ -155,20 +232,20 @@ router.post('/feedback', feedbackUpload.array('attachments', 3), async (req, res
 
 /**
  * GET /api/user/feedback
- * Returns the current user's submitted feedback entries.
+ * Returns the current user's submitted feedback entries (including bounty status & rewards).
  */
 router.get('/feedback', async (req, res) => {
     try {
-        const items = await UserFeedback.find({userId: req.user._id })
-        .sort({createdAt: -1 })
-        .limit(50)
-        .select('-adminNote -__v')
-        .lean();
-        return res.json({feedback: items });
+        const items = await UserFeedback.find({ userId: req.user._id })
+            .sort({ createdAt: -1 })
+            .limit(50)
+            .select('-adminNote -__v')
+            .lean();
+        return res.json({ feedback: items });
     } catch (err) {
-            log.error('USER', `Feedback fetch error: ${err.message}`);
-        return res.status(500).json({message: 'Server error.' });
+        log.error('USER', `Feedback fetch error: ${err.message}`);
+        return res.status(500).json({ message: 'Server error.' });
     }
 });
 
-        module.exports = router;
+module.exports = router;

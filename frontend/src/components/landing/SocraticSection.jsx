@@ -28,7 +28,7 @@ const SocraticSection = ({ onLoginClick }) => {
                         </h2>
 
                         <p className="text-xl text-gray-300 leading-relaxed">
-                            Meet our <strong className="text-white">Socratic Tutor</strong>. Instead of spoon-feeding you answers, it guides you with thoughtful questions, helping you build deep intuition and mastery over complex topics.
+                            Meet our <strong className="text-white">Guided Learning Mode</strong>. Instead of spoon-feeding you answers, it guides you with thoughtful questions, helping you build deep intuition and mastery over complex topics.
                         </p>
 
                         <div className="space-y-4">
@@ -59,7 +59,7 @@ const SocraticSection = ({ onLoginClick }) => {
                                 className="bg-white text-black hover:bg-gray-200 border-none shadow-lg shadow-black/20"
                                 rightIcon={<ArrowRight size={18} />}
                             >
-                                Try Socratic Mode
+                                Try Learning Mode
                             </Button>
                         </div>
                     </AnimateOnView>
@@ -80,7 +80,7 @@ const SocraticSection = ({ onLoginClick }) => {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-white">iMentor</h3>
-                                    <p className="text-xs text-gray-400 font-medium">Socratic Mode Active</p>
+                                    <p className="text-xs text-gray-400 font-medium">Guided Learning Active</p>
                                 </div>
                             </div>
 

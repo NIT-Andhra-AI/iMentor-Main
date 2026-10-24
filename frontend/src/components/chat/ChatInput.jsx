@@ -1,8 +1,9 @@
 // frontend/src/components/chat/ChatInput.jsx
 import { useAppState } from '../../contexts/AppStateContext.jsx';
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../services/api.js';
-import { Send, Mic, Plus, Brain, Zap, Globe, BookMarked, Sparkles, Square, Database, Lock, GraduationCap } from 'lucide-react';
+import { Send, Mic, Plus, Brain, Zap, Globe, BookMarked, Sparkles, Square, Database, Lock, GraduationCap, Sigma } from 'lucide-react';
 import { useWebSpeech } from '../../hooks/useWebSpeech';
 import { useDeepResearch } from '../../contexts/DeepResearchContext';
 import Button from '../core/Button.jsx';
@@ -10,13 +11,41 @@ import IconButton from '../core/IconButton.jsx';
 import toast from 'react-hot-toast';
 import Animate from '../core/Animate.jsx';
 import KnowledgeBaseDropdown from '../documents/KnowledgeBaseDropdown.jsx';
+import MathRenderer from '../common/MathRenderer.jsx';
+
+const STEM_MATH_SYMBOLS = [
+    { label: 'ω', symbol: '\\omega', title: 'Omega (Angular Frequency)' },
+    { label: 'π', symbol: '\\pi', title: 'Pi' },
+    { label: 'z⁻¹', symbol: 'z^{-1}', title: 'Unit Delay (z^-1)' },
+    { label: 'e⁻ʲʷⁿ', symbol: 'e^{-j\\omega n}', title: 'Complex Exponential' },
+    { label: 'X[k]', symbol: 'X[k]', title: 'DFT Spectrum Bin' },
+    { label: 'X(eʲʷ)', symbol: 'X(e^{j\\omega})', title: 'DTFT Spectrum' },
+    { label: '∑', symbol: '\\sum', title: 'Summation' },
+    { label: 'Δω', symbol: '\\Delta\\omega', title: 'Bin Spacing Delta Omega' },
+    { label: '2πk/N', symbol: '\\frac{2\\pi k}{N}', title: 'Discrete Frequency Point' },
+    { label: '≤', symbol: '\\le', title: 'Less Than or Equal' },
+    { label: 'W_N^k', symbol: 'W_N^{kn}', title: 'Twiddle Factor' },
+    { label: 'x[n]', symbol: 'x[n]', title: 'Discrete-Time Signal' }
+];
+
+const SLASH_COMMANDS = [
+    { cmd: '/learn', label: 'Guided Learning Mode (+10 XP)', desc: 'Toggle interactive Socratic step-by-step tutoring', action: 'toggle_learning', badge: '+10 XP' },
+    { cmd: '/mindmap', label: 'Concept Mind Map & XP Gate', desc: 'Inspect your Bloom taxonomy levels (L1–L6) & mastery', action: 'open_mindmap', badge: 'NEW' },
+    { cmd: '/leaderboard', label: 'Student XP Leaderboard', desc: 'See live student rankings & streaks', path: '/gamification/leaderboard', badge: 'NEW' },
+    { cmd: '/bounty', label: 'Daily Bounty Challenges', desc: 'Solve daily gap-targeted MCQs for Credits & XP', path: '/gamification/bounties', badge: '+XP' },
+    { cmd: '/boss', label: 'Boss Battle Arena', desc: 'Fight a 5-question battle on your weakest concept', path: '/gamification/boss-battles', badge: 'Arena' },
+    { cmd: '/skilltree', label: 'Course Skill Tree', desc: 'Visual syllabus map (Control Systems, DSP, OS, ML)', path: '/gamification/skill-tree', badge: 'Map' },
+    { cmd: '/code', label: 'Code Executor Sandbox', desc: 'Write, compile & test code interactively', path: '/tools/code-executor', badge: 'Tool' },
+    { cmd: '/whatsnew', label: "What is New & Audio Guide", desc: 'Open the Feature Discovery Hub & 15s voice tour', action: 'open_whatsnew', badge: 'v2.5' }
+];
 
 // Rotating placeholder texts for engagement
 const PLACEHOLDER_TEXTS = [
     "Ask iMentor anything about your studies...",
     "What would you like to learn today?",
     "Type your question or paste code here...",
-    "Explore any topic with AI guidance..."
+    "Explore any topic with AI guidance...",
+    "Tip: Type '/' for Guided Learning, Bounties, Mind Map & Skill Trees..."
 ];
 
 function ChatInput({
@@ -41,6 +70,8 @@ function ChatInput({
     const textareaRef = useRef(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isKbOpen, setIsKbOpen] = useState(false);
+    const [isSlashOpen, setIsSlashOpen] = useState(false);
+    const navigate = useNavigate();
     const menuRef = useRef(null);
     const [isFocused, setIsFocused] = useState(false);
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
@@ -51,6 +82,38 @@ function ChatInput({
     const isAdminCourseActive = !!selectedSubject;
 
     const [isCoaching, setIsCoaching] = useState(false);
+    const [skipThinking, setSkipThinking] = useState(() => {
+        try {
+            return localStorage.getItem('imentor_skip_thinking') === 'true';
+        } catch {
+            return false;
+        }
+    });
+
+    useEffect(() => {
+        const syncThinkingPref = () => {
+            try {
+                setSkipThinking(localStorage.getItem('imentor_skip_thinking') === 'true');
+            } catch {}
+        };
+        window.addEventListener('imentor-thinking-pref-changed', syncThinkingPref);
+        return () => window.removeEventListener('imentor-thinking-pref-changed', syncThinkingPref);
+    }, []);
+
+    const handleToggleThinkingMode = () => {
+        try {
+            const nextVal = !skipThinking;
+            localStorage.setItem('imentor_skip_thinking', String(nextVal));
+            setSkipThinking(nextVal);
+            window.dispatchEvent(new CustomEvent('imentor-thinking-pref-changed'));
+            toast(
+                nextVal
+                    ? '⚡ Answer Now Mode enabled (skips thinking pause)'
+                    : '🧠 Think & Dissect Mode enabled (Gemini-style 3-stage reasoning)',
+                { duration: 2000 }
+            );
+        } catch {}
+    };
 
 
 
@@ -123,6 +186,49 @@ function ChatInput({
             textarea.selectionStart = newCursorPosition;
             textarea.selectionEnd = newCursorPosition;
         }, 0);
+    };
+
+    const activeSlashFilter = inputValue.startsWith('/') && !inputValue.includes(' ')
+        ? inputValue.slice(1).toLowerCase()
+        : null;
+    const filteredSlashCommands = activeSlashFilter !== null
+        ? SLASH_COMMANDS.filter(c => c.cmd.slice(1).includes(activeSlashFilter) || c.label.toLowerCase().includes(activeSlashFilter))
+        : SLASH_COMMANDS;
+    const showSlashMenu = isSlashOpen || (activeSlashFilter !== null && filteredSlashCommands.length > 0);
+
+    const handleExecuteSlashCommand = (item) => {
+        setIsSlashOpen(false);
+        if (inputValue.startsWith('/')) setInputValue('');
+        if (item.path) {
+            navigate(item.path);
+            return;
+        }
+        if (item.action === 'toggle_learning') {
+            const nextState = !learningMode;
+            setLearningMode(nextState);
+            toast.success(nextState ? '🎓 Guided Learning Mode ON (+10 XP/turn)' : 'Guided Learning Mode OFF');
+        } else if (item.action === 'open_mindmap') {
+            window.dispatchEvent(new CustomEvent('imentor-open-xp-modal'));
+        } else if (item.action === 'open_whatsnew') {
+            window.dispatchEvent(new CustomEvent('imentor-open-whats-new'));
+        }
+    };
+
+    const handleInsertSymbol = (sym) => {
+        const textarea = textareaRef.current;
+        if (!textarea) {
+            setInputValue(prev => prev + ' $' + sym + '$ ');
+            return;
+        }
+        const start = textarea.selectionStart ?? inputValue.length;
+        const end = textarea.selectionEnd ?? inputValue.length;
+        const insertText = ` $${sym}$ `;
+        const updated = inputValue.substring(0, start) + insertText + inputValue.substring(end);
+        setInputValue(updated);
+        setTimeout(() => {
+            textarea.focus();
+            textarea.setSelectionRange(start + insertText.length, start + insertText.length);
+        }, 10);
     };
 
     useEffect(() => {
@@ -251,6 +357,89 @@ function ChatInput({
                 </div>
             )}
 
+            {/* Live KaTeX Preview Strip */}
+            {(inputValue.includes('\\') || inputValue.includes('$')) && (
+                <div className="mb-2 px-3 py-1.5 rounded-lg bg-[#141416]/95 border border-teal-500/30 flex items-center gap-2 overflow-x-auto shadow-inner text-xs">
+                    <span className="text-[10px] uppercase font-bold text-teal-400 bg-teal-950/80 px-2 py-0.5 rounded border border-teal-500/20 flex-shrink-0">
+                        LaTeX Preview
+                    </span>
+                    <div className="text-gray-200 text-xs font-mono">
+                        <MathRenderer content={inputValue} inline={true} />
+                    </div>
+                </div>
+            )}
+
+            {/* Slash Command Palette Popup */}
+            {showSlashMenu && (
+                <div className="mb-2 rounded-xl bg-[#16161c] border border-sky-500/40 shadow-2xl overflow-hidden z-30 animate-fadeIn">
+                    <div className="px-3 py-1.5 bg-sky-950/50 border-b border-gray-800 flex items-center justify-between text-[11px] text-sky-300">
+                        <span className="font-bold flex items-center gap-1.5">
+                            <Sparkles size={12} /> Quick Commands &amp; Feature Launcher
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => { setIsSlashOpen(false); if (inputValue.startsWith('/')) setInputValue(''); }}
+                            className="text-gray-400 hover:text-white text-xs font-bold px-1"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                    <div className="max-h-56 overflow-y-auto divide-y divide-gray-800/60 p-1 grid grid-cols-1 sm:grid-cols-2 gap-1">
+                        {filteredSlashCommands.map((item) => (
+                            <button
+                                key={item.cmd}
+                                type="button"
+                                onClick={() => handleExecuteSlashCommand(item)}
+                                className="w-full text-left px-3 py-2 rounded-lg hover:bg-sky-500/15 transition-colors flex items-center justify-between gap-2 group"
+                            >
+                                <div className="min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <code className="text-xs font-mono font-bold text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                            {item.cmd}
+                                        </code>
+                                        <span className="text-xs font-semibold text-white group-hover:text-sky-200 truncate">
+                                            {item.label}
+                                        </span>
+                                    </div>
+                                    <p className="text-[11px] text-gray-400 truncate mt-0.5">{item.desc}</p>
+                                </div>
+                                <span className="px-1.5 py-0.5 text-[10px] font-bold rounded bg-sky-500/20 text-sky-300 border border-sky-500/30 flex-shrink-0">
+                                    {item.badge}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* STEM Math Helper Strip + Quick '/' Feature Launcher */}
+            <div className="mb-2 flex items-center gap-1.5 overflow-x-auto py-1 px-1 custom-scrollbar">
+                <button
+                    type="button"
+                    onClick={() => setIsSlashOpen(prev => !prev)}
+                    title="Open Quick Commands & Feature Menu (or type '/')"
+                    className="px-2.5 py-0.5 text-xs rounded bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 border border-sky-500/40 font-semibold flex items-center gap-1 flex-shrink-0 transition-all cursor-pointer mr-1"
+                >
+                    <Sparkles size={11} />
+                    <span>/Commands</span>
+                </button>
+                <div className="flex items-center gap-1 flex-shrink-0 text-[11px] text-gray-400 mr-1">
+                    <Sigma size={13} className="text-teal-400" />
+                    <span className="font-semibold text-gray-300">Math:</span>
+                </div>
+                {STEM_MATH_SYMBOLS.map((item) => (
+                    <button
+                        key={item.symbol}
+                        type="button"
+                        onClick={() => handleInsertSymbol(item.symbol)}
+                        title={item.title}
+                        className="px-2 py-0.5 text-xs rounded bg-[#1e1e24] hover:bg-teal-900/40 hover:text-teal-300 hover:border-teal-500/40 text-gray-300 border border-gray-700/60 transition-all cursor-pointer font-mono flex-shrink-0 shadow-sm active:scale-95"
+                    >
+                        {item.label}
+                    </button>
+                ))}
+            </div>
+
             {/* VS Code terminal-style input container */}
             <Animate
                 data-tutor-tour="chat-input"
@@ -312,7 +501,7 @@ function ChatInput({
                                 {[
                                     { onClick: handleWebSearchToggle,      Icon: Globe,     active: useWebSearch,      label: useWebSearch      ? 'Web Search ON'      : 'Enable Web Search'     },
                                     { onClick: handleAcademicSearchToggle, Icon: BookMarked, active: useAcademicSearch, label: useAcademicSearch ? 'Academic Search ON'  : 'Enable Academic Search' },
-                                    { onClick: () => { setLearningMode(!learningMode); setIsMenuOpen(false); }, Icon: GraduationCap, active: learningMode, label: learningMode ? 'Learning Mode ON (Socratic)' : 'Enable Learning Mode (Socratic)' },
+                                    { onClick: () => { setLearningMode(!learningMode); setIsMenuOpen(false); }, Icon: GraduationCap, active: learningMode, label: learningMode ? 'Guided Learning Mode ON' : 'Enable Guided Learning Mode' },
                                 ].map(({ onClick, Icon, active, label }) => (
                                     <button
                                         key={label}
@@ -537,7 +726,7 @@ function ChatInput({
                         onClick={() => setLearningMode(!learningMode)}
                         disabled={isLoading}
                         className="hidden sm:flex items-center gap-1"
-                        title={learningMode ? 'Learning Mode ON (Socratic)' : 'Enable Socratic Learning Mode'}
+                        title={learningMode ? 'Guided Learning Mode ON' : 'Enable Guided Learning Mode'}
                         aria-label="Toggle Learning Mode"
                         aria-pressed={learningMode}
                         style={{
@@ -555,6 +744,28 @@ function ChatInput({
                     >
                         <GraduationCap size={13} />
                         <span>Learn</span>
+                    </button>
+
+                    {/* Gemini-Style Think & Dissect / Answer Now Toggle - Desktop */}
+                    <button
+                        type="button"
+                        onClick={handleToggleThinkingMode}
+                        className="hidden sm:flex items-center gap-1"
+                        title={skipThinking ? 'Answer Now Mode ON (click to enable Think & Dissect)' : 'Think & Dissect Mode ON (click for instant Answer Now)'}
+                        aria-label="Toggle Think & Dissect or Answer Now"
+                        aria-pressed={!skipThinking}
+                        style={{
+                            padding: '4px 6px', borderRadius: '3px',
+                            background: !skipThinking ? 'rgba(20, 184, 166, 0.14)' : 'rgba(245, 158, 11, 0.14)',
+                            border: !skipThinking ? '1px solid rgba(20, 184, 166, 0.35)' : '1px solid rgba(245, 158, 11, 0.35)',
+                            color: !skipThinking ? '#5eead4' : '#fcd34d',
+                            cursor: 'pointer',
+                            fontSize: '0.6875rem', fontWeight: 600,
+                            transition: 'color 0.15s, background 0.15s',
+                        }}
+                    >
+                        {skipThinking ? <Zap size={12} /> : <Brain size={12} />}
+                        <span>{skipThinking ? 'Answer Now' : 'Think'}</span>
                     </button>
 
                     {/* Divider */}

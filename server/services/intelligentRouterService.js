@@ -288,8 +288,8 @@ function estimateLatency(level) {
 // Model tiers per provider - ONLY models configured in the project
 const PROVIDER_MODEL_TIERS = {
     sglang: {
-        [COMPLEXITY_LEVELS.SMALL]: { modelId: 'Qwen/Qwen2.5-7B-Instruct-AWQ', endpoint: 'chat', contextWindow: 8192 },
-        [COMPLEXITY_LEVELS.MEDIUM]: { modelId: 'Qwen/Qwen2.5-7B-Instruct-AWQ', endpoint: 'chat', contextWindow: 8192 },
+        [COMPLEXITY_LEVELS.SMALL]: { modelId: 'Qwen/Qwen3-8B-AWQ', endpoint: 'chat', contextWindow: 8192 },
+        [COMPLEXITY_LEVELS.MEDIUM]: { modelId: 'Qwen/Qwen3-8B-AWQ', endpoint: 'chat', contextWindow: 8192 },
         [COMPLEXITY_LEVELS.LARGE]: { modelId: 'Qwen/Qwen2.5-14B-Instruct-AWQ', endpoint: 'reason', contextWindow: 8192 },
         [COMPLEXITY_LEVELS.VERY_LARGE]: { modelId: 'Qwen/Qwen2.5-35B-Instruct-AWQ', endpoint: 'heavy', contextWindow: 16384 },
     },

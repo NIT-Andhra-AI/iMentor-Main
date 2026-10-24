@@ -30,7 +30,7 @@ import {
   Layers
 } from 'lucide-react';
 
-const PUBLIC_API_BASE = 'https://61.0.228.124/api/v1';
+const PUBLIC_API_BASE = typeof window !== 'undefined' && window.location.origin ? `${window.location.origin}/api/v1` : 'https://172.180.14.125/api/v1';
 
 const yearOptions = {
   "Bachelor's": ["1st Year", "2nd Year", "3rd Year", "4th Year"],

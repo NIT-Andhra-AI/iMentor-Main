@@ -24,7 +24,7 @@ const TYPES = [
     { id: 'general', label: 'General',     Icon: MessageSquare, color: '#a3a3a3' }, // neutral-400
 ];
 
-const CATEGORIES = ['UI', 'Performance', 'Content', 'AI Quality', 'Other'];
+const CATEGORIES = ['Performance', 'AI Quality', 'UI', 'Content', 'Other'];
 
 const MIN_LEN = 10;
 const MAX_LEN = 1000;
@@ -34,7 +34,7 @@ const MAX_LEN = 1000;
 export default function FeedbackWidget() {
     const [open, setOpen]         = useState(false);
     const [type, setType]         = useState('bug');
-    const [category, setCategory] = useState('Other');
+    const [category, setCategory] = useState('Performance');
     const [message, setMessage]   = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [attachments, setAttachments] = useState([]); // File[]
@@ -69,7 +69,7 @@ export default function FeedbackWidget() {
 
     const reset = useCallback(() => {
         setType('bug');
-        setCategory('Other');
+        setCategory('Performance');
         setMessage('');
         setAttachments([]);
         setPreviews(prev => { prev.forEach(p => URL.revokeObjectURL(p.url)); return []; });
@@ -88,8 +88,11 @@ export default function FeedbackWidget() {
         }
         setSubmitting(true);
         try {
-            await api.submitUserFeedback({ type, category, message: trimmed, attachments });
-            toast.success('Thanks! Your feedback was submitted.', { icon: '🎯' });
+            const res = await api.submitUserFeedback({ type, category, message: trimmed, attachments });
+            toast.success(
+                res?.message || 'Thanks! Your feedback was submitted.',
+                { icon: '🎯', duration: 4500 }
+            );
             handleClose();
         } catch (err) {
             toast.error(err?.response?.data?.message || 'Failed to submit feedback.');
@@ -219,6 +222,22 @@ export default function FeedbackWidget() {
 
                     {/* Body */}
                     <div style={{ padding: '12px' }}>
+
+                        {/* Performance Bounty Banner */}
+                        <div
+                            style={{
+                                marginBottom: '10px',
+                                padding:      '7px 9px',
+                                borderRadius: '5px',
+                                background:   'rgba(234, 179, 8, 0.12)',
+                                border:       '1px solid rgba(234, 179, 8, 0.35)',
+                                fontSize:     '10.5px',
+                                lineHeight:   1.4,
+                                color:        '#fde047',
+                            }}
+                        >
+                            <strong>🎯 Performance Bounty Program:</strong> Report slow responses, high latency, or bugs to earn <strong>+5 XP</strong> immediately and up to <strong>+50 Bounty Credits &amp; +100 XP</strong> when verified by Admin!
+                        </div>
 
                         {/* Type selector */}
                         <div style={{ marginBottom: '10px' }}>

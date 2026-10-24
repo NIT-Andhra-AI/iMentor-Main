@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Brain, Loader2, CheckCircle2, AlertTriangle, ArrowLeft,
-  BarChart3, BookOpen, Target, TrendingUp, ChevronRight, ChevronLeft, Send
+  BarChart3, BookOpen, Target, TrendingUp, ChevronRight, ChevronLeft, Send,
+  Layers, Square, Flag
 } from 'lucide-react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 
@@ -23,6 +23,13 @@ const LEVEL_COLORS = {
   Expert: { bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
 };
 
+const FALLBACK_OPTIONS = [
+  'A. Accurate conceptual definition and primary operational model.',
+  'B. Secondary auxiliary mechanism applicable only under restricted scenarios.',
+  'C. Deprecated theoretical pattern not recommended for modern systems.',
+  'D. Incompatible approach that violates core domain invariants.'
+];
+
 const KnowledgeAssessmentPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -36,12 +43,15 @@ const KnowledgeAssessmentPage = () => {
   const [evaluating, setEvaluating] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewMode, setViewMode] = useState('section'); // 'section' | 'single'
   const [answers, setAnswers] = useState([]);
+  const [flagged, setFlagged] = useState({});
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState(null);
   const [bloomData, setBloomData] = useState(null);
   const [draftAnswers, setDraftAnswers] = useState({});
   const questionRef = useRef(null);
+  const questionCardRefs = useRef({});
 
   useEffect(() => {
     api.getSubjects().then(d => setCourses(d?.subjects || [])).catch(() => {});
@@ -50,12 +60,6 @@ const KnowledgeAssessmentPage = () => {
   useEffect(() => {
     if (initialTopic) handleGenerate();
   }, []);
-
-  useEffect(() => {
-    if (questionRef.current) {
-      questionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [currentIndex]);
 
   const handleGenerate = async () => {
     if (!topic.trim() && !course.trim()) {
@@ -67,6 +71,7 @@ const KnowledgeAssessmentPage = () => {
       const data = await api.generateAssessment({ course, topic: topic.trim() });
       setQuestions(data.questions || []);
       setAnswers([]);
+      setFlagged({});
       setCurrentIndex(0);
       setResult(null);
       setDraftAnswers({});
@@ -78,66 +83,72 @@ const KnowledgeAssessmentPage = () => {
     }
   };
 
-  const saveCurrentAnswer = () => {
-    const q = questions[currentIndex];
+  const getAnswerForQuestion = (q) => {
+    const found = answers.find(a => a.question === q.question);
+    if (found) return found.userAnswer;
+    return draftAnswers[q.question] || null;
+  };
+
+  const handleSelectOptionForQuestion = (qIdx, opt, autoAdvance = false) => {
+    const q = questions[qIdx];
     if (!q) return;
-    if (q.type === 'mcq') return;
-    const val = draftAnswers[q.question] || '';
+    const answerObj = {
+      question: q.question,
+      type: q.type,
+      options: q.options,
+      correctAnswer: q.correctAnswer,
+      modelAnswer: q.modelAnswer,
+      bloomLevel: q.bloomLevel,
+      concepts: q.concepts,
+      userAnswer: opt,
+    };
     const existingIdx = answers.findIndex(a => a.question === q.question);
+    let newAnswers;
     if (existingIdx >= 0) {
-      const updated = [...answers];
-      updated[existingIdx] = { ...updated[existingIdx], userAnswer: val };
-      setAnswers(updated);
+      newAnswers = [...answers];
+      newAnswers[existingIdx] = answerObj;
+    } else {
+      newAnswers = [...answers, answerObj];
+    }
+    setAnswers(newAnswers);
+    if (autoAdvance && qIdx < questions.length - 1) {
+      setCurrentIndex(qIdx + 1);
     }
   };
 
-  const goNext = () => {
-    const q = questions[currentIndex];
-    if (!q) return;
-    if (q.type === 'descriptive') {
-      const val = draftAnswers[q.question] || '';
-      if (!val.trim()) {
-        toast.error('Please type an answer before continuing');
-        return;
-      }
-      const existingIdx = answers.findIndex(a => a.question === q.question);
-      if (existingIdx >= 0) {
-        const updated = [...answers];
-        updated[existingIdx] = { ...updated[existingIdx], userAnswer: val };
-        setAnswers(updated);
-      } else {
-        setAnswers([...answers, {
-          question: q.question, type: q.type, options: q.options,
-          correctAnswer: q.correctAnswer, modelAnswer: q.modelAnswer,
-          bloomLevel: q.bloomLevel, concepts: q.concepts, userAnswer: val,
-        }]);
-      }
-    }
-    setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1));
+  const toggleFlag = (qIdx) => {
+    setFlagged(prev => ({ ...prev, [qIdx]: !prev[qIdx] }));
   };
 
-  const goPrev = () => {
-    saveCurrentAnswer();
-    setCurrentIndex(Math.max(0, currentIndex - 1));
+  const jumpToQuestion = (qIdx) => {
+    setCurrentIndex(qIdx);
+    if (viewMode === 'section' && questionCardRefs.current[qIdx]) {
+      questionCardRefs.current[qIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   const handleSubmitAssessment = async () => {
-    setEvaluating(true);
-    const q = questions[currentIndex];
-    const allResponses = [...answers];
-    if (q && q.type === 'descriptive') {
-      const val = draftAnswers[q.question] || '';
-      const existingIdx = allResponses.findIndex(a => a.question === q.question);
-      if (existingIdx >= 0) {
-        allResponses[existingIdx] = { ...allResponses[existingIdx], userAnswer: val };
-      } else {
-        allResponses.push({
-          question: q.question, type: q.type, options: q.options,
-          correctAnswer: q.correctAnswer, modelAnswer: q.modelAnswer,
-          bloomLevel: q.bloomLevel, concepts: q.concepts, userAnswer: val,
-        });
-      }
+    const allResponses = questions.map(q => {
+      const found = answers.find(a => a.question === q.question);
+      const draftVal = draftAnswers[q.question];
+      return {
+        question: q.question,
+        type: q.type,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        modelAnswer: q.modelAnswer,
+        bloomLevel: q.bloomLevel,
+        concepts: q.concepts,
+        userAnswer: found ? found.userAnswer : (draftVal || ''),
+      };
+    }).filter(r => r.userAnswer && String(r.userAnswer).trim() !== '');
+
+    if (allResponses.length === 0) {
+      toast.error('Please answer the questions before submitting');
+      return;
     }
+
+    setEvaluating(true);
     try {
       const data = await api.submitAssessment({
         responses: allResponses,
@@ -150,28 +161,6 @@ const KnowledgeAssessmentPage = () => {
       toast.error(err.response?.data?.message || 'Failed to evaluate assessment');
     } finally {
       setEvaluating(false);
-    }
-  };
-
-  const handleMcqAnswer = (opt) => {
-    const q = questions[currentIndex];
-    if (!q) return;
-    const answer = {
-      question: q.question, type: q.type, options: q.options,
-      correctAnswer: q.correctAnswer, modelAnswer: q.modelAnswer,
-      bloomLevel: q.bloomLevel, concepts: q.concepts, userAnswer: opt,
-    };
-    const existingIdx = answers.findIndex(a => a.question === q.question);
-    let newAnswers;
-    if (existingIdx >= 0) {
-      newAnswers = [...answers];
-      newAnswers[existingIdx] = answer;
-    } else {
-      newAnswers = [...answers, answer];
-    }
-    setAnswers(newAnswers);
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
     }
   };
 
@@ -209,7 +198,7 @@ const KnowledgeAssessmentPage = () => {
           <Brain className="w-10 h-10 text-black" />
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Knowledge Assessment</h1>
-        <p className="text-zinc-400">Evaluate your understanding with a Bloom's Taxonomy diagnostic test</p>
+        <p className="text-zinc-400">Evaluate your understanding with a sectioned Bloom's Taxonomy diagnostic worksheet</p>
       </div>
 
       <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
@@ -242,7 +231,7 @@ const KnowledgeAssessmentPage = () => {
           className="w-full py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Brain className="w-5 h-5" />}
-          {loading ? 'Generating Assessment...' : 'Start Assessment'}
+          {loading ? 'Generating Assessment...' : 'Start Diagnostic Worksheet'}
         </button>
       </div>
 
@@ -262,133 +251,286 @@ const KnowledgeAssessmentPage = () => {
   );
 
   const renderQuestion = () => {
-    const q = questions[currentIndex];
-    if (!q) return null;
-    const progressPct = ((currentIndex) / questions.length) * 100;
+    if (!questions.length) return null;
+    const answeredCount = questions.filter(q => {
+      const a = getAnswerForQuestion(q);
+      return a && String(a).trim() !== '';
+    }).length;
+    const progressPct = (answeredCount / questions.length) * 100;
+
+    // Group questions into cognitive Bloom sections
+    const bloomSections = [
+      {
+        id: 'foundation',
+        title: 'Section 1: Foundation & Recall (Remember / Understand)',
+        items: questions.map((q, idx) => ({ q, idx })).filter(({ q }) => ['remember', 'understand'].includes((q.bloomLevel || '').toLowerCase()))
+      },
+      {
+        id: 'application',
+        title: 'Section 2: Application & Analysis (Apply / Analyze)',
+        items: questions.map((q, idx) => ({ q, idx })).filter(({ q }) => ['apply', 'analyze'].includes((q.bloomLevel || '').toLowerCase()))
+      },
+      {
+        id: 'mastery',
+        title: 'Section 3: Evaluation & Synthesis',
+        items: questions.map((q, idx) => ({ q, idx })).filter(({ q }) => !['remember', 'understand', 'apply', 'analyze'].includes((q.bloomLevel || '').toLowerCase()))
+      }
+    ].filter(s => s.items.length > 0);
+
+    const q = questions[currentIndex] || questions[0];
     const isLast = currentIndex === questions.length - 1;
     const isFirst = currentIndex === 0;
 
-    const isMcqAnswered = (q) => {
-      return answers.some(a => a.question === q.question);
-    };
-
-    const getSelectedMcq = (q) => {
-      const found = answers.find(a => a.question === q.question);
-      return found ? found.userAnswer : null;
-    };
-
     return (
-      <div ref={questionRef} className="max-w-2xl mx-auto">
-        <div className="mb-6">
-          <div className="flex justify-between text-sm text-zinc-500 mb-2">
-            <span>Question {currentIndex + 1} of {questions.length}</span>
-            <span className="capitalize">{BLOOM_LABELS[q.bloomLevel] || q.bloomLevel}</span>
+      <div ref={questionRef} className="max-w-3xl mx-auto space-y-6">
+        {/* Sticky CBT Palette Header */}
+        <div className="sticky top-0 z-20 bg-zinc-950/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-800 shadow-xl space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <Brain className="w-4 h-4 text-emerald-400" />
+                Bloom's Diagnostic Assessment — {topic || course}
+              </h2>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                {answeredCount} of {questions.length} Questions Answered ({Math.round(progressPct)}%)
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('section')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    viewMode === 'section' ? 'bg-white text-black shadow' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" /> Section Worksheet
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('single')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    viewMode === 'single' ? 'bg-white text-black shadow' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Square className="w-3.5 h-3.5" /> Single Focus
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full bg-white rounded-full transition-all duration-300" style={{ width: `${Math.max(3, progressPct)}%` }} />
+
+          {/* Question Navigator Pills */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            {questions.map((item, idx) => {
+              const ans = getAnswerForQuestion(item);
+              const isAns = ans && String(ans).trim() !== '';
+              const isFlg = !!flagged[idx];
+              const isCurr = viewMode === 'single' && currentIndex === idx;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => jumpToQuestion(idx)}
+                  className={`w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center border transition-all ${
+                    isCurr
+                      ? 'border-white bg-white text-black ring-2 ring-white/40'
+                      : isFlg
+                        ? 'border-amber-500 bg-amber-500/20 text-amber-300'
+                        : isAns
+                          ? 'border-emerald-500/50 bg-emerald-500/20 text-emerald-300'
+                          : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-600'
+                  }`}
+                  title={`Question ${idx + 1} (${BLOOM_LABELS[item.bloomLevel] || item.bloomLevel || 'General'})`}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-emerald-400 rounded-full transition-all duration-300"
+              style={{ width: `${Math.max(3, progressPct)}%` }}
+            />
           </div>
         </div>
 
-        <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
-          <div className="flex items-start gap-3 mb-6">
-            <span className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
-              {currentIndex + 1}
-            </span>
-            <p className="text-lg text-white font-medium">{q.question}</p>
+        {/* SECTION WORKSHEET VIEW */}
+        {viewMode === 'section' ? (
+          <div className="space-y-8">
+            {bloomSections.map(section => (
+              <div key={section.id} className="space-y-4">
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-2 px-1">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                    {section.title}
+                  </h3>
+                  <span className="text-xs text-zinc-500">
+                    {section.items.filter(({ q: sq }) => getAnswerForQuestion(sq)).length}/{section.items.length} answered
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  {section.items.map(({ q: item, idx: qIdx }) => {
+                    const selected = getAnswerForQuestion(item);
+                    const opts = Array.isArray(item.options) && item.options.length > 0 ? item.options : FALLBACK_OPTIONS;
+                    return (
+                      <div
+                        key={qIdx}
+                        ref={el => (questionCardRefs.current[qIdx] = el)}
+                        className={`bg-zinc-900 rounded-2xl p-6 border transition-all ${
+                          selected ? 'border-emerald-500/40 bg-emerald-950/5' : 'border-zinc-800'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-3 mb-4">
+                          <div className="flex items-start gap-3">
+                            <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
+                              selected ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-white'
+                            }`}>
+                              {qIdx + 1}
+                            </span>
+                            <div>
+                              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 inline-block mb-1.5">
+                                {BLOOM_LABELS[item.bloomLevel] || item.bloomLevel || 'Diagnostic'}
+                              </span>
+                              <p className="text-base text-white font-medium leading-relaxed">{item.question}</p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => toggleFlag(qIdx)}
+                            className={`p-1.5 rounded-lg transition-colors ${
+                              flagged[qIdx] ? 'text-amber-400 bg-amber-500/10' : 'text-zinc-600 hover:text-zinc-400'
+                            }`}
+                            title="Flag for review"
+                          >
+                            <Flag className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        <div className="space-y-2.5">
+                          {opts.map((opt, i) => {
+                            const isSelected = selected === opt;
+                            return (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => handleSelectOptionForQuestion(qIdx, opt, false)}
+                                className={`w-full text-left px-4 py-3.5 bg-black border rounded-xl transition-all flex items-center gap-3 ${
+                                  isSelected
+                                    ? 'border-white text-white bg-white/10'
+                                    : 'border-zinc-800 text-zinc-300 hover:border-zinc-600 hover:text-white'
+                                }`}
+                              >
+                                <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-medium shrink-0 ${
+                                  isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
+                                }`}>
+                                  {String.fromCharCode(65 + i)}
+                                </span>
+                                <span className="text-sm">{opt.replace(/^[A-D]\.\s*/, '')}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+
+            <div className="sticky bottom-4 z-10 bg-zinc-900/95 backdrop-blur-md p-4 rounded-2xl border border-zinc-800 flex items-center justify-between gap-4 shadow-2xl">
+              <div className="text-xs text-zinc-400">
+                {answeredCount === questions.length
+                  ? 'All diagnostic questions completed!'
+                  : `${answeredCount} of ${questions.length} answered — you can review and change any answer above.`}
+              </div>
+              <button
+                onClick={handleSubmitAssessment}
+                disabled={evaluating || answeredCount === 0}
+                className="px-6 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {evaluating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                Submit Diagnostic ({answeredCount}/{questions.length})
+              </button>
+            </div>
           </div>
+        ) : (
+          /* SINGLE QUESTION FOCUS VIEW */
+          <div>
+            <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 mb-6">
+              <div className="flex items-start justify-between gap-3 mb-6">
+                <div className="flex items-start gap-3">
+                  <span className="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
+                    {currentIndex + 1}
+                  </span>
+                  <p className="text-lg text-white font-medium">{q.question}</p>
+                </div>
+                <span className="text-xs text-zinc-400 capitalize shrink-0">
+                  {BLOOM_LABELS[q.bloomLevel] || q.bloomLevel}
+                </span>
+              </div>
 
-          {Array.isArray(q.options) && q.options.length > 0 ? (
-            <div className="space-y-3">
-              {q.options.map((opt, i) => {
-                const selected = getSelectedMcq(q);
-                const isSelected = selected === opt;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => handleMcqAnswer(opt)}
-                    className={`w-full text-left px-5 py-4 bg-black border rounded-xl transition-all flex items-center gap-3 ${
-                      isSelected
-                        ? 'border-white text-white bg-white/10'
-                        : 'border-zinc-800 text-zinc-300 hover:border-white hover:text-white'
-                    }`}
-                  >
-                    <span className={`w-7 h-7 rounded-full border flex items-center justify-center text-sm font-medium shrink-0 ${
-                      isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
-                    }`}>
-                      {String.fromCharCode(65 + i)}
-                    </span>
-                    <span>{opt.replace(/^[A-D]\.\s*/, '')}</span>
-                  </button>
-                );
-              })}
+              <div className="space-y-3">
+                {(Array.isArray(q.options) && q.options.length > 0 ? q.options : FALLBACK_OPTIONS).map((opt, i) => {
+                  const selected = getAnswerForQuestion(q);
+                  const isSelected = selected === opt;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => handleSelectOptionForQuestion(currentIndex, opt, false)}
+                      className={`w-full text-left px-5 py-4 bg-black border rounded-xl transition-all flex items-center gap-3 ${
+                        isSelected
+                          ? 'border-white text-white bg-white/10'
+                          : 'border-zinc-800 text-zinc-300 hover:border-white hover:text-white'
+                      }`}
+                    >
+                      <span className={`w-7 h-7 rounded-full border flex items-center justify-center text-sm font-medium shrink-0 ${
+                        isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
+                      }`}>
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                      <span>{opt.replace(/^[A-D]\.\s*/, '')}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          ) : (
-            <div className="space-y-3">
-              {[
-                'A. Accurate conceptual definition and primary operational model.',
-                'B. Secondary auxiliary mechanism applicable only under restricted scenarios.',
-                'C. Deprecated theoretical pattern not recommended for modern systems.',
-                'D. Incompatible approach that violates core domain invariants.'
-              ].map((opt, i) => {
-                const selected = getSelectedMcq(q);
-                const isSelected = selected === opt;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => handleMcqAnswer(opt)}
-                    className={`w-full text-left px-5 py-4 bg-black border rounded-xl transition-all flex items-center gap-3 ${
-                      isSelected
-                        ? 'border-white text-white bg-white/10'
-                        : 'border-zinc-800 text-zinc-300 hover:border-white hover:text-white'
-                    }`}
-                  >
-                    <span className={`w-7 h-7 rounded-full border flex items-center justify-center text-sm font-medium shrink-0 ${
-                      isSelected ? 'border-white bg-white text-black font-bold' : 'border-zinc-700'
-                    }`}>
-                      {String.fromCharCode(65 + i)}
-                    </span>
-                    <span>{opt.replace(/^[A-D]\.\s*/, '')}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
 
-        <div className="flex gap-3">
-          {!isFirst && (
-            <button
-              onClick={goPrev}
-              className="flex-1 py-3 bg-zinc-800 rounded-xl text-white font-bold hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </button>
-          )}
-          {!isLast && (
-            <button
-              onClick={goNext}
-              className="flex-1 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          )}
-          {isLast && (
-            <button
-              onClick={handleSubmitAssessment}
-              disabled={evaluating}
-              className="flex-1 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {evaluating ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Send className="w-4 h-4" />
+            <div className="flex gap-3">
+              {!isFirst && (
+                <button
+                  onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
+                  className="flex-1 py-3 bg-zinc-800 rounded-xl text-white font-bold hover:bg-zinc-700 transition-all flex items-center justify-center gap-2"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
               )}
-              {evaluating ? 'Evaluating your assessment...' : 'Submit Answer'}
-            </button>
-          )}
-        </div>
+              {!isLast && (
+                <button
+                  onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}
+                  className="flex-1 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              )}
+              {isLast && (
+                <button
+                  onClick={handleSubmitAssessment}
+                  disabled={evaluating}
+                  className="flex-1 py-3 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {evaluating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {evaluating ? 'Evaluating your assessment...' : 'Submit Assessment'}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -512,7 +654,6 @@ const KnowledgeAssessmentPage = () => {
           </div>
         )}
 
-        {/* Detailed Question Review & Explanation Section */}
         <div className="bg-zinc-900/50 backdrop-blur-md rounded-2xl p-6 border border-zinc-800/80">
           <h3 className="text-white font-semibold mb-4 text-sm flex items-center gap-2">
             <Target className="w-4 h-4 text-indigo-400" />
@@ -551,7 +692,7 @@ const KnowledgeAssessmentPage = () => {
                   )}
                   {item.explanation && (
                     <div className="text-zinc-400 mt-2 bg-zinc-950/40 p-2.5 rounded-lg border border-zinc-800/40 text-2xs leading-relaxed">
-                      <span className="text-zinc-500 font-semibold block mb-1 uppercase tracking-wider">Explanation / Socratic Feedback</span>
+                      <span className="text-zinc-500 font-semibold block mb-1 uppercase tracking-wider">Explanation & Guided Learning Feedback</span>
                       {item.explanation}
                     </div>
                   )}

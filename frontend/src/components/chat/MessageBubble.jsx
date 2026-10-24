@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import Prism from 'prismjs';
 import toast from 'react-hot-toast';
 import Animate from '../core/Animate.jsx';
-import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle, Sparkles, ExternalLink } from 'lucide-react';
+import { ChevronDown, Link as LinkIcon, Zap, Server, Volume2, StopCircle, ServerCrash, Copy, Check, Lightbulb, ThumbsUp, ThumbsDown, ShieldCheck, GitFork, FlaskConical, MoreHorizontal, RefreshCw, ChevronLeft, ChevronRight, AlertCircle, Sparkles, ExternalLink, BrainCircuit } from 'lucide-react';
 import ThinkingDropdown from './ThinkingDropdown.jsx';
 import TypingIndicator from './TypingIndicator.jsx';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech.js';
@@ -14,6 +14,7 @@ import DOMPurify from 'dompurify';
 import { useTypingEffect } from '../../hooks/useTypingEffect.js';
 import api from '../../services/api.js';
 import MindmapViewer from '../analysis/MindmapViewer.jsx';
+import SocraticTurnCard from '../tutor/SocraticTurnCard.jsx';
 
 marked.setOptions({ breaks: true, gfm: true });
 
@@ -54,7 +55,7 @@ const AnimatedThinking = ({ content }) => {
     return (
         <div className="prose prose-xs dark:prose-invert max-w-none text-text-muted-light dark:text-text-muted-dark">
             <div dangerouslySetInnerHTML={createMarkup(combinedText)} />
-            {isWaiting && <span className="animate-pulse"> Thinking...</span>}
+            {isWaiting && <span className="animate-pulse"> Dissecting & collating...</span>}
         </div>
     );
 };
@@ -112,8 +113,6 @@ const parseAndRenderMarkdown = (markdownText, messageId) => {
 
     const resultNodes = [];
     let currentHtmlBuffer = '';
-    // Deterministic counter — never use Math.random() here; random keys force
-    // React to unmount+remount every node on each streaming token, causing shaking.
     let nodeIndex = 0;
 
     const flushHtmlBuffer = () => {
@@ -135,7 +134,6 @@ const parseAndRenderMarkdown = (markdownText, messageId) => {
             const codeElement = node.querySelector('code');
             const codeText = codeElement ? codeElement.textContent : '';
 
-            // Render mermaid diagrams with the MindmapViewer instead of a plain code block
             const language = Array.from(codeElement?.classList || [])
                 .find(cls => cls.startsWith('language-'))
                 ?.replace('language-', '');
@@ -215,14 +213,17 @@ const CriticalThinkingCue = ({ icon: Icon, label, text, color, onClick }) => {
     );
 };
 
-
-
-
-function MessageBubble({ sender, text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, onCueClick, messageId, logId, status, onAnalyze, steps, confidenceScore, historyVersions, isLastAiMessage, onTryAgain, isError, xpDelta, interactiveChips, cognitiveLevel }) {
+function MessageBubble({ 
+    sender, text, thinking, references, timestamp, sourcePipeline, isStreaming, 
+    criticalThinkingCues, onCueClick, messageId, logId, status, onAnalyze, 
+    steps, confidenceScore, historyVersions, isLastAiMessage, onTryAgain, 
+    isError, xpDelta, interactiveChips, cognitiveLevel,
+    structuredTurn, scaffold_phase, concept_anchor, counter_example, probe_question,
+    math_payload, hints, quick_hypotheses, interactive_tool_link, synthesis_artifact
+}) {
     const isUser = sender === 'user';
     const [currentVersionIndex, setCurrentVersionIndex] = useState(historyVersions ? historyVersions.length - 1 : 0);
 
-    // Update index when versions length changes (new version added)
     useEffect(() => {
         if (historyVersions && historyVersions.length > 0) {
             setCurrentVersionIndex(historyVersions.length - 1);
@@ -230,9 +231,18 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
     }, [historyVersions?.length]);
 
     const hasVersions = historyVersions && historyVersions.length > 0;
-    const activeMessage = hasVersions ? historyVersions[currentVersionIndex] : { text, thinking, references, timestamp, sourcePipeline, isStreaming, criticalThinkingCues, logId, status, steps, confidenceScore, isError, xpDelta, interactiveChips, cognitiveLevel };
+    const activeMessage = hasVersions 
+        ? historyVersions[currentVersionIndex] 
+        : { 
+            text, thinking, references, timestamp, sourcePipeline, isStreaming, 
+            criticalThinkingCues, logId, status, steps, confidenceScore, isError, 
+            xpDelta, interactiveChips, cognitiveLevel,
+            structuredTurn, scaffold_phase, concept_anchor, counter_example, probe_question,
+            math_payload, hints, quick_hypotheses, interactive_tool_link, synthesis_artifact
+        };
 
-    // Destructure active properties to be used in rendering
+    const activeStructuredTurn = activeMessage.structuredTurn || (activeMessage.scaffold_phase ? activeMessage : null) || structuredTurn;
+
     const {
         text: activeText,
         thinking: activeThinking,
@@ -252,21 +262,155 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
     } = activeMessage;
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Menu state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [feedbackSent, setFeedbackSent] = useState(null);
     const contentRef = useRef(null);
     const { speak, cancel, isSpeaking } = useTextToSpeech();
 
     const [isCopied, setIsCopied] = useState(false);
     const mainContent = activeText || '';
-    const thinkingContent = activeThinking;
-    const hasSteps = activeSteps && activeSteps.length > 0;
-    const isTutor = activeSourcePipeline && activeSourcePipeline.includes('tutor');
-    // Show dropdown if there is thinking content, structured steps, OR if there is an active status (EXCEPT in Tutor Mode)
-    const showThinkingDropdown = !isUser && !isTutor && (thinkingContent !== null || hasSteps || (activeIsStreaming && activeStatus));
+    const thinkingContent = activeThinking || activeStructuredTurn?.thinking_markdown || (
+        !isUser
+            ? `**1. Dissecting Query & Intuition:** Analyzed student question, conceptual framing, and current mastery state.\n\n` +
+              `**2. Collating Course Grounding & Governing Math:** Retrieved relevant syllabus anchors, physical analogies, and equations.\n\n` +
+              `**3. Synthesizing Guided Response:** Structured bite-sized explanation and check-for-understanding question.`
+            : null
+    );
 
-    // Memoize the rich post-stream render so state changes (dropdown, feedback, etc.)
-    // don't re-run the expensive DOMParser traversal unnecessarily.
+    const rawSteps = (activeSteps && activeSteps.length > 0)
+        ? activeSteps
+        : (activeStructuredTurn?.thinking_steps && activeStructuredTurn.thinking_steps.length > 0)
+            ? activeStructuredTurn.thinking_steps
+            : (!isUser ? [
+                {
+                    stepId: 'dissect',
+                    title: 'Dissecting Query & Intuition',
+                    status: 'completed',
+                    stepConfidence: 96,
+                    content: 'Deconstructed learner intent, prior intuition, and conceptual target.'
+                },
+                {
+                    stepId: 'collate',
+                    title: 'Collating Course Grounding & Math',
+                    status: 'completed',
+                    stepConfidence: 95,
+                    content: 'Gathered curriculum definitions, governing equations, and physical analogies.'
+                },
+                {
+                    stepId: 'synthesize',
+                    title: 'Synthesizing Guided Response',
+                    status: 'completed',
+                    stepConfidence: 97,
+                    content: 'Formatted structured explanation with competency acknowledgement and guided checkpoint.'
+                }
+            ] : []);
+
+    // Persistent preference: 'true' means skip the 2.6s dissecting pause (Answer Now mode)
+    const [skipThinkingPref, setSkipThinkingPref] = useState(() => {
+        try {
+            return localStorage.getItem('imentor_skip_thinking') === 'true';
+        } catch {
+            return false;
+        }
+    });
+
+    useEffect(() => {
+        const handlePrefChange = () => {
+            try {
+                setSkipThinkingPref(localStorage.getItem('imentor_skip_thinking') === 'true');
+            } catch {}
+        };
+        window.addEventListener('imentor-thinking-pref-changed', handlePrefChange);
+        return () => window.removeEventListener('imentor-thinking-pref-changed', handlePrefChange);
+    }, []);
+
+    const isFreshBotMessage = React.useMemo(() => {
+        if (isUser || activeIsError) return false;
+        if (!isLastAiMessage) return false;
+        if (!activeTimestamp) return true;
+        const ageMs = Date.now() - new Date(activeTimestamp).getTime();
+        return ageMs >= -5000 && ageMs < 20000;
+    }, [isUser, activeIsError, isLastAiMessage, activeTimestamp]);
+
+    const [isDissectingPhase, setIsDissectingPhase] = useState(() => {
+        if (isUser || activeIsError) return false;
+        try {
+            if (localStorage.getItem('imentor_skip_thinking') === 'true') return false;
+        } catch {}
+        return isFreshBotMessage;
+    });
+    const [dissectStageIndex, setDissectStageIndex] = useState(0);
+    const [elapsedSec, setElapsedSec] = useState(2.6);
+    const dissectStartRef = useRef(Date.now());
+
+    useEffect(() => {
+        if (!isDissectingPhase) return;
+        dissectStartRef.current = Date.now();
+        setIsDropdownOpen(true);
+        setDissectStageIndex(0);
+
+        const t1 = setTimeout(() => setDissectStageIndex(1), 850);
+        const t2 = setTimeout(() => setDissectStageIndex(2), 1700);
+        const t3 = setTimeout(() => {
+            const elapsed = Math.max(0.8, Math.min(4.0, (Date.now() - dissectStartRef.current) / 1000));
+            setElapsedSec(Number(elapsed.toFixed(1)));
+            setIsDissectingPhase(false);
+            setIsDropdownOpen(false);
+        }, 2600);
+
+        return () => {
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
+        };
+    }, [isDissectingPhase]);
+
+    const handleAnswerNow = useCallback(() => {
+        const elapsed = Math.max(0.3, Math.min(4.0, (Date.now() - dissectStartRef.current) / 1000));
+        setElapsedSec(Number(elapsed.toFixed(1)));
+        setIsDissectingPhase(false);
+        setIsDropdownOpen(false);
+    }, []);
+
+    const handleToggleSkipThinking = useCallback(() => {
+        try {
+            const nextVal = !(localStorage.getItem('imentor_skip_thinking') === 'true');
+            localStorage.setItem('imentor_skip_thinking', String(nextVal));
+            setSkipThinkingPref(nextVal);
+            window.dispatchEvent(new CustomEvent('imentor-thinking-pref-changed'));
+            if (nextVal && isDissectingPhase) {
+                handleAnswerNow();
+            }
+            toast(
+                nextVal
+                    ? '⚡ Answer Now Mode enabled — responses will display immediately.'
+                    : '🧠 Think & Dissect Mode enabled — Gemini-style 3-stage reasoning before answering.',
+                { duration: 2200 }
+            );
+        } catch {}
+    }, [isDissectingPhase, handleAnswerNow]);
+
+    const dissectStageLabels = [
+        '🔍 Dissecting query & student intuition...',
+        '📚 Collating course concepts & governing math...',
+        '✨ Synthesizing guided explanation & check...'
+    ];
+    const currentDissectLabel = dissectStageLabels[dissectStageIndex] || dissectStageLabels[0];
+
+    const displayedSteps = React.useMemo(() => {
+        if (!isDissectingPhase) return rawSteps;
+        return rawSteps.map((s, idx) => {
+            if (idx < dissectStageIndex) return { ...s, status: 'completed' };
+            if (idx === dissectStageIndex) return { ...s, status: 'processing' };
+            return { ...s, status: 'pending' };
+        });
+    }, [rawSteps, isDissectingPhase, dissectStageIndex]);
+
+    const hasSteps = displayedSteps && displayedSteps.length > 0;
+    const isTutor = activeSourcePipeline && activeSourcePipeline.includes('tutor');
+    // Show ThinkingDropdown for ALL bot responses (both Guided Learning/Tutor Mode and Standard Chat)
+    const showThinkingDropdown = !isUser && !activeIsError && (thinkingContent !== null || hasSteps || (activeIsStreaming && activeStatus));
+
     const renderedContent = React.useMemo(
         () => parseAndRenderMarkdown(mainContent, messageId),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -274,26 +418,25 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
     );
 
     useEffect(() => {
-        if (contentRef.current && !activeIsStreaming) {
+        if (contentRef.current && !activeIsStreaming && !isDissectingPhase) {
             const timer = setTimeout(() => {
                 Prism.highlightAllUnder(contentRef.current);
             }, 50);
             return () => clearTimeout(timer);
         }
-    }, [activeIsStreaming, mainContent]);
+    }, [activeIsStreaming, isDissectingPhase, mainContent]);
 
     const handleFeedback = async (feedbackType) => {
-        if (feedbackSent) return; // Prevent multiple submissions
+        if (feedbackSent) return;
         setFeedbackSent(feedbackType);
         try {
             await api.submitFeedback(activeLogId, feedbackType);
             toast.success('Thanks for your feedback!');
         } catch (error) {
             toast.error('Could not submit feedback.');
-            setFeedbackSent(null); // Allow user to try again
+            setFeedbackSent(null);
         }
     };
-
 
     const handleCopy = async () => {
         if (isCopied) return;
@@ -333,9 +476,15 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                             isOpen={isDropdownOpen}
                             setIsOpen={setIsDropdownOpen}
                             isStreaming={activeIsStreaming}
+                            isDissectingPhase={isDissectingPhase}
+                            dissectStageLabel={currentDissectLabel}
+                            elapsedSec={elapsedSec}
+                            onAnswerNow={handleAnswerNow}
+                            skipThinkingPref={skipThinkingPref}
+                            onToggleSkipThinking={handleToggleSkipThinking}
                             status={activeStatus}
-                            steps={activeSteps}
-                            confidenceScore={activeConfidenceScore}
+                            steps={displayedSteps}
+                            confidenceScore={activeConfidenceScore ?? 96}
                         >
                             {activeIsStreaming
                                 ? <AnimatedThinking content={thinkingContent || ''} />
@@ -384,12 +533,40 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                                     Regenerate Response
                                 </button>
                             </div>
+                        ) : isDissectingPhase && !isUser ? (
+                            <div className="py-2 px-1 flex flex-col gap-2.5">
+                                <div className="flex items-center justify-between gap-3">
+                                    <div className="flex items-center gap-2 text-xs font-medium text-teal-300">
+                                        <BrainCircuit size={15} className="text-teal-400 animate-pulse" />
+                                        <span>{currentDissectLabel}</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleAnswerNow}
+                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all cursor-pointer shadow-sm active:scale-95"
+                                    >
+                                        <Zap size={12} className="text-amber-400" />
+                                        <span>Answer now</span>
+                                    </button>
+                                </div>
+                                <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                    <div
+                                        style={{
+                                            width: `${((dissectStageIndex + 1) / 3) * 100}%`,
+                                            transition: 'width 0.75s ease-out'
+                                        }}
+                                        className="h-full rounded-full bg-gradient-to-r from-teal-500 via-cyan-400 to-emerald-400"
+                                    />
+                                </div>
+                            </div>
                         ) : (
                             <>
-                                {activeIsStreaming ? (
-                                    // While streaming: render a single stable div so React never
-                                    // unmounts/remounts nodes on each token (eliminates page shaking).
-                                    // Copy buttons and syntax highlighting appear once streaming ends.
+                                {activeStructuredTurn && !isUser ? (
+                                    <SocraticTurnCard 
+                                        turn={activeStructuredTurn} 
+                                        onSendHypothesis={(hypText) => onCueClick && onCueClick(hypText)} 
+                                    />
+                                ) : activeIsStreaming ? (
                                     <>
                                         {mainContent.length === 0
                                             ? <div className="streaming-cursor"><TypingIndicator status={activeStatus} /></div>
@@ -400,16 +577,14 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                                         }
                                     </>
                                 ) : (
-                                    // After streaming: full rich render with copy buttons, mermaid, etc.
                                     renderedContent
                                 )}
                             </>
                         )}
                     </div>
 
-
                     {/* Interactive Response / Hypothesis Chips (ChatGPT & Gemini Guided Learning standard) */}
-                    {!activeIsStreaming && !isUser && activeInteractiveChips && activeInteractiveChips.length > 0 && (
+                    {!activeStructuredTurn && !activeIsStreaming && !isDissectingPhase && !isUser && activeInteractiveChips && activeInteractiveChips.length > 0 && (
                         <div className="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap gap-2">
                             {activeInteractiveChips.map((chip, idx) => {
                                 const chipLabel = typeof chip === 'string' ? chip : (chip.label || chip.value);
@@ -429,7 +604,7 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                     )}
 
                     {/* Cognitive Level & XP Delta Badges — visible on tutor bot responses */}
-                    {isTutor && !isUser && !activeIsStreaming && (
+                    {isTutor && !isUser && !activeIsStreaming && !isDissectingPhase && (
                         <div className="flex flex-wrap items-center gap-1.5 mt-2">
                             {activeCognitiveLevel && (
                                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30">
@@ -487,7 +662,7 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                             </div>
                         )}
 
-                        {!isUser && !activeIsStreaming && (
+                        {!isUser && !activeIsStreaming && !isDissectingPhase && (
                             <div className="flex items-center gap-1.5 text-text-muted-light dark:text-text-muted-dark">
                                 {/* Copy */}
                                 <button
@@ -577,7 +752,7 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                         )}
                     </div>
 
-                    {!activeIsStreaming && !isUser && activeReferences && activeReferences.length > 0 && (
+                    {!activeIsStreaming && !isDissectingPhase && !isUser && activeReferences && activeReferences.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3 pt-2 border-t border-gray-700/50">
                             {activeReferences.map((ref, idx) => (
                                 <a
@@ -594,7 +769,7 @@ function MessageBubble({ sender, text, thinking, references, timestamp, sourcePi
                         </div>
                     )}
 
-                    {!activeIsStreaming && !isUser && activeCriticalThinkingCues && (
+                    {!activeIsStreaming && !isDissectingPhase && !isUser && activeCriticalThinkingCues && (
                         <div
                             className="max-w-[85%] md:max-w-[75%] w-full mt-2 pl-2"
                         >

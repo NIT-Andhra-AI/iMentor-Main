@@ -12,6 +12,29 @@ const ConceptUnderstandingSchema = new mongoose.Schema({
         trim: true,
         index: true
     },
+    course: {
+        type: String,
+        default: 'General',
+        trim: true
+    },
+    highestBloomLevel: {
+        type: Number,
+        min: 1,
+        max: 6,
+        default: 1
+    },
+    totalXPEarnedOnConcept: {
+        type: Number,
+        default: 0
+    },
+    recentQueryHashes: {
+        type: [String],
+        default: []
+    },
+    spacedReviewCount: {
+        type: Number,
+        default: 0
+    },
     category: {
         type: String,
         enum: ['fundamental', 'intermediate', 'advanced', 'specialized'],
@@ -39,7 +62,7 @@ const ConceptUnderstandingSchema = new mongoose.Schema({
     // Concept difficulty for the student
     difficulty: {
         type: String,
-        enum: ['low', 'medium', 'high'],
+        enum: ['low', 'medium', 'high', 'easy', 'hard', 'beginner', 'intermediate', 'advanced'],
         default: 'medium'
     },
     // Rate of improvement for this concept
@@ -308,27 +331,24 @@ StudentKnowledgeStateSchema.methods.updateConcept = function (conceptData) {
     return this;
 };
 
-// Helper method to get struggling concepts
+// Helper method to get struggling concepts (mutually exclusive: < 50% mastery)
 StudentKnowledgeStateSchema.methods.getStrugglingConcepts = function () {
-    return this.concepts.filter(c =>
-        c.understandingLevel === 'struggling' ||
-        c.masteryScore < 70 ||
-        c.difficulty === 'high'
-    );
+    return this.concepts.filter(c => (c.masteryScore ?? 0) < 50);
 };
 
-// Helper method to get mastered concepts
+// Helper method to get mastered concepts (>= 85% mastery)
 StudentKnowledgeStateSchema.methods.getMasteredConcepts = function () {
-    return this.concepts.filter(c =>
-        c.understandingLevel === 'mastered' || c.masteryScore >= 85
-    );
+    return this.concepts.filter(c => (c.masteryScore ?? 0) >= 85);
 };
 
-// Helper method to generate knowledge summary
+// Helper method to generate knowledge summary (mutually exclusive buckets summing to totalConcepts)
 StudentKnowledgeStateSchema.methods.generateQuickSummary = function () {
-    const mastered = this.getMasteredConcepts().length;
-    const struggling = this.getStrugglingConcepts().length;
-    const learning = this.concepts.filter(c => c.understandingLevel === 'learning').length;
+    const mastered = this.concepts.filter(c => (c.masteryScore ?? 0) >= 85).length;
+    const struggling = this.concepts.filter(c => (c.masteryScore ?? 0) < 50).length;
+    const learning = this.concepts.filter(c => {
+        const m = c.masteryScore ?? 0;
+        return m >= 50 && m < 85;
+    }).length;
 
     return {
         totalConcepts: this.concepts.length,

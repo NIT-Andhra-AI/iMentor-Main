@@ -58,7 +58,12 @@ const BountyQuestionSchema = new mongoose.Schema({
 
     learningCreditsBonus: {
         type: Number,
-        default: 0 // Optional Learning Credits bonus
+        default: 20
+    },
+
+    xpBonus: {
+        type: Number,
+        default: 20
     },
 
     // Status
@@ -115,14 +120,38 @@ BountyQuestionSchema.methods.isExpired = function () {
 BountyQuestionSchema.methods.submit = function (userAnswer) {
     this.userAnswer = userAnswer;
     this.isCorrect = this.checkAnswer(userAnswer);
-    this.completedAt = new Date();
-    this.status = this.isCorrect ? 'completed' : 'completed'; // Can be failed too
+    if (this.isCorrect) {
+        this.completedAt = new Date();
+        this.status = 'completed';
+    }
     return this.isCorrect;
 };
 
 BountyQuestionSchema.methods.checkAnswer = function (answer) {
+    if (!answer || typeof answer !== 'string') return false;
+    const cleanAns = answer.trim();
+    const cleanCorrect = (this.correctAnswer || '').trim();
+
     if (this.questionType === 'multiple_choice') {
-        return answer === this.correctAnswer;
+        if (!cleanCorrect) return false;
+        // 1. Exact case-insensitive match with correctAnswer
+        if (cleanAns.toLowerCase() === cleanCorrect.toLowerCase()) return true;
+
+        // 2. Strip leading "A) ", "B. ", "Option B:" etc.
+        const strippedAns = cleanAns.replace(/^(?:option\s+)?([a-dA-D])[).:\-\s]+/i, '').trim();
+        if (strippedAns.toLowerCase() === cleanCorrect.toLowerCase()) return true;
+
+        // 3. Single letter choice "A", "B", "C", "D" or "Option B"
+        const letterMatch = cleanAns.match(/^(?:option\s+|answer\s*[:-]?\s*)?([a-dA-D])(?:\)|\.|\s*)$/i);
+        if (letterMatch && Array.isArray(this.options) && this.options.length > 0) {
+            const idx = letterMatch[1].toUpperCase().charCodeAt(0) - 65;
+            if (idx >= 0 && idx < this.options.length) {
+                const chosenOpt = (this.options[idx] || '').trim();
+                if (chosenOpt.toLowerCase() === cleanCorrect.toLowerCase()) return true;
+                if (cleanCorrect.toUpperCase() === letterMatch[1].toUpperCase()) return true;
+            }
+        }
+        return false;
     }
 
     // For open-ended questions, if there's no correct answer, consider it correct
@@ -130,7 +159,7 @@ BountyQuestionSchema.methods.checkAnswer = function (answer) {
     if (this.questionType === 'open_ended') {
         // If no correctAnswer is set, accept any non-empty answer
         if (!this.correctAnswer || this.correctAnswer.trim() === '') {
-            return answer && answer.trim().length > 0;
+            return Boolean(answer && answer.trim().length >= 10 && answer.trim().split(/\s+/).length >= 2);
         }
     }
 

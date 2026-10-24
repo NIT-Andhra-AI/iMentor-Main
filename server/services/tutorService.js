@@ -35,19 +35,25 @@ async function handleTutorQuestion(socket, question) {
 function sanitizeTutorTopic(query) {
     if (!query || typeof query !== 'string') return 'General Concepts';
     let clean = query
-        .replace(/^(i\s+am\s+confused\s+about|can\s+you\s+explain|what\s+is|what\s+are|help\s+me\s+understand|explain|teach\s+me|calculate|solve)\s+/i, '')
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening))[!.,\s]+/i, '')
+        .replace(/^(i\s+am\s+(totally\s+)?(lost|confused|frustrated|struggling)\s+(and\s+frustrated\s+)?(with|about|in|on)|i'?m\s+(exploring|studying|learning|confused\s+about)|can\s+you\s+(please\s+)?(help\s+me\s+(debug|understand|with)|explain|teach\s+me)|what\s+is|what\s+are|help\s+me\s+(understand|debug|with)|explain|teach\s+me|calculate|solve|in)\s+/i, '')
+        .replace(/(\s+are\s+driving\s+me\s+crazy.*|\s+makes?\s+zero\s+sense.*|\s+is\s+confusing.*)$/i, '')
         .replace(/(\.|\?|!)+$/, '')
         .trim();
     if (/[.!?]/.test(clean)) {
-        clean = clean.split(/[.!?]/)[0].trim();
+        const firstClause = clean.split(/[.!?]/)[0].trim();
+        if (firstClause.length >= 4) {
+            clean = firstClause;
+        }
     }
     const words = clean.split(/\s+/).filter(Boolean);
-    if (words.length > 5) {
-        clean = words.slice(0, 5).join(' ');
+    if (words.length > 6) {
+        clean = words.slice(0, 6).join(' ');
     } else {
         clean = words.join(' ');
     }
-    if (!clean) return 'General Concepts';
+    if (!clean || clean.length < 2) return 'General Concepts';
     return clean.charAt(0).toUpperCase() + clean.slice(1);
 }
 

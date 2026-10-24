@@ -55,7 +55,7 @@ Return ONLY a JSON object in this exact format:
             try {
                 const sglangService = require('./sglangService');
                 evaluationText = await sglangService.generateContentWithHistory([], prompt, null, {
-                    model: chosenModel.modelId || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
+                    model: chosenModel.modelId || 'Qwen/Qwen3-8B-AWQ',
                     temperature: 0.2
                 });
                 generationSuccess = true;

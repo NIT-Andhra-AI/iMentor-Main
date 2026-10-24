@@ -104,7 +104,7 @@ const TypewriterText = ({ text, className, delay = 0, speed = 50, onComplete }) 
     );
 };
 
-function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessingChange, initialPromptForNewSession, setInitialPromptForNewSession, initialActivityForNewSession, setInitialActivityForNewSession, tutorModeType, currentQuestionIndex, currentModulePathId }) {
+function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessingChange, initialPromptForNewSession, setInitialPromptForNewSession, initialActivityForNewSession, setInitialActivityForNewSession, tutorModeType, currentQuestionIndex, currentModulePathId, hideTutorBanner = false }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { token: regularUserToken, user: regularUser } = useRegularAuth();
@@ -476,8 +476,12 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                 text: finalBotMessageObject.finalAnswer || finalBotMessageObject.text, // Map to 'text' property
                 isStreaming: false, // Explicitly mark streaming as complete
                 status: finalStatus, // Persist mapped status
-                steps: accumulatedSteps, // Persist structured steps
-                confidenceScore: currentConfidenceScore // Persist confidence score
+                thinking: finalBotMessageObject.thinking || accumulatedThinking || finalBotMessageObject.structuredTurn?.thinking_markdown || null,
+                steps: (accumulatedSteps && accumulatedSteps.length > 0)
+                    ? accumulatedSteps
+                    : (finalBotMessageObject.steps || finalBotMessageObject.structuredTurn?.thinking_steps || []), // Persist structured steps
+                confidenceScore: currentConfidenceScore ?? finalBotMessageObject.confidenceScore ?? null, // Persist confidence score
+                isNewlyArrived: true
             };
 
             // Now, update the state with the correctly formatted final message.
@@ -521,6 +525,9 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                 }));
             }
 
+            if (finalBotMessageObject.bountyResult) {
+                handleBountyCompletion(finalBotMessageObject.bountyResult);
+            }
             // Emit position update for curriculum panel if currentPosition is in response
             if (finalBotMessageObject.currentPosition) {
                 window.dispatchEvent(new CustomEvent('tutor-position-update', {
@@ -569,7 +576,7 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                                 </span>
                                 <span className="flex items-center gap-1">
                                     <Award size={18} />
-                                    +{bountyResult.learningCreditsAwarded} Learning Credits
+                                    +{bountyResult.xpAwarded || bountyResult.learningCreditsAwarded || 10} XP
                                 </span>
                             </div>
                             <p className="text-sm opacity-90 mt-2">
@@ -853,7 +860,8 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
     // Handle bounty question from navigation state
     useEffect(() => {
         if (location.state?.bountyQuestion) {
-            const bountyText = `🎯 Bounty Challenge (${location.state.bountyCredits} credits + ${location.state.bountyLearningCredits} Learning Credits)\n\n${location.state.bountyQuestion}`;
+            const xpBonusVal = location.state.bountyLearningCredits ?? location.state.bountyXP ?? 10;
+            const bountyText = `🎯 Bounty Challenge (${location.state.bountyCredits || 5} Bounty Credits + ${xpBonusVal} XP)\n\n${location.state.bountyQuestion}`;
             setInitialPromptForNewSession(bountyText);
 
             // Store bounty metadata in component state
@@ -930,14 +938,14 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
     return (
         <div className="flex flex-col h-full rounded-vs" style={{ background: 'var(--vs-bg)' }}>
             {/* Tutor Mode Banner */}
-            {tutorMode && (
+            {tutorMode && !hideTutorBanner && (
                 <div className="flex items-center justify-between px-4 py-2 border-b text-[10px] sm:text-xs font-semibold tracking-wider text-indigo-400 bg-indigo-500/10 border-indigo-500/20 rounded-t-vs select-none animate-fadeIn flex-shrink-0">
                     <div className="flex items-center gap-2">
                         <GraduationCap size={14} className="text-indigo-400 animate-pulse" />
                         <span>
                             {effectiveTutorModeType === 'guided_learning' || effectiveTutorModeType === 'study_mode'
                                 ? 'STUDY & GUIDED LEARNING MODE ACTIVE'
-                                : 'SOCRATIC LEARNING MODE ACTIVE'}
+                                : 'GUIDED LEARNING MODE ACTIVE'}
                         </span>
                     </div>
                     {effectiveTutorModeType && (
@@ -968,7 +976,7 @@ function CenterPanel({ messages, setMessages, currentSessionId, onChatProcessing
                                 }}
                             >
                                 <TypewriterText
-                                    text={tutorMode ? "Socratic Mode" : "iMentor"}
+                                    text={tutorMode ? "Learning Mode" : "iMentor"}
                                     speed={55}
                                     delay={300}
                                 />

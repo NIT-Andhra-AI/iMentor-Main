@@ -1,14 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../services/api';
+import { useAuth } from '../hooks/useAuth.jsx';
+import { useAppState } from '../contexts/AppStateContext.jsx';
 import { 
   Users, BookOpen, MessageSquare, Network, Brain, 
   Search, Upload, Play, Globe, CheckCircle, AlertCircle, RefreshCw, Send, 
-  ChevronRight, ChevronDown, Terminal, Award, FileText, Video, Code, HelpCircle, Layers
+  ChevronRight, ChevronDown, Terminal, Award, FileText, Video, Code, HelpCircle, Layers,
+  Shield, GraduationCap, Eye, Edit3, Save, X
 } from 'lucide-react';
 import { Network as VisNetwork } from 'vis-network/standalone';
 
 export default function FacultyPortal() {
+  const navigate = useNavigate();
+  const { user: authUser } = useAuth();
+  const { isAdminSessionActive } = useAppState();
+  const isAdminUser = !!(isAdminSessionActive || authUser?.isAdmin);
+
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [catalogCourses, setCatalogCourses] = useState([]);
+  const [selectedCatalogCode, setSelectedCatalogCode] = useState('');
+  const [isLoadingCourseDetails, setIsLoadingCourseDetails] = useState(false);
+
+  // Lecture & Lab Viewer/Editor Modal state
+  const [lectureModalOpen, setLectureModalOpen] = useState(false);
+  const [activeLectureData, setActiveLectureData] = useState(null); // { courseCode, lectureNum, title, markdown, isLab }
+  const [isEditingLecture, setIsEditingLecture] = useState(false);
+  const [editedMarkdown, setEditedMarkdown] = useState('');
+  const [isSavingLecture, setIsSavingLecture] = useState(false);
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentProgress, setStudentProgress] = useState(null);
@@ -99,7 +118,97 @@ export default function FacultyPortal() {
   useEffect(() => {
     fetchStudents();
     fetchAgentMemory();
+    fetchCatalogCourses();
   }, []);
+
+  const fetchCatalogCourses = async () => {
+    try {
+      const res = await apiClient.get('/faculty/courses');
+      const list = res.data?.courses || [];
+      setCatalogCourses(list);
+      if (list.length > 0 && !generatedCourse) {
+        const preferred = list.find(c => c.courseCode === 'EE3621') || list[0];
+        if (preferred?.courseCode) {
+          handleSelectCatalogCourse(preferred.courseCode);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch catalog courses:', err);
+    }
+  };
+
+  const handleSelectCatalogCourse = async (codeToLoad) => {
+    if (!codeToLoad) return;
+    setSelectedCatalogCode(codeToLoad);
+    setIsLoadingCourseDetails(true);
+    try {
+      const res = await apiClient.get(`/faculty/course/${encodeURIComponent(codeToLoad)}/details`);
+      if (res.data?.success) {
+        setGeneratedCourse(res.data);
+        setCourseCode(res.data.courseCode || codeToLoad);
+        const cleanTitle = (res.data.courseTitle || codeToLoad).replace(/\s*\([^)]*\)\s*$/, '').trim();
+        setCourseTopic(cleanTitle);
+      }
+    } catch (err) {
+      setMaterialsStatus({ type: 'error', text: `Could not load details for ${codeToLoad}: ${err.response?.data?.message || err.message}` });
+    } finally {
+      setIsLoadingCourseDetails(false);
+    }
+  };
+
+  const handleOpenLectureModal = async (lectureNum, topicTitle) => {
+    const activeCode = generatedCourse?.courseCode || courseCode || 'EE3621';
+    try {
+      const res = await apiClient.get(`/faculty/course/${encodeURIComponent(activeCode)}/lecture/${lectureNum}`);
+      if (res.data?.success) {
+        setActiveLectureData({
+          courseCode: activeCode,
+          lectureNum,
+          title: topicTitle || `Lecture ${lectureNum}`,
+          filename: res.data.filename,
+          markdown: res.data.markdown,
+          isLab: false
+        });
+        setEditedMarkdown(res.data.markdown);
+        setIsEditingLecture(false);
+        setLectureModalOpen(true);
+      }
+    } catch (err) {
+      setMaterialsStatus({ type: 'error', text: `Could not load Lecture L${lectureNum}: ${err.response?.data?.message || err.message}` });
+    }
+  };
+
+  const handleOpenLabModal = (labItem) => {
+    setActiveLectureData({
+      courseCode: generatedCourse?.courseCode || courseCode,
+      lectureNum: null,
+      title: labItem.title,
+      filename: labItem.filename,
+      markdown: labItem.markdown,
+      isLab: true
+    });
+    setEditedMarkdown(labItem.markdown);
+    setIsEditingLecture(false);
+    setLectureModalOpen(true);
+  };
+
+  const handleSaveLectureMarkdown = async () => {
+    if (!activeLectureData || activeLectureData.isLab) return;
+    setIsSavingLecture(true);
+    try {
+      const res = await apiClient.put(
+        `/faculty/course/${encodeURIComponent(activeLectureData.courseCode)}/lecture/${activeLectureData.lectureNum}`,
+        { markdown: editedMarkdown }
+      );
+      setActiveLectureData(prev => ({ ...prev, markdown: editedMarkdown }));
+      setIsEditingLecture(false);
+      setMaterialsStatus({ type: 'success', text: res.data?.message || 'Lecture saved and synced to Student Course Explorer!' });
+    } catch (err) {
+      setMaterialsStatus({ type: 'error', text: `Failed to save lecture: ${err.response?.data?.message || err.message}` });
+    } finally {
+      setIsSavingLecture(false);
+    }
+  };
 
   const fetchStudents = async () => {
     try {
@@ -210,6 +319,8 @@ export default function FacultyPortal() {
       ]);
       setMaterialsStatus({ type: 'success', text: res.data.message });
       setGeneratedCourse(res.data);
+      setSelectedCatalogCode(res.data.courseCode);
+      fetchCatalogCourses();
       setIsGenerating(false);
 
       // Refresh memory graph
@@ -297,17 +408,66 @@ export default function FacultyPortal() {
           </div>
         </div>
         
-        {/* Switch to Student Mode Toggle */}
-        <button 
-          onClick={() => {
-            sessionStorage.setItem('viewAsStudent', 'true');
-            window.location.href = '/';
-          }}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-850 text-slate-300 text-xs font-semibold rounded-xl border border-slate-800 hover:border-slate-700 transition duration-200"
-        >
-          <Users className="w-4 h-4 text-emerald-400" />
-          <span>Switch to Student View</span>
-        </button>
+        {/* Role-Aware Mode Switcher: Admin Mode | Teacher Mode | Student Mode */}
+        <div className="flex items-center gap-3 flex-wrap">
+          {catalogCourses.length > 0 && (
+            <div className="flex items-center gap-2 bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5">
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-[11px] font-semibold text-slate-400">Active Course ({catalogCourses.length}):</span>
+              <select
+                value={selectedCatalogCode}
+                onChange={(e) => handleSelectCatalogCourse(e.target.value)}
+                disabled={isLoadingCourseDetails}
+                className="bg-slate-950 border border-slate-800 text-emerald-300 text-xs font-mono rounded-lg px-2.5 py-1 focus:outline-none focus:border-emerald-500 max-w-[260px]"
+              >
+                {catalogCourses.map(c => (
+                  <option key={c.courseCode} value={c.courseCode}>
+                    [{c.courseCode}] {c.courseTitle.replace(/\s*\([^)]*\)\s*$/, '')} ({c.topicCount}L)
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="flex items-center bg-slate-900/95 border border-slate-800 rounded-xl p-1 gap-1">
+            {isAdminUser && (
+              <button
+                type="button"
+                onClick={() => {
+                  sessionStorage.setItem('activeViewMode', 'admin');
+                  sessionStorage.removeItem('viewAsStudent');
+                  navigate('/admin/dashboard');
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-300 hover:bg-amber-500/20 transition"
+                title="Switch to Admin Dashboard"
+              >
+                <Shield className="w-3.5 h-3.5" />
+                <span>Admin Mode</span>
+              </button>
+            )}
+            <button
+              type="button"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white shadow-sm"
+              title="Currently in Teacher / Faculty Mode"
+            >
+              <GraduationCap className="w-3.5 h-3.5" />
+              <span>Teacher Mode</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                sessionStorage.setItem('activeViewMode', 'student');
+                sessionStorage.setItem('viewAsStudent', 'true');
+                navigate('/');
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-300 hover:bg-sky-500/20 transition"
+              title="Switch to Student Mode (AI Tutor, Courses, Deep Research)"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Student Mode</span>
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* Main Container */}
@@ -516,108 +676,149 @@ export default function FacultyPortal() {
                   {/* Deliverable View 1: 36 Theory Lectures */}
                   {curriculumViewMode === 'lectures' && (
                     <div className="space-y-3">
-                      {filteredTopics.map((topic, index) => (
-                        <div 
-                          key={index}
-                          className="p-4 bg-slate-900/50 border border-slate-850 hover:border-slate-700 rounded-xl transition space-y-2"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">
-                                L{index + 1}
-                              </span>
-                              <span className="text-xs font-bold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded">
-                                {topic.module}
-                              </span>
-                              <h4 className="text-sm font-semibold text-white">{topic.topic}</h4>
+                      {filteredTopics.map((topic, index) => {
+                        const globalIdx = (generatedCourse?.topics?.indexOf(topic) ?? index) + 1;
+                        return (
+                          <div 
+                            key={index}
+                            onClick={() => handleOpenLectureModal(globalIdx, topic.topic)}
+                            className="p-4 bg-slate-900/50 border border-slate-850 hover:border-emerald-500/50 rounded-xl transition cursor-pointer space-y-2 group"
+                          >
+                            <div className="flex items-center justify-between flex-wrap gap-2">
+                              <div className="flex items-center gap-3">
+                                <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">
+                                  L{globalIdx}
+                                </span>
+                                <span className="text-xs font-bold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded">
+                                  {topic.module}
+                                </span>
+                                <h4 className="text-sm font-semibold text-white group-hover:text-emerald-300 transition">{topic.topic}</h4>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-mono font-bold bg-teal-500/20 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30">
+                                  {topic.bloomLevel || 'L4_ANALYZE'}
+                                </span>
+                                <span className="text-[10px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">
+                                  KaTeX Math
+                                </span>
+                                <span className="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded flex items-center gap-1">
+                                  <Video className="w-3 h-3" /> NPTEL / OCW
+                                </span>
+                                <span className="text-[10px] font-semibold text-emerald-300 bg-emerald-500/15 px-2.5 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
+                                  <Eye className="w-3 h-3" /> Read / Edit Note
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-mono font-bold bg-teal-500/20 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30">
-                                {topic.bloomLevel || 'L4_ANALYZE'}
-                              </span>
-                              <span className="text-[10px] font-mono text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">
-                                KaTeX Math
-                              </span>
-                              <span className="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded flex items-center gap-1">
-                                <Video className="w-3 h-3" /> NPTEL / OCW
-                              </span>
-                            </div>
+                            {topic.subtopic && (
+                              <p className="text-xs text-slate-400 pl-11">{topic.subtopic}</p>
+                            )}
                           </div>
-                          {topic.subtopic && (
-                            <p className="text-xs text-slate-400 pl-11">{topic.subtopic}</p>
-                          )}
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
 
-                  {/* Deliverable View 2: Concept Question Bank */}
+                  {/* Deliverable View 2: Concept Question Bank (Real 108 Questions from CQB JSON) */}
                   {curriculumViewMode === 'cqb' && (
                     <div className="p-6 bg-slate-900/50 border border-slate-850 rounded-2xl space-y-4">
                       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                         <h3 className="text-sm font-bold text-white flex items-center gap-2">
                           <HelpCircle className="w-4 h-4 text-emerald-400" />
-                          <span>108 Structured Diagnostic Assessment Questions</span>
+                          <span>{generatedCourse?.cqb?.total_questions || 108} Structured Diagnostic Assessment Questions</span>
                         </h3>
-                        <span className="text-xs text-slate-400 font-mono">3 Diagnostic Questions per Lecture</span>
+                        <span className="text-xs text-slate-400 font-mono">MCQs, Numericals & GATE/HOTS per Lecture</span>
                       </div>
-                      <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                        {filteredTopics.slice(0, 12).map((t, idx) => (
-                          <div key={idx} className="p-4 bg-slate-950 border border-slate-850 rounded-xl space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold text-emerald-400 font-mono">L{idx + 1}: {t.topic}</span>
-                              <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Diagnostic MCQ</span>
+                      <div className="space-y-4 max-h-[550px] overflow-y-auto pr-2">
+                        {(generatedCourse?.cqb?.topics && generatedCourse.cqb.topics.length > 0) ? (
+                          generatedCourse.cqb.topics.map((tItem, tIdx) => (
+                            <div key={tIdx} className="p-4 bg-slate-950 border border-slate-850 rounded-xl space-y-3">
+                              <div className="flex items-center justify-between border-b border-slate-900 pb-2">
+                                <span className="text-xs font-bold text-emerald-400 font-mono">
+                                  L{tItem.topic_num || (tIdx + 1)}: {tItem.topic_title} ({tItem.module})
+                                </span>
+                                <span className="text-[10px] bg-teal-500/15 text-teal-300 px-2 py-0.5 rounded font-mono">
+                                  {tItem.bloom || 'L4_ANALYZE'}
+                                </span>
+                              </div>
+                              <div className="space-y-3">
+                                {(tItem.questions || []).map((q, qIdx) => (
+                                  <div key={q.id || qIdx} className="p-3 bg-slate-900/70 rounded-lg border border-slate-800/80 space-y-2">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-[10px] font-mono text-slate-400">{q.id} • {q.type?.toUpperCase()}</span>
+                                      <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded">{q.bloom_level}</span>
+                                    </div>
+                                    <p className="text-xs text-slate-100 font-medium">{q.question}</p>
+                                    {Array.isArray(q.options) && q.options.length > 0 && (
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
+                                        {q.options.map((opt, oIdx) => {
+                                          const isCorrect = q.correct_answer && opt.startsWith(q.correct_answer);
+                                          return (
+                                            <div
+                                              key={oIdx}
+                                              className={`p-2 rounded border ${isCorrect ? 'bg-emerald-950/40 border-emerald-600/50 text-emerald-300 font-semibold' : 'bg-slate-950 border-slate-800 text-slate-400'}`}
+                                            >
+                                              {opt} {isCorrect && '✓'}
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    )}
+                                    {q.explanation && (
+                                      <p className="text-[11px] text-slate-400 bg-slate-950/70 p-2 rounded border border-slate-800/60">
+                                        <strong className="text-emerald-400">Solution / Rubric:</strong> {q.explanation}
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                            <p className="text-xs text-slate-200">What is the primary governing physical or algorithmic constraint when designing under <strong>{t.topic}</strong>?</p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-400 pt-1">
-                              <div className="p-2 bg-slate-900 rounded border border-slate-800">A) Static energy dissipation only</div>
-                              <div className="p-2 bg-emerald-950/30 border border-emerald-700/40 rounded text-emerald-300 font-medium">B) Boundary stability & dynamic state convergence (Correct)</div>
-                              <div className="p-2 bg-slate-900 rounded border border-slate-800">C) Constant linear throughput</div>
-                              <div className="p-2 bg-slate-900 rounded border border-slate-800">D) Zero thermal dissipation</div>
+                          ))
+                        ) : (
+                          filteredTopics.slice(0, 12).map((t, idx) => (
+                            <div key={idx} className="p-4 bg-slate-950 border border-slate-850 rounded-xl space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-emerald-400 font-mono">L{idx + 1}: {t.topic}</span>
+                                <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Diagnostic MCQ</span>
+                              </div>
+                              <p className="text-xs text-slate-200">What is the primary governing physical or algorithmic constraint when designing under <strong>{t.topic}</strong>?</p>
                             </div>
-                          </div>
-                        ))}
+                          ))
+                        )}
                       </div>
                     </div>
                   )}
 
-                  {/* Deliverable View 3: Labs & Capstone */}
+                  {/* Deliverable View 3: Labs & Capstone (Real Markdown Labs from Course Package) */}
                   {curriculumViewMode === 'labs' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-5 bg-slate-900/50 border border-slate-850 rounded-xl space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                            <Code className="w-4 h-4 text-emerald-400" />
-                            <span>Lab 1: First-Principles Simulation</span>
-                          </h4>
-                          <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono">pytest Suite</span>
+                      {(generatedCourse?.labs && generatedCourse.labs.length > 0) ? (
+                        generatedCourse.labs.map((lab, lIdx) => (
+                          <div
+                            key={lIdx}
+                            onClick={() => handleOpenLabModal(lab)}
+                            className={`p-5 rounded-xl space-y-3 cursor-pointer transition ${
+                              lab.isCapstone
+                                ? 'md:col-span-2 bg-gradient-to-r from-teal-950/40 to-slate-900 border border-teal-500/40 hover:border-teal-400'
+                                : 'bg-slate-900/50 border border-slate-850 hover:border-emerald-500/50'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                                {lab.isCapstone ? <Award className="w-5 h-5 text-teal-400" /> : <Code className="w-4 h-4 text-emerald-400" />}
+                                <span>{lab.title}</span>
+                              </h4>
+                              <span className="text-[10px] bg-emerald-500/15 text-emerald-300 px-2.5 py-0.5 rounded font-mono flex items-center gap-1">
+                                <Eye className="w-3 h-3" /> {lab.isCapstone ? '4-Tier Defense Rubric' : 'Open Lab Manual'}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-400 leading-relaxed">{lab.preview}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="md:col-span-2 p-6 bg-slate-900/50 border border-slate-850 rounded-xl text-xs text-slate-400">
+                          4 hands-on simulation labs and production capstone project generated in course_bootstrap/{generatedCourse?.courseCode}/labs/.
                         </div>
-                        <p className="text-xs text-slate-400">Implement baseline device/algorithmic models with validation across test suites.</p>
-                      </div>
-
-                      <div className="p-5 bg-slate-900/50 border border-slate-850 rounded-xl space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                            <Code className="w-4 h-4 text-emerald-400" />
-                            <span>Lab 2: Dynamic Pipeline Optimization</span>
-                          </h4>
-                          <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono">pytest Suite</span>
-                        </div>
-                        <p className="text-xs text-slate-400">Optimize timing slack, energy dissipation, and state convergence under load.</p>
-                      </div>
-
-                      <div className="md:col-span-2 p-6 bg-gradient-to-r from-teal-950/30 to-slate-900 border border-teal-500/30 rounded-xl space-y-3">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-base font-bold text-white flex items-center gap-2">
-                            <Award className="w-5 h-5 text-teal-400" />
-                            <span>Production Capstone Project</span>
-                          </h4>
-                          <span className="text-xs bg-teal-500/20 text-teal-300 px-3 py-1 rounded font-mono">4-Tier Defense Rubric</span>
-                        </div>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                          End-to-end industrial implementation and verification with sign-off constraints, physical layout / mathematical proof, and formal presentation defense.
-                        </p>
-                      </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -870,6 +1071,70 @@ export default function FacultyPortal() {
           )}
         </main>
       </div>
+
+      {/* Lecture / Lab Markdown Viewer & Editor Modal */}
+      {lectureModalOpen && activeLectureData && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-950 border border-slate-800 rounded-2xl max-w-5xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                    {activeLectureData.courseCode} {activeLectureData.lectureNum ? `• L${activeLectureData.lectureNum}` : '• Lab Manual'}
+                  </span>
+                  <span className="text-xs text-slate-400 font-mono">{activeLectureData.filename}</span>
+                </div>
+                <h3 className="text-base font-bold text-white mt-1">{activeLectureData.title}</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                {!activeLectureData.isLab && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingLecture(!isEditingLecture)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5"
+                    >
+                      <Edit3 className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>{isEditingLecture ? 'Preview Note' : 'Edit Markdown'}</span>
+                    </button>
+                    {isEditingLecture && (
+                      <button
+                        type="button"
+                        onClick={handleSaveLectureMarkdown}
+                        disabled={isSavingLecture}
+                        className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5"
+                      >
+                        <Save className="w-3.5 h-3.5" />
+                        <span>{isSavingLecture ? 'Saving...' : 'Save & Sync to Students'}</span>
+                      </button>
+                    )}
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setLectureModalOpen(false)}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6">
+              {isEditingLecture ? (
+                <textarea
+                  value={editedMarkdown}
+                  onChange={(e) => setEditedMarkdown(e.target.value)}
+                  className="w-full h-[62vh] bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-100 leading-relaxed focus:outline-none focus:border-emerald-500"
+                />
+              ) : (
+                <pre className="whitespace-pre-wrap font-mono text-xs text-slate-200 leading-relaxed bg-slate-900/60 p-5 rounded-xl border border-slate-800/80">
+                  {activeLectureData.markdown}
+                </pre>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

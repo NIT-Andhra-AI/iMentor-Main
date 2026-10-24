@@ -56,12 +56,12 @@ function _baseUrl() {
  * @param {number} [fallback=8192]
  * @returns {number}
  */
-function getModelMaxContext(fallback = 8192) {
+function getModelMaxContext(fallback = 16384) {
     return _fetched ? _maxContextTokens : fallback;
 }
 
 /**
- * Returns the model id string (e.g. "Qwen/Qwen2.5-7B-Instruct-AWQ") or null.
+ * Returns the model id string (e.g. "Qwen/Qwen3-8B-AWQ") or null.
  * @returns {string|null}
  */
 function getModelId() {

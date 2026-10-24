@@ -11,6 +11,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import api from '../../services/api';
 import SkillTreeCourseSelectorWrapper from './SkillTreeCourseSelectorWrapper.jsx';
+import MathRenderer from '../common/MathRenderer.jsx';
 
 const SkillTreeLanding = () => {
     const navigate = useNavigate();
@@ -81,9 +82,15 @@ const SkillTreeLanding = () => {
             const { status } = checkRes.data;
 
             if (status === 'active') {
-                toast('This game is already present', {
-                    icon: '⚠️',
-                    style: { background: '#18181b', color: '#fff', border: '1px solid #3f3f46', fontWeight: '500' }
+                toast.success('Resuming your existing game for this course!', {
+                    icon: '🎮',
+                    style: { background: '#18181b', color: '#fff', border: '1px solid #10b981', fontWeight: '500' }
+                });
+                navigate('/gamification/skill-tree/map', {
+                    state: {
+                        topic: topic.trim(),
+                        gameId: checkRes.data.gameId
+                    }
                 });
                 setLoading(false);
                 return;
@@ -557,9 +564,9 @@ const SkillTreeLanding = () => {
                                     >
                                         <div className="flex items-start gap-4 mb-6">
                                             <MessageCircle className="w-6 h-6 text-zinc-400 mt-1 shrink-0" />
-                                            <p className="text-xl font-medium text-white leading-relaxed">
-                                                {questions[currentQuestionIndex].question}
-                                            </p>
+                                            <div className="text-xl font-medium text-white leading-relaxed">
+                                                <MathRenderer content={questions[currentQuestionIndex].question} />
+                                            </div>
                                         </div>
 
                                         {/* MCQ Options */}
@@ -585,7 +592,9 @@ const SkillTreeLanding = () => {
                                                             }`}>
                                                                 {currentAnswer === option && <div className="w-2 h-2 bg-black rounded-full" />}
                                                             </div>
-                                                            <span className="text-lg font-medium">{option}</span>
+                                                            <span className="text-lg font-medium">
+                                                                <MathRenderer content={option} inline />
+                                                            </span>
                                                         </div>
                                                     </button>
                                                 ))}

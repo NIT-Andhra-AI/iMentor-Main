@@ -110,7 +110,7 @@ OUTPUT: strict JSON array only, no markdown, no explanation.
 
         try {
             const response = await LLMRouter.generate({
-                query: prompt,
+                query: prompt + "\n/no_think",
                 userId,
                 deepResearchContext: true,
                 systemPrompt: 'You are a fact-checker. Output only a strict JSON array. No markdown, no explanation.'

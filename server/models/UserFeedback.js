@@ -47,7 +47,26 @@ const UserFeedbackSchema = new mongoose.Schema(
         ],
         // Admin-facing fields
         adminNote: { type: String, default: '' },
-        resolvedAt: { type: Date }
+        resolvedAt: { type: Date },
+
+        // Performance & Bug Bounty Program fields
+        bountyEligible: { type: Boolean, default: true },
+        bountyStatus: {
+            type: String,
+            enum: ['pending', 'awarded', 'rejected'],
+            default: 'pending'
+        },
+        bountyCreditsAwarded: { type: Number, default: 0 },
+        bountyXpAwarded: { type: Number, default: 0 },
+        bountyAwardedAt: { type: Date },
+
+        // Auto-attached performance telemetry from user's most recent chat turn
+        telemetrySnapshot: {
+            lastResponseTimeMs: { type: Number, default: null },
+            lastModelId:        { type: String, default: null },
+            lastQuery:          { type: String, default: null },
+            capturedAt:         { type: Date,   default: null }
+        }
     },
     { timestamps: true }
 );

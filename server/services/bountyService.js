@@ -159,7 +159,31 @@ Return ONLY a JSON object with this exact structure (no other text):
         let questionData;
         let generationSuccess = false;
 
-        if (chosenModel.provider === 'ollama') {
+        const sglangService = require('./sglangService');
+        if (chosenModel.provider === 'sglang' || chosenModel.provider === 'local_llm' || process.env.SGLANG_ENABLED === 'true') {
+            try {
+                const response = await sglangService.generateContentWithHistory(
+                    [],
+                    prompt,
+                    systemPrompt,
+                    {
+                        model: chosenModel.modelId,
+                        enableThinking: false,
+                        maxTokens: 500,
+                        temperature: 0.6
+                    }
+                );
+                const jsonMatch = String(response || '').match(/\{[\s\S]*\}/);
+                const safeJsonStr = jsonMatch ? jsonMatch[0].replace(/(?<!\\)\\(?=[a-zA-Z]{2,})/g, "\\\\").replace(/(?<!\\)\\(?!["\\/bfnrtu])/g, "\\\\") : null;
+                questionData = safeJsonStr ? JSON.parse(safeJsonStr) : null;
+                if (questionData && questionData.questionText) {
+                    generationSuccess = true;
+                }
+            } catch (sglangErr) {
+                log.warn('SYSTEM', `SGLang bounty generation failed: ${sglangErr.message}`);
+            }
+        }
+        if (!generationSuccess && chosenModel.provider === 'ollama') {
             try {
                 // log.info('SYSTEM', 'Attempting bounty generation with Ollama...');
                 const sglangService = require('./sglangService');
@@ -266,7 +290,7 @@ Return ONLY a JSON object with this exact structure (no other text):
             correctAnswer: questionData.correctAnswer,
             explanation: questionData.explanation,
             creditReward: questionData.creditReward,
-            xpBonus: questionData.xpBonus || 0,
+            xpBonus: questionData.xpBonus || questionData.learningCreditsBonus || (difficulty === 'hard' ? 50 : difficulty === 'medium' ? 35 : 20),
             expiresAt,
             generationMethod: 'gap_based',
             sessionAnalysisData: gapAnalysis
@@ -382,7 +406,7 @@ async function awardCredits(userId, amount, reason, bountyId = '') {
 
         // Update both legacy and new fields
         profile.learningCredits += amount;
-        profile.totalLearningCredits = (profile.totalLearningCredits || 0) + amount;
+        // Note: totalLearningCredits is synchronized with totalXP in gamificationService.awardXP
 
         // Add to legacy creditsHistory
         profile.creditsHistory.push({

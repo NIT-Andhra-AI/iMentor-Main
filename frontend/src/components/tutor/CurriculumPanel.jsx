@@ -11,7 +11,8 @@ import {
     Loader2,
     Lock,
     Play,
-    GraduationCap
+    GraduationCap,
+    Check
 } from 'lucide-react';
 import api from '../../services/api';
 
@@ -99,14 +100,20 @@ function CurriculumPanel({
         <div className="h-full flex flex-col" style={{ background: '#0d0d0d' }}>
 
             {/* ── Header ── */}
-            <div className="px-4 pt-4 pb-3 border-b border-[#4a4a4a]/60 flex-shrink-0">
-                <div className="flex items-center gap-2 mb-1">
-                    <GraduationCap size={15} className="text-teal-400" />
-                    <span className="text-sm font-semibold text-white">Curriculum Progress</span>
+            <div className="px-4 pt-3.5 pb-3 border-b border-[#4a4a4a]/60 flex-shrink-0">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <GraduationCap size={16} className="text-emerald-400" />
+                        <span className="text-sm font-semibold text-white">Course Syllabus</span>
+                    </div>
+                    {selectedCourse ? (
+                        <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                            {selectedCourse}
+                        </span>
+                    ) : (
+                        <span className="text-[10px] text-gray-500 font-mono">No Course</span>
+                    )}
                 </div>
-                {selectedCourse && (
-                    <p className="text-[11px] text-gray-500 ml-6 truncate">{selectedCourse}</p>
-                )}
             </div>
 
             {/* ── Loading ── */}
@@ -130,7 +137,7 @@ function CurriculumPanel({
                     <div className="w-12 h-12 rounded-xl bg-gray-800/60 flex items-center justify-center mb-3">
                         <GraduationCap size={22} className="text-gray-600" />
                     </div>
-                    <p className="text-sm text-gray-500">General Socratic Tutor Active</p>
+                    <p className="text-sm text-gray-500">Guided Learning Mode Active</p>
                     <p className="text-xs text-gray-600 mt-1">Explore any topic. I’ll guide you Socratically.</p>
                 </div>
             )}
@@ -174,13 +181,13 @@ function CurriculumPanel({
                                         >
                                             <span className="flex-shrink-0">
                                                 {moduleCompleted
-                                                    ? <CheckCircle2 size={16} className="text-teal-400" />
+                                                    ? <CheckCircle2 size={16} className="text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.4)]" />
                                                     : isFirstIncomplete
-                                                        ? <div style={{ animation: 'pulse 2s ease-in-out infinite' }}><Circle size={16} className="text-gray-400" /></div>
+                                                        ? <div style={{ animation: 'pulse 2s ease-in-out infinite' }}><Circle size={16} className="text-teal-400" /></div>
                                                         : <Circle size={16} className="text-gray-600" />
                                                 }
                                             </span>
-                                            <span className={`flex-1 text-sm font-medium truncate ${moduleCompleted ? 'text-teal-400' : isFirstIncomplete ? 'text-white' : 'text-gray-400'}`}>
+                                            <span className={`flex-1 text-sm font-medium truncate ${moduleCompleted ? 'text-emerald-400' : isFirstIncomplete ? 'text-white' : 'text-gray-400'}`}>
                                                 {module.name}
                                             </span>
                                             {!moduleCompleted && modPct > 0 && (
@@ -229,18 +236,18 @@ function CurriculumPanel({
                                                                     {/* Topic status dot */}
                                                                     <span className="flex-shrink-0">
                                                                         {topicCompleted ? (
-                                                                            <div className="w-3 h-3 rounded-full bg-teal-400/30 flex items-center justify-center">
-                                                                                <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                                                                            <div className="w-4 h-4 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center shadow-[0_0_6px_rgba(16,185,129,0.3)]">
+                                                                                <Check size={10} className="text-emerald-400 stroke-[3]" />
                                                                             </div>
                                                                         ) : isCurrentTopic ? (
                                                                             <div
                                                                                 style={{ animation: 'pulse 1.5s ease-in-out infinite' }}
-                                                                                className="w-3 h-3 rounded-full bg-teal-500/20 flex items-center justify-center"
+                                                                                className="w-4 h-4 rounded-full bg-teal-500/20 border border-teal-400 flex items-center justify-center"
                                                                             >
                                                                                 <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
                                                                             </div>
                                                                         ) : (
-                                                                            <div className="w-3 h-3 rounded-full border border-gray-600 flex items-center justify-center">
+                                                                            <div className="w-4 h-4 rounded-full border border-gray-700 flex items-center justify-center">
                                                                                 <div className="w-1 h-1 rounded-full bg-gray-600" />
                                                                             </div>
                                                                         )}
@@ -250,7 +257,7 @@ function CurriculumPanel({
                                                                     <span className={`
                                                                         text-xs truncate flex-1
                                                                         ${isCurrentTopic ? 'text-teal-300 font-medium'
-                                                                            : topicCompleted ? 'text-gray-400'
+                                                                            : topicCompleted ? 'text-emerald-300/90 font-medium'
                                                                                 : isNextTopic ? 'text-gray-300'
                                                                                     : 'text-gray-500'
                                                                         }
@@ -272,14 +279,50 @@ function CurriculumPanel({
                                                                                     <div
                                                                                         key={subtopic.id}
                                                                                         className={`
-                                                                                            flex items-center gap-2 px-2 py-1 rounded text-[11px]
-                                                                                            ${isCurrentSub ? 'bg-teal-500/10 text-teal-300' : subtopicCompleted ? 'text-gray-500' : 'text-gray-600'}
+                                                                                            flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[11px] transition-all
+                                                                                            ${isCurrentSub
+                                                                                                ? 'bg-teal-500/15 text-teal-200 border border-teal-500/30'
+                                                                                                : subtopicCompleted
+                                                                                                    ? 'bg-emerald-500/5 text-emerald-300/90 hover:bg-emerald-500/10'
+                                                                                                    : 'text-gray-400 hover:bg-gray-800/20'
+                                                                                            }
                                                                                         `}
                                                                                     >
-                                                                                        <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${subtopicCompleted ? 'bg-teal-400' : isCurrentSub ? 'bg-teal-400' : 'bg-gray-700'}`} />
-                                                                                        <span className="truncate">{subtopic.name}</span>
-                                                                                        {isCurrentSub && (
-                                                                                            <span className="ml-auto text-[9px] text-teal-400 uppercase tracking-wider flex-shrink-0">Now</span>
+                                                                                        {/* Green bubble ("green buccle") for completed subtopics */}
+                                                                                        {subtopicCompleted ? (
+                                                                                            <div
+                                                                                                title="Subtopic Completed"
+                                                                                                className="w-3.5 h-3.5 rounded-full bg-emerald-500/25 border border-emerald-500 flex items-center justify-center flex-shrink-0 shadow-[0_0_6px_rgba(16,185,129,0.35)]"
+                                                                                            >
+                                                                                                <Check size={9} className="text-emerald-300 stroke-[3]" />
+                                                                                            </div>
+                                                                                        ) : isCurrentSub ? (
+                                                                                            <div
+                                                                                                title="Current Subtopic"
+                                                                                                className="w-3.5 h-3.5 rounded-full bg-teal-500/25 border border-teal-400 flex items-center justify-center flex-shrink-0 animate-pulse"
+                                                                                            >
+                                                                                                <div className="w-1.5 h-1.5 rounded-full bg-teal-300" />
+                                                                                            </div>
+                                                                                        ) : (
+                                                                                            <div
+                                                                                                title="Not Started"
+                                                                                                className="w-3.5 h-3.5 rounded-full border border-gray-700/80 flex items-center justify-center flex-shrink-0"
+                                                                                            >
+                                                                                                <div className="w-1 h-1 rounded-full bg-gray-600" />
+                                                                                            </div>
+                                                                                        )}
+
+                                                                                        <span className="truncate flex-1 font-normal">{subtopic.name}</span>
+
+                                                                                        {subtopicCompleted && (
+                                                                                            <span className="text-[9px] font-semibold text-emerald-400 bg-emerald-500/15 px-1.5 py-0.2 rounded border border-emerald-500/25 flex-shrink-0">
+                                                                                                ✓
+                                                                                            </span>
+                                                                                        )}
+                                                                                        {isCurrentSub && !subtopicCompleted && (
+                                                                                            <span className="text-[9px] font-semibold text-teal-300 bg-teal-500/20 px-1.5 py-0.2 rounded border border-teal-500/30 uppercase tracking-wider flex-shrink-0">
+                                                                                                Active
+                                                                                            </span>
                                                                                         )}
                                                                                     </div>
                                                                                 );
@@ -313,14 +356,14 @@ function CurriculumPanel({
 
             {/* ── Footer stats ── */}
             {!loading && curriculum && modules.length > 0 && (
-                <div className="px-4 py-2.5 border-t border-[#4a4a4a]/60 flex-shrink-0 flex items-center justify-between">
+                <div className="px-4 py-2.5 border-t border-[#4a4a4a]/60 flex-shrink-0 flex items-center justify-between bg-black/20">
                     <span className="text-[11px] text-gray-500">
-                        Modules: <span className="text-gray-300">
+                        Modules: <span className="text-gray-300 font-medium">
                             {modules.filter(m => isModuleCompleted(m.id) || areAllTopicsCompleted(m.topics)).length}/{modules.length}
                         </span>
                     </span>
                     <span className="text-[11px] text-gray-500">
-                        Topics: <span className="text-teal-400 font-medium">{overallPct}%</span>
+                        Completed: <span className="text-emerald-400 font-semibold">{overallPct}%</span>
                     </span>
                 </div>
             )}

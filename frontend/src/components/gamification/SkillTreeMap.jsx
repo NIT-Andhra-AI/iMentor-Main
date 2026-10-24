@@ -35,6 +35,7 @@ const SkillTreeMap = () => {
     const [showTutor, setShowTutor] = useState(false);
     const [showNodeAssessment, setShowNodeAssessment] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [selectedCourse, setSelectedCourse] = useState('EE3621');
 
     // Refs for animation loop
     const skillTreeRef = useRef(skillTree);
@@ -53,14 +54,15 @@ const SkillTreeMap = () => {
 
     // Fetch skill tree data
     useEffect(() => {
-        fetchSkillTree();
+        fetchSkillTree(selectedCourse);
     }, []);
 
-    const fetchSkillTree = async () => {
+    const fetchSkillTree = async (course = selectedCourse) => {
         try {
+            setLoading(true);
             const token = localStorage.getItem('authToken');
             const response = await axios.get(
-                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree`,
+                `${import.meta.env.VITE_API_BASE_URL}/gamification/skill-tree?course=${encodeURIComponent(course)}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setSkillTree(response.data.skillTree || []);
@@ -180,10 +182,13 @@ const SkillTreeMap = () => {
 
     // Calculate node position
     const getNodePosition = (skill) => {
+        if (!skill || !skill.position) return { x: 0, y: 0 };
         const canvasWidth = canvasRef.current?.clientWidth || 1000;
         const canvasHeight = canvasRef.current?.clientHeight || 600;
-        const x = (skill.position.x / 100) * canvasWidth * zoomLevel + panOffset.x;
-        const y = (skill.position.y / 100) * canvasHeight * zoomLevel + panOffset.y;
+        const rawX = skill.position.x > 100 ? skill.position.x : (skill.position.x / 100) * canvasWidth;
+        const rawY = skill.position.y > 100 ? skill.position.y : (skill.position.y / 100) * canvasHeight;
+        const x = rawX * zoomLevel + panOffset.x;
+        const y = rawY * zoomLevel + panOffset.y;
         return { x, y };
     };
 
@@ -385,10 +390,15 @@ const SkillTreeMap = () => {
     // Draw flowing particles along paths
     const drawFlowingParticles = (ctx, currentTree, currentZoom, currentPan, time) => {
         const getPos = (skill) => {
+            if (!skill || !skill.position) return { x: 0, y: 0 };
             const canvasWidth = canvasRef.current?.width || 1000;
             const canvasHeight = canvasRef.current?.height || 600;
-            const x = (skill.position.x / 100) * (canvasWidth / window.devicePixelRatio) * currentZoom + currentPan.x;
-            const y = (skill.position.y / 100) * (canvasHeight / window.devicePixelRatio) * currentZoom + currentPan.y;
+            const logicalW = canvasWidth / (window.devicePixelRatio || 1);
+            const logicalH = canvasHeight / (window.devicePixelRatio || 1);
+            const rawX = skill.position.x > 100 ? skill.position.x : (skill.position.x / 100) * logicalW;
+            const rawY = skill.position.y > 100 ? skill.position.y : (skill.position.y / 100) * logicalH;
+            const x = rawX * currentZoom + currentPan.x;
+            const y = rawY * currentZoom + currentPan.y;
             return { x, y };
         };
 
@@ -434,10 +444,15 @@ const SkillTreeMap = () => {
     // Draw premium path connections
     const drawEdges = (ctx, currentSkillTree, currentZoom, currentPan, time) => {
         const getPos = (skill) => {
+            if (!skill || !skill.position) return { x: 0, y: 0 };
             const canvasWidth = canvasRef.current?.width || 1000;
             const canvasHeight = canvasRef.current?.height || 600;
-            const x = (skill.position.x / 100) * (canvasWidth / window.devicePixelRatio) * currentZoom + currentPan.x;
-            const y = (skill.position.y / 100) * (canvasHeight / window.devicePixelRatio) * currentZoom + currentPan.y;
+            const logicalW = canvasWidth / (window.devicePixelRatio || 1);
+            const logicalH = canvasHeight / (window.devicePixelRatio || 1);
+            const rawX = skill.position.x > 100 ? skill.position.x : (skill.position.x / 100) * logicalW;
+            const rawY = skill.position.y > 100 ? skill.position.y : (skill.position.y / 100) * logicalH;
+            const x = rawX * currentZoom + currentPan.x;
+            const y = rawY * currentZoom + currentPan.y;
             return { x, y };
         };
 
@@ -575,11 +590,13 @@ const SkillTreeMap = () => {
                 ctx.save();
                 ctx.globalCompositeOperation = 'destination-out';
                 currentTree.forEach(skill => {
-                    if (skill.status !== 'locked') {
+                    if (skill.status !== 'locked' && skill.position) {
                         const canvasWidth = rect.width;
                         const canvasHeight = rect.height;
-                        const sx = (skill.position.x / 100) * canvasWidth * currentZoom + currentPan.x;
-                        const sy = (skill.position.y / 100) * canvasHeight * currentZoom + currentPan.y;
+                        const rawX = skill.position.x > 100 ? skill.position.x : (skill.position.x / 100) * canvasWidth;
+                        const rawY = skill.position.y > 100 ? skill.position.y : (skill.position.y / 100) * canvasHeight;
+                        const sx = rawX * currentZoom + currentPan.x;
+                        const sy = rawY * currentZoom + currentPan.y;
                         const radius = skill.status === 'mastered' ? 180 * currentZoom : 120 * currentZoom;
                         const fogGrad = ctx.createRadialGradient(sx, sy, 0, sx, sy, radius);
                         fogGrad.addColorStop(0, 'rgba(0, 0, 0, 1)');
@@ -673,9 +690,22 @@ const SkillTreeMap = () => {
 
                         {/* Controls */}
                         <div className="flex items-center gap-3">
+                            <select
+                                value={selectedCourse}
+                                onChange={(e) => {
+                                    const c = e.target.value;
+                                    setSelectedCourse(c);
+                                    fetchSkillTree(c);
+                                }}
+                                className="px-3 py-2 rounded-xl bg-zinc-900/90 border border-teal-500/40 text-teal-300 text-sm font-medium focus:outline-none focus:border-teal-400 backdrop-blur-sm shadow-sm"
+                            >
+                                <option value="EE3621">Digital Signal Processing (EE3621)</option>
+                                <option value="CS2101">Data Structures & Algorithms (CS2101)</option>
+                                <option value="EE1011">Basic Electrical Engineering (EE1011)</option>
+                                <option value="MA1011">Engineering Mathematics (MA1011)</option>
+                            </select>
+
                             <button
-                               
-                               
                                 onClick={() => setViewMode(viewMode === 'fog' ? 'detail' : 'fog')}
                                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-200 text-zinc-300 backdrop-blur-sm"
                             >

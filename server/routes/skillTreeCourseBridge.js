@@ -1,5 +1,14 @@
 const express = require('express');
 const router = express.Router();
+
+function resolveBridgeCourse(courseName) {
+  if (!courseName) return '';
+  const s = String(courseName).trim();
+  const l = s.toLowerCase();
+  if (l.includes('digital signal processing') || l === 'dsp' || l.includes('ee3621')) return 'EE3621';
+  return s;
+}
+
 const SkillTree = require('../models/SkillTree');
 const skillTreeService = require('../services/skillTreeService');
 const cache = require('../services/skillTreeCacheService');
@@ -21,7 +30,7 @@ async function findCourseSkillTree(courseName) {
 
 router.get('/course/:courseName', async (req, res) => {
   try {
-    const { courseName } = req.params;
+    const courseName = resolveBridgeCourse(req.params.courseName);
     const userId = req.user?._id;
 
     let nodes = await findCourseSkillTree(courseName);
@@ -64,9 +73,12 @@ router.get('/course/:courseName', async (req, res) => {
     }
 
     res.json({
+      exists: Boolean(nodes && nodes.length > 0),
       course: courseName,
       nodes: nodes || [],
+      nodeCount: nodes?.length || 0,
       totalNodes: nodes?.length || 0,
+      structure: 'dag',
       userProgress,
     });
   } catch (error) {
@@ -77,7 +89,7 @@ router.get('/course/:courseName', async (req, res) => {
 
 router.post('/course/:courseName/generate', async (req, res) => {
   try {
-    const { courseName } = req.params;
+    const courseName = resolveBridgeCourse(req.params.courseName);
 
     const existing = await SkillTree.findOne({ course: courseName }).lean();
     if (existing) {
@@ -103,7 +115,7 @@ router.post('/course/:courseName/generate', async (req, res) => {
 
 router.get('/course/:courseName/reuse-check', async (req, res) => {
   try {
-    const { courseName } = req.params;
+    const courseName = resolveBridgeCourse(req.params.courseName);
 
     const cached = await cache.get('skilltree', `course:${courseName}`);
     if (cached) {

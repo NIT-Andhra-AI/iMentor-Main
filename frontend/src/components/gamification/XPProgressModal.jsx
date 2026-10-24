@@ -1,6 +1,7 @@
 // frontend/src/components/gamification/XPProgressModal.jsx
 import React, { useEffect, useState } from 'react';
-import { X, Zap, TrendingUp, Target, Coins } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, Zap, TrendingUp, Target, Coins, Trophy, Crown, Medal, Star, ShieldOff, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { formatTopicName } from '../../utils/helpers';
 
@@ -16,21 +17,31 @@ apiClient.interceptors.request.use((config) => {
     return config;
 });
 
-function XPProgressModal({ isOpen, onClose, level }) {
+function XPProgressModal({ isOpen, onClose, level, refreshCounter = 0 }) {
     const [stats, setStats] = useState(null);
+    const [leaderboardData, setLeaderboardData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isOpen) {
-            fetchStats();
+            fetchStatsAndLeaderboard();
         }
-    }, [isOpen]);
+    }, [isOpen, refreshCounter]);
 
-    const fetchStats = async () => {
+    const fetchStatsAndLeaderboard = async () => {
         try {
             setLoading(true);
-            const response = await apiClient.get('/gamification/profile');
-            setStats(response.data);
+            const [profileRes, lbRes] = await Promise.allSettled([
+                apiClient.get('/gamification/profile'),
+                apiClient.get('/gamification/leaderboard', { params: { limit: 5 } })
+            ]);
+            if (profileRes.status === 'fulfilled') {
+                setStats(profileRes.value.data);
+            }
+            if (lbRes.status === 'fulfilled') {
+                setLeaderboardData(lbRes.value.data);
+            }
         } catch (error) {
             console.error('[XPProgressModal] Error fetching stats:', error);
         } finally {
@@ -40,175 +51,253 @@ function XPProgressModal({ isOpen, onClose, level }) {
 
     if (!isOpen) return null;
 
-    const currentXP = stats?.totalXP || 0;
-    const currentLevel = stats?.xpLevel || 1;
+    const currentXP = Number(stats?.totalXP || 0);
+    const currentLevel = stats?.xpLevel || Math.floor(Math.sqrt(Math.max(0, currentXP) / 50)) + 1;
 
     // Level formula: Level = floor(sqrt(XP/50)) + 1
-    // Inverse: Level N Start XP = (N-1)^2 * 50
-    // Level N End XP (Next Level Start) = N^2 * 50
-
+    // Level N Start XP = (N-1)^2 * 50, Next Level Start = N^2 * 50
     const levelStartXP = Math.pow(currentLevel - 1, 2) * 50;
     const levelEndXP = Math.pow(currentLevel, 2) * 50;
 
-    const xpIntoCurrentLevel = currentXP - levelStartXP;
-    const xpNeededThisLevel = levelEndXP - levelStartXP; // Total XP span for this level
-    const xpRemaining = levelEndXP - currentXP;
-
+    const xpIntoCurrentLevel = Math.max(0, currentXP - levelStartXP);
+    const xpNeededThisLevel = Math.max(50, levelEndXP - levelStartXP);
+    const xpRemaining = Math.max(0, levelEndXP - currentXP);
     const progressPercent = Math.min(100, Math.max(0, (xpIntoCurrentLevel / xpNeededThisLevel) * 100));
 
+    const topStudents = leaderboardData?.leaderboard || [];
+    const myStatus = leaderboardData?.currentUserStatus || null;
+
+    const handleGoToLeaderboard = () => {
+        onClose();
+        navigate('/gamification/leaderboard');
+    };
+
+    const handleGoToBounties = () => {
+        onClose();
+        navigate('/gamification/bounties');
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-            <div className="bg-white dark:bg-gray-900 rounded-lg shadow-2xl w-full max-w-md mx-4 overflow-hidden border-2 border-gray-300 dark:border-gray-700">
-                {/* Header - Black and White */}
-                <div className="bg-gradient-to-r from-gray-800 to-black px-6 py-4 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden border border-gray-300 dark:border-gray-700">
+                {/* Header */}
+                <div className="bg-gradient-to-r from-gray-900 via-slate-800 to-black px-6 py-4 flex items-center justify-between border-b border-gray-700">
                     <div className="flex items-center gap-3">
-                        <div className="bg-white bg-opacity-20 p-2 rounded-full border border-white">
-                            <Zap className="text-white" size={24} />
+                        <div className="bg-emerald-500/20 p-2 rounded-full border border-emerald-400/40">
+                            <Zap className="text-emerald-400" size={22} />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-white">XP Progress</h2>
-                            <p className="text-sm text-gray-300">Level {currentLevel}</p>
+                            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                                <span>XP Progress &amp; Leaderboard</span>
+                                {myStatus?.rank && (
+                                    <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 font-bold">
+                                        Rank #{myStatus.rank}
+                                    </span>
+                                )}
+                            </h2>
+                            <p className="text-xs text-gray-300">
+                                Level {currentLevel} • {currentXP.toLocaleString()} Total XP
+                            </p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-white hover:bg-white hover:bg-opacity-20 p-1 rounded-full transition-colors"
+                        className="text-gray-300 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-colors"
                     >
-                        <X size={24} />
+                        <X size={20} />
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 dark:scrollbar-track-gray-800">
+                <div className="p-5 max-h-[72vh] overflow-y-auto space-y-5">
                     {loading ? (
-                        <div className="flex items-center justify-center py-8">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-800 dark:border-white"></div>
+                        <div className="flex items-center justify-center py-10">
+                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-500"></div>
                         </div>
                     ) : (
-                        <div className="space-y-6">
-                            {/* XP Stats Cards */}
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg p-4 text-white border border-gray-600">
-                                    <div className="text-2xl font-bold">{currentXP.toLocaleString()}</div>
-                                    <div className="text-xs opacity-80">Total XP</div>
+                        <>
+                            {/* Stats Grid */}
+                            <div className="grid grid-cols-3 gap-3">
+                                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-3.5 text-white border border-gray-700">
+                                    <div className="text-xl font-black text-emerald-400">{currentXP.toLocaleString()}</div>
+                                    <div className="text-[11px] text-gray-300">Total XP</div>
                                 </div>
-                                <div className="bg-gradient-to-br from-gray-600 to-gray-800 rounded-lg p-4 text-white border border-gray-500">
-                                    <div className="text-2xl font-bold">{currentLevel}</div>
-                                    <div className="text-xs opacity-80">Current Level</div>
+                                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-3.5 text-white border border-gray-700">
+                                    <div className="text-xl font-black text-sky-400">Level {currentLevel}</div>
+                                    <div className="text-[11px] text-gray-300">{xpRemaining} XP to Lvl {currentLevel + 1}</div>
                                 </div>
-                                <div className="bg-gradient-to-br from-gray-500 to-gray-700 rounded-lg p-4 text-white border border-gray-400">
-                                    <div className="text-2xl font-bold">{currentLevel + 1}</div>
-                                    <div className="text-xs opacity-80">Next Level</div>
-                                </div>
-                                <div className="bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg p-4 text-white border border-gray-600">
-                                    <div className="text-2xl font-bold flex items-center gap-1">
-                                        <Coins size={18} className="opacity-80" />
+                                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-3.5 text-white border border-gray-700">
+                                    <div className="text-xl font-black text-amber-400 flex items-center gap-1">
+                                        <Coins size={16} />
                                         {(stats?.totalLearningCredits || 0).toLocaleString()}
                                     </div>
-                                    <div className="text-xs opacity-80">Total Credits</div>
+                                    <div className="text-[11px] text-gray-300">Learning Credits</div>
                                 </div>
                             </div>
 
-                            {/* Progress Bar - Black and White */}
+                            {/* Level Progress Bar */}
                             <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        <Target size={16} />
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                        <Target size={14} className="text-emerald-500" />
                                         <span>Progress to Level {currentLevel + 1}</span>
                                     </div>
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">
-                                        {progressPercent.toFixed(1)}%
+                                    <span className="text-xs font-bold text-gray-900 dark:text-white">
+                                        {xpIntoCurrentLevel} / {xpNeededThisLevel} XP ({progressPercent.toFixed(0)}%)
                                     </span>
                                 </div>
-
-                                {/* Progress Bar Track */}
-                                <div className="relative w-full h-8 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner border border-gray-300 dark:border-gray-600">
-                                    {/* Animated Progress Fill - Grayscale Gradient */}
+                                <div className="relative w-full h-5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden border border-gray-300 dark:border-gray-700">
                                     <div
-                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-gray-400 via-gray-600 to-gray-800 rounded-full transition-all duration-1000 ease-out"
+                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full transition-all duration-700"
                                         style={{ width: `${Math.min(progressPercent, 100)}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Live Top 5 Student Leaderboard Preview */}
+                            <div className="bg-gray-50 dark:bg-gray-800/80 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-2">
+                                        <Trophy size={16} className="text-yellow-500" />
+                                        <h3 className="text-xs font-black uppercase tracking-wider text-gray-800 dark:text-white">
+                                            Student XP Leaderboard (Top 5)
+                                        </h3>
+                                    </div>
+                                    <button
+                                        onClick={handleGoToLeaderboard}
+                                        className="text-xs font-bold text-sky-500 hover:text-sky-400 inline-flex items-center gap-1"
                                     >
-                                        {/* Shimmer Effect */}
-                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-shimmer"></div>
-                                    </div>
+                                        <span>Full Leaderboard</span>
+                                        <ArrowRight size={13} />
+                                    </button>
+                                </div>
 
-                                    {/* XP Text on Bar */}
-                                    <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-800 dark:text-white z-10">
-                                        {xpIntoCurrentLevel} / {xpNeededThisLevel} XP
+                                {myStatus?.isHiddenAccount && (
+                                    <div className="mb-2.5 px-3 py-1.5 rounded-lg bg-slate-800/90 border border-slate-700 text-[11px] text-slate-300 flex items-center gap-1.5">
+                                        <ShieldOff size={13} className="text-amber-400 flex-shrink-0" />
+                                        <span>Your account ({myStatus.hiddenReason}) is hidden from public student rankings.</span>
                                     </div>
+                                )}
+
+                                <div className="space-y-1.5">
+                                    {topStudents.slice(0, 5).map((stu) => (
+                                        <div
+                                            key={stu.userId || stu.username}
+                                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs ${stu.isCurrentUser ? 'bg-sky-500/15 border border-sky-500/30 font-bold' : 'bg-white dark:bg-gray-900/60 border border-gray-200/60 dark:border-gray-700/60'}`}
+                                        >
+                                            <div className="flex items-center gap-2.5 truncate">
+                                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${stu.rank === 1 ? 'bg-yellow-500 text-black' : stu.rank === 2 ? 'bg-slate-400 text-black' : stu.rank === 3 ? 'bg-amber-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>
+                                                    {stu.rank}
+                                                </span>
+                                                <span className="truncate text-gray-900 dark:text-white font-medium">
+                                                    {stu.username}
+                                                </span>
+                                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                                                    Lvl {stu.level}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400 flex-shrink-0">
+                                                <span>{Number(stu.totalXP || 0).toLocaleString()} XP</span>
+                                                <Star size={12} className="text-yellow-500 fill-current" />
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
-                            {/* XP Remaining - Black and White */}
-                            <div className="flex items-center gap-3 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 border border-gray-300 dark:border-gray-600">
-                                <div className="bg-gray-800 dark:bg-white p-2 rounded-full">
-                                    <TrendingUp className="text-white dark:text-black" size={20} />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300">XP needed for next level</div>
-                                    <div className="text-2xl font-bold text-gray-900 dark:text-white">
-                                        {xpNeededThisLevel - xpIntoCurrentLevel} XP
+                            {/* Student Concept Mind Map (Anti-Farm XP Tracker) */}
+                            {stats?.mindMap?.concepts && stats.mindMap.concepts.length > 0 && (
+                                <div className="bg-gray-50 dark:bg-gray-800/80 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-center justify-between mb-2.5">
+                                        <div className="flex items-center gap-2">
+                                            <TrendingUp size={15} className="text-emerald-500" />
+                                            <h3 className="text-xs font-black uppercase tracking-wider text-gray-800 dark:text-white">
+                                                Concept Mind Map ({stats.mindMap.summary?.masteredCount || 0} Mastered / {stats.mindMap.summary?.totalConcepts || 0} Total)
+                                            </h3>
+                                        </div>
+                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                                            Max {stats.mindMap.summary?.highestBloomLabel || 'L1'}
+                                        </span>
+                                    </div>
+                                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mb-2.5">
+                                        Mastered concepts (≥85%) award 0 XP at the same Bloom level to prevent XP farming. Ask higher-order Apply/Analyze (L3+) questions to earn 125% XP!
+                                    </p>
+                                    <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                                        {stats.mindMap.concepts.slice(0, 8).map((c, idx) => (
+                                            <div key={idx} className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-white dark:bg-gray-900/70 border border-gray-200/60 dark:border-gray-700/60 text-xs">
+                                                <div className="truncate pr-2">
+                                                    <div className="font-semibold text-gray-900 dark:text-white truncate flex items-center gap-1.5">
+                                                        <span className="truncate">{formatTopicName(c.conceptName)}</span>
+                                                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30 flex-shrink-0">
+                                                            {c.bloomLabel}
+                                                        </span>
+                                                    </div>
+                                                    <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate">
+                                                        {c.xpStatus}
+                                                    </div>
+                                                </div>
+                                                <div className="text-right flex-shrink-0">
+                                                    <span className={`text-[11px] font-black px-2 py-0.5 rounded ${c.understandingLevel === 'mastered' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : c.understandingLevel === 'comfortable' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'}`}>
+                                                        {c.masteryScore}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
-                            {/* Quick Tips - Black and White */}
-                            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                                <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">💡 Earn More XP:</h3>
-                                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-                                    <li>• Ask <strong>application</strong> questions: <span className="text-gray-900 dark:text-white font-semibold">10 XP</span></li>
-                                    <li>• Ask <strong>understanding</strong> questions: <span className="text-gray-900 dark:text-white font-semibold">3 XP</span></li>
-                                    <li>• Build a <strong>daily streak</strong> for XP multipliers!</li>
-                                    <li>• Complete boss battles for bonus XP!</li>
-                                </ul>
-                            </div>
-
-                            {/* Recent Activity - Black and White */}
+                            {/* Recent XP Activity */}
                             {stats?.recentXPHistory && stats.recentXPHistory.length > 0 && (
-                                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">📜 Recent Activity:</h3>
-                                    <div className="space-y-2 max-h-32 overflow-y-auto">
+                                <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3.5 border border-gray-200 dark:border-gray-700">
+                                    <h3 className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">📜 Recent XP Activity</h3>
+                                    <div className="space-y-1.5 max-h-28 overflow-y-auto">
                                         {stats.recentXPHistory.slice(0, 5).map((entry, idx) => (
                                             <div key={idx} className="flex items-center justify-between text-xs">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-gray-600 dark:text-gray-400">{formatTopicName(entry.topic)}</span>
+                                                <div className="flex items-center gap-2 truncate">
+                                                    <span className="text-gray-700 dark:text-gray-300 truncate">{formatTopicName(entry.topic || entry.reason)}</span>
                                                     <span className="text-gray-400 text-[10px]">
                                                         {new Date(entry.timestamp).toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <span className="font-semibold text-gray-900 dark:text-white">
-                                                    +{entry.amount} XP
+                                                <span className={`font-bold ${entry.amount >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                    {entry.amount >= 0 ? `+${entry.amount}` : entry.amount} XP
                                                 </span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             )}
-                        </div>
+                        </>
                     )}
                 </div>
 
-                {/* Footer - Black and White */}
-                <div className="bg-gray-100 dark:bg-gray-800 px-6 py-3 flex justify-end border-t border-gray-300 dark:border-gray-700">
+                {/* Footer Actions */}
+                <div className="bg-gray-100 dark:bg-gray-800 px-5 py-3 flex items-center justify-between gap-2 border-t border-gray-300 dark:border-gray-700">
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleGoToLeaderboard}
+                            className="px-3.5 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition-colors"
+                        >
+                            <Trophy size={14} />
+                            <span>Student Leaderboard</span>
+                        </button>
+                        <button
+                            onClick={handleGoToBounties}
+                            className="px-3.5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold inline-flex items-center gap-1.5 transition-colors"
+                        >
+                            <Target size={14} />
+                            <span>Bounties</span>
+                        </button>
+                    </div>
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-800 hover:bg-black dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-lg font-medium transition-colors"
+                        className="px-4 py-2 bg-gray-800 hover:bg-black dark:bg-white dark:hover:bg-gray-200 text-white dark:text-black rounded-lg text-xs font-bold transition-colors"
                     >
-                        Got it!
+                        Close
                     </button>
                 </div>
             </div>
-
-            {/* Shimmer Animation CSS */}
-            <style>{`
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
         </div>
     );
 }

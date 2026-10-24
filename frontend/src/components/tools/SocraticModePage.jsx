@@ -262,7 +262,7 @@ export default function SocraticModePage() {
                                 <FileText className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <h1 className="text-xl font-bold text-text-light dark:text-text-dark truncate">Socratic Tutor</h1>
+                                <h1 className="text-xl font-bold text-text-light dark:text-text-dark truncate">Guided Learning Mode</h1>
                                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                                     {!currentSession ? (
                                         <p className="text-xs text-text-muted-light dark:text-text-muted-dark">

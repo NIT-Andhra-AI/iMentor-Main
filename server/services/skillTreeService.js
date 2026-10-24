@@ -64,11 +64,27 @@ async function isSkillUnlocked(userId, skillId) {
 /**
  * Get user's complete skill tree state (for fog-of-war visualization)
  * @param {string} userId - User ID
+ * @param {string} [course] - Optional course code or name
  * @returns {Promise<Array>}
  */
-async function getUserSkillTree(userId) {
+async function getUserSkillTree(userId, course = null) {
     try {
-        const allSkills = await SkillTree.find({ isActive: true }).lean();
+        const query = { isActive: { $ne: false } };
+        if (course) {
+            const courseStr = String(course).trim();
+            // Handle course codes like EE3621 or names like "Digital Signal Processing"
+            const courseCode = courseStr.toLowerCase().includes('signal') || courseStr.toLowerCase().includes('dsp') ? 'EE3621' : courseStr;
+            query.$or = [
+                { course: { $regex: new RegExp(`^${courseCode}$`, 'i') } },
+                { courseCode: { $regex: new RegExp(`^${courseCode}$`, 'i') } },
+                { course: { $regex: new RegExp(courseStr, 'i') } }
+            ];
+        }
+        let allSkills = await SkillTree.find(query).lean();
+        if (allSkills.length === 0 && !course) {
+            // Default to EE3621 (DSP) if no course specified and general query was empty
+            allSkills = await SkillTree.find({ course: 'EE3621', isActive: { $ne: false } }).lean();
+        }
         const profile = await GamificationProfile.findOne({ userId });
 
         if (!profile) {
@@ -92,8 +108,9 @@ async function getUserSkillTree(userId) {
                 status: isMastered ? 'mastered' :
                     unlockStatus.unlocked ? 'unlocked' : 'locked',
                 blockedBy: unlockStatus.blockedBy,
-                // Remove sensitive data
-                assessmentQuestions: unlockStatus.unlocked ? skill.assessmentQuestions : []
+                // Never expose correctAnswer or explanation in skill tree map payloads
+                questionCount: Array.isArray(skill.assessmentQuestions) ? Math.min(5, skill.assessmentQuestions.length) : 5,
+                assessmentQuestions: []
             };
         });
 
@@ -203,18 +220,33 @@ async function getSkillAssessment(userId, skillId) {
             return null;
         }
 
-        const skill = await SkillTree.findOne({ skillId, isActive: true });
+        const skill = await SkillTree.findOne({ skillId, isActive: true }).lean();
         if (!skill) {
             return null;
         }
 
-        // Return questions without correct answers (for frontend display)
-        return skill.assessmentQuestions.map(q => ({
-            _id: q._id,
-            difficulty: q.difficulty,
-            question: q.question,
-            options: q.options
-        }));
+        // Serve 5 unique, unseen, option-shuffled questions per student & per retry
+        const { validateAndGenerateFreshQuestions } = require('./activeQuestionValidatorService');
+        const isEE3621 = String(skillId).toLowerCase().includes('ee3621') || String(skill.course || '').toUpperCase() === 'EE3621';
+        const freshRes = await validateAndGenerateFreshQuestions({
+            userId,
+            courseCode: isEE3621 ? 'EE3621' : (skill.course || skill.category || 'EE3621'),
+            topic: skill.name,
+            skillId: skill.skillId,
+            levelName: skill.name,
+            requestedCount: 5,
+            assessmentKey: skill.skillId
+        });
+
+        if (freshRes && Array.isArray(freshRes.clientQuestions) && freshRes.clientQuestions.length > 0) {
+            return freshRes.clientQuestions;
+        }
+
+        // Fallback with option shuffling and stripped answers if validator returned empty
+        const { shuffleQuestionOptions, sanitizeQuestionsForClient, storeActiveAssessmentAttempt } = require('./activeQuestionValidatorService');
+        const fallbackShuffled = (skill.assessmentQuestions || []).slice(0, 5).map(q => shuffleQuestionOptions(q));
+        await storeActiveAssessmentAttempt({ userId, assessmentKey: skill.skillId, questions: fallbackShuffled });
+        return sanitizeQuestionsForClient(fallbackShuffled);
 
     } catch (error) {
         log.error('SYSTEM', 'Error getting skill assessment', error);
@@ -223,7 +255,7 @@ async function getSkillAssessment(userId, skillId) {
 }
 
 /**
- * Submit assessment answers and calculate score
+ * Submit assessment answers and calculate score (Server-Side Grading without Answer Reveal)
  * @param {string} userId - User ID
  * @param {string} skillId - Skill identifier
  * @param {Array} userAnswers - Array of user's answers
@@ -231,47 +263,45 @@ async function getSkillAssessment(userId, skillId) {
  */
 async function submitSkillAssessment(userId, skillId, userAnswers) {
     try {
-        const skill = await SkillTree.findOne({ skillId, isActive: true });
+        const skill = await SkillTree.findOne({ skillId, isActive: true }).lean();
         if (!skill) {
             throw new Error('Skill not found');
         }
 
-        const results = [];
-        let correctCount = 0;
-
-        skill.assessmentQuestions.forEach((question, index) => {
-            const userAnswer = userAnswers[index];
-            const isCorrect = userAnswer === question.correctAnswer;
-
-            if (isCorrect) correctCount++;
-
-            results.push({
-                questionId: question._id,
-                isCorrect,
-                correctAnswer: question.correctAnswer,
-                explanation: question.explanation
-            });
-
-            // Record question attempt for analytics
-            if (question._id) {
-                try {
-                    const conceptQuestionBankService = require('./conceptQuestionBankService');
-                    // Match question in ConceptQuestionBank by text
-                    const ConceptQuestionBank = require('../models/ConceptQuestionBank');
-                    ConceptQuestionBank.findOne({
-                        question: question.question
-                    }).lean().then(matchedQuestion => {
-                        if (matchedQuestion?._id) {
-                            conceptQuestionBankService.recordQuestionAttempt(matchedQuestion._id, userId, isCorrect);
-                        }
-                    }).catch(() => {}); // Fire and forget
-                } catch (e) {
-                    // Ignore recording errors
-                }
-            }
+        const { gradeAssessmentSubmission } = require('./activeQuestionValidatorService');
+        const graded = await gradeAssessmentSubmission({
+            userId,
+            assessmentKey: skillId,
+            answers: userAnswers
         });
 
-        const score = Math.round((correctCount / skill.assessmentQuestions.length) * 100);
+        const results = (graded.results || []).map((r, index) => {
+            // Record question attempt for analytics (fire and forget)
+            if (r.question) {
+                try {
+                    const conceptQuestionBankService = require('./conceptQuestionBankService');
+                    const ConceptQuestionBank = require('../models/ConceptQuestionBank');
+                    ConceptQuestionBank.findOne({ question: r.question }).lean().then(matchedQuestion => {
+                        if (matchedQuestion?._id) {
+                            conceptQuestionBankService.recordQuestionAttempt(matchedQuestion._id, userId, r.isCorrect);
+                        }
+                    }).catch(() => {});
+                } catch (e) {}
+            }
+
+            // NEVER include correctAnswer or correctIndex in client response!
+            return {
+                questionIndex: index,
+                question: r.question,
+                userAnswer: r.userAnswer,
+                selectedIndex: r.selectedIndex,
+                isCorrect: r.isCorrect,
+                points: r.isCorrect ? 10 : 0,
+                conceptHint: r.conceptHint || `Review Concept: ${skill.name} (${skill.category || 'Course Notes'})`
+            };
+        });
+
+        const score = graded.percentage || 0;
 
         // Update mastery
         const masteryUpdate = await updateSkillMastery(userId, skillId, score);

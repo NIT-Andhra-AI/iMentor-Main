@@ -179,7 +179,7 @@ export default function TutorPage() {
             setMessages(loadedMsgs);
           }
           setSession({
-            topic: res.topic || 'General Socratic Study',
+            topic: res.topic || 'Guided Learning Study',
             concept: res.topic,
             studentLevel: String(res.cognitiveLevel || 'intermediate').toLowerCase().replace('l1_', '').replace('l2_', '').replace('l3_', '').replace('l4_', ''),
             progress: Math.min(100, Math.round((res.masteryScore || 0) * 25)),
@@ -285,7 +285,7 @@ export default function TutorPage() {
           <div className="chat-header">
             <div className="header-left">
               <span className="logo">iMentor</span>
-              <span className="logo-tag">Socratic Tutor</span>
+              <span className="logo-tag">Learning Mode</span>
             </div>
             <button className="reset-btn" onClick={handleReset} title="New session">
               <RotateCcw size={15} /> New Session
@@ -297,7 +297,7 @@ export default function TutorPage() {
             {messages.length === 0 ? (
               <div className="empty-state">
                 <div className="empty-icon">🎓</div>
-                <h2 className="empty-title">Your Socratic Tutor</h2>
+                <h2 className="empty-title">Your Guided Learning Coach</h2>
                 <p className="empty-sub">Ask any question. I won't give you the answer — I'll help you discover it yourself.</p>
                 <div className="starter-chips">
                   {['Explain photosynthesis', 'How does gravity work?', 'What is recursion?', 'Why is the sky blue?'].map(q => (

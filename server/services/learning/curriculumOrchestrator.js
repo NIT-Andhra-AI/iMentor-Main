@@ -169,7 +169,7 @@ async function resolveLlmClient(user, temperature = 0.3) {
     if (activeProvider === 'sglang' || activeProvider === 'local_llm' || activeProvider === 'ollama') {
         llmService = sglangService;
         llmOptions = {
-            model: process.env.SGLANG_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
+            model: process.env.SGLANG_MODEL || 'Qwen/Qwen3-8B-AWQ',
             localLlmUrl: providerResolution.workingLocalLlmUrl,
             temperature
         };
@@ -304,4 +304,4 @@ async function createLearningPath(userId, goal, context = {}) {
 
 module.exports = {
     createLearningPath,
-};
+};

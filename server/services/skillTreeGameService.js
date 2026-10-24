@@ -2,7 +2,13 @@
 const SkillTreeGame = require('../models/SkillTreeGame');
 const GamificationProfile = require('../models/GamificationProfile');
 const User = require('../models/User');
-const { logger } = require('../utils/logger');
+const rawLog = require('../utils/logger');
+const logger = {
+    info: (msg, ...args) => rawLog.info('SKILLTREE', typeof msg === 'string' ? msg : JSON.stringify(msg)),
+    warn: (msg, ...args) => rawLog.warn('SKILLTREE', typeof msg === 'string' ? msg : JSON.stringify(msg)),
+    error: (msg, err) => rawLog.error('SKILLTREE', msg, err),
+    success: (msg) => rawLog.success('SKILLTREE', msg)
+};
 const geminiService = require('./geminiService');
 const socraticTutorService = require('./socraticTutorService');
 const { decrypt } = require('../utils/crypto');
@@ -57,20 +63,32 @@ async function generateLevels(userId, topic, assessmentResult, answers) {
             Important: The FIRST level (id: 1) should have status: "unlocked", all others "locked".
         `;
 
-        let responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 300 }); // [Optimization] JSON level array
+        let responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 2500 });
 
         let levels = [];
-        try {
-            // Clean markdown if present
+        const parsed = safeParseLLMJson(responseText);
+        if (Array.isArray(parsed)) {
+            levels = parsed;
+        } else if (parsed && Array.isArray(parsed.levels)) {
+            levels = parsed.levels;
+        } else {
             const jsonMatch = responseText.match(/\[[\s\S]*\]/);
             if (jsonMatch) {
-                levels = JSON.parse(jsonMatch[0]);
-            } else {
-                levels = JSON.parse(responseText);
+                try { levels = JSON.parse(jsonMatch[0]); } catch (e) { /* ignore */ }
             }
-        } catch (parseErr) {
-            logger.error('[SkillTreeGameService] JSON Parse Error:', parseErr);
-            throw new Error('Failed to generate valid levels JSON');
+        }
+
+        if (!Array.isArray(levels) || levels.length === 0) {
+            logger.warn('[SkillTreeGameService] Level parsing fallback invoked');
+            // Generate fallback 15 levels so game never crashes
+            const stageNames = ['Introduction', 'Signals & Sequences', 'Discrete Transforms', 'Fourier Representation', 'Z-Transform Analysis', 'System Functions', 'Filter Fundamentals', 'IIR Filter Design', 'FIR Filter Design', 'Frequency Sampling', 'FFT Algorithms', 'Radix-2 FFT', 'Spectral Analysis', 'Applications of DSP', 'Advanced DSP Mastery'];
+            levels = stageNames.map((name, i) => ({
+                id: i + 1,
+                name: `${name}`,
+                description: `Master ${topic} - Module ${Math.floor(i / 3) + 1}`,
+                difficulty: i < 5 ? 'easy' : i < 10 ? 'medium' : i < 14 ? 'hard' : 'boss',
+                status: i === 0 ? 'unlocked' : 'locked'
+            }));
         }
 
         // Ensure IDs and status are correct
@@ -191,7 +209,7 @@ async function generateDynamicQuestions(userId, topic, levelName, difficulty, st
         `;
 
         const llmConfig = await getUserLLMConfig(userId);
-        let responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 300 }); // [Optimization] JSON question set
+        let responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 1500 });
 
         const parsed = safeParseLLMJson(responseText);
         if (!parsed || !Array.isArray(parsed.questions)) {
@@ -258,23 +276,22 @@ async function updateLevelProgress(userId, gameId, levelId, progressData) {
 /**
  * Helper to award Learning Credits to GamificationProfile
  */
-async function awardLearningCredits(userId, amount, reason, topic) {
+async function awardLearningCredits(userId, amount, source = 'application', topic = '') {
     try {
-        let profile = await GamificationProfile.findOne({ userId });
-        if (!profile) {
-            profile = new GamificationProfile({ userId });
-        }
+        const profile = await GamificationProfile.findOne({ userId });
+        if (!profile) return;
 
-        profile.totalLearningCredits += amount;
+        profile.totalLearningCredits = (profile.totalLearningCredits || 0) + amount;
         profile.learningCreditsHistory.push({
             amount,
-            reason: reason || 'skill_tree_completion',
-            topic,
-            timestamp: new Date()
+            source,
+            description: `Earned from completing ${topic} level`,
+            date: new Date()
         });
 
         await profile.save();
         logger.info(`[SkillTreeGameService] Awarded ${amount} credits to user ${userId} for ${topic}`);
+
     } catch (error) {
         logger.error('[SkillTreeGameService] Error awarding credits:', error);
     }
@@ -305,17 +322,49 @@ async function getDiagnosticQuiz(topic, userId) {
             }
         `;
 
-        const responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 300 }); // [Optimization] Diagnostic quiz JSON
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-        const data = JSON.parse(jsonMatch ? jsonMatch[0] : responseText);
+        const responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 1200 });
+        let qList = [];
+        const parsed = safeParseLLMJson(responseText);
+        if (parsed && Array.isArray(parsed.questions)) {
+            qList = parsed.questions;
+        } else if (Array.isArray(parsed)) {
+            qList = parsed;
+        } else {
+            const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    const d = JSON.parse(jsonMatch[0]);
+                    if (Array.isArray(d.questions)) qList = d.questions;
+                } catch (e) { /* ignore */ }
+            }
+        }
+
+        // Resilient fallback if LLM response couldn't be parsed
+        if (qList.length === 0) {
+            qList = [
+                `What are the core fundamental concepts and objectives of ${topic}?`,
+                `How do mathematical representations and transforms enable analysis in ${topic}?`,
+                `What are the primary trade-offs encountered when designing systems in ${topic}?`,
+                `How do continuous-time and discrete-time principles interact in ${topic}?`,
+                `Describe a real-world practical application and common failure mode in ${topic}.`
+            ];
+        }
 
         return {
-            questions: (data.questions || []).map(q => ({ question: q }))
+            questions: qList.map(q => ({ question: typeof q === 'string' ? q : q.question || JSON.stringify(q) }))
         };
 
     } catch (error) {
         logger.error('[SkillTreeGameService] Error generating diagnostic quiz:', error);
-        throw error;
+        return {
+            questions: [
+                { question: `What is the core purpose of ${topic} and how is it used in engineering?` },
+                { question: `What are the foundational mathematical tools and transforms used in ${topic}?` },
+                { question: `How do filtering, stability, and causality apply to systems in ${topic}?` },
+                { question: `What is the significance of sampling and discrete representations in ${topic}?` },
+                { question: `What are typical challenges in implementing algorithms in ${topic}?` }
+            ]
+        };
     }
 }
 
@@ -351,9 +400,20 @@ async function evaluateDiagnosticQuiz(topic, answers, userId) {
             }
         `;
 
-        const responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 300 }); // [Optimization] Evaluation JSON
+        const responseText = await socraticTutorService.generateWithFallback([], prompt, null, llmConfig, { maxOutputTokens: 800 });
+        const parsed = safeParseLLMJson(responseText);
+        if (parsed && parsed.level) {
+            return parsed;
+        }
         const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-        return JSON.parse(jsonMatch ? jsonMatch[0] : responseText);
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[0]);
+        }
+        return {
+            level: 'Beginner',
+            summary: `Starting your learning journey in ${topic}!`,
+            recommendedStartingPoint: 'Basics'
+        };
 
     } catch (error) {
         logger.error('[SkillTreeGameService] Error evaluating diagnostic quiz:', error);

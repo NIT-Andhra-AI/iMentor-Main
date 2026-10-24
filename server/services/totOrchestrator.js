@@ -443,7 +443,7 @@ function getSmartLlmService(context) {
                     providerOptions.ollamaUrl = options.ollamaUrl || process.env.OLLAMA_API_BASE_URL;
                     providerOptions.think = true; // qwen3 is a thinking model
                 } else if (provider === 'sglang') {
-                    providerOptions.model = options.sglangModel || process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+                    providerOptions.model = options.sglangModel || process.env.SGLANG_REASON_MODEL || 'Qwen/Qwen3-8B-AWQ';
                     providerOptions.endpoint = 'reason';
                 } else if (provider === 'groq') {
                     providerOptions.model = options.groqModel || process.env.GROQ_MODEL || 'llama-3.1-70b-versatile';

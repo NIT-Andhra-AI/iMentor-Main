@@ -153,8 +153,17 @@ function formatSocraticStrict(text) {
       formattedText += '\n\nHow would you explain this in your own words, or what initial thought comes to mind?';
     }
   } else {
-    const q = paras[qIndex];
-    const teaching = paras.filter((_, idx) => idx !== qIndex);
+    let q = paras[qIndex];
+    // If the checkpoint paragraph has multiple question marks, convert earlier ones into period statements
+    const qParts = q.split('?');
+    if (qParts.length > 2) {
+      const lastQ = qParts[qParts.length - 2].trim() + '?' + (qParts[qParts.length - 1] || '');
+      const earlierStatements = qParts.slice(0, qParts.length - 2).map(s => s.trim()).filter(Boolean).join('. ');
+      q = earlierStatements ? `${earlierStatements}. ${lastQ}` : lastQ;
+    }
+    const teaching = paras
+      .filter((_, idx) => idx !== qIndex)
+      .map(p => p.startsWith('__CODE_VISUAL_BLOCK_') ? p : p.replace(/\?/g, '.'));
     formattedText = [...teaching, q].join('\n\n').trim();
   }
 

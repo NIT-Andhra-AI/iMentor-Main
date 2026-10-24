@@ -73,6 +73,9 @@ function TutorModePage({
     const [showCurriculumPanel, setShowCurriculumPanel] = useState(true);
     const [currentTopic, setCurrentTopic] = useState(null);
     const [currentSubtopic, setCurrentSubtopic] = useState(null);
+    const [resolvedModuleName, setResolvedModuleName] = useState('');
+    const [resolvedTopicName, setResolvedTopicName] = useState('');
+    const [resolvedSubtopicName, setResolvedSubtopicName] = useState('');
     const [rightPanelTab, setRightPanelTab] = useState('roadmap');
 
 
@@ -345,6 +348,11 @@ function TutorModePage({
                 setCurrentTopic(data.currentPosition.topicId || null);
                 setCurrentSubtopic(data.currentPosition.subtopicId || null);
                 setCurrentModulePathId(data.currentPosition.moduleId || null);
+                if (data.currentPosition.moduleName) setResolvedModuleName(data.currentPosition.moduleName);
+                if (data.currentPosition.topicName) setResolvedTopicName(data.currentPosition.topicName);
+                if (data.currentPosition.subtopicName || data.currentPosition.teachingUnit) {
+                    setResolvedSubtopicName(data.currentPosition.subtopicName || data.currentPosition.teachingUnit);
+                }
             }
         };
 
@@ -356,11 +364,16 @@ function TutorModePage({
                 setCurrentSubtopic(pos.subtopicId || null);
                 if (pos.moduleId) {
                     setCurrentModulePathId(pos.moduleId);
-                    // Force the current session to own this mapped module when auto-advanced or newly started
-                    if (currentSessionId) {
-                        const moduleKey = sessionKeyFor('structured', pos.moduleId);
-                        localStorage.setItem(moduleKey, currentSessionId);
-                    }
+                }
+                if (pos.moduleName) setResolvedModuleName(pos.moduleName);
+                if (pos.topicName) setResolvedTopicName(pos.topicName);
+                if (pos.subtopicName || pos.teachingUnit) {
+                    setResolvedSubtopicName(pos.subtopicName || pos.teachingUnit);
+                }
+                // Force the current session to own this mapped module when auto-advanced or newly started
+                if (currentSessionId && pos.moduleId) {
+                    const moduleKey = sessionKeyFor('structured', pos.moduleId);
+                    localStorage.setItem(moduleKey, currentSessionId);
                 }
             }
         };
@@ -437,14 +450,14 @@ Source Fact: "${expectedAns}"
 
 Correction: [If "Needs Adjustment", provide a concise, clear explanation of the concept. If "Correct", write "Your response demonstrates solid mastery of the material!"]
 
-Reflective Socratic Follow-up: [Ask one brief open-ended question to help the student deepen their understanding or connect this concept to a practical application.]
+Guided Learning Check: [Ask one brief open-ended question to help the student deepen their understanding or connect this concept to a practical application.]
 
 Next Step: Click "Next" in the Quiz Panel to proceed.
 
 RULES:
 1. Be fair and constructive. If the student demonstrates core understanding of the topic, evaluate positively.
 2. NEVER claim "sufficient information is not available". If model answer text is concise, evaluate based on standard academic knowledge for this question.
-3. Always provide a Socratic follow-up question.`
+3. Acknowledge competence, re-articulate to nudge, provide clear hints, or explain the next subtopic clearly before asking a guided question.`
             );
         }
     }, [setSystemPrompt]);
@@ -572,6 +585,9 @@ RULES:
                 setCurrentTopic(pos.topicId || null);
                 setCurrentSubtopic(pos.subtopicId || null);
                 setCurrentModulePathId(pos.moduleId || null);
+                if (pos.moduleName) setResolvedModuleName(pos.moduleName);
+                if (pos.topicName) setResolvedTopicName(pos.topicName);
+                if (pos.subtopicName || pos.teachingUnit) setResolvedSubtopicName(pos.subtopicName || pos.teachingUnit);
 
                 // Force the current session to own this mapped module when loaded/restored
                 if (currentSessionId && pos.moduleId) {
@@ -634,7 +650,7 @@ RULES:
             />
 
             <main className="flex-1 flex flex-col overflow-hidden pt-16 relative">
-                {/* Page Header - Minimal */}
+                {/* Page Header - Clean & Minimal */}
                 <div className="bg-[#0d0d0d] border-b border-[#4a4a4a] px-4 sm:px-6 py-2.5 flex items-center justify-between z-10">
                     <div className="flex items-center gap-3">
                         {/* Back Button */}
@@ -660,93 +676,107 @@ RULES:
                         <div className="flex items-center gap-2">
                             <GraduationCap size={18} className="text-teal-400" />
                             <span className="text-sm font-semibold text-white">Tutor Mode</span>
-                            {selectedSubject && (
-                                <>
-                                    <span className="text-gray-500">·</span>
-                                    <span className="text-sm text-gray-400">{(() => {
-                                        const match = availableSubjects.find(s => (s.code || s) === selectedSubject);
-                                        return match ? (match.name || match.code || selectedSubject) : selectedSubject;
-                                    })()}</span>
-                                </>
-                            )}
-                        </div>
-
-                        <div className="h-5 w-px bg-white/10" />
-
-                        {/* Roadmap Session Title */}
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                                <h1 className="text-white text-sm font-bold tracking-tight uppercase flex items-center gap-2">
-                                    <Target size={14} className="text-teal-400" />
-                                    {isCourseStructuredMode ? 'Module Roadmap' : 'General Socratic Mode'}
-                                </h1>
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                                    <Sparkles size={10} className="text-emerald-400" />
-                                    Guided Learning
-                                </span>
-                            </div>
-                            <p className="text-[10px] text-gray-400 font-medium">
-                                {isCourseStructuredMode
-                                    ? 'Socratic & Adaptive Scaffolding Environment'
-                                    : 'Explore any topic. Guided step-by-step with progressive scaffolding.'}
-                            </p>
                         </div>
                     </div>
 
-                    {/* Right Controls */}
-                    <div className="flex items-center gap-2">
-
-                        {/* Subject Selector - Compact */}
-                        <select
-                            data-tutor-tour="subject-select"
-                            value={selectedSubject || ''}
-                            onChange={(e) => setSelectedSubject(e.target.value || null)}
-                            disabled={isLoadingSubjects}
-                            className="text-sm px-3 py-1.5 rounded-md bg-[#1a1a1a] border border-[#4a4a4a] text-white focus:outline-none focus:border-[#666666] cursor-pointer shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
-                        >
-                            {isLoadingSubjects ? (
-                                <option value="" className="bg-gray-800">Loading...</option>
-                            ) : (
-                                <>
-                                    <option value="" className="bg-gray-800">General</option>
-                                    {availableSubjects.map((subject) => {
-                                        const code = subject.code || subject;
-                                        const name = subject.name || code;
-                                        return (
-                                            <option key={code} value={code} className="bg-gray-800">
-                                                {name}
-                                            </option>
-                                        );
-                                    })}
-                                </>
-                            )}
-                        </select>
-
-                        {/* Curriculum Toggle */}
-                        {isCourseStructuredMode && (
-                            <button
-                                onClick={() => setShowCurriculumPanel(!showCurriculumPanel)}
-                                className={`p-2 rounded-lg transition-all ${showCurriculumPanel
-                                    ? 'bg-teal-500/15 text-teal-400'
-                                    : 'text-gray-500 hover:text-white hover:bg-white/5'
-                                    }`}
-                                title={showCurriculumPanel ? 'Hide Curriculum' : 'Show Curriculum'}
+                    {/* Right Controls: Selected Course & Right Widget Toggle */}
+                    <div className="flex items-center gap-3">
+                        {/* Course Selector */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-400 font-medium hidden sm:inline">Course:</span>
+                            <select
+                                data-tutor-tour="subject-select"
+                                value={selectedSubject || ''}
+                                onChange={(e) => setSelectedSubject(e.target.value || null)}
+                                disabled={isLoadingSubjects}
+                                className="text-xs sm:text-sm px-3 py-1.5 rounded-lg bg-[#1a1a1a] border border-[#4a4a4a] text-white focus:outline-none focus:border-teal-500 cursor-pointer shadow-sm max-w-[200px] sm:max-w-[280px] truncate"
                             >
-                                {showCurriculumPanel ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
-                            </button>
-                        )}
-                    </div>
+                                {isLoadingSubjects ? (
+                                    <option value="" className="bg-gray-800">Loading...</option>
+                                ) : (
+                                    <>
+                                        <option value="" className="bg-gray-800">General Guided Learning</option>
+                                        {availableSubjects.map((subject) => {
+                                            const code = subject.code || subject;
+                                            const name = subject.name || code;
+                                            return (
+                                                <option key={code} value={code} className="bg-gray-800">
+                                                    {name}
+                                                </option>
+                                            );
+                                        })}
+                                    </>
+                                )}
+                            </select>
+                        </div>
 
+                        {/* Curriculum / Topics Panel Toggle */}
+                        <button
+                            onClick={() => setShowCurriculumPanel(!showCurriculumPanel)}
+                            className={`p-2 rounded-lg transition-all ${showCurriculumPanel
+                                ? 'bg-teal-500/15 text-teal-400 border border-teal-500/30'
+                                : 'text-gray-500 hover:text-white hover:bg-white/5 border border-transparent'
+                                }`}
+                            title={showCurriculumPanel ? 'Hide Topics & Subtopics' : 'Show Topics & Subtopics'}
+                        >
+                            {showCurriculumPanel ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Two-column layout: Chat + Curriculum Panel */}
                 <div className="flex-1 flex overflow-hidden">
                     {/* Main Chat Section */}
-                    <div className="flex-1 flex justify-center overflow-hidden">
+                    <div className="flex-1 flex flex-col justify-center overflow-hidden">
+                        {/* Persistent Breadcrumb & Visual Progress Stepper Pinned at Top of Chat */}
+                        <div className="bg-[#111114] border-b border-[#2d2d30] px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs z-20 flex-shrink-0 shadow-sm">
+                            {/* Topic Breadcrumb */}
+                            <div className="flex items-center gap-2 text-gray-300 flex-wrap overflow-hidden">
+                                <span className="font-semibold text-teal-400 flex items-center gap-1.5 flex-shrink-0">
+                                    <GraduationCap size={15} className="text-teal-400" />
+                                    {selectedSubject === 'EE3621' ? 'EE3621: Digital Signal Processing' : (selectedSubject || 'General Guided Learning')}
+                                </span>
+                                <span className="text-gray-500 flex-shrink-0">›</span>
+                                <span className="text-gray-300 truncate max-w-[240px]" title={resolvedModuleName || 'Unit I: Basic Elements of Digital Signal Processing'}>
+                                    {resolvedModuleName || 'Unit I: Basic Elements of Digital Signal Processing'}
+                                </span>
+                                <span className="text-gray-500 flex-shrink-0">›</span>
+                                <span className="text-white font-medium bg-teal-500/15 text-teal-300 px-2 py-0.5 rounded border border-teal-500/30 truncate max-w-[280px]" title={resolvedSubtopicName || 'DTFT vs DFT Fundamentals'}>
+                                    {resolvedSubtopicName || 'DTFT vs DFT Fundamentals'}
+                                </span>
+                            </div>
+
+                            {/* Lightweight Visual Progress Stepper */}
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                                <span className="text-gray-400 font-mono text-[11px] font-medium">
+                                    Step {Math.min(completedSubtopics.length + 1, 5)} of 5
+                                </span>
+                                <div className="flex items-center gap-1.5">
+                                    {[1, 2, 3, 4, 5].map((stepIdx) => {
+                                        const isCompleted = stepIdx <= completedSubtopics.length;
+                                        const isCurrent = stepIdx === completedSubtopics.length + 1;
+                                        return (
+                                            <div
+                                                key={stepIdx}
+                                                className={`h-2 w-6 rounded-full transition-all duration-300 ${
+                                                    isCompleted
+                                                        ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]'
+                                                        : isCurrent
+                                                            ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.4)] animate-pulse'
+                                                            : 'bg-gray-800 border border-gray-700/50'
+                                                }`}
+                                                title={`Step ${stepIdx}: ${isCompleted ? 'Mastered' : isCurrent ? 'Active Lesson' : 'Upcoming'}`}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
                         <Animate
                             animation="slide-up"
                             duration="0.5s"
-                            className="w-full flex flex-col h-full bg-transparent relative overflow-hidden"
+                            className="w-full flex flex-col h-full bg-transparent relative overflow-hidden flex-1"
                         >
                             <CenterPanel
                                 messages={messages}
@@ -760,69 +790,32 @@ RULES:
                                 tutorModeType={tutorModeType}
                                 currentQuestionIndex={currentQuestion?.index}
                                 currentModulePathId={currentModulePathId}
+                                hideTutorBanner={true}
                             />
                         </Animate>
                     </div>
 
-                    {/* Right Panel Wrapper */}
-                        {showCurriculumPanel && isCourseStructuredMode && (
-                            <div
-                                data-tutor-tour="roadmap-panel"
-                                style={{ width: 340 }}
-                                className="h-full border-l border-[#4a4a4a] flex flex-col bg-[#1a1a1a] overflow-hidden flex-shrink-0 transition-all duration-300 shadow-[-4px_0_12px_rgba(0,0,0,0.3)]"
-                            >
-                                {/* Tab Header */}
-                                <div className="flex-shrink-0 flex items-center p-1 bg-black/10 border-b border-white/5 mx-3 mt-3 rounded-lg">
-                                    <button
-                                        data-tutor-tour="roadmap-tab"
-                                        onClick={() => setRightPanelTab('roadmap')}
-                                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${rightPanelTab === 'roadmap'
-                                            ? 'bg-purple-500/20 text-purple-300 shadow-sm'
-                                            : 'text-gray-500 hover:text-gray-400'
-                                            }`}
-                                    >
-                                        <BookOpen size={12} /> Roadmap
-                                    </button>
-                                    <button
-                                        data-tutor-tour="quiz-tab"
-                                        onClick={() => setRightPanelTab('quiz')}
-                                        className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${rightPanelTab === 'quiz'
-                                            ? 'bg-teal-500/20 text-teal-300 shadow-sm'
-                                            : 'text-gray-500 hover:text-gray-400'
-                                            }`}
-                                    >
-                                        <Brain size={12} /> Practice Quiz
-                                    </button>
-                                </div>
-
-                                {/* Content Area */}
-                                <div className="flex-1 overflow-hidden">
-                                    {rightPanelTab === 'roadmap' ? (
-                                        <CurriculumPanel
-                                            selectedCourse={selectedSubject}
-                                            currentTopic={currentTopic}
-                                            currentSubtopic={currentSubtopic}
-                                            completedSubtopics={completedSubtopics}
-                                            completedTopics={completedTopics}
-                                            completedModules={completedModules}
-                                            onTopicSelect={handleTopicSelect}
-                                            onModuleSelect={handleModuleSelect}
-                                        />
-                                    ) : (
-                                        <QuizPanel
-                                            selectedCourse={selectedSubject}
-                                            moduleId={currentModulePathId}
-                                            onQuestionChange={handleQuestionChange}
-                                            questionResults={questionResults}
-                                            onResetQuiz={handleResetQuiz}
-                                            initialQuizIndex={backendQuizIndex}
-                                            onIndexChange={setLocalQuizIndex}
-                                            systemPrompt={systemPrompt}
-                                        />
-                                    )}
-                                </div>
+                    {/* Right Panel Wrapper: Topics & Subtopics with Green Bubble Progress */}
+                    {showCurriculumPanel && (
+                        <div
+                            data-tutor-tour="roadmap-panel"
+                            style={{ width: 340 }}
+                            className="h-full border-l border-[#4a4a4a] flex flex-col bg-[#1a1a1a] overflow-hidden flex-shrink-0 transition-all duration-300 shadow-[-4px_0_12px_rgba(0,0,0,0.3)]"
+                        >
+                            <div className="flex-1 overflow-hidden">
+                                <CurriculumPanel
+                                    selectedCourse={selectedSubject}
+                                    currentTopic={currentTopic}
+                                    currentSubtopic={currentSubtopic}
+                                    completedSubtopics={completedSubtopics}
+                                    completedTopics={completedTopics}
+                                    completedModules={completedModules}
+                                    onTopicSelect={handleTopicSelect}
+                                    onModuleSelect={handleModuleSelect}
+                                />
                             </div>
-                        )}
+                        </div>
+                    )}
                 </div>
             </main>
 

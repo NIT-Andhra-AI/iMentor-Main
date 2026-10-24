@@ -20,7 +20,7 @@ import AdminLearningProfiles from './AdminLearningProfiles.jsx';
 import UserFeedbackManager from './UserFeedbackManager.jsx';
 import SystemPerformanceAlert from './SystemPerformanceAlert.jsx';
 
-import { LogOut, RefreshCw, Shield, Users, HelpCircle, Lightbulb, Cog, Database, BarChart2, Gamepad2, Network, Link2, Brain, MessageSquareDiff } from 'lucide-react';
+import { LogOut, RefreshCw, Shield, Users, GraduationCap, HelpCircle, Lightbulb, Cog, Database, BarChart2, Gamepad2, Network, Link2, Brain, MessageSquareDiff } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 // ── Idle timeout constants ────────────────────────────────────────────────────
@@ -204,9 +204,56 @@ function AdminDashboardPage() {
     return (
         <div className="h-screen flex flex-col bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
             {/* ── Header ──────────────────────────────────────────────────────── */}
-            <header className="flex-shrink-0 flex items-center justify-between px-4 py-3 sm:px-6 border-b border-border-light dark:border-border-dark">
-                <h1 className="text-xl font-bold">Professor's Dashboard</h1>
-                <div className="flex items-center gap-2">
+            <header className="flex-shrink-0 flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 border-b border-border-light dark:border-border-dark">
+                <div className="flex items-center gap-3">
+                    <h1 className="text-xl font-bold">Admin & Professor Control Center</h1>
+                    <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                        <Shield size={12} /> Superuser Mode Switcher
+                    </span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                    {/* 3-Way Mode Switcher: Admin | Teacher/Faculty | Student */}
+                    <div className="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-xl p-1 gap-1 mr-2">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                sessionStorage.setItem('activeViewMode', 'admin');
+                                sessionStorage.removeItem('viewAsStudent');
+                                navigate('/admin/dashboard');
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-black shadow-sm transition"
+                            title="Currently in Admin Mode"
+                        >
+                            <Shield size={13} />
+                            <span>Admin Mode</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                sessionStorage.setItem('activeViewMode', 'faculty');
+                                sessionStorage.removeItem('viewAsStudent');
+                                navigate('/faculty/dashboard');
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20 transition"
+                            title="Switch to Teacher / Faculty Mode (36-Lecture Course Swarm & Student Registry)"
+                        >
+                            <GraduationCap size={13} />
+                            <span>Teacher Mode</span>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                sessionStorage.setItem('activeViewMode', 'student');
+                                sessionStorage.setItem('viewAsStudent', 'true');
+                                navigate('/');
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-sky-300 hover:bg-sky-500/20 transition"
+                            title="Switch to Student Mode (AI Tutor, Deep Research, Courses & Skill Tree)"
+                        >
+                            <Users size={13} />
+                            <span>Student Mode</span>
+                        </button>
+                    </div>
                     <IconButton
                         icon={RefreshCw}
                         onClick={() => fetchAdminData(true)}

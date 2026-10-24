@@ -13,25 +13,21 @@ import {
   ShieldCheck,
   Zap,
   Globe,
-  Layers,
-  FileCode,
-  Laptop,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
+  Play,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Cpu
 } from 'lucide-react';
 import Modal from '../core/Modal.jsx';
 import Button from '../core/Button.jsx';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
-const PUBLIC_API_BASE = 'https://61.0.228.124/api/v1';
+const PUBLIC_NAT_API_BASE = 'https://61.0.228.124/api/v1';
 
 export default function DeveloperPortalModal({ isOpen, onClose }) {
-  const [activeTab, setActiveTab] = useState('keys'); // 'keys' | 'code' | 'logs'
+  const [activeTab, setActiveTab] = useState('keys'); // 'keys' | 'code' | 'playground' | 'logs'
+  const [endpointMode, setEndpointMode] = useState(() => (typeof window !== 'undefined' && window.location.hostname === '61.0.228.124' ? 'public' : 'origin')); // 'public' | 'origin'
   const [keyStatus, setKeyStatus] = useState(null);
   const [fullKey, setFullKey] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -39,14 +35,24 @@ export default function DeveloperPortalModal({ isOpen, onClose }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedSnippet, setCopiedSnippet] = useState(false);
-  const [codeLanguage, setCodeLanguage] = useState('python_openai'); // 'python_openai' | 'python_tools' | 'java' | 'curl' | 'claude'
-  
+  const [codeLanguage, setCodeLanguage] = useState('python_openai');
+
+  // Playground state
+  const [pgPrompt, setPgPrompt] = useState('Explain how a Kalman Filter works in 3 concise bullet points.');
+  const [pgSystem, setPgSystem] = useState('You are an expert engineering & AI assistant.');
+  const [pgRunning, setPgRunning] = useState(false);
+  const [pgResult, setPgResult] = useState(null);
+
   // Logs state
   const [logs, setLogs] = useState([]);
   const [logsLoading, setLogsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [expandedLogId, setExpandedLogId] = useState(null);
+
+  const selectedApiBase = endpointMode === 'public'
+    ? PUBLIC_NAT_API_BASE
+    : `${window.location.origin}/api/v1`;
 
   const fetchKeyStatus = useCallback(async () => {
     setIsLoading(true);
@@ -141,24 +147,75 @@ export default function DeveloperPortalModal({ isOpen, onClose }) {
     setTimeout(() => setCopiedKey(false), 2500);
   };
 
-  const displayKey = isRevealed && fullKey ? fullKey : (keyStatus?.maskedKey || 'No active key generated');
+  const handleRunPlayground = async () => {
+    setPgRunning(true);
+    setPgResult(null);
+    const startTs = performance.now();
+    try {
+      let keyToUse = fullKey;
+      if (!keyToUse) {
+        const revealed = await api.revealDeveloperKey();
+        keyToUse = revealed.apiKey;
+        setFullKey(keyToUse);
+      }
+      if (!keyToUse) {
+        toast.error('Please generate an API Key in the first tab before running the playground.');
+        setPgRunning(false);
+        return;
+      }
 
-  // Dynamic code snippets populated with student's live key
+      const resp = await fetch(`${window.location.origin}/api/v1/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${keyToUse}`
+        },
+        body: JSON.stringify({
+          model: 'imentor-default',
+          messages: [
+            { role: 'system', content: pgSystem },
+            { role: 'user', content: pgPrompt }
+          ],
+          temperature: 0.6,
+          max_tokens: 450,
+          stream: false
+        })
+      });
+      const data = await resp.json();
+      const latency = Math.round(performance.now() - startTs);
+      setPgResult({
+        status: resp.status,
+        latency,
+        model: data.model || 'Qwen/Qwen3-8B-AWQ',
+        content: data.choices?.[0]?.message?.content || JSON.stringify(data, null, 2),
+        usage: data.usage || {}
+      });
+      fetchKeyStatus();
+    } catch (err) {
+      toast.error('Playground request failed: ' + err.message);
+    } finally {
+      setPgRunning(false);
+    }
+  };
+
+  const displayKey = isRevealed && fullKey ? fullKey : (keyStatus?.maskedKey || 'No active key generated');
   const activeKeyForCode = fullKey || (keyStatus?.hasKey ? keyStatus.maskedKey : 'imk_live_YOUR_API_KEY_HERE');
 
   const getCodeSnippet = () => {
     switch (codeLanguage) {
       case 'python_openai':
-        return `# Install: pip install openai
+        return `# Install: pip install openai httpx
 from openai import OpenAI
+import httpx
 
-# Initialize iMentor client pointing to the public university server
+# Initialize iMentor client (served by local Qwen/Qwen3-8B-AWQ + AGY Ultra fallback)
 client = OpenAI(
-    base_url="${PUBLIC_API_BASE}",
-    api_key="${activeKeyForCode}"
+    base_url="${selectedApiBase}",
+    api_key="${activeKeyForCode}",
+    http_client=httpx.Client(verify=False)  # Required if using self-signed IP TLS cert
 )
 
-print("Connecting to iMentor AI Engine (Streaming)...\\n")
+print("Connecting to iMentor Qwen3-8B AI Engine (Streaming)...\\n")
 
 response = client.chat.completions.create(
     model="imentor-default",
@@ -177,16 +234,16 @@ print()
 `;
 
       case 'python_tools':
-        return `# iMentor Autonomous Tool Calling in Python
+        return `# iMentor Autonomous Tool Calling in Python (Qwen/Qwen3-8B-AWQ)
 from openai import OpenAI
-import json
+import httpx
 
 client = OpenAI(
-    base_url="${PUBLIC_API_BASE}",
-    api_key="${activeKeyForCode}"
+    base_url="${selectedApiBase}",
+    api_key="${activeKeyForCode}",
+    http_client=httpx.Client(verify=False)
 )
 
-# 1. Define custom tools for your Python application
 tools = [
     {
         "type": "function",
@@ -232,7 +289,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class iMentorApp {
-    private static final String API_URL = "${PUBLIC_API_BASE}/chat/completions";
+    private static final String API_URL = "${selectedApiBase}/chat/completions";
     private static final String API_KEY = "${activeKeyForCode}";
 
     public static void main(String[] args) throws Exception {
@@ -267,14 +324,14 @@ public class iMentorApp {
 
       case 'claude':
         return `# Claude / Anthropic Native API Drop-in
-curl -X POST "${PUBLIC_API_BASE}/messages" \\
+curl -k -X POST "${selectedApiBase}/messages" \\
   -H "Content-Type: application/json" \\
   -H "x-api-key: ${activeKeyForCode}" \\
   -H "anthropic-version: 2023-06-01" \\
   -d '{
     "model": "claude-3-5-sonnet-20241022",
     "max_tokens": 1024,
-    "system": "You are iMentor Claude, providing concise scientific answers.",
+    "system": "You are iMentor AI, providing concise scientific answers.",
     "messages": [
       {"role": "user", "content": "What is the physical interpretation of Maxwell equations?"}
     ],
@@ -284,8 +341,8 @@ curl -X POST "${PUBLIC_API_BASE}/messages" \\
 
       case 'curl':
       default:
-        return `# Direct cURL Request to iMentor Public API
-curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
+        return `# Direct cURL Request to iMentor API (-k allows self-signed IP certificate)
+curl -k -X POST "${selectedApiBase}/chat/completions" \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer ${activeKeyForCode}" \\
   -H "X-iMentor-Course-Context: Power Systems" \\
@@ -323,11 +380,11 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
             <div className="text-sm font-bold text-white tracking-wide flex items-center gap-2">
               Student Developer Platform & API Hub
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30 font-mono">
-                v1.0 Public
+                Qwen3-8B + AGY Ultra
               </span>
             </div>
             <div className="text-[11px] text-gray-400 font-normal">
-              Build your own Python, Java, or Mobile apps powered by iMentor API & Tools
+              Build your own Python, Java, or Mobile apps powered by local Qwen/Qwen3-8B-AWQ & iMentor RAG
             </div>
           </div>
         </div>
@@ -335,39 +392,64 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
       maxWidth="max-w-4xl"
     >
       <div className="space-y-4">
-        {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-[var(--vs-border)] pb-2">
-          {[
-            { id: 'keys', label: 'API Key & Quota', icon: Key },
-            { id: 'code', label: 'SDK & Code Generator', icon: Terminal },
-            { id: 'logs', label: 'Live Telemetry & Logs', icon: Activity },
-          ].map(t => {
-            const Icon = t.icon;
-            const active = activeTab === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => {
-                  setActiveTab(t.id);
-                  if (t.id === 'logs') fetchLogs(1);
-                }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                  active
-                    ? 'bg-[var(--vs-active)] text-white border border-[var(--vs-border-hi)]'
-                    : 'text-gray-400 hover:text-gray-200 hover:bg-[var(--vs-hover)]'
-                }`}
-              >
-                <Icon size={14} />
-                {t.label}
-              </button>
-            );
-          })}
+        {/* Navigation Tabs + Endpoint Switcher */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--vs-border)] pb-2">
+          <div className="flex items-center gap-1.5">
+            {[
+              { id: 'keys', label: 'API Key & Quota', icon: Key },
+              { id: 'code', label: 'SDK & Code Generator', icon: Terminal },
+              { id: 'playground', label: 'Live API Playground', icon: Play },
+              { id: 'logs', label: 'Live Telemetry & Logs', icon: Activity },
+            ].map(t => {
+              const Icon = t.icon;
+              const active = activeTab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => {
+                    setActiveTab(t.id);
+                    if (t.id === 'logs') fetchLogs(1);
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                    active
+                      ? 'bg-[var(--vs-active)] text-white border border-[var(--vs-border-hi)]'
+                      : 'text-gray-400 hover:text-gray-200 hover:bg-[var(--vs-hover)]'
+                  }`}
+                >
+                  <Icon size={14} />
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-1 bg-[var(--vs-panel)] p-1 rounded border border-[var(--vs-border)] text-[11px]">
+            <button
+              type="button"
+              onClick={() => setEndpointMode('public')}
+              className={`px-2 py-0.5 rounded font-mono transition-all ${
+                endpointMode === 'public' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'
+              }`}
+              title="NATted Public IP for external access"
+            >
+              Public IP (61.0.228.124)
+            </button>
+            <button
+              type="button"
+              onClick={() => setEndpointMode('origin')}
+              className={`px-2 py-0.5 rounded font-mono transition-all ${
+                endpointMode === 'origin' ? 'bg-emerald-600 text-white' : 'text-gray-400 hover:text-white'
+              }`}
+              title="Current LAN / Browser Origin"
+            >
+              LAN / Current Host
+            </button>
+          </div>
         </div>
 
         {/* TAB 1: API Key & Management */}
         {activeTab === 'keys' && (
           <div className="space-y-4 animate-fade-in">
-            {/* Key Card */}
             <div className="p-4 rounded-md border border-[var(--vs-border-hi)] bg-[var(--vs-panel)] space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -385,7 +467,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                 </div>
               </div>
 
-              {/* Key display input */}
               <div className="flex items-center gap-2">
                 <div className="flex-1 font-mono text-xs px-3 py-2 rounded bg-[var(--vs-bg)] border border-[var(--vs-border)] text-emerald-300 select-all overflow-x-auto whitespace-nowrap">
                   {displayKey}
@@ -411,7 +492,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                 )}
               </div>
 
-              {/* Actions */}
               <div className="flex items-center justify-between pt-2 border-t border-[var(--vs-border)] text-xs">
                 <div className="text-gray-400">
                   {keyStatus?.createdAt && (
@@ -446,20 +526,20 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
               <div className="p-3 rounded-md bg-[var(--vs-panel)] border border-[var(--vs-border)] space-y-1">
                 <div className="text-[11px] text-gray-400 flex items-center gap-1.5">
                   <Globe size={13} className="text-blue-400" />
-                  Public API Endpoint
+                  Selected Endpoint
                 </div>
-                <div className="font-mono text-xs text-white truncate" title={PUBLIC_API_BASE}>
-                  {PUBLIC_API_BASE}
+                <div className="font-mono text-xs text-white truncate" title={selectedApiBase}>
+                  {selectedApiBase}
                 </div>
               </div>
 
               <div className="p-3 rounded-md bg-[var(--vs-panel)] border border-[var(--vs-border)] space-y-1">
                 <div className="text-[11px] text-gray-400 flex items-center gap-1.5">
-                  <Zap size={13} className="text-yellow-400" />
-                  Rate Limit Quota
+                  <Cpu size={13} className="text-purple-400" />
+                  Active AI Engine
                 </div>
                 <div className="text-xs font-semibold text-white">
-                  {keyStatus?.apiRateLimitTier === 'unlimited' ? '500 req / min' : '60 requests / min'}
+                  Qwen/Qwen3-8B-AWQ (SGLang)
                 </div>
               </div>
 
@@ -469,12 +549,11 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                   Lifetime API Requests
                 </div>
                 <div className="text-xs font-semibold text-emerald-400">
-                  {keyStatus?.totalApiRequests?.toLocaleString() || 0} calls
+                  {keyStatus?.totalApiRequests?.toLocaleString() || 0} calls ({keyStatus?.apiRateLimitTier === 'unlimited' ? '500/min' : '60/min'})
                 </div>
               </div>
             </div>
 
-            {/* Supported Endpoints Overview */}
             <div className="p-3 rounded-md bg-[var(--vs-panel)] border border-[var(--vs-border)] text-xs space-y-2">
               <div className="font-semibold text-gray-300">Supported Developer Endpoints:</div>
               <ul className="space-y-1.5 font-mono text-[11px] text-gray-400">
@@ -501,7 +580,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
         {/* TAB 2: Interactive Code Generator */}
         {activeTab === 'code' && (
           <div className="space-y-3 animate-fade-in">
-            {/* Language Selector Pills */}
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 {[
@@ -534,10 +612,9 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
               </button>
             </div>
 
-            {/* Code Block Container */}
             <div className="relative rounded-md border border-[var(--vs-border-hi)] bg-[#0f141c] overflow-hidden">
               <div className="flex items-center justify-between px-3 py-1.5 border-b border-[var(--vs-border)] bg-[var(--vs-panel)] text-[11px] text-gray-400">
-                <span className="font-mono">{codeLanguage.toUpperCase()} SNIPPET</span>
+                <span className="font-mono">{codeLanguage.toUpperCase()} SNIPPET ({selectedApiBase})</span>
                 <span className="text-emerald-400 font-mono">Ready to Run</span>
               </div>
               <pre className="p-4 font-mono text-xs text-gray-200 overflow-x-auto leading-relaxed max-h-[380px] custom-scrollbar">
@@ -547,7 +624,70 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
           </div>
         )}
 
-        {/* TAB 3: Telemetry & Audit Logs */}
+        {/* TAB 3: Live API Playground */}
+        {activeTab === 'playground' && (
+          <div className="space-y-3 animate-fade-in">
+            <div className="p-4 rounded-md border border-[var(--vs-border-hi)] bg-[var(--vs-panel)] space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-white flex items-center gap-2">
+                  <Zap size={14} className="text-emerald-400" />
+                  Test Your API Key Live against Qwen/Qwen3-8B-AWQ
+                </span>
+                <span className="text-[11px] font-mono text-gray-400">
+                  POST /api/v1/chat/completions
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2.5 text-xs">
+                <div>
+                  <label className="text-[11px] text-gray-400 block mb-1">System Prompt:</label>
+                  <input
+                    type="text"
+                    value={pgSystem}
+                    onChange={e => setPgSystem(e.target.value)}
+                    className="w-full px-3 py-1.5 rounded bg-[var(--vs-bg)] border border-[var(--vs-border)] text-gray-200 font-mono text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] text-gray-400 block mb-1">User Message:</label>
+                  <textarea
+                    rows={2}
+                    value={pgPrompt}
+                    onChange={e => setPgPrompt(e.target.value)}
+                    className="w-full px-3 py-2 rounded bg-[var(--vs-bg)] border border-[var(--vs-border)] text-gray-200 font-mono text-xs resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <Button
+                  onClick={handleRunPlayground}
+                  isLoading={pgRunning}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-1.5"
+                  leftIcon={<Play size={13} />}
+                >
+                  Send Live API Request
+                </Button>
+              </div>
+            </div>
+
+            {pgResult && (
+              <div className="p-4 rounded-md border border-emerald-500/30 bg-[#0b1017] space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono border-b border-white/10 pb-2">
+                  <span className="text-emerald-400 font-bold">HTTP {pgResult.status} OK</span>
+                  <span className="text-blue-300">Model: {pgResult.model}</span>
+                  <span className="text-amber-300">Latency: {pgResult.latency} ms</span>
+                  <span className="text-gray-400">Tokens: {pgResult.usage?.total_tokens || 'N/A'}</span>
+                </div>
+                <pre className="text-xs text-gray-200 whitespace-pre-wrap font-mono max-h-56 overflow-y-auto leading-relaxed">
+                  {pgResult.content}
+                </pre>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB 4: Telemetry & Audit Logs */}
         {activeTab === 'logs' && (
           <div className="space-y-3 animate-fade-in">
             <div className="flex items-center justify-between text-xs">
@@ -564,7 +704,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
               </button>
             </div>
 
-            {/* Logs Table */}
             <div className="border border-[var(--vs-border)] rounded-md bg-[var(--vs-panel)] overflow-hidden">
               <div className="overflow-x-auto max-h-[360px] custom-scrollbar">
                 <table className="w-full text-left text-xs border-collapse">
@@ -583,7 +722,7 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                     {logs.length === 0 ? (
                       <tr>
                         <td colSpan={7} className="p-6 text-center text-gray-500 font-sans">
-                          {logsLoading ? 'Loading request history...' : 'No API calls recorded yet. Try running one of the sample code snippets!'}
+                          {logsLoading ? 'Loading request history...' : 'No API calls recorded yet. Try running a request in the Live API Playground tab!'}
                         </td>
                       </tr>
                     ) : (
@@ -627,7 +766,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                               </td>
                             </tr>
                             
-                            {/* Expanded Payload Viewer */}
                             {isExpanded && (
                               <tr className="bg-[#0b0e14]">
                                 <td colSpan={7} className="p-3">
@@ -655,7 +793,6 @@ curl -X POST "${PUBLIC_API_BASE}/chat/completions" \\
                 </table>
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="p-2 border-t border-[var(--vs-border)] flex items-center justify-between text-xs text-gray-400">
                   <span>Page {page} of {totalPages}</span>

@@ -1,6 +1,7 @@
 // frontend/src/components/layout/TopNav.jsx
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {
+    useNavigate, Link } from 'react-router-dom';
 import { useAppState } from '../../contexts/AppStateContext';
 
 import LLMSelectionModal from './LLMSelectionModal.jsx';
@@ -19,13 +20,14 @@ import {
     Brain,
     Sparkles,
     Type,
-    Code2
+    Code2, Trophy
 } from 'lucide-react';
 import ToolsModal from '../tools/ToolsModal.jsx';
 import LevelBadge from '../gamification/LevelBadge.jsx';
 import RankBadge from '../gamification/RankBadge.jsx';
 import XPProgressModal from '../gamification/XPProgressModal.jsx';
 import DeveloperPortalModal from '../developer/DeveloperPortalModal.jsx';
+import WhatsNewModal, { CURRENT_RELEASE_VERSION } from '../onboarding/WhatsNewModal.jsx';
 import { useUserLevel } from '../../hooks/useUserLevel.jsx';
 import FeedbackWidget from './FeedbackWidget.jsx';
 
@@ -172,12 +174,38 @@ function TopNav({
     const [isToolsModalOpen, setIsToolsModalOpen] = useState(false);
     const [isXPModalOpen, setIsXPModalOpen] = useState(false);
     const [isDeveloperPortalOpen, setIsDeveloperPortalOpen] = useState(false);
+    const [isWhatsNewOpen, setIsWhatsNewOpen] = useState(false);
+    const [hasUnseenWhatsNew, setHasUnseenWhatsNew] = useState(() => {
+        try { return localStorage.getItem('imentor_seen_release') !== CURRENT_RELEASE_VERSION; } catch { return true; }
+    });
+    const [hasUnseenMindMap, setHasUnseenMindMap] = useState(() => {
+        try { return localStorage.getItem('imentor_seen_xp_mindmap') !== 'true'; } catch { return true; }
+    });
 
     const navigate = useNavigate();
     const { level, totalXP, loading: levelLoading } = useUserLevel(null, xpRefreshCounter);
-    const { selectedLLM, switchLLM, tutorMode } = useAppState();
+    const { selectedLLM, switchLLM, tutorMode, setLearningMode } = useAppState();
 
     const handleEnableTutorMode = () => navigate('/tutor');
+
+    useEffect(() => {
+        const openXpHandler = () => {
+            setIsXPModalOpen(true);
+            setHasUnseenMindMap(false);
+            try { localStorage.setItem('imentor_seen_xp_mindmap', 'true'); } catch {}
+        };
+        const openWhatsNewHandler = () => {
+            setIsWhatsNewOpen(true);
+            setHasUnseenWhatsNew(false);
+            try { localStorage.setItem('imentor_seen_release', CURRENT_RELEASE_VERSION); } catch {}
+        };
+        window.addEventListener('imentor-open-xp-modal', openXpHandler);
+        window.addEventListener('imentor-open-whats-new', openWhatsNewHandler);
+        return () => {
+            window.removeEventListener('imentor-open-xp-modal', openXpHandler);
+            window.removeEventListener('imentor-open-whats-new', openWhatsNewHandler);
+        };
+    }, []);
 
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const profileDropdownRef = useRef(null);
@@ -318,6 +346,24 @@ function TopNav({
                             </button>
 
                             <button
+                                onClick={() => {
+                                    setIsWhatsNewOpen(true);
+                                    setHasUnseenWhatsNew(false);
+                                    try { localStorage.setItem('imentor_seen_release', CURRENT_RELEASE_VERSION); } catch {}
+                                }}
+                                className={'relative inline-flex ' + pillNormal}
+                                title="Discover New Features, Starter Quests & Slash Commands"
+                            >
+                                <Sparkles size={12} className="text-sky-400" />
+                                <span className="hidden sm:inline">What&apos;s New</span>
+                                {hasUnseenWhatsNew && (
+                                    <span className="ml-1 px-1.5 py-0.2 text-[9px] font-extrabold uppercase rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse">
+                                        NEW
+                                    </span>
+                                )}
+                            </button>
+
+                            <button
                                 onClick={() => setIsLLMModalOpen(true)}
                                 className={`hidden md:inline-flex ${pillNormal}`}
                             >
@@ -334,7 +380,44 @@ function TopNav({
                 )}
 
                 {/* Right controls */}
-                <div className="flex items-center gap-4 flex-shrink-0">
+                <div className="flex items-center gap-3 flex-shrink-0">
+
+                    {/* Role-Aware Mode Switcher for Admin & Teacher/Faculty viewing Student Mode */}
+                    {(isAdminSessionActive || authUser?.isAdmin || authUser?.isFaculty) && (
+                        <div className="flex items-center gap-1 bg-slate-900/90 border border-slate-700/80 rounded-lg p-0.5">
+                            {(isAdminSessionActive || authUser?.isAdmin) && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        sessionStorage.setItem('activeViewMode', 'admin');
+                                        sessionStorage.removeItem('viewAsStudent');
+                                        navigate('/admin/dashboard');
+                                    }}
+                                    className="flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold text-amber-300 hover:bg-amber-500/20 transition"
+                                    title="Switch to Admin Mode"
+                                >
+                                    <ShieldCheck size={12} />
+                                    <span className="hidden lg:inline">Admin Mode</span>
+                                </button>
+                            )}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    sessionStorage.setItem('activeViewMode', 'faculty');
+                                    sessionStorage.removeItem('viewAsStudent');
+                                    navigate('/faculty/dashboard');
+                                }}
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold text-emerald-300 hover:bg-emerald-500/20 transition"
+                                title="Switch to Teacher / Faculty Mode (Course Generation Swarm)"
+                            >
+                                <GraduationCap size={12} />
+                                <span className="hidden lg:inline">Teacher Mode</span>
+                            </button>
+                            <span className="hidden xl:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                                Student View
+                            </span>
+                        </div>
+                    )}
 
                     {/* Orchestrator status dot */}
                     {StatusIndicator}
@@ -350,7 +433,16 @@ function TopNav({
 
                             {/* XP rank badge (small) */}
                             {!levelLoading && level && (
-                                <div className="flex items-center gap-1.5" style={{ cursor: 'pointer' }} onClick={() => setIsXPModalOpen(true)}>
+                                <div
+                                    className="flex items-center gap-1.5 relative"
+                                    style={{ cursor: 'pointer' }}
+                                    title="Click to view your Concept Mind Map, XP Breakdown & Student Leaderboard"
+                                    onClick={() => {
+                                        setIsXPModalOpen(true);
+                                        setHasUnseenMindMap(false);
+                                        try { localStorage.setItem('imentor_seen_xp_mindmap', 'true'); } catch {}
+                                    }}
+                                >
                                     <RankBadge
                                         level={level}
                                         size="md"
@@ -366,6 +458,11 @@ function TopNav({
                                     }}>
                                         {totalXP.toLocaleString()} XP
                                     </span>
+                                    {hasUnseenMindMap && (
+                                        <span className="hidden sm:inline-block px-1.5 py-0.2 text-[9px] font-extrabold uppercase rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 animate-pulse">
+                                            Mind Map
+                                        </span>
+                                    )}
                                 </div>
                             )}
 
@@ -427,6 +524,12 @@ function TopNav({
                                 {[
                                     {
                                         type: 'link',
+                                        to: '/gamification/leaderboard',
+                                        icon: Trophy,
+                                        label: 'Student Leaderboard',
+                                    },
+                                    {
+                                        type: 'link',
                                         to: '/learning-profile',
                                         icon: Brain,
                                         label: 'Learning Memory',
@@ -434,7 +537,7 @@ function TopNav({
                                     {
                                         type: 'button',
                                         onClick: () => { setIsDeveloperPortalOpen(true); setIsProfileDropdownOpen(false); },
-                                        icon: Code2,
+                                        icon: Code2, Trophy,
                                         label: 'Developer API Hub',
                                     },
                                     {
@@ -538,6 +641,19 @@ function TopNav({
             <DeveloperPortalModal
                 isOpen={isDeveloperPortalOpen}
                 onClose={() => setIsDeveloperPortalOpen(false)}
+            />
+            <WhatsNewModal
+                isOpen={isWhatsNewOpen}
+                onClose={() => setIsWhatsNewOpen(false)}
+                onOpenXPModal={() => {
+                    setIsXPModalOpen(true);
+                    setHasUnseenMindMap(false);
+                    try { localStorage.setItem('imentor_seen_xp_mindmap', 'true'); } catch {}
+                }}
+                onEnableLearningMode={() => {
+                    if (typeof setLearningMode === 'function') setLearningMode(true);
+                    navigate('/');
+                }}
             />
         </>
     );

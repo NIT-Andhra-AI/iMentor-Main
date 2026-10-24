@@ -133,7 +133,7 @@ function TutorModeInsights() {
                     value={stats?.totalTutorModeSessions ?? 0}
                     icon={MessageCircleQuestion}
                     colorClass="text-purple-500"
-                    subtitle="Socratic learning interactions"
+                    subtitle="Guided Learning Mode interactions"
                 />
                 <InsightCard
                     title="Weekly Growth"
@@ -160,7 +160,7 @@ function TutorModeInsights() {
                     <GraduationCap size={32} className="text-text-muted-light dark:text-text-muted-dark mb-2" />
                     <p className="text-sm text-text-muted-light dark:text-text-muted-dark">No Tutor Mode usage data yet</p>
                     <p className="text-xs text-text-muted-light/70 dark:text-text-muted-dark/70 mt-1">
-                        Data will appear once students use the Socratic Tutor feature
+                        Data will appear once students use Guided Learning Mode
                     </p>
                 </div>
             )}

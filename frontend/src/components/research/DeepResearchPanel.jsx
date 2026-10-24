@@ -8,10 +8,10 @@ import { Activity, Beaker, Map, FileText, ChevronRight, ChevronDown, BookOpen, A
 
 export default function DeepResearchPanel({ onToggleMode }) {
    const navigate = useNavigate();
-   const { pipelineStage, researchPlan, meta, reportContent, finalReportData, sources, progressMessage } = useDeepResearch();
+   const { pipelineStage, researchPlan, meta, reportContent, finalReportData, sources, progressMessage, activityLog = [] } = useDeepResearch();
    const [activeTab, setActiveTab] = useState(null);
    const [isStrategyOpen, setIsStrategyOpen] = useState(false);
-   const [traceOpen, setTraceOpen] = useState(false);
+   const [traceOpen, setTraceOpen] = useState(true);
    const [reassuranceIndex, setReassuranceIndex] = useState(0);
    const [showCompletionTransition, setShowCompletionTransition] = useState(false);
 
@@ -270,10 +270,29 @@ export default function DeepResearchPanel({ onToggleMode }) {
                            className="text-[12px] uppercase tracking-widest text-[#7CCFDE] hover:text-[#B3F5FF] flex items-center gap-2"
                         >
                            {traceOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-                           View Live Research Trace
+                           Live Scholarly Thinking, Browsing & Full-Text Reading Stream
                         </button>
                         {traceOpen && (
                            <div className="mt-3 bg-[#0E1012] border border-[#1A2328] rounded-lg p-4 space-y-4 text-sm">
+                              <div>
+                                 <div className="text-[#8FBBC3] mb-2 flex items-center justify-between">
+                                    <span>Real-Time Agentic Activity &amp; Full-Text PDF Harvester Feed</span>
+                                    <span className="text-[11px] text-[#00D1FF] font-mono">{activityLog.length} events</span>
+                                 </div>
+                                 <div className="max-h-48 overflow-y-auto space-y-1.5 bg-[#090B0D] border border-[#162025] rounded p-2.5 mb-3 font-mono text-xs">
+                                    {activityLog.map((item, idx) => (
+                                       <div key={item.id || idx} className="flex items-start gap-2 text-[#C8D6DC]">
+                                          <span className="px-1.5 py-0.5 rounded bg-[#122630] text-[#00D1FF] text-[10px] font-bold shrink-0">
+                                             {item.badge || item.phase || 'STEP'}
+                                          </span>
+                                          <span className="leading-snug">{item.message}</span>
+                                       </div>
+                                    ))}
+                                    {activityLog.length === 0 && (
+                                       <div className="text-[#6F7D84]">Initializing scholarly discovery engines...</div>
+                                    )}
+                                 </div>
+                              </div>
                               <div>
                                  <div className="text-[#8FBBC3] mb-2">Generated Search Queries</div>
                                  <ul className="space-y-1 text-[#B3BFC4]">

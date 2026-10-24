@@ -190,7 +190,7 @@ function checkBadgeCriteria(profile, criteria) {
             return profile.totalXP >= criteria.threshold;
 
         case 'level':
-            return profile.level >= criteria.threshold;
+            return (profile.xpLevel || profile.level || 1) >= criteria.threshold;
 
         case 'streak':
             return profile.longestStreak >= criteria.threshold;
@@ -199,7 +199,7 @@ function checkBadgeCriteria(profile, criteria) {
             return profile.completedBattles.length >= criteria.threshold;
 
         case 'credits':
-            return profile.learningCredits >= criteria.threshold;
+            return Math.max(profile.learningCredits || 0, profile.totalLearningCredits || 0, profile.totalXP || 0) >= criteria.threshold;
 
         case 'bounty_count':
             // Count bounties from creditsHistory
@@ -295,6 +295,7 @@ async function checkBossBattleBadge(userId, battle) {
  */
 async function getUserBadges(userId) {
     try {
+        await checkAndAwardBadges(userId);
         const profile = await GamificationProfile.findOne({ userId });
         if (!profile) return [];
 

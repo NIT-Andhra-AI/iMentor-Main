@@ -128,7 +128,7 @@ router.post('/signup', async (req, res) => {
 
         res.status(201).json({
             token,
-            _id: user._id,
+            _id: user._id.toString(),
             email: user.email,
             username: user.username,
             hasCompletedOnboarding: user.hasCompletedOnboarding,
@@ -251,9 +251,20 @@ router.post('/signin', async (req, res) => {
 
         if (user.isAdmin) {
             log.info('AUTH', `ADMIN_LOGIN_SUCCESS: ${user.email}`);
-            const payload = { userId: user._id, email: user.email, isAdmin: true };
+            const payload = { userId: user._id, email: user.email, isAdmin: true, isFaculty: true };
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: JWT_EXPIRATION });
-            return res.status(200).json({ isAdminLogin: true, token: token, message: 'Admin login successful' });
+            return res.status(200).json({
+                isAdminLogin: true,
+                token: token,
+                _id: user._id.toString(),
+                email: user.email,
+                username: user.username,
+                isAdmin: true,
+                isFaculty: true,
+                department: user.department || 'Administration',
+                hasCompletedOnboarding: true,
+                message: 'Admin login successful'
+            });
         }
 
         log.info('AUTH', `USER_LOGIN_SUCCESS: ${user.email}`);
@@ -262,10 +273,12 @@ router.post('/signin', async (req, res) => {
 
         res.status(200).json({
             token,
-            _id: user._id,
+            _id: user._id.toString(),
             email: user.email,
             username: user.username,
             isAdmin: !!user.isAdmin,
+            isFaculty: !!user.isFaculty,
+            department: user.department || '',
             hasCompletedOnboarding: user.hasCompletedOnboarding,
             message: "Login successful",
         });
@@ -432,10 +445,12 @@ router.get('/me', authMiddleware, async (req, res) => {
         return res.status(401).json({ message: 'Not authorized.' });
     }
     res.status(200).json({
-        _id: req.user._id,
+        _id: req.user._id.toString(),
         email: req.user.email,
         username: req.user.username,
         isAdmin: !!req.user.isAdmin,
+        isFaculty: !!(req.user.isFaculty || req.user.isAdmin),
+        department: req.user.department || '',
         hasCompletedOnboarding: req.user.hasCompletedOnboarding
     });
 });

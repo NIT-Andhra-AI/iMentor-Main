@@ -9,7 +9,7 @@ const TOUR_STEPS = [
         selector: '[data-tutor-tour="hero"]',
         title: 'Welcome to Tutor Mode',
         description:
-            'This is Socratic Mode - instead of giving answers directly, iMentor guides you through questions so you learn by thinking.\n\nChoose a subject and start asking questions to begin learning.'
+            'This is Guided Learning Mode — iMentor acknowledges what you know, nudges your thinking with clear hints, and teaches each new subtopic step-by-step without Q&A fatigue.\n\nChoose a subject and start asking questions to begin learning.'
     },
     {
         id: 'subject',
@@ -54,7 +54,7 @@ const TOUR_STEPS = [
         selector: null,
         title: "You're Ready to Learn",
         description:
-            'Pick a topic, ask a question, and start exploring concepts through guided Socratic learning.'
+            'Pick a topic, ask a question, and start exploring concepts through Guided Learning Mode.'
     }
 ];
 

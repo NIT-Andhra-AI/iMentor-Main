@@ -83,11 +83,11 @@ function isThinkingModel(modelId) {
  */
 function separateThinking(text) {
     if (!text || typeof text !== 'string') return { thinking: null, content: text || '' };
-    const match = text.match(/<thinking>([\s\S]*?)<\/thinking>/i);
+    const match = text.match(/<(?:think|thinking)>([\s\S]*?)<\/(?:think|thinking)>/i);
     if (!match) return { thinking: text.thinking || null, content: String(text) };
     return {
         thinking: match[1].trim(),
-        content: text.replace(/<thinking>[\s\S]*?<\/thinking>\s*/gi, '').trim(),
+        content: text.replace(/<(?:think|thinking)>[\s\S]*?<\/(?:think|thinking)>\s*/gi, '').trim(),
     };
 }
 
@@ -148,7 +148,8 @@ function isValidKey(key) {
 
 function hasApiKey(provider, userKeys = {}) {
     switch (provider) {
-        case 'gemini': return isValidKey(userKeys.gemini) || isValidKey(process.env.GEMINI_API_KEY);
+        case 'agy':
+        case 'gemini': return require('./agyCliService').isAvailable();
         case 'groq':   return isValidKey(userKeys.groq) || isValidKey(process.env.GROQ_API_KEY);
         case 'openai': return isValidKey(userKeys.openai) || isValidKey(process.env.OPENAI_API_KEY);
         case 'ollama': return true;
@@ -159,7 +160,8 @@ function hasApiKey(provider, userKeys = {}) {
 
 function getApiKey(provider, userKeys = {}) {
     switch (provider) {
-        case 'gemini': return isValidKey(userKeys.gemini) ? userKeys.gemini : (isValidKey(process.env.GEMINI_API_KEY) ? process.env.GEMINI_API_KEY : null);
+        case 'agy':
+        case 'gemini': return 'agy-cli-local';
         case 'groq':   return isValidKey(userKeys.groq) ? userKeys.groq : (isValidKey(process.env.GROQ_API_KEY) ? process.env.GROQ_API_KEY : null);
         case 'openai': return isValidKey(userKeys.openai) ? userKeys.openai : (isValidKey(process.env.OPENAI_API_KEY) ? process.env.OPENAI_API_KEY : null);
         default:       return null;
@@ -168,10 +170,11 @@ function getApiKey(provider, userKeys = {}) {
 
 // ─── PER-PROVIDER TIMEOUTS (ms) ────────────────────────────────────────────
 const PROVIDER_TIMEOUTS = {
-    sglang: 6_000,
-    groq:   10_000,
-    gemini: 10_000,
-    openai: 10_000,
+    sglang: 60_000,
+    groq:   15_000,
+    gemini: 90_000,
+    agy:    90_000,
+    openai: 15_000,
 };
 
 // ─── FALLBACK CHAIN BUILDER ────────────────────────────────────────────────
@@ -282,7 +285,7 @@ async function callWithFallback({
                     ];
                     return await streamingService().streamCompletion({
                         messages, provider: 'sglang', model, apiKey, systemPrompt, onToken,
-                        options: callOptions
+                        options: { ...callOptions, handleThinkingTags: thinkEnabled }
                     });
                 } else if (onToken && UNIFIED_STREAM_PROVIDERS.has(provider)) {
                     // Gemini/Groq/OpenAI via unified streaming service
@@ -306,15 +309,17 @@ async function callWithFallback({
                         role: m.role === 'model' ? 'assistant' : m.role,
                         content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content || '')
                     })));
-                    messages.push({ role: 'user', content: userQuery });
+                    const userContent = options.think === true ? userQuery : `${userQuery} /no_think`;
+                    messages.push({ role: 'user', content: userContent });
                     const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
                     const resp = await axios.post(`${sglangUrl}/chat/completions`, {
                         model,
                         messages,
-                        max_tokens: callOptions.maxOutputTokens ?? 4096,
+                        max_tokens: options.maxOutputTokens ?? 1024,
                         temperature: callOptions.temperature ?? 0.7,
                         stream: false,
-                    }, { timeout: 6000 });
+                        ...(options.think === true ? {} : { chat_template_kwargs: { enable_thinking: false } })
+                    }, { timeout: 30000 });
                     return resp.data?.choices?.[0]?.message?.content || '';
                 } else {
                     const svc = getServiceForProvider(provider);
@@ -382,7 +387,7 @@ function resolveModelForProvider(provider, options = {}) {
     const optModel = options.model;
     if (provider === 'gemini') {
         if (optModel && optModel.toLowerCase().startsWith('gemini')) return optModel;
-        return process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+        return process.env.GEMINI_MODEL || 'gemini-3.8-flash-high';
     }
     if (provider === 'groq') {
         const isNotGroq = optModel && (optModel.includes('/') || optModel.toLowerCase().startsWith('gemini'));
@@ -391,13 +396,13 @@ function resolveModelForProvider(provider, options = {}) {
     }
     if (provider === 'sglang') {
         if (optModel && optModel.includes('/')) return optModel;
-        return process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+        return process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
     }
     if (provider === 'openai') {
         if (optModel && optModel.toLowerCase().startsWith('gpt')) return optModel;
         return process.env.OPENAI_MODEL || 'gpt-4o';
     }
-    return optModel || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ';
+    return optModel || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
 }
 
 // ─── FAST MODEL SELECTOR (for overhead calls) ──────────────────────────────
@@ -413,7 +418,7 @@ async function getFastModel(userApiKeys = {}, ollamaUrlHint = null) {
         if (isUp) {
             return {
                 provider: 'sglang',
-                model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen2.5-7B-Instruct-AWQ',
+                model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
                 sglangUrl,
             };
         }
@@ -432,7 +437,7 @@ async function getFastModel(userApiKeys = {}, ollamaUrlHint = null) {
     if (hasApiKey('gemini', userApiKeys)) {
         return {
             provider: 'gemini',
-            model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+            model: process.env.GEMINI_MODEL || 'gemini-3.8-flash-high',
             apiKey: getApiKey('gemini', userApiKeys),
         };
     }
@@ -471,8 +476,10 @@ async function callFast({ prompt, systemPrompt = null, userApiKeys = {}, ollamaU
             max_tokens: options.maxOutputTokens ?? 2048,
             temperature: options.temperature ?? 0.3,
             stream: false,
-        }, { timeout: 30000 });
-        const text = resp.data?.choices?.[0]?.message?.content?.trim() || '';
+            chat_template_kwargs: { enable_thinking: false }
+        }, { timeout: 45000 });
+        const rawText = resp.data?.choices?.[0]?.message?.content?.trim() || '';
+        const text = separateThinking(rawText).content;
         if (!text) throw new Error('SGLang fast call returned empty response');
         return text;
     }
@@ -601,13 +608,15 @@ async function parallelCallWithFallback({
                         role: m.role === 'model' ? 'assistant' : (m.role || 'user'),
                         content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content || '')
                     })));
-                    messages.push({ role: 'user', content: userQuery });
+                    const userContent = options.think === true ? userQuery : `${userQuery} /no_think`;
+                    messages.push({ role: 'user', content: userContent });
                     const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
                     const resp = await ax.post(`${sglangUrl}/chat/completions`, {
                         model, messages,
-                        max_tokens: callOptions.maxOutputTokens ?? 4096,
+                        max_tokens: options.maxOutputTokens ?? 1024,
                         temperature: callOptions.temperature ?? 0.7,
                         stream: false,
+                        ...(options.think === true ? {} : { chat_template_kwargs: { enable_thinking: false } })
                     }, { timeout: providerTimeout, signal });
                     result = resp.data?.choices?.[0]?.message?.content || '';
                 } else {

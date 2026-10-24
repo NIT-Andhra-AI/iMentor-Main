@@ -23,6 +23,7 @@ const { routeQuery } = require('../../services/semanticRouter');
 const { routeWithLLM } = require('../../services/llmToolRouter');
 const { decomposeQuery, buildHybridContextBlock } = require('../../services/hybridQueryDecomposer');
 const { CHAT_MAIN_SYSTEM_PROMPT } = require('../../config/promptTemplates');
+const { adaptRequest } = require('../../services/agenticPromptAdapter');
 
 
 const {
@@ -332,8 +333,10 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
         // Runs async (non-blocking for low-confidence cases that don't already
         // have explicit user flags set). Kicks in when confidence < 0.65.
         const LLM_ROUTER_THRESHOLD = 0.65;
+        const isClearAcademicTask = /\b(teach me|help me learn|guide me through|tutor me|derive|derivation|solve|calculate|compute|prove|write (a |the )?(python|matlab|c\+\+|code|script|function)|implement|compare|contrast|difference between|quiz me|test me|study plan)\b/i.test(query);
         const needsLlmRouter = semanticRouting.confidence < LLM_ROUTER_THRESHOLD
             && !tutorMode
+            && !isClearAcademicTask
             && !useWebSearch && !useAcademicSearch; // only if tools not already set
 
         if (needsLlmRouter) {
@@ -433,6 +436,53 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
     }
 
     // ── Quiz fast-path (outside try — no session data needed) ────────────────
+        // === Autonomous Agentic Intent, Task & System Prompt Adaptation ===
+    let agenticAdaptation = null;
+    try {
+        agenticAdaptation = await adaptRequest(query.trim(), {
+            tutorMode,
+            tutorModeType,
+            documentContextName,
+            useWebSearch,
+            useAcademicSearch,
+            deepResearchMode,
+            criticalThinkingEnabled,
+            semanticRouting
+        });
+        res.locals.agenticAdaptation = {
+            taskArchetype: agenticAdaptation.taskArchetype,
+            activePersona: agenticAdaptation.activePersona,
+            description: agenticAdaptation.description,
+            confidence: agenticAdaptation.confidence,
+            topic: agenticAdaptation.topic,
+            autoGroundedCourse: agenticAdaptation.autoGroundedCourse,
+            autoGroundedModule: agenticAdaptation.autoGroundedModule,
+            groundingSource: agenticAdaptation.groundingSource,
+            tasksInvoked: agenticAdaptation.tasksInvoked,
+            autoActivatedFlags: agenticAdaptation.autoActivatedFlags
+        };
+
+        // Autonomously activate Guided Learning Mode when student asks to learn/be taught interactively
+        if (agenticAdaptation.autoEnableTutorMode && !tutorMode) {
+            tutorMode = true;
+            if (!documentContextName && agenticAdaptation.courseGrounding?.courseCode) {
+                documentContextName = agenticAdaptation.courseGrounding.courseCode;
+            }
+            tutorModeType = resolveTutorModeType(tutorModeType, documentContextName);
+            log.info('CHAT', `[AGENTIC] Auto-enabled Guided Learning Mode (type=${tutorModeType}, course=${documentContextName || 'General'})`);
+        }
+        if (agenticAdaptation.autoEnableAcademicSearch && !useAcademicSearch && !documentContextName && !tutorMode) {
+            useAcademicSearch = true;
+            log.info('CHAT', '[AGENTIC] Auto-enabled Academic Search');
+        }
+        if (agenticAdaptation.autoEnableWebSearch && !useWebSearch && !userExplicitlyDisabledWebSearch && !documentContextName && !tutorMode) {
+            useWebSearch = true;
+            log.info('CHAT', '[AGENTIC] Auto-enabled Web Search');
+        }
+    } catch (adaptErr) {
+        log.warn('CHAT', `Agentic adaptation non-fatal error: ${adaptErr.message}`);
+    }
+
     const isQuizMode = tutorMode && tutorModeType === TUTOR_MODE_TYPES.ASSISTANT &&
         clientProvidedSystemInstruction &&
         (clientProvidedSystemInstruction.includes('quiz answer evaluator') ||
@@ -468,6 +518,17 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
         if (chatSession && chatSession.userId.toString() !== userId.toString()) {
             log.warn('AUTH', `Unauthorized session access: User ${userId} -> Session ${sessionId}`);
             return res.status(403).json({ message: 'Unauthorized access to this chat session.' });
+        }
+
+        // Preserve Guided Learning Mode continuity across turns when session was started in tutorMode
+        const wantsExitTutor = /\b(stop tutor|exit tutor|exit learning|leave tutor|normal chat|just explain|direct answer|no questions)\b/i.test(query || '');
+        if (!tutorMode && !wantsExitTutor && chatSession?.isTutorMode) {
+            tutorMode = true;
+            if (!documentContextName && chatSession.courseName) {
+                documentContextName = chatSession.courseName;
+            }
+            tutorModeType = resolveTutorModeType(chatSession.tutorModeType || tutorModeType, documentContextName);
+            log.info('CHAT', `[AGENTIC] Preserved multi-turn Guided Learning Mode from session state (type=${tutorModeType}, course=${documentContextName || 'General'})`);
         }
 
         if (user?.preferredLlmProvider === 'gemini' && user?.apiKeyRequestStatus === 'pending' && !user?.encryptedApiKey) {
@@ -524,11 +585,16 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
             };
         }
 
+        const isTutorInteraction = !!tutorMode || tutorModeType === TUTOR_MODE_TYPES.GENERAL_SOCRATIC || tutorModeType === TUTOR_MODE_TYPES.COURSE_STRUCTURED || tutorModeType === TUTOR_MODE_TYPES.GUIDED_LEARNING || tutorModeType === TUTOR_MODE_TYPES.STUDY_MODE;
+
         const llmConfig = {
-            llmProvider: chosenModel.provider,
-            geminiModel: chosenModel.provider === 'gemini' ? chosenModel.modelId : null,
-            ollamaModel: chosenModel.provider === 'ollama' ? (chosenModel.modelId.includes('/') ? chosenModel.modelId.split('/')[1] : chosenModel.modelId) : null,
-            groqModel: chosenModel.provider === 'groq' ? chosenModel.modelId : null,
+            llmProvider: isTutorInteraction ? 'sglang' : chosenModel.provider,
+            sglangModel: (isTutorInteraction || chosenModel.provider === 'sglang') ? (process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ') : null,
+            sglangEndpoint: 'chat',
+            sglangUrl: (isTutorInteraction || chosenModel.provider === 'sglang') ? (process.env.SGLANG_CHAT_URL || 'http://127.0.0.1:8000/v1') : null,
+            geminiModel: (!isTutorInteraction && chosenModel.provider === 'gemini') ? chosenModel.modelId : null,
+            ollamaModel: (!isTutorInteraction && chosenModel.provider === 'ollama') ? (chosenModel.modelId.includes('/') ? chosenModel.modelId.split('/')[1] : chosenModel.modelId) : null,
+            groqModel: (!isTutorInteraction && chosenModel.provider === 'groq') ? chosenModel.modelId : null,
             apiKey: (user?.encryptedApiKey ? decrypt(user.encryptedApiKey) : null) ||
                 (chosenModel.provider === 'groq' ? process.env.GROQ_API_KEY : process.env.GEMINI_API_KEY),
             ollamaUrl: chosenModel.workingUrl || user?.ollamaUrl || process.env.OLLAMA_API_BASE_URL
@@ -559,6 +625,9 @@ router.post('/message', validateChatMessage, injectContextualMemory, async (req,
         }
 
         let finalSystemPrompt = clientProvidedSystemInstruction || req.contextualMemory?.systemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
+        if (!clientProvidedSystemInstruction && agenticAdaptation?.adaptedTaskPrompt) {
+            finalSystemPrompt = `${finalSystemPrompt}\n\n${agenticAdaptation.adaptedTaskPrompt}`;
+        }
 
         if (tutorMode && tutorModeType === TUTOR_MODE_TYPES.ASSISTANT) {
             finalSystemPrompt = `You are iMentor, an academic AI tutor assistant. Your ONLY purpose is to help students with academic subjects: Mathematics, Physics, Chemistry, Biology, Computer Science, Engineering, History, Geography, Economics, Literature, and any other formal educational topic.
@@ -620,6 +689,7 @@ Current turn preference: ${wantsDirectExplanation ? 'DIRECT_EXPLANATION_REQUESTE
             llmConfig, chosenModel, routerLogic, classification, routingDecision,
             queryIntent, estimatedComplexityScore, queryTokenCount, simpleFastPath,
             semanticRouting,   // full routing decision (intent, confidence, tools)
+            agenticAdaptation: res.locals.agenticAdaptation || null,
             requestContext, userMessageForDb,
             isAutoGreeting,    // silent auto-init: skip user message in DB write
             startTime, performanceTracker,

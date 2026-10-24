@@ -101,15 +101,18 @@ function pruneBeforeEvaluation(plans, query) {
 
     // log.info('TOT', `Pruning ${plans.length} candidate plans...`);
 
-    // A. Remove invalid plans
+    // A. Remove invalid plans (supports both plan.steps and DAG plan.tasks)
     let validPlans = plans.filter(plan => {
-        if (!plan.steps || !Array.isArray(plan.steps) || plan.steps.length === 0) {
-            // log.warn('TOT', `Removed invalid plan: ${plan.name || 'unnamed'}`);
+        const stepsList = Array.isArray(plan.steps) && plan.steps.length > 0
+            ? plan.steps
+            : (Array.isArray(plan.tasks) && plan.tasks.length > 0 ? plan.tasks : null);
+        if (!stepsList) {
             return false;
         }
 
-        const hasValidSteps = plan.steps.every(step =>
-            step.description && step.description.trim().length > 0
+        const hasValidSteps = stepsList.every(step =>
+            (step.description && step.description.trim().length > 0) ||
+            (step.query && step.query.trim().length > 0)
         );
 
         if (!hasValidSteps) {

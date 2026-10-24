@@ -246,7 +246,7 @@ fn analyze_integrity(text_a: &str, text_b: &str) -> String {
     let elapsed_us = t0.elapsed().as_micros();
 
     format!(
-        "{{\"jaccard3Gram\": {:.4}, \"burstiness\": {:.4}, \"meanSentenceWords\": {:.2}, \"tokenCount\": {}, \"computeMicros\": {}}}",
+        "{{\"ok\": true, \"jaccard3Gram\": {:.4}, \"burstiness\": {:.4}, \"meanSentenceWords\": {:.2}, \"tokenCount\": {}, \"computeMicros\": {}}}",
         jaccard_3gram, burstiness, mean_len, toks_a.len(), elapsed_us
     )
 }
@@ -254,10 +254,8 @@ fn analyze_integrity(text_a: &str, text_b: &str) -> String {
 fn process_batch_payload(input: &str) -> String {
     let t0 = Instant::now();
     // Lightweight delimiter protocol: First line = QUERY, followed by ===PAPER=== blocks
-    let mut lines = input.lines();
-    let query_line = lines.next().unwrap_or("");
+    let (query_line, rest) = input.split_once('\n').unwrap_or((input, ""));
     let query_tokens = tokenize(query_line);
-    let rest: String = lines.collect::<Vec<&str>>().join("\n");
     let raw_papers: Vec<&str> = rest.split("===PAPER===").filter(|s| !s.trim().is_empty()).collect();
 
     // Process all papers in parallel across native OS threads using std::thread::scope
@@ -311,26 +309,39 @@ fn process_batch_payload(input: &str) -> String {
 }
 
 fn handle_http_client(mut stream: TcpStream) {
-    let mut buf = vec![0u8; 2 * 1024 * 1024]; // 2MB buffer
+    let mut buf = vec![0u8; 64 * 1024]; // Start with 64KB, dynamically grow to Content-Length (up to 32MB)
     let mut total_read = 0;
     let mut header_end = None;
     let mut content_len = 0usize;
+    const MAX_PAYLOAD: usize = 32 * 1024 * 1024;
 
     loop {
+        if total_read == buf.len() {
+            let next_size = (buf.len() * 2).min(MAX_PAYLOAD);
+            if next_size == buf.len() {
+                break;
+            }
+            buf.resize(next_size, 0);
+        }
         match stream.read(&mut buf[total_read..]) {
             Ok(0) => break,
             Ok(n) => {
                 total_read += n;
                 if header_end.is_none() {
                     if let Some(pos) = buf[..total_read].windows(4).position(|w| w == b"\r\n\r\n") {
-                        header_end = Some(pos + 4);
+                        let h_end = pos + 4;
+                        header_end = Some(h_end);
                         let headers_str = String::from_utf8_lossy(&buf[..pos]);
                         for line in headers_str.lines() {
                             if line.to_ascii_lowercase().starts_with("content-length:") {
                                 if let Some(v) = line.split(':').nth(1) {
-                                    content_len = v.trim().parse::<usize>().unwrap_or(0);
+                                    content_len = v.trim().parse::<usize>().unwrap_or(0).min(MAX_PAYLOAD);
                                 }
                             }
+                        }
+                        let needed = (h_end + content_len).min(MAX_PAYLOAD);
+                        if buf.len() < needed {
+                            buf.resize(needed, 0);
                         }
                     }
                 }
@@ -338,9 +349,6 @@ fn handle_http_client(mut stream: TcpStream) {
                     if total_read >= h_end + content_len {
                         break;
                     }
-                }
-                if total_read >= buf.len() {
-                    break;
                 }
             }
             Err(_) => break,

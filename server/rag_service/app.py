@@ -231,15 +231,16 @@ async def lifespan(app: FastAPI):
             course_dir  = os.path.join(cpurses_dir, course_folder)
             course_name = course_folder.replace("_", " ").lower()
             await run_sync(_ingest_course_pdfs_worker, course_name, course_dir)
-    _startup_aio.create_task(_startup_ingest())
+    if os.getenv("RAG_AUTO_INGEST_ON_STARTUP", "false").lower() == "true":
+        _startup_aio.create_task(_startup_ingest())
 
-    # Auto-run material pipeline for course_bootstrap/ (PDF→Markdown→Qdrant→STN→Pedagogy)
-    # Runs in background daemon thread, resumable on restart
+    # Auto-run material pipeline for course_bootstrap/ only when explicitly enabled
     import course_material_processor as _cmp_startup
     async def _startup_pipeline():
-        await _startup_aio.sleep(8)  # wait for Cpurses ingestion to start first
+        await _startup_aio.sleep(8)
         _cmp_startup.process_all_courses_background()
-    _startup_aio.create_task(_startup_pipeline())
+    if os.getenv("RAG_AUTO_INGEST_ON_STARTUP", "false").lower() == "true":
+        _startup_aio.create_task(_startup_pipeline())
 
     # Pedagogical cache warmer — pre-loads all L0-L4 notes from Qdrant into Redis
     # so that every user request is served purely from Redis (zero LLM latency).
@@ -260,9 +261,9 @@ async def lifespan(app: FastAPI):
 
 
 # ============================================================================
-# FASTAPI APP
+# FASTAPI APP (Disable public Swagger/OpenAPI docs in production for security)
 # ============================================================================
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
 # CORS
 allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "").strip()
@@ -275,7 +276,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 100 MB upload size guard
+# 100 MB upload size guard + Internal Service Endpoint Guard
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
 
 @app.middleware("http")
@@ -286,7 +287,32 @@ async def limit_upload_size(request: Request, call_next):
             {"error": "File too large. Maximum allowed upload size is 100 MB.", "code": 413},
             status_code=413,
         )
-    return await call_next(request)
+
+    # Block external/proxied access to internal RAG microservice routes unless authenticated
+    path = request.url.path
+    if path != "/health":
+        real_ip = (request.headers.get("x-real-ip") or request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+        forwarded_proto = (request.headers.get("x-forwarded-proto") or "").strip().lower()
+        client_host = request.client.host if request.client else "127.0.0.1"
+        is_direct_loopback = (
+            client_host in ("127.0.0.1", "::1", "localhost")
+            and (not real_ip or real_ip in ("127.0.0.1", "::1", "localhost"))
+            and forwarded_proto != "https"
+        )
+        if not is_direct_loopback:
+            expected_token = os.getenv("INTERNAL_SERVICE_TOKEN", "").strip()
+            provided_token = (request.headers.get("x-internal-token") or "").strip()
+            if not expected_token or provided_token != expected_token:
+                logger.warning(f"[SECURITY] Blocked external/proxied unauthenticated RAG request from {real_ip or client_host} to {path}")
+                return JSONResponse(
+                    {"error": "Forbidden: Direct external access to internal RAG microservice is prohibited."},
+                    status_code=403,
+                )
+
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    return response
 
 # Prometheus
 try:
@@ -319,21 +345,89 @@ def _error(message: str, status_code: int = 500, details: str = None) -> JSONRes
 
 
 # ============================================================================
-# CODE EXECUTION SANDBOX
+# CODE EXECUTION SANDBOX & SECURITY VALIDATORS
 # ============================================================================
-_MEM_LIMIT_BYTES = 256 * 1024 * 1024
-_CPU_LIMIT_SECS  = 3
+_MEM_LIMIT_BYTES  = 256 * 1024 * 1024
+_CPU_LIMIT_SECS   = 3
+_FSIZE_LIMIT_BYTES = 10 * 1024 * 1024
+_NPROC_LIMIT      = 32
 
 def _sandbox_preexec():
     try:
-        _resource.setrlimit(_resource.RLIMIT_AS,  (_MEM_LIMIT_BYTES, _MEM_LIMIT_BYTES))
-        _resource.setrlimit(_resource.RLIMIT_CPU, (_CPU_LIMIT_SECS, _CPU_LIMIT_SECS))
+        _resource.setrlimit(_resource.RLIMIT_AS,    (_MEM_LIMIT_BYTES, _MEM_LIMIT_BYTES))
+        _resource.setrlimit(_resource.RLIMIT_CPU,   (_CPU_LIMIT_SECS, _CPU_LIMIT_SECS))
+        _resource.setrlimit(_resource.RLIMIT_FSIZE, (_FSIZE_LIMIT_BYTES, _FSIZE_LIMIT_BYTES))
+        if hasattr(_resource, "RLIMIT_NPROC"):
+            _resource.setrlimit(_resource.RLIMIT_NPROC, (_NPROC_LIMIT, _NPROC_LIMIT))
     except Exception:
-        # Any failure when setting limits should not crash the sandbox helper.
         return
 
+_FORBIDDEN_CODE_PATTERNS = [
+    r"\bimport\s+(subprocess|socket|pty|ctypes|shutil|urllib|requests|http|ftplib|telnetlib|smtplib|multiprocessing)\b",
+    r"\bfrom\s+(subprocess|socket|pty|ctypes|shutil|urllib|requests|http|os)\s+import\b",
+    r"\bos\s*\.\s*(system|popen|spawn|exec|fork|kill|remove|unlink|rmdir|chmod|chown|environ|listdir|walk)\b",
+    r"\b(__import__|eval|exec|compile|open)\s*\(",
+    r"(/etc/passwd|/etc/shadow|\.ssh|\.env|/home/sri|/proc/|/sys/)",
+    r"\b(system|popen|fork|execve|execl|execvp)\s*\(",
+    r"\b(Runtime\.getRuntime|ProcessBuilder)\b",
+]
+
+def _check_code_security(code: str) -> Optional[str]:
+    if not code or len(code) > 100000:
+        return "Security error: Code is empty or exceeds maximum allowed length (100 KB)."
+    for pat in _FORBIDDEN_CODE_PATTERNS:
+        if re.search(pat, code):
+            return "Security error: Code contains restricted system, network, or file-access primitives not permitted in the sandbox."
+    return None
+
+def _is_safe_server_file_path(file_path: str) -> bool:
+    if not file_path or ".." in file_path:
+        return False
+    try:
+        real_target = os.path.realpath(file_path)
+        base_name = os.path.basename(real_target)
+        if base_name.startswith(".") or ".env" in real_target or ".ssh" in real_target or "/certs/" in real_target:
+            return False
+        allowed_roots = [
+            os.path.realpath(os.path.join(SERVER_DIR, "..")),
+            "/tmp",
+        ]
+        return any(real_target.startswith(root + os.sep) for root in allowed_roots)
+    except Exception:
+        return False
+
+def _is_safe_external_url(url: str) -> tuple[bool, str]:
+    import socket as _sock
+    import ipaddress as _ip
+    from urllib.parse import urlparse as _urlparse
+    try:
+        parsed = _urlparse(url.strip())
+        if parsed.scheme not in ("http", "https"):
+            return False, "Only http:// and https:// URLs are permitted."
+        hostname = parsed.hostname
+        if not hostname:
+            return False, "Invalid URL hostname."
+        if hostname.lower() in ("localhost", "127.0.0.1", "::1", "0.0.0.0", "metadata.google.internal"):
+            return False, "Access to local or metadata hosts is blocked (SSRF protection)."
+        addr_info = _sock.getaddrinfo(hostname, None)
+        for item in addr_info:
+            ip_str = item[4][0]
+            ip_obj = _ip.ip_address(ip_str)
+            if (
+                ip_obj.is_loopback
+                or ip_obj.is_private
+                or ip_obj.is_link_local
+                or ip_obj.is_multicast
+                or ip_obj.is_reserved
+                or ip_obj.is_unspecified
+            ):
+                return False, f"URL resolves to a restricted internal/private IP ({ip_str})."
+        return True, "ok"
+    except Exception as e:
+        return False, f"URL validation failed: {e}"
+
 LANGUAGE_CONFIG = {
-    "python": {"filename": "main.py",  "compile_cmd": None, "run_cmd": [sys.executable, "main.py"]},
+    "python": {"filename": "main.py",  "compile_cmd": None, "run_cmd": [sys.executable, "-I", "main.py"]},
     "java":   {"filename": "Main.java","compile_cmd": ["javac", "-Xlint:all", "Main.java"], "run_cmd": ["java", "Main"]},
     "c":      {"filename": "main.c",   "compile_cmd": ["gcc", "main.c", "-o", "main", "-Wall", "-Wextra", "-pedantic"], "run_cmd": ["main"]},
     "cpp":    {"filename": "main.cpp", "compile_cmd": ["g++", "main.cpp", "-o", "main", "-Wall", "-Wextra", "-pedantic"], "run_cmd": ["main"]},
@@ -486,8 +580,19 @@ async def execute_code(body: ExecuteCodeRequest):
     if not lang_config:
         return JSONResponse({"compilationError": f"Language '{language}' is not currently supported for execution."}, status_code=200)
 
+    sec_err = _check_code_security(body.code)
+    if sec_err:
+        logger.warning(f"[SECURITY] Blocked unsafe code in /execute_code: {sec_err}")
+        return JSONResponse({"compilationError": sec_err}, status_code=200)
+
     results = []
     temp_dir = tempfile.mkdtemp()
+    clean_env = {
+        "PATH": "/usr/local/bin:/usr/bin:/bin",
+        "HOME": temp_dir,
+        "LANG": "C.UTF-8",
+        "PYTHONDONTWRITEBYTECODE": "1",
+    }
     try:
         source_path = os.path.join(temp_dir, lang_config["filename"])
         with open(source_path, "w", encoding="utf-8") as f:
@@ -498,7 +603,7 @@ async def execute_code(body: ExecuteCodeRequest):
                 compile_process = await asyncio.to_thread(
                     subprocess.run,
                     lang_config["compile_cmd"],
-                    cwd=temp_dir, capture_output=True, text=True, timeout=10, encoding="utf-8", check=False,
+                    cwd=temp_dir, env=clean_env, capture_output=True, text=True, timeout=10, encoding="utf-8", check=False,
                 )
             except FileNotFoundError:
                 compiler_name = lang_config["compile_cmd"][0]
@@ -526,6 +631,7 @@ async def execute_code(body: ExecuteCodeRequest):
                 # `preexec_fn`, so only include it on POSIX systems.
                 run_kwargs = dict(
                     cwd=temp_dir,
+                    env=clean_env,
                     input=case_input,
                     capture_output=True,
                     text=True,
@@ -979,7 +1085,7 @@ async def search_qdrant_documents(body: QueryRequest):
         course_lower  = _course_raw.lower()
         # Qdrant MatchValue is case-sensitive — try both the original name and
         # lowercase so we match regardless of how the content was indexed.
-        _course_values = list(dict.fromkeys([_course_raw, course_lower, _course_raw.title()]))
+        _course_values = list(dict.fromkeys([_course_raw, course_lower, _course_raw.upper(), _course_raw.title()]))
         course_filter = qdrant_models.Filter(
             should=[
                 qdrant_models.FieldCondition(key="course", match=qdrant_models.MatchValue(value=v))
@@ -987,64 +1093,81 @@ async def search_qdrant_documents(body: QueryRequest):
             ]
         )
 
-        # Build candidate filenames for admin-uploaded PDFs.
-        # Course names from Neo4j have no extension, but stored file_name does —
-        # try the most common permutations so we find the file regardless of case.
-        _admin_pdf_candidates = []
+        # Build unified filter for main Qdrant collection (course_bootstrap MDs/PDFs + admin PDFs)
+        _main_collection_should = []
+        for v in _course_values:
+            _main_collection_should.append(
+                qdrant_models.FieldCondition(key="course_name", match=qdrant_models.MatchValue(value=v))
+            )
+            _main_collection_should.append(
+                qdrant_models.FieldCondition(key="syllabus_course", match=qdrant_models.MatchValue(value=v))
+            )
+            _main_collection_should.append(
+                qdrant_models.FieldCondition(key="course", match=qdrant_models.MatchValue(value=v))
+            )
         for _name in [_course_raw, _course_raw.title(), _course_raw.lower()]:
-            for _ext in [".pdf", ".PDF", ".docx", ".txt", ".md"]:
-                _cand = _name + _ext
-                if _cand not in _admin_pdf_candidates:
-                    _admin_pdf_candidates.append(_cand)
+            for _ext in [".pdf", ".md"]:
+                _main_collection_should.append(
+                    qdrant_models.Filter(must=[
+                        qdrant_models.FieldCondition(key="user_id", match=qdrant_models.MatchValue(value="admin")),
+                        qdrant_models.FieldCondition(key="file_name", match=qdrant_models.MatchValue(value=_name + _ext)),
+                    ])
+                )
+        main_course_filter = qdrant_models.Filter(should=_main_collection_should)
 
         async def _course_vector_search():
+            # Pre-compute and cache the query embedding once before launching parallel collection searches
+            await run_sync(vector_service._cached_encode, body.query)
             # Run all three collection searches in parallel
-            stn_task  = run_sync(
+            stn_task = run_sync(
                 vector_service.search_documents,
                 query=body.query, k=body.k,
                 filter_conditions=course_filter,
                 collection_name=config.STN_QDRANT_COLLECTION
             )
-            ped_task  = run_sync(
+            ped_task = run_sync(
                 vector_service.search_documents,
                 query=body.query, k=body.k,
                 filter_conditions=course_filter,
                 collection_name=config.PEDAGOGICAL_QDRANT_COLLECTION
             )
-
-            # Admin PDF: try candidate filenames sequentially until one matches
-            async def _try_admin_pdf():
-                for candidate in _admin_pdf_candidates:
-                    try:
-                        admin_filter = qdrant_models.Filter(must=[
-                            qdrant_models.FieldCondition(key="user_id",  match=qdrant_models.MatchValue(value="admin")),
-                            qdrant_models.FieldCondition(key="file_name", match=qdrant_models.MatchValue(value=candidate)),
-                        ])
-                        docs, snip, doc_map = await run_sync(
-                            vector_service.search_documents,
-                            query=body.query, k=body.k,
-                            filter_conditions=admin_filter,
-                        )
-                        if docs:
-                            logger.info(f"[RAG] Admin PDF match: '{candidate}' → {len(docs)} chunks")
-                            return docs, snip, doc_map
-                    except Exception as e_pdf:
-                        logger.warning(f"[RAG] Admin PDF search failed for '{candidate}': {e_pdf}")
-                logger.info(f"[RAG] No admin PDF found for course '{_course_raw}' (tried {len(_admin_pdf_candidates)} filenames)")
-                return [], "", {}
-
-            (stn_docs, _, _), (ped_docs, _, _), (pdf_docs, _, _) = await asyncio.gather(
-                stn_task, ped_task, _try_admin_pdf()
+            main_course_task = run_sync(
+                vector_service.search_documents,
+                query=body.query, k=body.k,
+                filter_conditions=main_course_filter,
+                collection_name=vector_service.collection_name
             )
 
-            # Merge: interleave all three sources, cap at k
-            all_docs_typed = []
-            _max_range = max(len(stn_docs), len(ped_docs), len(pdf_docs), 0)
-            for i in range(_max_range):
-                if i < len(stn_docs):  all_docs_typed.append(("stn", stn_docs[i]))
-                if i < len(ped_docs):  all_docs_typed.append(("ped", ped_docs[i]))
-                if i < len(pdf_docs):  all_docs_typed.append(("pdf", pdf_docs[i]))
-            all_docs_typed = all_docs_typed[:body.k]
+            (stn_docs, _, _), (ped_docs, _, _), (pdf_docs, _, _) = await asyncio.gather(
+                stn_task, ped_task, main_course_task
+            )
+            logger.info(
+                f"[RAG] Course '{_course_raw}' multi-collection hits → "
+                f"main_chunks={len(pdf_docs)}, stn={len(stn_docs)}, ped={len(ped_docs)}"
+            )
+
+            # Combine and rank by hybrid STEM score while deduplicating
+            candidates_typed = []
+            seen_prefixes = set()
+            for src_type, doc_list in [("pdf", pdf_docs), ("stn", stn_docs), ("ped", ped_docs)]:
+                for d in doc_list:
+                    meta = d.metadata or {}
+                    text_body = (
+                        meta.get("teaching_context")
+                        or meta.get("content")
+                        or d.page_content
+                        or ""
+                    ).strip()
+                    if not text_body:
+                        continue
+                    sig = text_body[:140].lower()
+                    if sig in seen_prefixes:
+                        continue
+                    seen_prefixes.add(sig)
+                    candidates_typed.append((src_type, d, float(meta.get("score", 0.5))))
+
+            candidates_typed.sort(key=lambda item: item[2], reverse=True)
+            all_docs_typed = [(t, d) for t, d, _ in candidates_typed[:body.k]]
 
             parts = []
             merged_map = {}
@@ -1054,23 +1177,25 @@ async def search_qdrant_documents(body: QueryRequest):
                 if src_type == "pdf":
                     src_label = meta.get("file_name", "Course Document")
                     section   = meta.get("section_context", "")
-                    content   = doc.page_content
+                    content   = doc.page_content or ""
                     preview   = content[:300] + "..." if len(content) > 300 else content
+                    full_chunk = content[:2400]
                     parts.append(
                         f"[{ci}] 📄 {src_label}" +
-                        (f" — {section}" if section else "") +
-                        f"\nContent: {preview}"
+                        (f" — {section}" if section and section != "General Content" else "") +
+                        f" (Score: {meta.get('score', 0.0):.3f})\nContent:\n{full_chunk}"
                     )
                 else:
                     src_label   = meta.get("subtopic_name") or meta.get("subtopic_id") or "Course Note"
                     topic       = meta.get("topic_name", "")
                     content_key = "teaching_context" if "teaching_context" in meta else "content"
-                    content     = meta.get(content_key) or doc.page_content
+                    content     = (meta.get(content_key) or doc.page_content or "")
                     preview     = content[:300] + "..." if len(content) > 300 else content
+                    full_chunk  = content[:2400]
                     parts.append(
                         f"[{ci}] 📚 {src_label}" +
                         (f" → {topic}" if topic else "") +
-                        f"\nContent: {preview}"
+                        f" (Score: {meta.get('score', 0.0):.3f})\nContent:\n{full_chunk}"
                     )
                 merged_map[str(ci)] = {
                     "subject":          src_label,
@@ -1158,6 +1283,10 @@ async def search_qdrant_documents(body: QueryRequest):
 @app.post("/add_document")
 async def add_document_qdrant(body: AddDocumentRequest):
     is_pdf = (body.original_name or "").lower().endswith(".pdf")
+
+    if body.file_path and not _is_safe_server_file_path(body.file_path):
+        logger.warning(f"[SECURITY] Blocked unsafe file_path in /add_document: {body.file_path}")
+        return _error("Forbidden file_path outside allowed workspace directories.", 403)
 
     if body.text_content_override:
         logger.info(f"Adding document '{body.original_name}' (text_content_override), user '{body.user_id}'.")
@@ -1463,14 +1592,15 @@ async def export_podcast_route(body: ExportPodcastRequest):
 
 @app.get("/download_document/{filename}")
 async def download_document_route(filename: str):
-    if ".." in filename:
+    safe_name = os.path.basename(filename)
+    if ".." in filename or not safe_name or safe_name != filename:
         return _error("Invalid filename.", 400)
-    file_path = os.path.join(GENERATED_DOCS_DIR, filename)
-    if not os.path.exists(file_path):
+    file_path = os.path.realpath(os.path.join(GENERATED_DOCS_DIR, safe_name))
+    if not file_path.startswith(os.path.realpath(GENERATED_DOCS_DIR) + os.sep) or not os.path.exists(file_path):
         return _error("File not found.", 404)
     return FileResponse(
         path=file_path,
-        filename=filename,
+        filename=safe_name,
         background=BackgroundTask(os.remove, file_path),
     )
 
@@ -2570,6 +2700,9 @@ async def get_curriculum_visualization_route(course: str):
 @app.post("/process_media_file")
 async def process_media_file_route(body: ProcessMediaRequest):
     logger.info("--- /process_media_file Request ---")
+    if not _is_safe_server_file_path(body.file_path):
+        logger.warning(f"[SECURITY] Blocked unsafe file_path in /process_media_file: {body.file_path}")
+        return _error("Forbidden file_path outside allowed workspace directories.", 403)
     if not os.path.exists(body.file_path):
         return _error(f"File not found at path: {body.file_path}", 404)
     try:
@@ -2599,6 +2732,10 @@ async def process_media_file_route(body: ProcessMediaRequest):
 @app.post("/process_url")
 async def process_url_source_route(body: ProcessURLRequest):
     logger.info("--- /process_url Request ---")
+    is_safe, reason = _is_safe_external_url(body.url)
+    if not is_safe:
+        logger.warning(f"[SECURITY] Blocked SSRF attempt in /process_url ('{body.url}'): {reason}")
+        return _error(f"Blocked unsafe URL: {reason}", 403)
     try:
         extracted_text, final_title, source_type = await run_sync(
             knowledge_engine.process_url_source, body.url, body.user_id
@@ -2917,7 +3054,7 @@ async def generate_skill_tree_question(request: QuestionGenerationRequest):
             sglang_enabled = os.getenv("SGLANG_ENABLED", "true").lower() == "true"
             if sglang_enabled:
                 sglang_url = os.getenv("SGLANG_HEAVY_URL", "http://localhost:8000/v1")
-                sglang_model = os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen2.5-7B-Instruct-AWQ")
+                sglang_model = os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen3-8B-AWQ")
                 from openai import OpenAI
                 client = OpenAI(base_url=sglang_url, api_key="EMPTY")
                 response = client.chat.completions.create(

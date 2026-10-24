@@ -1,6 +1,7 @@
 // server/routes/faculty.js
 const express = require('express');
 const router = express.Router();
+const escapeRegex = (s = '') => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\const router = express.Router();');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
@@ -32,7 +33,7 @@ router.get('/students', authMiddleware, facultyMiddleware, async (req, res) => {
         
         // Scope to department if set
         if (dept && dept.trim() !== '') {
-            query['profile.branch'] = { $regex: new RegExp(dept.trim(), 'i') };
+            query['profile.branch'] = { $regex: new RegExp(escapeRegex(dept.trim()), 'i') };
         }
 
         const students = await User.find(query)
@@ -397,8 +398,16 @@ router.post('/course/generate', authMiddleware, facultyMiddleware, async (req, r
             });
         });
 
-        // Read generated deliverables from disk
+        // Read generated deliverables from disk & remove any duplicate Lecture_XX.md files when L1..L36.md exist
         const courseDir = path.join(projectRoot, 'course_bootstrap', cleanCourseCode);
+        const lecturesDir = path.join(courseDir, 'lectures');
+        if (fs.existsSync(lecturesDir) && fs.existsSync(path.join(lecturesDir, 'L1.md'))) {
+            for (const f of fs.readdirSync(lecturesDir)) {
+                if (/^Lecture_\d+\.md$/i.test(f)) {
+                    try { fs.unlinkSync(path.join(lecturesDir, f)); } catch (_) {}
+                }
+            }
+        }
         const syllabusPath = path.join(courseDir, 'syllabus.csv');
         const auditPath = path.join(courseDir, 'quality_audit_report.json');
         const cqbPath = path.join(courseDir, 'concept_question_bank.json');
@@ -728,7 +737,7 @@ router.post('/course/cli', authMiddleware, facultyMiddleware, async (req, res) =
     try {
         const orConditions = [
             { hash: `gen_${targetCourseId.toUpperCase().replace(/[^A-Z0-9]/g, '_')}` },
-            { courseTitle: { $regex: new RegExp(targetCourseId.replace('_', ' '), 'i') } }
+            { courseTitle: { $regex: new RegExp(escapeRegex(targetCourseId.replace(/_/g, ' ')), 'i') } }
         ];
         if (mongoose.Types.ObjectId.isValid(targetCourseId)) {
             orConditions.unshift({ _id: targetCourseId });

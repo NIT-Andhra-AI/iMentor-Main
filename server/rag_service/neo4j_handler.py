@@ -97,7 +97,7 @@ def _add_nodes_transactional(tx, nodes_param, user_id, document_name):
     return result.single()[0] if result.peek() else 0
 def _add_edges_transactional(tx, edges_param, user_id, document_name):
     valid_edges = [
-        {"from": e["from"].strip(), "to": e["to"].strip(), "relationship": e["relationship"].strip().upper().replace(" ", "_")}
+        {"from": e["from"].strip(), "to": e["to"].strip(), "relationship": re.sub(r"[^A-Z0-9_]", "_", e["relationship"].strip().upper())}
         for e in edges_param if isinstance(e.get("from"), str) and e["from"].strip() and isinstance(e.get("to"), str) and e["to"].strip() and isinstance(e.get("relationship"), str) and e["relationship"].strip()
     ]
     if not valid_edges: return 0

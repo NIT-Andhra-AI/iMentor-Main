@@ -20,6 +20,7 @@ const citationEnrichmentService = require('./citationEnrichmentService');
 const academicSourceService = require('./academicSourceService');
 const semanticScholarService = require('./semanticScholarService');
 const institutionalPdfService = require('./institutionalPdfService');
+const rustComputeClient = require('./rustComputeClient');
 const citationGraphService = require('./citationGraphService');
 const factCheckingService = require('./factCheckingService');
 const researchIntelligenceService = require('./researchIntelligenceService');
@@ -388,7 +389,7 @@ const deepResearchOrchestrator = {
         };
         const fallbackConstraintsL3 = {};
 
-        while (researchConfig.allow_adaptive_fallback && selectedSources.length < researchConfig.target_source_count && !researchIntelligenceService.hasSufficientEvidence(sufficiency) && fallbackStage < 2) {
+        while (researchConfig.allow_adaptive_fallback && selectedSources.length < researchConfig.target_source_count && !researchIntelligenceService.hasSufficientEvidence(sufficiency) && fallbackStage < 4) {
             fallbackStage++;
             if (fallbackStage === 1) {
                 retrievalMode = 'adaptive';

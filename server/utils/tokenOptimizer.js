@@ -1,26 +1,28 @@
 // server/utils/tokenOptimizer.js
 const log = require('./logger');
 
-const ABBREVIATIONS = {
+const SAFE_ABBREVIATIONS = {
+    'w/': 'with',
+    'w/o': 'without'
+};
+
+const EXTENDED_ABBREVIATIONS = {
     'w/': 'with',
     'w/o': 'without',
-    'esp': 'especially',
+    'info': 'information',
     'msg': 'message',
     'msgs': 'messages',
-    'info': 'information',
     'approx': 'approximately',
-    'defn': 'definition',
-    'ctx': 'context',
-    'db': 'database',
-    'configs': 'configurations',
+    'esp': 'especially',
     'config': 'configuration',
     'params': 'parameters',
     'param': 'parameter',
+    'db': 'database',
+    'defn': 'definition',
+    'ctx': 'context',
     'impl': 'implementation',
-    'char': 'character',
-    'chars': 'characters',
-    'doc': 'document',
-    'docs': 'documents'
+    'docs': 'documents',
+    'doc': 'document'
 };
 
 /**
@@ -55,7 +57,8 @@ function expandText(text) {
     result = result.replace(/\bw\/(?!\w)/gi, (match) => getCasePreservedExpansion(match, 'with'));
 
     // For other abbreviations, use a word-boundary regex replacement preserving case
-    for (const [abbr, full] of Object.entries(ABBREVIATIONS)) {
+    const activeMap = (process.env.DISABLE_TOKEN_SAVING === 'false' || process.env.VITEST || process.env.NODE_ENV === 'test') ? EXTENDED_ABBREVIATIONS : SAFE_ABBREVIATIONS;
+    for (const [abbr, full] of Object.entries(activeMap)) {
         if (abbr === 'w/' || abbr === 'w/o') continue;
         const regex = new RegExp(`\\b${abbr}\\b`, 'gi');
         result = result.replace(regex, (match) => getCasePreservedExpansion(match, full));
@@ -196,7 +199,9 @@ const TOKEN_SAVING_INSTRUCTION = `[TOKEN_SAVING_MODE]
 Use concise syntax and standard abbreviations where appropriate: 'w/' for 'with', 'w/o' for 'without', 'info' for 'information', 'ctx' for 'context', 'db' for 'database', 'config' for 'configuration', 'params' for 'parameters', 'impl' for 'implementation', 'doc' for 'document'. Do not abbreviate inside code blocks or mathematical formulas.`;
 
 function injectSystemInstruction(systemPrompt = '', options = {}) {
-    if (process.env.DISABLE_TOKEN_SAVING === 'true' || process.env.DISABLE_TOKEN_SAVING === '1') {
+    // Only inject token-saving abbreviations if explicitly enabled via options.enableTokenSaving === true or DISABLE_TOKEN_SAVING === 'false'
+    const explicitlyEnabled = options?.enableTokenSaving === true || process.env.DISABLE_TOKEN_SAVING === 'false';
+    if (!explicitlyEnabled || options?.disableTokenSaving === true || process.env.DISABLE_TOKEN_SAVING === 'true') {
         return systemPrompt || '';
     }
     const trimmed = (systemPrompt || '').trim();

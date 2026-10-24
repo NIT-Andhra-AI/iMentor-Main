@@ -1,3 +1,4 @@
+import threading
 import uuid
 import logging
 from typing import List, Dict, Tuple, Optional, Any
@@ -80,7 +81,8 @@ class VectorDBService:
         else:
             logger.info("  Hybrid search DISABLED — dense-only search active")
 
-        # In-memory LRU cache for query embeddings (avoids recomputing for repeated queries)
+        # Thread-safe in-memory LRU cache for query embeddings
+        self._encode_lock = threading.Lock()
         self._encode_cache = {}
         self._encode_cache_order = []
         self._encode_cache_max = 512
@@ -90,16 +92,19 @@ class VectorDBService:
         self._sparse_cache_max = 256
 
     def _cached_encode(self, text: str) -> list:
-        """Return cached embedding for text, computing & caching on miss."""
+        """Thread-safe cached embedding for text, computing & caching once on miss."""
         if text in self._encode_cache:
             return self._encode_cache[text]
-        embedding = self.model.encode(text).tolist()
-        self._encode_cache[text] = embedding
-        self._encode_cache_order.append(text)
-        if len(self._encode_cache_order) > self._encode_cache_max:
-            evict = self._encode_cache_order.pop(0)
-            self._encode_cache.pop(evict, None)
-        return embedding
+        with self._encode_lock:
+            if text in self._encode_cache:
+                return self._encode_cache[text]
+            embedding = self.model.encode(text).tolist()
+            self._encode_cache[text] = embedding
+            self._encode_cache_order.append(text)
+            if len(self._encode_cache_order) > self._encode_cache_max:
+                evict = self._encode_cache_order.pop(0)
+                self._encode_cache.pop(evict, None)
+            return embedding
 
     def _recreate_qdrant_collection(self):
         logger.info(f"Attempting to (re)create collection '{self.collection_name}' with vector size {self.vector_dim}.")
@@ -208,6 +213,28 @@ class VectorDBService:
                     f"Attempting to (re)create anyway..."
                 )
             self._recreate_qdrant_collection()
+        self._ensure_payload_indexes()
+
+    def _ensure_payload_indexes(self):
+        """Ensure keyword payload indices exist on all Qdrant collections for fast filtered HNSW search."""
+        collections_to_index = [self.collection_name]
+        for extra_col in [getattr(config, "STN_QDRANT_COLLECTION", None), getattr(config, "PEDAGOGICAL_QDRANT_COLLECTION", None)]:
+            if extra_col and extra_col not in collections_to_index:
+                collections_to_index.append(extra_col)
+        indexed_fields = ["user_id", "course_name", "syllabus_course", "course", "file_name", "topic"]
+        for col_name in collections_to_index:
+            try:
+                for field_name in indexed_fields:
+                    try:
+                        self.client.create_payload_index(
+                            collection_name=col_name,
+                            field_name=field_name,
+                            field_schema=models.PayloadSchemaType.KEYWORD,
+                        )
+                    except Exception:
+                        pass
+            except Exception:
+                pass
 
     def add_processed_chunks(self, processed_chunks: List[Dict[str, Any]]) -> int:
         if not processed_chunks:
@@ -347,7 +374,7 @@ class VectorDBService:
                             filter=filter_conditions,
                         ),
                     ],
-                    query=models.FusionQuery(fusion=models.Fusion.RRF),
+                    query=models.FusionQuery(fusion=getattr(models.Fusion, 'DBSF', models.Fusion.RRF)),
                     limit=k_to_use,
                     with_payload=True,
                 ).points

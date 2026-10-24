@@ -183,22 +183,24 @@ const academicSourceService = {
         return results;
     },
 
-    /** Batch-fetch from Semantic Scholar + 1-Hop Citation Snowballing + Multi-Aggregator (Google Scholar, EuropePMC, OpenReview, DBLP). */
-    async fetchSemanticBatch(queries = [], limitPerQuery = 8, constraints = {}) {
-        const [s2Results, multiAggResults] = await Promise.allSettled([
-            semanticScholarService.retrieveSourcesBulk(queries, limitPerQuery, constraints),
-            openCliAcademicService.fetchMultiAggregatorBatch(queries, Math.max(12, limitPerQuery * 2), constraints)
-        ]);
+    /** Batch-fetch from Semantic Scholar (with optional Multi-Aggregator + Snowballing when not already invoked by orchestrator). */
+    async fetchSemanticBatch(queries = [], limitPerQuery = 8, constraints = {}, options = {}) {
+        const includeMultiAndSnowball = options.includeMultiAndSnowball === true;
+        const tasks = [semanticScholarService.retrieveSourcesBulk(queries, limitPerQuery, constraints)];
+        if (includeMultiAndSnowball) {
+            tasks.push(openCliAcademicService.fetchMultiAggregatorBatch(queries, Math.max(12, limitPerQuery * 2), constraints));
+        }
+        const settled = await Promise.allSettled(tasks);
+        const s2Papers    = settled[0]?.status === 'fulfilled' ? settled[0].value : [];
+        const extraPapers = settled[1]?.status === 'fulfilled' ? settled[1].value : [];
 
-        const s2Papers    = s2Results.status === 'fulfilled' ? s2Results.value : [];
-        const extraPapers = multiAggResults.status === 'fulfilled' ? multiAggResults.value : [];
-
-        // Perform 1-Hop Citation Snowballing on top seed papers
         let snowballed = [];
-        try {
-            snowballed = await semanticScholarService.fetchSnowballCitations([...s2Papers, ...extraPapers], 10);
-        } catch (err) {
-            log.debug('RESEARCH', `[Snowball] skipped: ${err.message}`);
+        if (includeMultiAndSnowball) {
+            try {
+                snowballed = await semanticScholarService.fetchSnowballCitations([...s2Papers, ...extraPapers], 10);
+            } catch (err) {
+                log.debug('RESEARCH', `[Snowball] skipped: ${err.message}`);
+            }
         }
 
         return this._mergeDedup([...s2Papers, ...extraPapers, ...snowballed]);

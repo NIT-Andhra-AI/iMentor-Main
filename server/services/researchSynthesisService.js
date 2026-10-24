@@ -3,21 +3,32 @@ const { LLMRouter } = require('./llmRouterService');
 const citationEnrichmentService = require('./citationEnrichmentService');
 const titleGenerationService = require('./titleGenerationService');
 
+const SHARED_RADIX_SYSTEM_PROMPT = "You are a Senior PhD Research Advisor and Q1 Journal Literature Review Architect. Follow the final task instructions with strict citation grounding.";
+
 const researchSynthesisService = {
+  SHARED_RADIX_SYSTEM_PROMPT,
   /**
    * Build the static shared KV-cache prefix for SGLang RadixAttention (Longest-Prefix-Match).
-   * Keeping this prefix identical across planning, all section generations, and matrix extraction
-   * allows SGLang to reuse >90% of prompt KV cache tokens.
+   * Keeping this prefix and systemPrompt identical across planning, all section generations,
+   * matrix extraction, and follow-up Q&A allows SGLang to reuse >90% of prompt KV cache tokens.
    */
-  buildStaticSharedPrefix(query, citationMap, sourceContext) {
+  buildStaticSharedPrefix(query, citationMapOrSources, sourceContext = '') {
+    let citationMapStr = citationMapOrSources;
+    let sourceContextStr = sourceContext;
+    if (Array.isArray(citationMapOrSources)) {
+      citationMapStr = citationEnrichmentService.buildCitationMapForLLM(citationMapOrSources);
+      sourceContextStr = citationEnrichmentService.buildSourceContextForLLM(citationMapOrSources);
+    } else if (sourceContext && typeof sourceContext === 'object') {
+      sourceContextStr = '';
+    }
     return `=== PHD LITERATURE REVIEW EVIDENCE CORPUS ===
 RESEARCH TOPIC: "${query}"
 
 === VERIFIED CITATION INDEX ===
-${citationMap}
+${citationMapStr || ''}
 
 === FULL-TEXT & ABSTRACT EVIDENCE CORPUS ===
-${sourceContext}
+${sourceContextStr || ''}
 === END OF EVIDENCE CORPUS ===`;
   },
 
@@ -83,7 +94,7 @@ CRITICAL RULES:
       query: planningPrompt + "\n/no_think",
       userId: userId,
       deepResearchContext: false,
-      systemPrompt: "You are a senior PhD thesis advisor and literature review architect. Output strictly valid, compact JSON on a single pass."
+      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
     });
 
     const rawText = typeof planResponse === 'string'
@@ -141,7 +152,7 @@ OUTPUT REQUIREMENTS:
       userId: userId,
       deepResearchContext: false,
       onToken: onToken,
-      systemPrompt: "You are a PhD literature review author writing for a Q1 journal survey paper. Write rigorous, citation-dense academic prose."
+      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
     });
 
     let contentText = typeof sectionContent === 'string'
@@ -231,7 +242,7 @@ Output STRICT JSON only:
         query: matrixPrompt + "\n/no_think",
         userId,
         deepResearchContext: false,
-        systemPrompt: "You are a PhD research methodologist. Output strictly valid JSON with no markdown commentary."
+        systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
       });
 
       const text = typeof rawResp === 'string'
@@ -670,7 +681,7 @@ Requirements:
       query: prompt,
       userId,
       deepResearchContext: true,
-      systemPrompt: "You are a Senior PhD Research Advisor answering follow-up questions strictly grounded in the harvested literature corpus."
+      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
     });
 
     const rawText = typeof rawResp === 'string'
@@ -854,7 +865,7 @@ Output ONLY the refined section body prose (do not repeat the section title head
       query: prompt,
       userId,
       deepResearchContext: true,
-      systemPrompt: "You are a Senior PhD Literature Review Author refining a manuscript section with strict citation grounding."
+      systemPrompt: SHARED_RADIX_SYSTEM_PROMPT
     });
 
     const rawText = typeof rawResp === 'string'

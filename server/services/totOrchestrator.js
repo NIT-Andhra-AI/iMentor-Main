@@ -862,7 +862,7 @@ async function synthesizeFinalAnswer(originalQuery, finalContext, chatHistory, r
 
     const finalSystemPrompt = requestContext.systemPrompt || CHAT_MAIN_SYSTEM_PROMPT();
 
-    if (onToken && requestContext.llmProvider === 'gemini') {
+    if (onToken && ['gemini', 'sglang', 'local_llm', 'ollama', 'groq'].includes(requestContext.llmProvider)) {
         const messagesForStreaming = [
             ...chatHistory.map(m => ({ role: m.role, content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content) })),
             { role: 'user', content: synthesizerUserQuery }
@@ -1163,7 +1163,7 @@ async function processQueryWithToT_Streaming(query, chatHistory, requestContext,
     const thinking = thinkingMatch ? thinkingMatch[1].trim() : null;
     let finalAnswer = thinking ? finalAnswerWithThinking.replace(/<thinking>[\s\S]*?<\/thinking>\s*/i, '').trim() : finalAnswerWithThinking;
 
-    const missingMechanismSignals = !/Core Drivers \(Mechanisms\)|Escalation Chains|Scenario Modeling|Uncertainty Analysis|Key Insight/i.test(finalAnswer);
+    const missingMechanismSignals = isPredictiveQuery(query) && !/Core Drivers \(Mechanisms\)|Escalation Chains|Scenario Modeling|Uncertainty Analysis|Key Insight/i.test(finalAnswer);
     const critiqueWantsRefine = critique?.needsRefinement === true;
     if ((missingMechanismSignals || critiqueWantsRefine) && !requestContext.isInternalCorrection) {
         const refineContext = `${synthesisContext}\n\n[REFINEMENT REQUIRED]\n- Ensure mechanisms and chains are explicit\n- Ensure scenario section has trigger, propagation, global effects, outcome, and qualitative likelihood\n- Ensure uncertainty and key insight are explicit\n- Ensure recommendation suppression rule is respected`;

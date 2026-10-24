@@ -33,7 +33,7 @@ function streamingService() { return _streaming || (_streaming = require('./llmS
 // [Optimization] Prevents concurrent users from hammering the same provider.
 // Each provider gets its own limiter. When one provider's queue is full,
 // the request overflows to the next provider in the fallback chain.
-const CONCURRENCY_SGLANG = parseInt(process.env.LLM_CONCURRENCY_SGLANG, 10) || 3;
+const CONCURRENCY_SGLANG = parseInt(process.env.LLM_CONCURRENCY_SGLANG, 10) || 8;
 const CONCURRENCY_GEMINI = parseInt(process.env.LLM_CONCURRENCY_GEMINI, 10) || 3;
 const CONCURRENCY_GROQ   = parseInt(process.env.LLM_CONCURRENCY_GROQ,   10) || 3;
 const HIGH_WATER_MARK    = parseInt(process.env.LLM_QUEUE_MAX_DEPTH,     10) || 20;
@@ -301,26 +301,13 @@ async function callWithFallback({
                         options: { ...callOptions, handleThinkingTags: thinkEnabled }
                     });
                 } else if (provider === 'sglang' || provider === 'local_llm') {
-                    // SGLang direct REST call
-                    const axios = require('axios');
-                    const messages = [];
-                    if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
-                    messages.push(...chatHistory.map(m => ({
-                        role: m.role === 'model' ? 'assistant' : m.role,
-                        content: Array.isArray(m.parts) ? m.parts[0].text : (m.text || m.content || '')
-                    })));
-                    const userContent = options.think === true ? userQuery : `${userQuery} /no_think`;
-                    messages.push({ role: 'user', content: userContent });
-                    const sglangUrl = process.env.SGLANG_CHAT_URL || 'http://localhost:8000/v1';
-                    const resp = await axios.post(`${sglangUrl}/chat/completions`, {
+                    const sglangService = require('./sglangService');
+                    return await sglangService.generateContentWithHistory(chatHistory, userQuery, systemPrompt, {
+                        ...callOptions,
                         model,
-                        messages,
-                        max_tokens: options.maxOutputTokens ?? 1024,
-                        temperature: callOptions.temperature ?? 0.7,
-                        stream: false,
-                        ...(options.think === true ? {} : { chat_template_kwargs: { enable_thinking: false } })
-                    }, { timeout: 30000 });
-                    return resp.data?.choices?.[0]?.message?.content || '';
+                        maxOutputTokens: options.maxOutputTokens ?? 2048,
+                        enableThinking: options.think === true
+                    });
                 } else {
                     const svc = getServiceForProvider(provider);
                     if (!svc) throw new Error(`No service implementation for provider "${provider}"`);

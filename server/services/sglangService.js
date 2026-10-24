@@ -164,18 +164,16 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
     const tokenOptimizer = require('../utils/tokenOptimizer');
     const thinkingDecision = evaluateThinkingStrategy(userQuery, endpoint, options);
 
-    let effectiveSystemPrompt = systemPrompt || '';
-    if (thinkingDecision.enableThinking) {
-        effectiveSystemPrompt += '\n[Thinking Strategy: Before answering, briefly dissect the core mathematical/engineering steps in 3-5 concise bullet points (<150 tokens) inside <think>...</think>, then present a clear, structured final response.]';
-    }
-
+    const effectiveSystemPrompt = systemPrompt || '';
     const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(effectiveSystemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
-    const noThinkSuffix = !thinkingDecision.enableThinking && !optimizedUserQuery.includes('/no_think') ? ' /no_think' : '';
+    const thinkSuffix = thinkingDecision.enableThinking
+        ? '\n[Thinking Strategy: Before answering, briefly dissect the core mathematical/engineering steps in 3-5 concise bullet points (<150 tokens) inside <think>...</think>, then present a clear, structured final response.]'
+        : (!optimizedUserQuery.includes('/no_think') ? ' /no_think' : '');
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
-    messages.push({ role: 'user', content: optimizedUserQuery + noThinkSuffix });
+    messages.push({ role: 'user', content: optimizedUserQuery + thinkSuffix });
 
     const modelMaxContext = sglangCaps.getModelMaxContext(16384);
     const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 2560;
@@ -267,18 +265,16 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
     const tokenOptimizer = require('../utils/tokenOptimizer');
     const thinkingDecision = evaluateThinkingStrategy(userQuery, endpoint, options);
 
-    let effectiveSystemPrompt = systemPrompt || '';
-    if (thinkingDecision.enableThinking) {
-        effectiveSystemPrompt += '\n[Thinking Strategy: Dissect the problem and outline your plan in 3-5 concise bullet points (<160 tokens) inside <think>...</think>, then write the complete response.]';
-    }
-
+    const effectiveSystemPrompt = systemPrompt || '';
     const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(effectiveSystemPrompt, options));
     const optimizedUserQuery = tokenOptimizer.minifyPrompt(userQuery);
     const optimizedHistory = tokenOptimizer.optimizeIncomingMessages(chatHistory || []);
 
-    const noThinkSuffix = !thinkingDecision.enableThinking && !optimizedUserQuery.includes('/no_think') ? ' /no_think' : '';
+    const thinkSuffix = thinkingDecision.enableThinking
+        ? '\n[Thinking Strategy: Dissect the problem and outline your plan in 3-5 concise bullet points (<160 tokens) inside <think>...</think>, then write the complete response.]'
+        : (!optimizedUserQuery.includes('/no_think') ? ' /no_think' : '');
     const messages = _formatHistory(optimizedHistory, optimizedSystemPrompt);
-    messages.push({ role: 'user', content: optimizedUserQuery + noThinkSuffix });
+    messages.push({ role: 'user', content: optimizedUserQuery + thinkSuffix });
 
     const modelMaxContext = sglangCaps.getModelMaxContext(16384);
     const reqMaxTokens = options.maxTokens || options.maxOutputTokens || 3072;
@@ -448,13 +444,23 @@ async function streamChat(chatHistory, userQuery, systemPrompt = null, options =
 /**
  * Check SGLang endpoint health (ping /models).
  */
+const _healthCache = new Map();
+const HEALTH_CACHE_TTL_MS = 30000;
+
 async function checkHealth(endpoint = 'chat') {
     if (!SGLANG_ENABLED) return false;
+    const now = Date.now();
+    const cached = _healthCache.get(endpoint);
+    if (cached && (now - cached.ts) < HEALTH_CACHE_TTL_MS) {
+        return cached.ok;
+    }
     try {
         const client = _getClient(endpoint);
         await client.models.list({ timeout: 2000 });
+        _healthCache.set(endpoint, { ok: true, ts: now });
         return true;
     } catch (e) {
+        _healthCache.set(endpoint, { ok: false, ts: now });
         log.warn('AI', `[SGLang] Health check failed for endpoint=${endpoint}: ${e.message}`);
         return false;
     }

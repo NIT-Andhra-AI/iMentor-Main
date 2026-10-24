@@ -592,26 +592,14 @@ const LLMRouter = {
           const safetyBuffer = 200;
           const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - safetyBuffer);
           const adjustedMaxTokens = Math.min(llmOptions.maxOutputTokens || 4096, availableForCompletion);
+          const svc = chosenModel._sglangService || sglangService;
           
-          log.info('AI', `[SGLang Deep Research] Token budget: input≈${estimatedInputTokens} + completion=${adjustedMaxTokens} ≈ ${estimatedInputTokens + adjustedMaxTokens} / ${modelMaxContext}`);
+          log.info('AI', `[SGLang Stream] Token budget: input≈${estimatedInputTokens} + completion=${adjustedMaxTokens} ≈ ${estimatedInputTokens + adjustedMaxTokens} / ${modelMaxContext}`);
           
-          return await chosenModel._sglangService.streamChat(
+          return await svc.streamChat(
             truncatedChatHistory, truncatedUserQuery, systemPrompt,
-            { model: chosenModel.modelId, ollamaUrl: chosenModel.workingUrl, maxTokens: adjustedMaxTokens },
+            { ...llmOptions, model: chosenModel.modelId, ollamaUrl: chosenModel.workingUrl, maxTokens: adjustedMaxTokens },
             onToken
-          );
-        }
-
-        if (chosenModel.provider === 'sglang') {
-          return await sglangService.streamChat(
-            truncatedChatHistory,
-            truncatedUserQuery,
-            systemPrompt,
-            llmOptions,
-            (token) => {
-              if (typeof token === 'string') onToken({ type: 'token', content: token });
-              else onToken(token);
-            }
           );
         }
 
@@ -631,7 +619,7 @@ const LLMRouter = {
       const finalUserQuery = optimizedMessages[optimizedMessages.length - 1]?.content || query;
       const finalChatHistory = optimizedMessages.slice(0, -1);
 
-      const llmService = chosenModel.provider === 'sglang'
+      const llmService = (chosenModel.provider === 'sglang' && chosenModel._sglangService)
           ? chosenModel._sglangService
           : sglangService;
 

@@ -162,11 +162,12 @@ async function resolveLlmClient(user, temperature = 0.3) {
         userLocalLlmUrl: ollamaUrl,
     });
 
-    const activeProvider = providerResolution.chosenProvider;
+    const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+    const activeProvider = isLocalOnly ? 'sglang' : providerResolution.chosenProvider;
     let llmService = sglangService;
     let llmOptions = { temperature };
 
-    if (activeProvider === 'sglang' || activeProvider === 'local_llm' || activeProvider === 'ollama') {
+    if (isLocalOnly || activeProvider === 'sglang' || activeProvider === 'local_llm' || activeProvider === 'ollama') {
         llmService = sglangService;
         llmOptions = {
             model: process.env.SGLANG_MODEL || 'Qwen/Qwen3-8B-AWQ',

@@ -9,11 +9,21 @@ const log = require('../utils/logger');
 
 // Local LLM runner with Gemini fallback
 async function getLlmCompletion(systemPrompt, userPrompt) {
+    const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
     try {
+        if (isLocalOnly || process.env.SGLANG_ENABLED === 'true') {
+            log.info('CUSTOM_CLI', 'Routing task to local SGLang GPU (Qwen)');
+            const raw = await sglangService.generateContentWithHistory([], userPrompt, systemPrompt, {
+                model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                enableThinking: false,
+                maxOutputTokens: 800
+            });
+            return String(raw || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+        }
         log.info('CUSTOM_CLI', 'Routing task to Gemini 2.5 Flash API');
         return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.5-flash' });
     } catch (err) {
-        log.warn('CUSTOM_CLI', `Gemini generation error: ${err.message}`);
+        log.warn('CUSTOM_CLI', `LLM generation error: ${err.message}`);
         return `THOUGHT: Applied requested modifications to course topics.\nACTION: FINISH\nARGS: Curriculum updated successfully with requested modifications.`;
     }
 }

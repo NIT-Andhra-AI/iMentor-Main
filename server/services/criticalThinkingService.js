@@ -6,7 +6,7 @@ const groqService = require('./groqService');
 const { CRITICAL_THINKING_CUE_TEMPLATE } = require('../config/promptTemplates');
 
 const CUE_GEMINI_MODEL = process.env.PROMPT_COACH_GEMINI_MODEL || 'gemini-2.0-flash';
-const CUE_OLLAMA_MODEL = process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b';
+const CUE_OLLAMA_MODEL = process.env.SGLANG_CHAT_MODEL || process.env.OLLAMA_DEFAULT_MODEL || 'Qwen/Qwen3-8B-AWQ';
 const CUE_GROQ_MODEL = process.env.PROMPT_COACH_GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 /**
@@ -20,21 +20,24 @@ async function generateCues(aiAnswerText, llmConfig) {
         return null;
     }
 
-    const { llmProvider, ollamaUrl, apiKey } = llmConfig;
-    const llmService = llmProvider === 'ollama' ? sglangService : (llmProvider === 'groq' ? groqService : geminiService);
+    const { llmProvider, ollamaUrl, apiKey } = llmConfig || {};
+    const useLocal = process.env.LOCAL_GPU_ONLY !== 'false' || llmProvider === 'sglang' || llmProvider === 'local_llm' || llmProvider === 'ollama';
+    const llmService = useLocal ? sglangService : (llmProvider === 'groq' ? groqService : geminiService);
 
     const promptForLlm = CRITICAL_THINKING_CUE_TEMPLATE.replace('{aiAnswer}', aiAnswerText.substring(0, 2000));
 
     const llmOptions = {
-        model: llmProvider === 'ollama' ? CUE_OLLAMA_MODEL : (llmProvider === 'groq' ? CUE_GROQ_MODEL : CUE_GEMINI_MODEL),
+        model: useLocal ? CUE_OLLAMA_MODEL : (llmProvider === 'groq' ? CUE_GROQ_MODEL : CUE_GEMINI_MODEL),
         apiKey: apiKey,
         ollamaUrl: ollamaUrl,
-        temperature: 0.4
+        temperature: 0.4,
+        ...(useLocal ? { enableThinking: false, jsonMode: true, maxOutputTokens: 350 } : {})
     };
 
     try {
-        log.info('AI', `Generating critical thinking cues via ${llmProvider}`);
-        const responseText = await llmService.generateContentWithHistory([], promptForLlm, null, llmOptions);
+        log.info('AI', `Generating critical thinking cues via ${useLocal ? 'sglang' : llmProvider}`);
+        const rawCues = await llmService.generateContentWithHistory([], promptForLlm, null, llmOptions);
+        const responseText = String(rawCues || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
 
         // --- THIS IS THE FIX (More Robust JSON Extraction) ---
         let jsonString = '';

@@ -5,6 +5,7 @@
 
 const ChatHistory = require('../models/ChatHistory');
 const geminiService = require('./geminiService');
+const sglangService = require('./sglangService');
 
 async function learnFromPatterns(userId) {
     console.log(`[PatternLearner] Analyzing reasoning history for user: ${userId}`);
@@ -26,9 +27,16 @@ async function learnFromPatterns(userId) {
         Provide a "Reasoning Optimization Instruction" (ROI) that can be added to the system prompt to improve future accuracy.
         `;
 
-        const roi = await geminiService.generateContentWithHistory(
-            [], analysisPrompt, "You are a meta-cognitive analyst.", { maxOutputTokens: 200 }
-        );
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        const rawRoi = isLocalOnly
+            ? await sglangService.generateContentWithHistory(
+                [], analysisPrompt, "You are a meta-cognitive analyst.",
+                { model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ', maxOutputTokens: 240, enableThinking: false }
+            )
+            : await geminiService.generateContentWithHistory(
+                [], analysisPrompt, "You are a meta-cognitive analyst.", { maxOutputTokens: 200 }
+            );
+        const roi = String(rawRoi || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
 
         console.log(`[PatternLearner] Derived ROI: ${roi}`);
         return roi;

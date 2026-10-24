@@ -135,16 +135,19 @@ async function extractAndStoreKgFromText(text, sessionId, userId, llmConfig, cou
     // KG extraction is complex, so we use the 'technical' subject for routing help
     const { chosenModel } = await selectLLM(text, { userId, subject: 'technical' });
 
+    const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+    const useSglang = isLocalOnly || chosenModel.provider === 'sglang' || chosenModel.provider === 'local_llm' || chosenModel.provider === 'ollama';
     let llmService;
-    if (chosenModel.provider === 'ollama') llmService = sglangService;
+    if (useSglang) llmService = sglangService;
     else if (chosenModel.provider === 'groq') llmService = groqService;
     else llmService = geminiService;
 
     const finalLlmOptions = {
-      apiKey: chosenModel.provider === 'gemini' ? (user.encryptedApiKey ? decrypt(user.encryptedApiKey) : process.env.GEMINI_API_KEY) : (chosenModel.provider === 'groq' ? process.env.GROQ_API_KEY : null),
-      ollamaUrl: user.ollamaUrl || process.env.OLLAMA_API_BASE_URL,
-      model: chosenModel.modelId,
+      apiKey: !useSglang && chosenModel.provider === 'gemini' ? (user.encryptedApiKey ? decrypt(user.encryptedApiKey) : process.env.GEMINI_API_KEY) : (!useSglang && chosenModel.provider === 'groq' ? process.env.GROQ_API_KEY : null),
+      ollamaUrl: user.ollamaUrl || process.env.SGLANG_CHAT_URL || process.env.OLLAMA_API_BASE_URL,
+      model: useSglang ? (chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ') : chosenModel.modelId,
       temperature: 0.2,
+      ...(useSglang ? { enableThinking: false, jsonMode: true, maxOutputTokens: 1600 } : {})
     };
 
     log.info('DB', `Extracting KG via ${chosenModel.provider.toUpperCase()}`);

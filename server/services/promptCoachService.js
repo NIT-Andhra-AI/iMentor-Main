@@ -7,7 +7,7 @@ const { decrypt } = require('../utils/crypto');
 const { resolveProviderByPreference } = require('./providerPriorityService');
 
 const COACH_GEMINI_MODEL = process.env.PROMPT_COACH_GEMINI_MODEL || 'gemini-2.0-flash';
-const COACH_SGLANG_MODEL = process.env.PROMPT_COACH_SGLANG_MODEL || 'qwen3.5:9b';
+const COACH_SGLANG_MODEL = process.env.PROMPT_COACH_SGLANG_MODEL || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
 const COACH_GROQ_MODEL = process.env.PROMPT_COACH_GROQ_MODEL || 'llama-3.1-8b-instant';
 
 /**
@@ -45,13 +45,18 @@ async function analyzePrompt(userId, userPrompt) {
 
     console.log(`[PromptCoachService] Analyzing prompt for user ${userId} using provider: ${activeProvider} (preferred: ${preferredLlmProvider})`);
 
+    const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
     try {
-        if (activeProvider === 'sglang') {
+        if (isLocalOnly || activeProvider === 'sglang' || activeProvider === 'local_llm' || activeProvider === 'ollama') {
             llmOptions = {
                 model: COACH_SGLANG_MODEL,
-                localLlmUrl: providerResolution.workingLocalLlmUrl || localLlmUrl
+                localLlmUrl: providerResolution.workingLocalLlmUrl || localLlmUrl,
+                enableThinking: false,
+                jsonMode: true,
+                maxOutputTokens: 450
             };
-            responseText = await sglangService.generateContentWithHistory([], promptForLlm, null, llmOptions);
+            const rawCoach = await sglangService.generateContentWithHistory([], promptForLlm, null, llmOptions);
+            responseText = String(rawCoach || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
         } else if (activeProvider === 'groq') {
             const apiKey = providerResolution.apiKey;
             llmOptions = {

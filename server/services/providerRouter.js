@@ -25,8 +25,8 @@ const sglangService = require('./sglangService');
 const PROVIDER_TIMEOUTS = {
     gemini: 30000,      // 30 second timeout
     groq: 25000,        // 25 second timeout
-    sglang: 20000,      // 20 second timeout
-    ollama: 15000       // 15 second timeout
+    sglang: 90000,      // 90 second classroom-safe timeout
+    ollama: 60000       // 60 second timeout
 };
 
 const PROVIDER_HEALTH = {
@@ -44,29 +44,24 @@ const MAX_ERRORS_BEFORE_FALLBACK = 3;
  * @returns {string[]} Provider names in priority order
  */
 function getProviderPriority() {
+    if (process.env.LOCAL_GPU_ONLY !== 'false') {
+        return ['sglang'];
+    }
     const geminiKey = process.env.GEMINI_API_KEY;
     const groqKey = process.env.GROQ_API_KEY;
     const sglangUrl = process.env.SGLANG_CHAT_URL;
-    const ollamaUrl = process.env.OLLAMA_API_BASE_URL;
 
     const priority = [];
 
-    // Gemini only if API key is set AND validated
-    if (geminiKey && process.env.GEMINI_API_VALIDATED === 'true') {
-        priority.push('gemini');
-    }
-
-    // Groq if key is set
-    if (groqKey) {
-        priority.push('groq');
-    }
-
-    // SGLang if URL is set and enabled
     if (sglangUrl && process.env.SGLANG_ENABLED === 'true') {
         priority.push('sglang');
     }
-
-    // Ollama always available as final fallback
+    if (geminiKey && process.env.GEMINI_API_VALIDATED === 'true') {
+        priority.push('gemini');
+    }
+    if (groqKey) {
+        priority.push('groq');
+    }
     priority.push('ollama');
 
     return priority;

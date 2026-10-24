@@ -45,13 +45,20 @@ async function _processBatchOfChunksForKg(batchOfChunkObjects, batchIndex, llmPr
         log.info('DB', `Extracting KG from ${chunkTextsForPrompt.length} chunks (${llmProvider})`);
         let responseText;
 
-        if (llmProvider === 'ollama') {
-            responseText = await sglangService.generateContentWithHistory(
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        if (isLocalOnly || llmProvider === 'sglang' || llmProvider === 'local_llm' || llmProvider === 'ollama') {
+            const rawKg = await sglangService.generateContentWithHistory(
                 historyForLlm,
-                userPromptForBatch, // Pass the chunks as the "current query"
-                KG_GENERATION_SYSTEM_PROMPT, // Pass the KG instructions as the system prompt
-                { model: ollamaModel, maxOutputTokens: sglangService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG }
+                userPromptForBatch,
+                KG_GENERATION_SYSTEM_PROMPT,
+                {
+                    model: ollamaModel || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                    maxOutputTokens: sglangService.DEFAULT_MAX_OUTPUT_TOKENS_OLLAMA_KG || 2048,
+                    enableThinking: false,
+                    jsonMode: true
+                }
             );
+            responseText = String(rawKg || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
         } else if (llmProvider === 'groq') {
             responseText = await groqService.generateContentWithHistory(
                 historyForLlm,

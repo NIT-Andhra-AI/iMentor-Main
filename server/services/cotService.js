@@ -57,12 +57,12 @@ function getNativeThinkingConfig(llmProvider, llmOptions = {}) {
         };
     }
     
-    // Ollama with Qwen3 / DeepSeek-R1 — supports think: true 
-    if (llmProvider === 'ollama' && /qwen3|deepseek.*r1|qwq/.test(modelId)) {
+    // Local SGLang / Ollama with Qwen3 / DeepSeek-R1 — supports native thinking
+    if ((llmProvider === 'sglang' || llmProvider === 'ollama') && /qwen3|deepseek.*r1|qwq/.test(modelId)) {
         return {
             useNative: true,
             ollamaThink: true,
-            provider: 'ollama'
+            provider: llmProvider
         };
     }
     
@@ -84,7 +84,8 @@ function getNativeThinkingConfig(llmProvider, llmOptions = {}) {
  */
 async function generateStructuredStep(stepDescription, context, options = {}) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
+    const isLocal = process.env.LOCAL_GPU_ONLY !== 'false' || llmProvider === 'sglang' || llmProvider === 'local_llm' || llmProvider === 'ollama';
+    const llmService = isLocal ? sglangService : geminiService;
     
     // --- Tier Check: skip CoT for trivial queries ---
     const tier = classifyReasoningTier(stepDescription, context, options);
@@ -214,7 +215,8 @@ Your task is to provide a detailed, accurate thought process for the following s
  */
 async function triggerReflection(initialResult, stepDescription, context, options) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
+    const isLocal = process.env.LOCAL_GPU_ONLY !== 'false' || llmProvider === 'sglang' || llmProvider === 'local_llm' || llmProvider === 'ollama';
+    const llmService = isLocal ? sglangService : geminiService;
 
     const reflectionPrompt = `You previously generated this thought for the task "${stepDescription}":
 "${initialResult.thought}"
@@ -261,7 +263,8 @@ RETURN ONLY THE JSON OBJECT WITH THE CORRECTED FLAG SET TO TRUE.
  */
 async function generateReActStep(stepDescription, context, availableTools = {}, options = {}) {
     const { llmProvider, llmOptions } = options;
-    const llmService = llmProvider === 'ollama' ? sglangService : geminiService;
+    const isLocal = process.env.LOCAL_GPU_ONLY !== 'false' || llmProvider === 'sglang' || llmProvider === 'local_llm' || llmProvider === 'ollama';
+    const llmService = isLocal ? sglangService : geminiService;
 
     const toolDescriptions = Object.entries(availableTools)
         .map(([name, tool]) => `- ${name}: ${tool.description} (Params: ${tool.requiredParams.join(', ')})`)

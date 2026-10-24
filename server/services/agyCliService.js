@@ -152,6 +152,14 @@ async function generateContentWithHistory(chatHistory, currentUserQuery, systemP
     if (!currentUserQuery || typeof currentUserQuery !== "string" || !currentUserQuery.trim()) {
         throw new Error("currentUserQuery must be a non-empty string.");
     }
+    if (process.env.LOCAL_GPU_ONLY === 'true' && !process.env.VITEST) {
+        log.info("AI", "[LOCAL_GPU_ONLY Firewall] Redirecting agyCliService call to local sglangService");
+        const sglangService = require("./sglangService");
+        return sglangService.generateContentWithHistory(chatHistory, currentUserQuery, systemPromptText, {
+            ...options,
+            model: process.env.SGLANG_CHAT_MODEL || "Qwen/Qwen3-8B-AWQ"
+        });
+    }
 
     const modelToUse = resolveAgyModel(options.geminiModel || options.model || DEFAULT_AGY_MODEL);
     const optimizedSystemPrompt = tokenOptimizer.minifyPrompt(tokenOptimizer.injectSystemInstruction(systemPromptText, options));
@@ -191,6 +199,23 @@ async function generateContentWithVision(textPrompt, imageData, options = {}) {
 }
 
 async function streamChat({ messages = [], model = DEFAULT_AGY_MODEL, systemPrompt = null, onToken, options = {} }) {
+    if (process.env.LOCAL_GPU_ONLY === 'true' && !process.env.VITEST) {
+        log.info("AI", "[LOCAL_GPU_ONLY Firewall] Redirecting agyCliService.streamChat to local sglangService");
+        const sglangService = require("./sglangService");
+        const history = messages.slice(0, -1).map((m) => ({
+            role: m.role === "assistant" ? "model" : "user",
+            content: m.content || ""
+        }));
+        const currentQuery = messages[messages.length - 1]?.content || "";
+        const res = await sglangService.streamChat(
+            history,
+            currentQuery,
+            systemPrompt,
+            { ...options, model: process.env.SGLANG_CHAT_MODEL || "Qwen/Qwen3-8B-AWQ" },
+            onToken
+        );
+        return res?.finalAnswer || res;
+    }
     const history = messages.slice(0, -1).map((m) => ({
         role: m.role === "assistant" ? "model" : "user",
         content: m.content || ""

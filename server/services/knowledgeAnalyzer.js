@@ -156,44 +156,46 @@ Return a JSON object with:
 Be precise. Return only valid JSON.`;
 
         try {
-            // Use fast LLM for analysis
+            // Use local SGLang GPU first (strictly local when LOCAL_GPU_ONLY is active)
             let analysis = null;
-            
-            // Try Groq first (fast)
+            const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+            const sglangService = require('./sglangService');
+
             try {
-                const result = await groqService.generateContentWithHistory(
+                const rawResult = await sglangService.generateContentWithHistory(
                     [],
                     prompt,
                     'You are an educational analyst providing structured JSON analysis.',
                     {
-                        model: 'llama-3.1-70b-versatile',
-                        apiKey: process.env.GROQ_API_KEY,
-                        temperature: 0.3,
-                        max_tokens: 300
+                        model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                        temperature: 0.2,
+                        enableThinking: false,
+                        jsonMode: true,
+                        maxOutputTokens: 320
                     }
                 );
-                
-                const jsonMatch = result.match(/\{[\s\S]*\}/);
+                const cleaned = String(rawResult || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '');
+                const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
                 if (jsonMatch) {
                     analysis = JSON.parse(jsonMatch[0]);
                 }
-            } catch (e) {
-                log.warn('KNOWLEDGE_ANALYZER', `Groq analysis failed, trying Gemini: ${e.message}`);
-                
-                // Fallback to Gemini
-                const result = await geminiService.generateContentWithHistory(
-                    [],
-                    prompt,
-                    'You are an educational analyst providing structured JSON analysis.',
-                    {
-                        apiKey: process.env.GEMINI_API_KEY,
-                        geminiModel: 'gemini-flash-latest'
-                    }
-                );
-                
-                const jsonMatch = result.match(/\{[\s\S]*\}/);
-                if (jsonMatch) {
-                    analysis = JSON.parse(jsonMatch[0]);
+            } catch (localErr) {
+                if (isLocalOnly) throw localErr;
+                log.warn('KNOWLEDGE_ANALYZER', `Local SGLang analysis failed, trying cloud fallback: ${localErr.message}`);
+                try {
+                    const result = await groqService.generateContentWithHistory(
+                        [], prompt, 'You are an educational analyst providing structured JSON analysis.',
+                        { model: 'llama-3.1-70b-versatile', apiKey: process.env.GROQ_API_KEY, temperature: 0.3, max_tokens: 300 }
+                    );
+                    const jsonMatch = result.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) analysis = JSON.parse(jsonMatch[0]);
+                } catch (e) {
+                    const result = await geminiService.generateContentWithHistory(
+                        [], prompt, 'You are an educational analyst providing structured JSON analysis.',
+                        { apiKey: process.env.GEMINI_API_KEY, geminiModel: 'gemini-flash-latest' }
+                    );
+                    const jsonMatch = result.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) analysis = JSON.parse(jsonMatch[0]);
                 }
             }
 

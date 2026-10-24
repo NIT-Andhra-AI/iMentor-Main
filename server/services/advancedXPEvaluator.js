@@ -45,26 +45,31 @@ Return ONLY a JSON object in this exact format:
             const routingResult = await selectLLM(prompt, { userId, subject: topic });
             chosenModel = routingResult.chosenModel;
         } catch (routerError) {
-            log.warn('XP_EVAL', `LLM Router selection failed, using default Gemini: ${routerError.message}`);
-            chosenModel = { provider: 'gemini', modelId: 'gemini-2.0-flash' };
+            log.warn('XP_EVAL', `LLM Router selection failed, using local SGLang: ${routerError.message}`);
+            chosenModel = { provider: 'sglang', modelId: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ' };
         }
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
         let evaluationText;
         let generationSuccess = false;
         // 1. SGLang/Ollama
-        if (chosenModel.provider === 'sglang') {
+        if (isLocalOnly || chosenModel.provider === 'sglang' || chosenModel.provider === 'ollama') {
             try {
                 const sglangService = require('./sglangService');
-                evaluationText = await sglangService.generateContentWithHistory([], prompt, null, {
-                    model: chosenModel.modelId || 'Qwen/Qwen3-8B-AWQ',
-                    temperature: 0.2
+                const rawEval = await sglangService.generateContentWithHistory([], prompt, null, {
+                    model: chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                    temperature: 0.2,
+                    enableThinking: false,
+                    jsonMode: true,
+                    maxOutputTokens: 180
                 });
-                generationSuccess = true;
+                evaluationText = String(rawEval || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+                generationSuccess = Boolean(evaluationText);
             } catch (sglangError) {
                 log.warn('XP_EVAL', `SGLang evaluation failed: ${sglangError.message}`);
             }
         }
         // 2. Groq
-        else if (chosenModel.provider === 'groq') {
+        else if (!isLocalOnly && chosenModel.provider === 'groq') {
             try {
                 const apiKey = process.env.GROQ_API_KEY;
                 if (apiKey) {
@@ -79,8 +84,8 @@ Return ONLY a JSON object in this exact format:
                 log.warn('XP_EVAL', `Groq evaluation failed: ${groqError.message}`);
             }
         }
-        // 3. Fallback: Gemini
-        if (!generationSuccess) {
+        // 3. Fallback: Gemini (disabled when LOCAL_GPU_ONLY)
+        if (!generationSuccess && !isLocalOnly) {
             try {
                 const apiKey = process.env.GEMINI_API_KEY;
                 if (!apiKey) {

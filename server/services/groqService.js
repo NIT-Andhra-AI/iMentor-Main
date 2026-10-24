@@ -32,6 +32,14 @@ async function generateContentWithHistory(
     systemPromptText = null,
     options = {}
 ) {
+    if (process.env.LOCAL_GPU_ONLY === 'true' && !process.env.VITEST) {
+        log.info('AI', '[LOCAL_GPU_ONLY Firewall] Redirecting groqService call to local sglangService');
+        const sglangService = require('./sglangService');
+        return sglangService.generateContentWithHistory(chatHistory, currentUserQuery, systemPromptText, {
+            ...options,
+            model: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ'
+        });
+    }
     const apiKeyToUse = options.apiKey || SERVER_API_KEY || null;
     const modelToUse = options.model || DEFAULT_MODEL_NAME;
 

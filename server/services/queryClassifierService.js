@@ -19,7 +19,7 @@ const { routeQuery, mapIntentToRoute } = require('./semanticRouter'); // [Team9]
 const { getSemanticRoute } = require('./semanticRouterService'); // [Optimization] Fix: was ReferenceError — function was called but never imported
 const { routerMethodCounter, routerCacheCounter } = require('../utils/metrics');
 
-const _RAG_SERVICE_URL = () => (process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2001').trim();
+const _RAG_SERVICE_URL = () => (process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006').trim();
 
 // ── Route → queryClassifier category mapping ──────────────────────────────────
 const SEMANTIC_ROUTE_TO_CATEGORY = {
@@ -247,12 +247,13 @@ async function classifyQuery(query, config = {}) {
         // Priority: SGLang (already-hot GPU) → Ollama (CPU fallback) → Gemini
         const prompt = buildClassificationPrompt(query);
 
-        // Model priority: SGLang (hot GPU, ~50-100ms) → Gemini
+        // Model priority: SGLang (hot GPU, strictly local when LOCAL_GPU_ONLY is active)
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
         const modelsToTry = [];
-        if (process.env.SGLANG_ENABLED === 'true') {
-            modelsToTry.push({ provider: 'sglang', name: process.env.SGLANG_CHAT_MODEL || 'QuantTrio/Qwen3.5-9B-AWQ', endpoint: 'chat' });
+        if (isLocalOnly || process.env.SGLANG_ENABLED === 'true') {
+            modelsToTry.push({ provider: 'sglang', name: process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ', endpoint: 'chat' });
         }
-        if (process.env.GEMINI_API_KEY) {
+        if (!isLocalOnly && process.env.GEMINI_API_KEY) {
             modelsToTry.push({ provider: 'gemini', name: process.env.GEMINI_MODEL || 'gemini-1.5-flash' });
         }
 
@@ -275,7 +276,10 @@ async function classifyQuery(query, config = {}) {
                             model: model.name,
                             endpoint: model.endpoint || 'chat',
                             maxTokens: 150,
+                            maxOutputTokens: 150,
                             temperature: 0.1,
+                            enableThinking: false,
+                            jsonMode: true
                         }
                     );
                 } else if (model.provider === 'gemini') {

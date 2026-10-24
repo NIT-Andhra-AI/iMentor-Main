@@ -151,8 +151,9 @@ TRANSCRIPT:\n${transcript}\n\nSUMMARY:`;
             }
         }
 
-        // Fallback: Groq direct
-        if (!summary && process.env.GROQ_API_KEY) {
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        // Fallback: Groq direct (disabled when LOCAL_GPU_ONLY)
+        if (!summary && !isLocalOnly && process.env.GROQ_API_KEY) {
             try {
                 summary = await groqService.generateContentWithHistory(
                     [], buildPrompt(chunk), null,
@@ -163,8 +164,8 @@ TRANSCRIPT:\n${transcript}\n\nSUMMARY:`;
             }
         }
 
-        // Fallback to Gemini Flash
-        if (!summary && process.env.GEMINI_API_KEY) {
+        // Fallback to Gemini Flash (disabled when LOCAL_GPU_ONLY)
+        if (!summary && !isLocalOnly && process.env.GEMINI_API_KEY) {
             try {
                 summary = await geminiService.generateContentWithHistory(
                     [], buildPrompt(chunk), null,

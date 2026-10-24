@@ -159,21 +159,25 @@ Return ONLY a JSON object with this exact structure (no other text):
         let questionData;
         let generationSuccess = false;
 
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
         const sglangService = require('./sglangService');
-        if (chosenModel.provider === 'sglang' || chosenModel.provider === 'local_llm' || process.env.SGLANG_ENABLED === 'true') {
+        if (isLocalOnly || chosenModel.provider === 'sglang' || chosenModel.provider === 'local_llm' || process.env.SGLANG_ENABLED === 'true') {
             try {
-                const response = await sglangService.generateContentWithHistory(
+                const rawResp = await sglangService.generateContentWithHistory(
                     [],
                     prompt,
                     systemPrompt,
                     {
-                        model: chosenModel.modelId,
+                        model: chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
                         enableThinking: false,
+                        jsonMode: true,
                         maxTokens: 500,
+                        maxOutputTokens: 500,
                         temperature: 0.6
                     }
                 );
-                const jsonMatch = String(response || '').match(/\{[\s\S]*\}/);
+                const cleanedResp = String(rawResp || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '');
+                const jsonMatch = cleanedResp.match(/\{[\s\S]*\}/);
                 const safeJsonStr = jsonMatch ? jsonMatch[0].replace(/(?<!\\)\\(?=[a-zA-Z]{2,})/g, "\\\\").replace(/(?<!\\)\\(?!["\\/bfnrtu])/g, "\\\\") : null;
                 questionData = safeJsonStr ? JSON.parse(safeJsonStr) : null;
                 if (questionData && questionData.questionText) {
@@ -183,7 +187,7 @@ Return ONLY a JSON object with this exact structure (no other text):
                 log.warn('SYSTEM', `SGLang bounty generation failed: ${sglangErr.message}`);
             }
         }
-        if (!generationSuccess && chosenModel.provider === 'ollama') {
+        if (!generationSuccess && !isLocalOnly && chosenModel.provider === 'ollama') {
             try {
                 // log.info('SYSTEM', 'Attempting bounty generation with Ollama...');
                 const sglangService = require('./sglangService');
@@ -206,7 +210,7 @@ Return ONLY a JSON object with this exact structure (no other text):
             } catch (ollamaError) {
                 log.info('SYSTEM', 'Falling back from Ollama...');
             }
-        } else if (chosenModel.provider === 'groq') {
+        } else if (!isLocalOnly && chosenModel.provider === 'groq') {
             try {
                 // log.info('SYSTEM', 'Attempting bounty generation with Groq...');
                 const apiKey = process.env.GROQ_API_KEY;
@@ -234,8 +238,8 @@ Return ONLY a JSON object with this exact structure (no other text):
             }
         }
 
-        // Fallback to Gemini if Ollama failed or if Gemini was selected
-        if (!generationSuccess) {
+        // Fallback to Gemini only when LOCAL_GPU_ONLY is disabled
+        if (!generationSuccess && !isLocalOnly) {
             try {
                 // log.info('SYSTEM', 'Attempting bounty generation with Gemini...');
                 const apiKey = process.env.GEMINI_API_KEY;

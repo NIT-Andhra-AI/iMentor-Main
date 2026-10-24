@@ -1296,20 +1296,23 @@ Return JSON:
         const { chosenModel } = await selectLLM(evaluationPrompt, { user: req.user });
 
         let evaluationText;
-        if (chosenModel.provider === 'gemini') {
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        if (!isLocalOnly && chosenModel.provider === 'gemini') {
             evaluationText = await geminiService.generateContent(evaluationPrompt, {
                 temperature: 0.4
             });
         } else {
-            evaluationText = await require('../services/sglangService').generateContent(
+            evaluationText = await require('../services/sglangService').generateContentWithHistory(
+                [],
                 evaluationPrompt,
-                chosenModel.modelId,
-                { temperature: 0.4 }
+                null,
+                { model: chosenModel.modelId, temperature: 0.3, enableThinking: false, jsonMode: true, maxOutputTokens: 350 }
             );
         }
 
         // Parse AI evaluation
-        const jsonMatch = evaluationText.match(/\{[\s\S]*\}/);
+        const cleanedEval = String(evaluationText || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '');
+        const jsonMatch = cleanedEval.match(/\{[\s\S]*\}/);
         let aiEvaluation = {
             accuracyScore: 70,
             clarityScore: 70,

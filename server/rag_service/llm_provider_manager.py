@@ -111,8 +111,8 @@ class SGLangProvider(BaseProvider):
 
     def __init__(self, config: ProviderConfig):
         super().__init__(config)
-        self.base_url = os.getenv("SGLANG_HEAVY_URL", "http://localhost:8000/v1")
-        self.default_model = os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen2.5-7B-Instruct-AWQ")
+        self.base_url = os.getenv("SGLANG_CHAT_URL", os.getenv("SGLANG_HEAVY_URL", "http://127.0.0.1:8000/v1"))
+        self.default_model = os.getenv("SGLANG_CHAT_MODEL", os.getenv("SGLANG_HEAVY_MODEL", "Qwen/Qwen3-8B-AWQ"))
 
     def _get_client(self) -> OpenAI:
         if self._client is None:
@@ -170,12 +170,14 @@ class SGLangProvider(BaseProvider):
                 resp = client.chat.completions.create(**params)
                 content = resp.choices[0].message.content
                 if content:
-                    return content
+                    import re
+                    cleaned = re.sub(r"<think(?:ing)?>[\s\S]*?</think(?:ing)?>", "", content, flags=re.IGNORECASE).strip()
+                    return cleaned or content
                 last_error = "Empty response"
             except Exception as e:
                 last_error = str(e)
-                if "length" in str(e).lower() or "max_tokens" in str(e).lower():
-                    max_tokens = int(max_tokens * 1.5)
+                if "maximum context length" in str(e).lower() or "max_tokens" in str(e).lower():
+                    max_tokens = max(512, int(max_tokens * 0.65))
                     continue
             if attempt < self.config.max_retries:
                 time.sleep(self.config.retry_delay * (attempt + 1))
@@ -681,12 +683,14 @@ class LLMProviderManager:
         self._init_providers()
 
     def _get_priority_from_env(self) -> List[str]:
-        priority_str = os.getenv("LLM_PROVIDER_PRIORITY", "groq,gemini,grok,sglang,sglang")
+        if os.getenv("LOCAL_GPU_ONLY", "true").lower() != "false":
+            return ["sglang"]
+        priority_str = os.getenv("LLM_PROVIDER_PRIORITY", "sglang,gemini,groq")
         return [p.strip().lower() for p in priority_str.split(",") if p.strip()]
 
     def _init_providers(self):
         configs = {
-            ProviderType.SGLANG: ProviderConfig("sglang", True, 30, 2, 1.0),
+            ProviderType.SGLANG: ProviderConfig("sglang", True, 120, 2, 1.0),
             ProviderType.GROK: ProviderConfig("grok", True, 30, 2, 1.0),
             ProviderType.GROQ: ProviderConfig("groq", True, 30, 2, 1.0),
             ProviderType.GEMINI: ProviderConfig("gemini", True, 30, 2, 1.0),

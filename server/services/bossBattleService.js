@@ -154,72 +154,57 @@ VERIFY: Before finalizing, check that EVERY question is strictly about ${topic}.
         let response;
         let generationSuccess = false;
 
-        // Try SGLang first if selected
-        if (chosenModel.provider === 'sglang') {
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        // Try SGLang first if selected or LOCAL_GPU_ONLY is active
+        if (isLocalOnly || chosenModel.provider === 'sglang' || chosenModel.provider === 'ollama') {
             try {
                 const sglangService = require('./sglangService');
-                response = await sglangService.generateContentWithHistory(
-                    [],              // empty chat history
-                    prompt,          // the question generation prompt
-                    systemPrompt,    // added system prompt
-                    {
-                        model: chosenModel.modelId,
-                        temperature: 0.7
-                    }
-                );
-                generationSuccess = true;
-            } catch (sglangError) {
-                log.info('SYSTEM', 'Falling back from SGLang...');
-            }
-        }
-
-        // Try Groq if selected
-        else if (chosenModel.provider === 'groq') {
-            try {
-                // log.info('SYSTEM', 'Attempting battle generation with Groq...');
-                const apiKey = process.env.GROQ_API_KEY;
-                if (!apiKey) {
-                    throw new Error('Groq API key not configured');
-                }
-
-                response = await groqService.generateContentWithHistory(
+                const rawResp = await sglangService.generateContentWithHistory(
                     [],
                     prompt,
                     systemPrompt,
                     {
-                        model: chosenModel.modelId || 'llama-3.1-8b-instant',
-                        apiKey: apiKey,
-                        temperature: 0.7
+                        model: chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                        temperature: 0.6,
+                        enableThinking: false,
+                        maxOutputTokens: 1400
                     }
                 );
+                response = String(rawResp || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+                generationSuccess = Boolean(response);
+            } catch (sglangError) {
+                if (isLocalOnly) throw sglangError;
+                log.info('SYSTEM', 'Falling back from SGLang...');
+            }
+        } else if (!isLocalOnly && chosenModel.provider === 'groq') {
+            try {
+                const apiKey = process.env.GROQ_API_KEY;
+                if (!apiKey) throw new Error('Groq API key not configured');
+                response = await groqService.generateContentWithHistory(
+                    [], prompt, systemPrompt,
+                    { model: chosenModel.modelId || 'llama-3.1-8b-instant', apiKey, temperature: 0.7 }
+                );
                 generationSuccess = true;
-                // log.success('SYSTEM', 'Groq generation successful');
             } catch (groqError) {
                 log.info('SYSTEM', 'Falling back from Groq...');
             }
         }
 
-        // Fallback to Gemini if Ollama failed or if Gemini was selected
-        if (!generationSuccess) {
+        if (!generationSuccess && !isLocalOnly) {
             try {
-                // log.info('SYSTEM', 'Attempting battle generation with Gemini...');
                 const apiKey = process.env.GEMINI_API_KEY;
-                if (!apiKey) {
-                    log.error('SYSTEM', 'GEMINI_API_KEY not configured');
-                    throw new Error('Gemini API key not configured');
-                }
+                if (!apiKey) throw new Error('Gemini API key not configured');
                 response = await geminiService.generateContentWithHistory(
-                    [],              // empty chat history
-                    prompt,          // the question generation prompt
-                    systemPrompt,    // added system prompt
-                    { temperature: 0.7, apiKey }  // options with API key
+                    [], prompt, systemPrompt, { temperature: 0.7, apiKey }
                 );
                 generationSuccess = true;
-                // log.success('SYSTEM', 'Gemini generation successful');
             } catch (geminiError) {
                 log.error('SYSTEM', 'Gemini generation failed', geminiError);
                 throw new Error('Both SGLang and Gemini failed to generate questions');
             }
+        }
+        if (!generationSuccess) {
+            throw new Error('Local SGLang failed to generate boss battle questions');
         }
 
         // log.info('SYSTEM', `Received AI response (${response?.length} bytes)`);
@@ -662,19 +647,26 @@ Return a JSON array with one object per question:
 ]
 `;
 
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
         const llm = await selectLLM(prompt, { user: { _id: battle.userId }, subject: battle.targetWeakness });
-        let response;
+        let response = '';
         let evalSuccess = false;
-        if (llm.chosenModel.provider === 'sglang') {
+        if (isLocalOnly || llm.chosenModel.provider === 'sglang' || llm.chosenModel.provider === 'ollama') {
             try {
                 const sglangService = require('./sglangService');
-                response = await sglangService.generateContentWithHistory([], prompt, null, {
-                    model: llm.chosenModel.modelId,
-                    temperature: 0.3
+                const rawEval = await sglangService.generateContentWithHistory([], prompt, null, {
+                    model: llm.chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                    temperature: 0.2,
+                    enableThinking: false,
+                    maxOutputTokens: 900
                 });
-                evalSuccess = true;
-            } catch (e) { log.warn('SYSTEM', `SGLang eval failed: ${e.message}`); }
-        } else if (llm.chosenModel.provider === 'groq') {
+                response = String(rawEval || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+                evalSuccess = Boolean(response);
+            } catch (e) {
+                log.warn('SYSTEM', `SGLang eval failed: ${e.message}`);
+                if (isLocalOnly) return fallbackEvaluation(battle, userAnswers);
+            }
+        } else if (!isLocalOnly && llm.chosenModel.provider === 'groq') {
             try {
                 response = await groqService.generateContentWithHistory([], prompt, null, {
                     model: llm.chosenModel.modelId,
@@ -685,6 +677,7 @@ Return a JSON array with one object per question:
             } catch (e) { log.warn('SYSTEM', `Groq eval failed: ${e.message}`); }
         }
         if (!evalSuccess) {
+            if (isLocalOnly) return fallbackEvaluation(battle, userAnswers);
             try {
                 response = await geminiService.generateContentWithHistory([], prompt, null, {
                     apiKey: process.env.GEMINI_API_KEY,
@@ -697,7 +690,7 @@ Return a JSON array with one object per question:
         }
 
         // Parse JSON response
-        const jsonMatch = response.match(/\[[\s\S]*\]/);
+        const jsonMatch = String(response || '').match(/\[[\s\S]*\]/);
         if (!jsonMatch) {
             log.warn('SYSTEM', 'AI evaluation failed, using exact match');
             return fallbackEvaluation(battle, userAnswers);
@@ -763,19 +756,27 @@ ${incorrectQuestions.map((q, i) => `
 }
 `;
 
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
         const llm = await selectLLM(prompt, { user: { _id: battle.userId }, subject: battle.targetWeakness });
-        let response;
+        let response = '';
         let revSuccess = false;
-        if (llm.chosenModel.provider === 'sglang') {
+        if (isLocalOnly || llm.chosenModel.provider === 'sglang' || llm.chosenModel.provider === 'ollama') {
             try {
                 const sglangService = require('./sglangService');
-                response = await sglangService.generateContentWithHistory([], prompt, null, {
-                    model: llm.chosenModel.modelId,
-                    temperature: 0.5
+                const rawRev = await sglangService.generateContentWithHistory([], prompt, null, {
+                    model: llm.chosenModel.modelId || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
+                    temperature: 0.4,
+                    enableThinking: false,
+                    jsonMode: true,
+                    maxOutputTokens: 700
                 });
-                revSuccess = true;
-            } catch (e) { log.warn('SYSTEM', `SGLang revision plan failed: ${e.message}`); }
-        } else if (llm.chosenModel.provider === 'groq') {
+                response = String(rawRev || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
+                revSuccess = Boolean(response);
+            } catch (e) {
+                log.warn('SYSTEM', `SGLang revision plan failed: ${e.message}`);
+                if (isLocalOnly) return generateFallbackRevisionPlan(battle);
+            }
+        } else if (!isLocalOnly && llm.chosenModel.provider === 'groq') {
             try {
                 response = await groqService.generateContentWithHistory([], prompt, null, {
                     model: llm.chosenModel.modelId,
@@ -786,6 +787,7 @@ ${incorrectQuestions.map((q, i) => `
             } catch (e) { log.warn('SYSTEM', `Groq revision plan failed: ${e.message}`); }
         }
         if (!revSuccess) {
+            if (isLocalOnly) return generateFallbackRevisionPlan(battle);
             try {
                 response = await geminiService.generateContentWithHistory([], prompt, null, {
                     apiKey: process.env.GEMINI_API_KEY,
@@ -797,7 +799,7 @@ ${incorrectQuestions.map((q, i) => `
             }
         }
 
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        const jsonMatch = String(response || '').match(/\{[\s\S]*\}/);
         if (!jsonMatch) {
             return generateFallbackRevisionPlan(battle);
         }

@@ -242,10 +242,11 @@ Tone: Calm, professional, encouraging.
 Formatting: Use clean Markdown. No emojis.`;
 
     try {
-        if (onToken && llmConfig.llmProvider === 'gemini') {
+        const effectiveProvider = process.env.LOCAL_GPU_ONLY !== 'false' ? 'sglang' : llmConfig.llmProvider;
+        if (onToken && (effectiveProvider === 'sglang' || effectiveProvider === 'gemini')) {
             return await llmStreamingService.streamCompletion({
                 messages: [{ role: 'user', content: prompt }],
-                provider: llmConfig.llmProvider,
+                provider: effectiveProvider,
                 model: llmOptions.model || llmOptions.geminiModel,
                 apiKey: llmOptions.apiKey,
                 systemPrompt,
@@ -452,18 +453,16 @@ async function executeReActCycle({
 /**
  * Get LLM service based on configuration
  */
-function getLLMService(llmConfig) {
-    // ⚠️ FIX: declare llmService with let to prevent global variable leak
-    let llmService;
-
-    llmService = llmConfig.llmProvider === 'ollama' ? sglangService : geminiService;
+function getLLMService(llmConfig = {}) {
+    const useLocal = process.env.LOCAL_GPU_ONLY !== 'false' || llmConfig.llmProvider === 'sglang' || llmConfig.llmProvider === 'local_llm' || llmConfig.llmProvider === 'ollama';
+    const llmService = useLocal ? sglangService : geminiService;
 
     const llmOptions = {
-        ...(llmConfig.llmProvider === 'ollama' && {
-            model: llmConfig.ollamaModel || process.env.OLLAMA_DEFAULT_MODEL || 'qwen3.5:9b',
+        ...(useLocal && {
+            model: llmConfig.ollamaModel || process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ',
             think: true,
         }),
-        ...(llmConfig.llmProvider === 'gemini' && { geminiModel: llmConfig.geminiModel || process.env.GEMINI_MODEL || 'gemini-2.0-flash' }),
+        ...(!useLocal && llmConfig.llmProvider === 'gemini' && { geminiModel: llmConfig.geminiModel || process.env.GEMINI_MODEL || 'gemini-2.0-flash' }),
         apiKey: llmConfig.apiKey,
         ollamaUrl: llmConfig.ollamaUrl
     };

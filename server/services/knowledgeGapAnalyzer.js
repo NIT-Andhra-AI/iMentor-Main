@@ -8,6 +8,7 @@ const geminiService = require('./geminiService');
 const sglangService = require('./sglangService');
 
 function getAnalyzerLLMService(llmConfig = {}) {
+    if (process.env.LOCAL_GPU_ONLY !== 'false') return sglangService;
     const provider = (llmConfig?.llmProvider || llmConfig?.provider || 'sglang').toLowerCase();
     const isLocal = provider === 'sglang' || provider === 'local_llm' || provider === 'ollama' || llmConfig?.tutorMode;
     return isLocal ? sglangService : geminiService;

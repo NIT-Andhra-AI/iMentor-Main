@@ -212,26 +212,26 @@ router.post('/materials/fetch-web', authMiddleware, facultyMiddleware, async (re
 const sglangService = require('../services/sglangService');
 const geminiService = require('../services/geminiService');
 
-// Helper to run local LLM (SGLang) first, or fallback to Gemini
+// Helper to run local LLM (SGLang) — strictly local when LOCAL_GPU_ONLY is active
 async function getLlmCompletion(systemPrompt, userPrompt) {
-    if (process.env.SGLANG_ENABLED === 'true') {
+    const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+    if (isLocalOnly || process.env.SGLANG_ENABLED === 'true') {
         try {
             log.info('FACULTY', 'Routing CLI generation task to local SGLang service (Qwen)');
             const modelName = process.env.SGLANG_CHAT_MODEL || 'Qwen/Qwen3-8B-AWQ';
-            
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('SGLang request timed out after 20s')), 20000)
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('SGLang request timed out after 90s')), 90000)
             );
-            
-            return await Promise.race([
-                sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName }),
+            const raw = await Promise.race([
+                sglangService.generateContentWithHistory([], userPrompt, systemPrompt, { model: modelName, enableThinking: false, maxOutputTokens: 1600 }),
                 timeoutPromise
             ]);
+            return String(raw || '').replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/gi, '').trim();
         } catch (err) {
+            if (isLocalOnly) throw err;
             log.warn('FACULTY', `Local SGLang generation failed: ${err.message}. Falling back to Gemini.`);
         }
     }
-    // Fallback
     log.info('FACULTY', 'Routing CLI generation task to external Gemini API');
     return await geminiService.generateContentWithHistory([], userPrompt, systemPrompt, { model: 'gemini-2.5-flash' });
 }

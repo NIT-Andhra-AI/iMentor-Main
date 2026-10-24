@@ -58,25 +58,26 @@ router.post('/chat', guestLimiter, async (req, res) => {
     };
 
     try {
-        // ── Try SGLang first (primary), then Gemini as fallback ───────────
+        // ── Try SGLang first (strictly local when LOCAL_GPU_ONLY is active) ──
         let responseText = '';
-        const sglangEnabled = process.env.SGLANG_ENABLED === 'true';
+        const isLocalOnly = process.env.LOCAL_GPU_ONLY !== 'false';
+        const sglangEnabled = isLocalOnly || process.env.SGLANG_ENABLED === 'true';
 
         if (sglangEnabled) {
             try {
                 const sglangService = require('../services/sglangService');
                 const cb = require('../utils/circuitBreaker'); // [Team4]
-                if (cb.isOpen('sglang')) {
-                    log.warn('GUEST', 'SGLang circuit open — skipping to Gemini');
+                if (!isLocalOnly && cb.isOpen('sglang')) {
+                    log.warn('GUEST', 'SGLang circuit open — skipping to cloud fallback');
                 } else {
                     streamEvent({ type: 'status_update', content: 'Thinking...' });
                     try {
                         const result = await sglangService.streamChat(
-                            [],              // no history
+                            [],
                             trimmedQuery,
                             GUEST_SYSTEM_PROMPT,
                             { endpoint: 'chat', maxTokens: 2048, temperature: 0.7 },
-                            (evt) => streamEvent(evt) // stream tokens as they arrive
+                            (evt) => streamEvent(evt)
                         );
                         responseText = result.finalAnswer || '';
                         cb.onSuccess('sglang');
@@ -86,13 +87,13 @@ router.post('/chat', guestLimiter, async (req, res) => {
                     }
                 }
             } catch (sglangErr) {
-                log.warn('GUEST', `SGLang failed: ${sglangErr.message} — trying Gemini`);
-                responseText = ''; // reset to trigger Gemini fallback
+                log.warn('GUEST', `SGLang failed: ${sglangErr.message}`);
+                responseText = '';
             }
         }
 
-        // ── Gemini fallback (non-streaming) ──────────────────────────────
-        if (!responseText) {
+        // ── Gemini fallback (non-streaming, disabled when LOCAL_GPU_ONLY) ──
+        if (!responseText && !isLocalOnly) {
             try {
                 const geminiService = require('../services/geminiService');
                 streamEvent({ type: 'status_update', content: 'Thinking...' });
@@ -109,8 +110,8 @@ router.post('/chat', guestLimiter, async (req, res) => {
             }
         }
 
-        // ── Groq fallback (non-streaming) ────────────────────────────────
-        if (!responseText && process.env.GROQ_API_KEY && !process.env.GROQ_API_KEY.startsWith('your_')) {
+        // ── Groq fallback (non-streaming, disabled when LOCAL_GPU_ONLY) ────
+        if (!responseText && !isLocalOnly && process.env.GROQ_API_KEY && !process.env.GROQ_API_KEY.startsWith('your_')) {
             try {
                 const groqService = require('../services/groqService');
                 streamEvent({ type: 'status_update', content: 'Thinking...' });

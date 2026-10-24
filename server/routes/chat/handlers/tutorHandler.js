@@ -30,6 +30,7 @@ const guidedLearningOrchestrator = require('../../../services/guidedLearningOrch
 const priorKnowledgeDetector = require('../../../services/priorKnowledgeDetector');
 const liveMemoryMapService = require('../../../services/liveMemoryMapService');
 const geminiGuidedLearningService = require('../../../services/geminiGuidedLearningService');
+const tutorEnhancementService = require('../../../services/tutorEnhancementService');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -457,9 +458,6 @@ async function handleGeneral(res, ctx) {
     if (rawQuery.length > teachingUnit.length + 12) {
         contextForIntro = (contextForIntro ? contextForIntro + '\n\n' : '') + 'Student Original Query / Context:\n' + rawQuery.slice(0, 1500);
     }
-    if (rawQuery.length > teachingUnit.length + 12) {
-        contextForIntro = (contextForIntro ? contextForIntro + '\n\n' : '') + 'Student Original Query / Context:\n' + rawQuery.slice(0, 1500);
-    }
     if (!contextForIntro && userId) {
         try {
             const memory = await knowledgeStateService.getContextualMemory(userId, teachingUnit);
@@ -543,9 +541,6 @@ async function handleGeneral(res, ctx) {
     const messageCount = (chatSession?.messages?.length || 0) + 2;
     triggerPeriodicAnalysis(sessionId, userId, messageCount, llmConfig);
  
-    if (userId) {
-        awardTurnXpAsync(userId, 10, teachingUnit || 'general', 'tutor_turn');
-    }
     if (userId) {
         awardTurnXpAsync(userId, 10, teachingUnit || 'general', 'tutor_turn');
     }
@@ -865,15 +860,16 @@ async function handleStructured(res, ctx) {
                         let customRearticulation = baseTurn.rearticulated_nudge;
             try {
                 const sglangService = require('../../../services/sglangService');
-                const sysPrompt = `You are a warm Guided Learning Coach (like Google Gemini Guided Learning) for EE3621 Digital Signal Processing teaching "${tutorState.teachingUnit}". In 2 concise sentences (<65 words), acknowledge the student's competence and re-articulate their response ("${query.trim()}") to nudge them in the right direction toward the concept without giving away the final answer. /no_think`;
+                // Static system prompt so SGLang RadixAttention caches messages[0] across all 50 students in EE3621
+                const sysPrompt = `You are a warm Guided Learning Coach (like Google Gemini Guided Learning) for EE3621 Digital Signal Processing. In 2 concise sentences (<65 words), acknowledge the student's competence and re-articulate their response constructively to nudge them toward the target concept without giving away the final answer.`;
                 const llmNudge = await Promise.race([
                     sglangService.generateContentWithHistory(
                         [],
-                        `Student said: "${query.trim()}"\nGuided question: "${baseTurn.probe_question}" /no_think`,
+                        `Current Lesson Topic: "${tutorState.teachingUnit}"\nStudent said: "${query.trim()}"\nGuided question: "${baseTurn.probe_question}"`,
                         sysPrompt,
-                        { maxTokens: 180, temperature: 0.4, endpoint: 'chat' }
+                        { maxTokens: 180, temperature: 0.4, endpoint: 'chat', enableThinking: false }
                     ),
-                    new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang quick nudge timeout')), 10000))
+                    new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang quick nudge timeout')), 30000))
                 ]);
                 if (llmNudge && llmNudge.trim().length > 25) {
                     customRearticulation = llmNudge.trim();
@@ -968,7 +964,7 @@ async function handleStructured(res, ctx) {
  
         let graphFacts = '';
         try {
-            const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2001';
+            const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006';
             const graphRes = await axios.post(
                 `${PYTHON_RAG_SERVICE_URL}/graph/search`,
                 { query: query.trim(), user_id: userId, document_context: tutorState?.courseName || null },
@@ -1078,7 +1074,7 @@ async function handleStructured(res, ctx) {
                 let completedSubtopics = [];
  
                 try {
-                    const currentUser = await User.findById(reqUser._id);
+                    const currentUser = await User.findById(reqUser?._id || userId);
                     const userProgress = currentUser?.curriculumProgress?.get(courseName);
                     completedSubtopics = userProgress?.completedSubtopics || [];
                     completedTopics = userProgress?.completedTopics || [];
@@ -1105,7 +1101,7 @@ async function handleStructured(res, ctx) {
  
                 if (advanceResult.completedSubtopics.length > completedSubtopics.length || advanceResult.topicJustCompleted || advanceResult.moduleJustCompleted) {
                     try {
-                        const userToUpdate = await User.findById(reqUser._id);
+                        const userToUpdate = await User.findById(reqUser?._id || userId);
                         if (userToUpdate) {
                             if (!userToUpdate.curriculumProgress) userToUpdate.curriculumProgress = new Map();
                             const existingProgress = userToUpdate.curriculumProgress.get(courseName) || {};
@@ -1242,7 +1238,7 @@ async function handleStructured(res, ctx) {
  
             let dbCompletedModules = [];
             try {
-                const freshUser = await User.findById(reqUser._id).select('curriculumProgress');
+                const freshUser = await User.findById(reqUser?._id || userId).select('curriculumProgress');
                 dbCompletedModules = freshUser?.curriculumProgress?.get(courseName)?.completedModules || [];
             } catch (_) {}
  
@@ -1365,7 +1361,7 @@ async function handleStructured(res, ctx) {
  
     if (courseName !== 'General' && reqUser) {
         try {
-            const currentUser = await User.findById(reqUser._id);
+            const currentUser = await User.findById(reqUser?._id || userId);
             const userProgress = currentUser?.curriculumProgress?.get(courseName);
             completedSubtopics = userProgress?.completedSubtopics || [];
             completedTopics = userProgress?.completedTopics || [];
@@ -1574,7 +1570,7 @@ async function handleStructured(res, ctx) {
  
         if (position?.topicId && courseName !== 'General') {
             try {
-                const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2001';
+                const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006';
                 const prereqRes = await axios.post(
                     `${PYTHON_RAG_SERVICE_URL}/course/${encodeURIComponent(courseName)}/topic/${encodeURIComponent(position.topicId)}/missing-prerequisites`,
                     { completed_subtopic_ids: completedSubtopics },
@@ -1733,7 +1729,7 @@ async function handleGuidedLearning(res, ctx) {
     let documentRagContext = '';
     if (documentContextName) {
         try {
-            const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://localhost:2001';
+            const PYTHON_RAG_SERVICE_URL = process.env.PYTHON_RAG_SERVICE_URL || 'http://127.0.0.1:2006';
             const graphRes = await axios.post(
                 `${PYTHON_RAG_SERVICE_URL}/graph/search`,
                 { query: query.trim(), user_id: userId.toString(), document_context: documentContextName },

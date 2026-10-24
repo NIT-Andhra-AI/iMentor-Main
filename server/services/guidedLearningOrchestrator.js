@@ -108,27 +108,38 @@ async function processGuidedLearning(
                 role: m.role === 'student' ? 'user' : 'model',
                 parts: [{ text: m.message || '' }]
             }));
-            const sysPrompt = `You are iMentor's Guided Learning Coach (modeled after Google Gemini Guided Learning & ChatGPT Study Mode) for ${tutorSession.subject || 'Digital Signal Processing (EE3621)'}.
-Learning Goal: "${tutorSession.learningGoal}".
+            // Static shared rubric first so SGLang RadixAttention caches messages[0] across all concurrent Study Mode students
+            const sysPrompt = `You are iMentor's Guided Learning Coach (modeled after Google Gemini Guided Learning & ChatGPT Study Mode).
 Follow this exact Guided Learning flow to prevent mental fatigue:
 1. **✅ Acknowledge Your Competence**: Explicitly validate what the student understood well, echoing their specific terms or intuition.
 2. **🔄 Reframing Your Response (If Partial/Misconception)**: Re-articulate the student's response constructively to nudge them in the right direction.
-3. **💡 Guidance & Hint (If Partial/Misconception)**: Provide a clear teaching explanation (with an intuitive analogy and KaTeX math \`$...$\` / \`$$...$$\`) and a concrete hint toward the correct answer.
+3. **💡 Guidance & Hint (If Partial/Misconception)**: Provide a clear teaching explanation (with an intuitive analogy and KaTeX math \`$...$\` / \`$...$\`) and a concrete hint toward the correct answer.
 4. **📘 Next Subtopic (If Correct)**: When the student gives a correct response, affirm mastery under \`✅ **What You Mastered**:\`, clearly explain the NEXT subtopic under \`📘 **Next Subtopic**:\`, and end with one check question labeled \`**Guided Learning Check**:\`.
-5. Keep any Markdown table compact (max 3–4 columns, 6–10 words per cell). /no_think`;
+5. Keep any Markdown table compact (max 3–4 columns, 6–10 words per cell).`;
 
-            adaptiveHint = await Promise.race([
-                sglangService.generateContentWithHistory(
+            const contextualUserQuery = `[Subject: ${tutorSession.subject || 'Digital Signal Processing (EE3621)'} | Learning Goal: "${tutorSession.learningGoal}"]\n\nStudent Input: ${userQuery}`;
+            let streamedTokensEmitted = false;
+            const streamRes = await Promise.race([
+                sglangService.streamChat(
                     recentMsgs,
-                    `${userQuery} /no_think`,
+                    contextualUserQuery,
                     sysPrompt,
-                    { maxTokens: 650, temperature: 0.5, endpoint: 'chat' }
+                    { maxTokens: 1400, temperature: 0.5, endpoint: 'chat' },
+                    (evt) => {
+                        if (!streamCallback || !evt) return;
+                        if (evt.type === 'token' && evt.content) {
+                            streamedTokensEmitted = true;
+                            streamCallback({ type: 'answer', content: evt.content });
+                        } else if (evt.type === 'thinking' && evt.content) {
+                            streamCallback({ type: 'thought', content: evt.content });
+                        }
+                    }
                 ),
-                new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang guided timeout')), 15000))
+                new Promise((_, rej) => setTimeout(() => rej(new Error('SGLang guided timeout')), 90000))
             ]);
-            adaptiveHint = String(adaptiveHint || '').replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+            adaptiveHint = String(streamRes?.finalAnswer || '').replace(/<(?:think|thinking)>[\s\S]*?<\/(?:think|thinking)>/gi, '').trim();
 
-            if (streamCallback && adaptiveHint) {
+            if (streamCallback && adaptiveHint && !streamedTokensEmitted) {
                 streamCallback({ type: 'answer', content: adaptiveHint });
             }
         } catch (hintError) {

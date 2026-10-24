@@ -44,16 +44,22 @@ Return ONLY a JSON object in this exact format:
         let evaluationText;
         let generationSuccess = false;
 
-        // Try SGLang first
+        // Try SGLang first (fast constrained JSON without <think> overhead so background XP never hogs classroom GPU)
         if (chosenModel.provider === 'sglang') {
             try {
                 evaluationText = await sglangService.generateContentWithHistory([], prompt, null, {
                     model: chosenModel.modelId,
-                    temperature: 0.3
+                    temperature: 0.1,
+                    maxTokens: 120,
+                    enableThinking: false,
+                    jsonMode: true
                 });
                 generationSuccess = true;
             } catch (sglangError) {
                 log.warn('SYSTEM', `SGLang evaluation failed: ${sglangError.message}`);
+            }
+            if (process.env.LOCAL_GPU_ONLY !== 'false' && !generationSuccess) {
+                return { score: 1, reasoning: 'local_gpu_busy_fallback' };
             }
         }
 

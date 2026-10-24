@@ -196,8 +196,8 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
             const estimatedInputTokens = estimateTokensConservative(allMessagesText);
             const availableForCompletion = Math.max(512, modelMaxContext - estimatedInputTokens - CONTEXT_SAFETY_BUFFER);
             const targetPartTokens = allowMultiPart
-                ? Math.min(options.partTokenBudget || DEFAULT_PART_TOKEN_BUDGET, options.maxTokens || 2560)
-                : (options.maxTokens || 2048);
+                ? Math.min(options.partTokenBudget || DEFAULT_PART_TOKEN_BUDGET, reqMaxTokens)
+                : (options.maxTokens || options.maxOutputTokens || 2048);
             const maxTokens = Math.min(targetPartTokens, availableForCompletion);
 
             const useThinkingThisPart = partIndex === 1 && thinkingDecision.enableThinking;
@@ -213,6 +213,7 @@ async function generateContentWithHistory(chatHistory, userQuery, systemPrompt =
                 chat_template_kwargs: { enable_thinking: useThinkingThisPart },
             };
             if (options.response_format) body.response_format = options.response_format;
+            else if (options.jsonMode) body.response_format = { type: 'json_object' };
             if (options.tools) body.tools = options.tools;
             if (options.tool_choice) body.tool_choice = options.tool_choice;
 

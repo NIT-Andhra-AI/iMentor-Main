@@ -140,7 +140,9 @@ function getPreferredTutorProvider(llmConfig) {
  */
 async function generateWithFallback(chatHistory, currentQuery, systemPrompt, llmConfig, additionalOptions = {}) {
     const preferredProvider = 'sglang';
-    const allProviders = ['sglang', 'groq', 'gemini', 'claude', 'openai'];
+    const allProviders = process.env.LOCAL_GPU_ONLY !== 'false'
+        ? ['sglang']
+        : ['sglang', 'groq', 'gemini', 'claude', 'openai'];
     const providers = [
         preferredProvider,
         ...allProviders.filter(p => p !== preferredProvider)
@@ -483,7 +485,7 @@ function cleanResponse(text) {
     return text
         .replace(/^(Thinking Process|Thought|Analysis|Reasoning|Internal Monologue|Thought Process):?\s*/i, '')
         .replace(/\n(Thinking Process|Thought|Analysis|Reasoning|Internal Monologue|Thought Process):?\s*/i, '\n')
-        .replace(/<thinking>[\s\S]*?<\/thinking>/gi, '')
+        .replace(/<(?:think|thinking)>[\s\S]*?<\/(?:think|thinking)>/gi, '')
         .trim();
 }
 
@@ -515,7 +517,7 @@ function getLLMService(llmConfig = {}) {
         model: isLocal
             ? (llmConfig.sglangModel || llmConfig.ollamaModel || defaultLocalModel)
             : (llmConfig.groqModel || llmConfig.claudeModel || llmConfig.openaiModel || llmConfig.geminiModel),
-        endpoint: isLocal ? (llmConfig.sglangEndpoint || llmConfig.sglangUrl || defaultLocalEndpoint) : undefined,
+        endpoint: isLocal ? (llmConfig.sglangEndpoint || 'chat') : undefined,
         apiKey: llmConfig.apiKey,
         ollamaUrl: llmConfig.ollamaUrl || defaultLocalEndpoint,
         temperature: llmConfig.temperature !== undefined ? llmConfig.temperature : 0.6,

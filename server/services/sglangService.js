@@ -12,9 +12,11 @@ const log         = require('../utils/logger');
 const OpenAI      = require('openai');
 const sglangCaps  = require('./sglangCapabilities');
 const http        = require('http');
+const https       = require('https');
 
 const SGLANG_ENABLED = process.env.SGLANG_ENABLED !== 'false';
-const _sglangHttpAgent = new http.Agent({ keepAlive: true, maxSockets: 250, keepAliveMsecs: 60000 });
+const _sglangHttpAgent  = new http.Agent({ keepAlive: true, maxSockets: 250, keepAliveMsecs: 60000 });
+const _sglangHttpsAgent = new https.Agent({ keepAlive: true, maxSockets: 250, keepAliveMsecs: 60000 });
 
 // Multi-Turn Chunked Continuation constants (AgentWrite / Progressive Generation)
 const DEFAULT_PART_TOKEN_BUDGET = 1400; // Optimal coherence window per part (~1,050 words)
@@ -39,7 +41,9 @@ function _getClient(type = 'chat') {
     };
 
     const baseURL = urlMap[type] || urlMap.chat;
-    const opts = { baseURL, apiKey: 'sglang-no-auth', timeout: 120_000, httpAgent: _sglangHttpAgent };
+    const isHttps = String(baseURL).toLowerCase().startsWith('https:');
+    const apiKey  = process.env.SGLANG_API_KEY || 'sglang-no-auth';
+    const opts    = { baseURL, apiKey, timeout: 120_000, httpAgent: isHttps ? _sglangHttpsAgent : _sglangHttpAgent };
 
     if (type === 'chat')   return _chatClient   || (_chatClient   = new OpenAI(opts));
     if (type === 'reason') return _reasonClient || (_reasonClient = new OpenAI(opts));
@@ -71,9 +75,16 @@ function estimateTokensConservative(text) {
 function evaluateThinkingStrategy(userQuery = '', endpoint = 'chat', options = {}) {
     const q = String(userQuery || '').trim();
 
-    // 1. Explicit override: user clicked "Answer Now" or caller disabled thinking
-    if (options.enableThinking === false || q.includes('/no_think')) {
-        return { enableThinking: false, reason: 'explicit_disabled' };
+    // 1. Explicit override or CPU-only / no-think campus hardware profile
+    const hwProfile = String(process.env.HARDWARE_PROFILE || '').toLowerCase();
+    if (
+        options.enableThinking === false ||
+        q.includes('/no_think') ||
+        process.env.SGLANG_FORCE_NO_THINK === 'true' ||
+        hwProfile === 'cpu_lite' ||
+        hwProfile === 'cpu_moe'
+    ) {
+        return { enableThinking: false, reason: 'explicit_or_cpu_profile_disabled' };
     }
     // 2. Utility / JSON schema / Socratic short turns never use raw <think> blocks
     const effectiveMaxTok = options.maxTokens || options.maxOutputTokens;

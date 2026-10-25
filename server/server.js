@@ -203,8 +203,8 @@ app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
 
-    const isLocalDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?$/.test(origin);
-    if (allowedOrigins.has(origin) || isLocalDevOrigin) {
+    const isAllowedOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|61\.0\.228\.124|45\.118\.208\.34|172\.180\.14\.125)(:\d+)?$/.test(origin);
+    if (allowedOrigins.has(origin) || isAllowedOriginRegex) {
       return callback(null, true);
     }
 
@@ -231,12 +231,33 @@ app.use(pathSanitizerMiddleware);
 app.get("/", (req, res) => res.send("AI Tutor Backend API is running..."));
 app.use("/api/health", require('./routes/healthRoutes'));
 app.get('/metrics', async (req, res) => {
+  const realIp = (req.header('X-Real-IP') || req.header('X-Forwarded-For') || '').split(',')[0].trim();
+  const isLoopback = (!realIp || realIp === '127.0.0.1' || realIp === '::1') &&
+    (req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1');
+  const token = req.header('X-Internal-Token') || req.header('Authorization')?.replace('Bearer ', '');
+  const expected = process.env.INTERNAL_SERVICE_TOKEN;
+  if (!isLoopback && (!expected || token !== expected)) {
+    return res.status(403).json({ message: 'Forbidden: Metrics endpoint is restricted to internal monitoring.' });
+  }
   res.set('Content-Type', register.contentType);
   res.end(await register.metrics());
 });
 
-// --- Public Routes & Static Course Assets ---
-app.use('/course_bootstrap', express.static(path.join(__dirname, '..', 'course_bootstrap')));
+// --- Public Routes & Static Course Assets (Restricted: Question banks and faculty data protected) ---
+app.use('/course_bootstrap', (req, res, next) => {
+  const forbiddenExts = ['.json', '.csv', '.py', '.md', '.log'];
+  const lowerPath = req.path.toLowerCase();
+  const isForbiddenExt = forbiddenExts.some(ext => lowerPath.endsWith(ext));
+  const isForbiddenName = lowerPath.includes('faculty_dashboard') || lowerPath.includes('curriculum_spec') || lowerPath.includes('quality_audit');
+  const isAllowedAsset = lowerPath.includes('/interactive_portal/') ||
+                         lowerPath.includes('/images/') ||
+                         (lowerPath.includes('/lectures/') && (lowerPath.endsWith('.pdf') || lowerPath.endsWith('.tex')));
+
+  if (isForbiddenExt || isForbiddenName || !isAllowedAsset) {
+    return res.status(403).json({ error: 'Access restricted: Evaluation question banks, rubrics, and faculty dashboards cannot be publicly downloaded.' });
+  }
+  next();
+}, express.static(path.join(__dirname, '..', 'course_bootstrap')));
 app.use("/api/network", networkRoutes);
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/guest", chatLimiter, guestChatRoutes); // [Optimization] Rate-limit unauthenticated chat
@@ -275,13 +296,15 @@ app.use('/api/course-matching', authMiddleware, require('./routes/index_skilltre
 app.use('/api/skill-tree', authMiddleware, require('./routes/skillTreeCourseBridge'));
 app.use('/api/gamification/skill-tree', authMiddleware, skilltreeCourseMatchingRoutes);
 
-// --- Internal Service Routes (Python → Node.js callbacks, no JWT required) ---
+// --- Internal Service Routes (Python → Node.js callbacks, fail-closed auth) ---
 const { syncSkillTreeToMongo } = require('./services/skillTreeSyncService');
 app.post('/api/internal/skill-tree/sync', (req, res, next) => {
-    // Simple shared-secret auth for internal service-to-service calls
     const token = req.header('X-Internal-Token') || req.header('Authorization')?.replace('Bearer ', '');
     const expected = process.env.INTERNAL_SERVICE_TOKEN;
-    if (expected && token !== expected) {
+    const realIp = (req.header('X-Real-IP') || req.header('X-Forwarded-For') || '').split(',')[0].trim();
+    const isDirectLoopback = (!realIp || realIp === '127.0.0.1' || realIp === '::1') &&
+        (req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1');
+    if (expected ? token !== expected : !isDirectLoopback) {
         return res.status(403).json({ message: 'Invalid internal service token.' });
     }
     next();
@@ -316,6 +339,7 @@ app.use('/api/adaptive-profile', authMiddleware, adaptiveProfileRoutes); // [Tea
 app.use('/api/assessment', authMiddleware, require('./routes/knowledgeAssessment')); // Knowledge Assessment Engine
 app.use('/api/faculty', require('./routes/faculty'));
 app.use('/api/placements', require('./routes/placementRoutes'));
+app.use('/api/deploy', require('./routes/enterpriseDeploy')); // Enterprise Multi-College Custom Installer & Leads
 app.use('/api/knowledge-state', authMiddleware, require('./routes/knowledgeState'));
 
 // --- Sentry Error Handler ---
@@ -336,9 +360,10 @@ app.use((err, req, res, next) => {
 async function startServer() {
   log.info('SYSTEM', "Starting Server Initialization...");
   try {
-    // Start HTTP server immediately so health checks pass instantly
-    const server = app.listen(port, "0.0.0.0", () => {
-      log.success('SYSTEM', `Server listening on port ${port}`);
+    // Start HTTP server on loopback by default so external traffic goes through Caddy TLS
+    const bindHost = process.env.HOST || "127.0.0.1";
+    const server = app.listen(port, bindHost, () => {
+      log.success('SYSTEM', `Server listening on ${bindHost}:${port}`);
     });
 
     // --- Initialize Socket.io ---

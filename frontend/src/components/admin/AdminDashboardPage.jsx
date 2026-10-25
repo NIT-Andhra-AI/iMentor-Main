@@ -19,8 +19,9 @@ import MultiModelManager from './MultiModelManager.jsx';
 import AdminLearningProfiles from './AdminLearningProfiles.jsx';
 import UserFeedbackManager from './UserFeedbackManager.jsx';
 import SystemPerformanceAlert from './SystemPerformanceAlert.jsx';
+import CampusLeadsManager from './CampusLeadsManager.jsx';
 
-import { LogOut, RefreshCw, Shield, Users, GraduationCap, HelpCircle, Lightbulb, Cog, Database, BarChart2, Gamepad2, Network, Link2, Brain, MessageSquareDiff } from 'lucide-react';
+import { LogOut, RefreshCw, Shield, Users, GraduationCap, HelpCircle, Lightbulb, Cog, Database, BarChart2, Gamepad2, Network, Link2, Brain, MessageSquareDiff, Building2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 // ── Idle timeout constants ────────────────────────────────────────────────────
@@ -40,6 +41,7 @@ const TABS = [
     { id: 'feedback',          label: 'Feedback',           icon: MessageSquareDiff },
     { id: 'llm-config',        label: 'LLM Config',         icon: Cog },
     { id: 'security',          label: 'Security',           icon: Shield },
+    { id: 'campus-leads',      label: 'Campus Leads',       icon: Building2 },
 ];
 
 // ── Main Component ─────────────────────────────────────────────────────────────
@@ -195,6 +197,9 @@ function AdminDashboardPage() {
 
             case 'security':
                 return <ApiKeyRequestManager requests={keyRequests} onAction={() => fetchAdminData(true)} />;
+
+            case 'campus-leads':
+                return <CampusLeadsManager />;
 
             default:
                 return null;

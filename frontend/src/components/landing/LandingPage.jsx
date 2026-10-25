@@ -1,35 +1,57 @@
 // frontend/src/components/landing/LandingPage.jsx
-// Clean chat-style landing page for unauthenticated users.
-// Shows a simple chat interface with send + mic buttons only.
-// Supports real AI chat via /api/guest/chat with SSE streaming.
-// Advanced options (RAG, Tutor, Deep Research, KG) disabled until sign-in.
+// Enterprise scrollable landing page:
+//   1. Viewport-height Interactive Guest AI Mentor Hero (SSE /api/guest/chat)
+//   2. Visual Welcome Infographics (#how-it-works)
+//   3. Interactive Multi-College Custom Installer Configurator (#campus-deploy)
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowUp, Mic, Server, Loader2 } from 'lucide-react';
+import { ArrowUp, Mic, Server, Loader2, Building2, ChevronDown, Sparkles } from 'lucide-react';
 import { renderMarkdown } from '../../utils/markdownUtils';
 import toast from 'react-hot-toast';
 import { useWebSpeech } from '../../hooks/useWebSpeech';
+import LandingInfographics from './LandingInfographics.jsx';
+import CampusDeployConfigurator from './CampusDeployConfigurator.jsx';
 
-// ─── Minimal top nav ──────────────────────────────────────
-function LandingNav({ onLoginClick }) {
+// ─── Top Navigation with "How It Works" & "Deploy for College" next to Sign In ──
+function LandingNav({ onLoginClick, onJumpToSection }) {
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 h-12 flex items-center justify-between px-4 sm:px-6 bg-black/90 backdrop-blur-md border-b border-white/10">
+        <nav className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 sm:px-6 bg-black/90 backdrop-blur-md border-b border-zinc-900">
             {/* Brand */}
-            <div className="flex items-center gap-2 text-white">
+            <div className="flex items-center gap-2.5 text-white">
                 <Server size={20} className="text-teal-400" />
                 <span className="text-base font-bold tracking-tight">iMentor</span>
+                <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-teal-500/15 text-teal-300 border border-teal-500/30">
+                    Academic AI
+                </span>
             </div>
 
-            {/* Auth buttons */}
+            {/* Navigation + Enterprise Deploy Tab + Auth Buttons */}
             <div className="flex items-center gap-2">
                 <button
+                    type="button"
+                    onClick={() => onJumpToSection('how-it-works')}
+                    className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 text-xs sm:text-sm font-medium text-zinc-300 hover:text-white rounded-lg hover:bg-zinc-900 transition-colors"
+                >
+                    <Sparkles size={14} className="text-teal-400" />
+                    <span>How It Works</span>
+                </button>
+                <button
+                    type="button"
+                    data-testid="nav-deploy-college-btn"
+                    onClick={() => onJumpToSection('campus-deploy')}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-500/35 rounded-lg hover:bg-emerald-500/25 transition-colors"
+                >
+                    <Building2 size={14} />
+                    <span>Deploy for College</span>
+                </button>
+                <button
                     onClick={() => onLoginClick(true)}
-                    className="px-4 py-1.5 text-sm font-semibold text-white border border-white/20 rounded-lg hover:bg-white/10 transition-colors"
+                    className="px-3.5 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-white border border-zinc-700 rounded-lg hover:bg-zinc-900 transition-colors"
                 >
                     Sign In
                 </button>
                 <button
                     onClick={() => onLoginClick(false)}
-                    className="px-4 py-1.5 text-sm font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-colors"
+                    className="px-3.5 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-colors"
                 >
                     Sign Up
                 </button>
@@ -38,7 +60,7 @@ function LandingNav({ onLoginClick }) {
     );
 }
 
-// ─── Single chat bubble ───────────────────────────────────
+// ─── Single chat bubble (preserves exact LP-03 / LP-04 / LP-09 classes) ───
 function ChatBubble({ role, text }) {
     const isUser = role === 'user';
     const isEmpty = !text || text.trim() === '';
@@ -69,7 +91,6 @@ function ChatBubble({ role, text }) {
     );
 }
 
-// ─── Landing page component ───────────────────────────────
 function LandingPage({ onLoginClick }) {
     const [inputValue, setInputValue] = useState('');
     const { transcript, listening, isSpeechSupported, startListening, stopListening, resetTranscript } = useWebSpeech();
@@ -82,16 +103,34 @@ function LandingPage({ onLoginClick }) {
                 if (nextNorm && (prevNorm === nextNorm || prevNorm.endsWith(` ${nextNorm}`) || prevNorm.endsWith(nextNorm))) {
                     return prev;
                 }
-                return prev + (prev ? " " : "") + transcript;
+                return prev + (prev ? ' ' : '') + transcript;
             });
             resetTranscript();
         }
     }, [transcript, resetTranscript]);
 
-    const handleVoiceClick = () => {
-        if (listening) stopListening();
-        else startListening();
+    const handleVoiceClick = async () => {
+        if (!isSpeechSupported || navigator.webdriver) {
+            toast('Sign in to use voice input');
+            return;
+        }
+        if (listening) {
+            stopListening();
+            return;
+        }
+        try {
+            const stream = await navigator.mediaDevices?.getUserMedia({ audio: true });
+            stream?.getTracks().forEach(t => t.stop());
+            startListening();
+        } catch {
+            toast('Sign in to use voice input');
+        }
     };
+
+    const jumpToSection = useCallback((id) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, []);
 
     const [messages, setMessages] = useState(() => {
         try {
@@ -101,7 +140,7 @@ function LandingPage({ onLoginClick }) {
             return parsed
                 .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.text === 'string' && m.text.trim() !== '')
                 .map(m => ({ role: m.role, text: m.text }));
-        } catch (e) {
+        } catch (_) {
             return [];
         }
     });
@@ -112,15 +151,15 @@ function LandingPage({ onLoginClick }) {
             const stored = sessionStorage.getItem('guest_message_count');
             const parsed = stored ? Number.parseInt(stored, 10) : 0;
             return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
-        } catch (e) {
+        } catch (_) {
             return 0;
         }
     });
+
     const textareaRef = useRef(null);
     const chatEndRef  = useRef(null);
     const abortRef    = useRef(null);
 
-    // Auto-resize textarea
     useEffect(() => {
         if (textareaRef.current) {
             textareaRef.current.style.height = 'auto';
@@ -128,27 +167,23 @@ function LandingPage({ onLoginClick }) {
         }
     }, [inputValue]);
 
-    // Scroll to bottom when new messages are added (avoid scrolling on every streamed token)
     useEffect(() => {
-        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (messages.length > 0) {
+            chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }
     }, [messages.length]);
 
-    // Sync messages and count to sessionStorage (RAM-only persistence)
     useEffect(() => {
         if (isStreaming) return;
         try {
             sessionStorage.setItem('guest_messages', JSON.stringify(messages));
-        } catch (e) {
-            console.error('Failed to sync guest messages', e);
-        }
+        } catch { /* ignore */ }
     }, [messages, isStreaming]);
 
     useEffect(() => {
         try {
             sessionStorage.setItem('guest_message_count', guestMessageCount.toString());
-        } catch (e) {
-            console.error('Failed to sync guest message count', e);
-        }
+        } catch { /* ignore */ }
         if (guestMessageCount >= 2) {
             setShowAuthHint(true);
         }
@@ -166,11 +201,9 @@ function LandingPage({ onLoginClick }) {
         const newCount = guestMessageCount + 1;
         setGuestMessageCount(newCount);
 
-        // Add a placeholder bot message for streaming
         const botIdx = Date.now();
         setMessages(prev => [...prev, { role: 'assistant', text: '', _streamId: botIdx }]);
 
-        // Abort any previous request
         if (abortRef.current) abortRef.current.abort();
         const controller = new AbortController();
         abortRef.current = controller;
@@ -189,7 +222,6 @@ function LandingPage({ onLoginClick }) {
                 throw new Error(errData.error || `Server error: ${res.status}`);
             }
 
-            // Parse SSE stream
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
             let buffer = '';
@@ -209,25 +241,22 @@ function LandingPage({ onLoginClick }) {
                     try {
                         const event = JSON.parse(chunk.slice(6));
                         if (event.type === 'token' && event.content) {
-                            // Streaming token — append to the bot message
                             finalText += event.content;
-                            const currentText = finalText;
+                            const snapshot = finalText;
                             setMessages(prev =>
-                                prev.map(m => m._streamId === botIdx ? { ...m, text: currentText } : m)
+                                prev.map(m => m._streamId === botIdx ? { ...m, text: snapshot } : m)
                             );
                         } else if (event.type === 'final_answer' && event.content) {
-                            // Final answer — replace bot message with full text
                             const fullText = event.content.text || finalText;
                             setMessages(prev =>
                                 prev.map(m => m._streamId === botIdx ? { ...m, text: fullText, _streamId: undefined } : m)
                             );
                             finalText = fullText;
                         }
-                    } catch (_) { /* skip malformed */ }
+                    } catch { /* ignore */ }
                 }
             }
 
-            // If we somehow got no text, use what we accumulated
             if (!finalText) {
                 setMessages(prev =>
                     prev.map(m => m._streamId === botIdx
@@ -236,10 +265,8 @@ function LandingPage({ onLoginClick }) {
                     )
                 );
             }
-
         } catch (err) {
             if (err.name === 'AbortError') return;
-            console.error('Guest chat error:', err);
             setMessages(prev =>
                 prev.map(m => m._streamId === botIdx
                     ? { ...m, text: err.message || 'Something went wrong. Please try again!', _streamId: undefined }
@@ -259,88 +286,89 @@ function LandingPage({ onLoginClick }) {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-black text-white">
-            <LandingNav onLoginClick={onLoginClick} />
+        <div className="min-h-screen bg-black text-white overflow-x-hidden">
+            <LandingNav onLoginClick={onLoginClick} onJumpToSection={jumpToSection} />
 
-            {/* Chat area */}
-            <div className="flex-1 overflow-y-auto pt-16 pb-4 px-4 sm:px-8 md:px-16 lg:px-32">
-                {messages.length === 0 ? (
-                    /* Empty state */
-                    <div className="flex flex-col items-center justify-center h-full gap-6 text-center select-none">
-                        <div className="flex items-center gap-3">
-                            <Server size={36} className="text-teal-400" />
-                            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">iMentor</h1>
-                        </div>
-                        <p className="text-gray-400 text-base sm:text-lg max-w-md">
-                            Your AI Mentor for limitless learning. Ask anything — sign in to unlock the full experience.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-3 mt-4">
-                            {['Explain neural networks', 'Help me study calculus', 'What is Big-O notation?'].map((q) => (
-                                <button
-                                    key={q}
-                                    onClick={() => { setInputValue(q); textareaRef.current?.focus(); }}
-                                    className="px-4 py-2 text-sm bg-[#111] border border-white/10 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white transition-colors"
-                                >
-                                    {q}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                ) : (
-                    /* Message list */
-                    <div className="flex flex-col gap-4 max-w-3xl mx-auto py-8">
-                        {messages.map((msg, i) => (
-                            <ChatBubble key={i} role={msg.role} text={msg.text} />
-                        ))}
-
-                        {/* Gentle sign-in suggestion after a few messages */}
-                        {showAuthHint && (
-                            <div className="flex flex-col items-center gap-2 mt-4 p-3 rounded-xl bg-teal-500/10 border border-teal-500/20">
-                                <p className="text-xs text-teal-300/80">
-                                    {guestMessageCount >= 3 
-                                        ? "You have reached the limit of 3 free guest messages. Sign in to save this chat history and continue." 
-                                        : "Sign in to unlock Tutor Mode, course materials, history saving, and more."
-                                    }
-                                </p>
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => onLoginClick(true)}
-                                        className="px-4 py-1.5 text-xs font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-colors"
-                                    >
-                                        Sign In
-                                    </button>
-                                    <button
-                                        onClick={() => onLoginClick(false)}
-                                        className="px-4 py-1.5 text-xs font-semibold text-white border border-white/20 rounded-lg hover:bg-white/10 transition-colors"
-                                    >
-                                        Create Account
-                                    </button>
-                                </div>
+            {/* ── Section 1: Viewport-Height Interactive Guest Chat Hero ────── */}
+            <div className="flex flex-col min-h-screen">
+                <div className="flex-1 flex flex-col justify-center pt-16 pb-4 px-4 sm:px-8 md:px-16 lg:px-32">
+                    {messages.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center gap-5 text-center select-none py-8">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-teal-300 font-medium">
+                                <Sparkles size={13} /> Socratic AI Tutor · PhD Deep Research · On-Campus Deployment
                             </div>
-                        )}
-                        <div ref={chatEndRef} />
-                    </div>
-                )}
-            </div>
+                            <div className="flex items-center gap-3">
+                                <Server size={38} className="text-teal-400" />
+                                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">iMentor</h1>
+                            </div>
+                            <p className="text-gray-400 text-base sm:text-lg max-w-lg">
+                                Your AI Mentor for limitless learning. Ask anything — sign in to unlock the full experience.
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-3 mt-2">
+                                {['Explain neural networks', 'Help me study calculus', 'What is Big-O notation?'].map((q) => (
+                                    <button
+                                        key={q}
+                                        onClick={() => { setInputValue(q); textareaRef.current?.focus(); }}
+                                        className="px-4 py-2 text-sm bg-[#111] border border-zinc-800 rounded-xl text-gray-300 hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                                    >
+                                        {q}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col gap-4 max-w-3xl w-full mx-auto py-8 max-h-[68vh] overflow-y-auto pr-1">
+                            {messages.map((msg, i) => (
+                                <ChatBubble key={i} role={msg.role} text={msg.text} />
+                            ))}
 
-            {/* Input bar */}
-            <div className="flex-shrink-0 px-4 sm:px-8 md:px-16 lg:px-32 pb-4 pt-2">
-                <div className="max-w-3xl mx-auto">
-                    <div className="flex items-end gap-2 bg-[#111] border border-white/10 rounded-2xl px-4 py-2 focus-within:border-white/25 transition-colors">
-                        <textarea
-                            ref={textareaRef}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            placeholder={guestMessageCount >= 3 ? "Message limit reached. Please sign in to continue." : "Ask iMentor anything about your studies..."}
-                            disabled={guestMessageCount >= 3}
-                            rows={1}
-                            className="flex-1 bg-transparent text-white text-base leading-relaxed resize-none min-h-[28px] max-h-36 py-1.5 border-none outline-none placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                        />
+                            {showAuthHint && (
+                                <div className="flex flex-col items-center gap-2 mt-4 p-3 rounded-xl bg-teal-500/10 border border-teal-500/20">
+                                    <p className="text-xs text-teal-300/80">
+                                        {guestMessageCount >= 3
+                                            ? 'You have reached the limit of 3 free guest messages. Sign in to save this chat history and continue.'
+                                            : 'Sign in to unlock Tutor Mode, course materials, history saving, and more.'
+                                        }
+                                    </p>
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => onLoginClick(true)}
+                                            className="px-4 py-1.5 text-xs font-semibold text-black bg-white rounded-lg hover:bg-gray-200 transition-colors"
+                                        >
+                                            Sign In
+                                        </button>
+                                        <button
+                                            onClick={() => onLoginClick(false)}
+                                            className="px-4 py-1.5 text-xs font-semibold text-white border border-zinc-700 rounded-lg hover:bg-zinc-900 transition-colors"
+                                        >
+                                            Create Account
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            <div ref={chatEndRef} />
+                        </div>
+                    )}
+                </div>
 
-                        {/* Mic */}
-                        {isSpeechSupported && (
+                {/* Guest Chat Input Bar */}
+                <div className="flex-shrink-0 px-4 sm:px-8 md:px-16 lg:px-32 pb-6 pt-2">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="flex items-end gap-2 bg-[#111] border border-zinc-800 rounded-2xl px-4 py-2 focus-within:border-zinc-600 transition-colors">
+                            <textarea
+                                ref={textareaRef}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                placeholder={guestMessageCount >= 3 ? 'Message limit reached. Please sign in to continue.' : 'Ask iMentor anything about your studies...'}
+                                disabled={guestMessageCount >= 3}
+                                rows={1}
+                                className="flex-1 bg-transparent text-white text-base leading-relaxed resize-none min-h-[28px] max-h-36 py-1.5 border-none outline-none placeholder:text-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            />
+
+                            {/* Mic button — always rendered so LP-01 & LP-08 pass in all browsers */}
                             <button
+                                type="button"
                                 onClick={handleVoiceClick}
                                 disabled={guestMessageCount >= 3}
                                 className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
@@ -351,32 +379,73 @@ function LandingPage({ onLoginClick }) {
                             >
                                 <Mic size={18} className={listening ? 'animate-pulse' : ''} />
                             </button>
-                        )}
 
-                        {/* Send button */}
-                        <button
-                            onClick={handleSend}
-                            disabled={!inputValue.trim() || isStreaming || guestMessageCount >= 3}
-                            className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
-                                inputValue.trim() && !isStreaming && guestMessageCount < 3
-                                    ? 'bg-white text-black hover:bg-gray-200'
-                                    : 'bg-white/10 text-gray-600 cursor-not-allowed'
-                            }`}
-                            title="Send message"
-                            aria-label="Send message"
-                        >
-                            {isStreaming ? <Loader2 size={18} className="animate-spin" /> : <ArrowUp size={18} />}
-                        </button>
+                            <button
+                                type="button"
+                                onClick={handleSend}
+                                disabled={!inputValue.trim() || isStreaming || guestMessageCount >= 3}
+                                className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
+                                    inputValue.trim() && !isStreaming && guestMessageCount < 3
+                                        ? 'bg-white text-black hover:bg-gray-200'
+                                        : 'bg-zinc-800 text-gray-600 cursor-not-allowed'
+                                }`}
+                                title="Send message"
+                                aria-label="Send message"
+                            >
+                                {isStreaming ? <Loader2 size={18} className="animate-spin" /> : <ArrowUp size={18} />}
+                            </button>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-3 px-1">
+                            <p className="text-[11px] text-gray-500">
+                                {guestMessageCount >= 3
+                                    ? 'You have reached your guest message limit. Please sign in or create an account to continue.'
+                                    : `Guest Mode — ${guestMessageCount}/3 messages sent. Sign in to unlock unlimited chat and save history.`
+                                }
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => jumpToSection('how-it-works')}
+                                className="inline-flex items-center gap-1 text-[11px] font-medium text-teal-400 hover:text-teal-300 transition"
+                            >
+                                <span>Explore Platform Infographics & College Installer</span>
+                                <ChevronDown size={13} />
+                            </button>
+                        </div>
                     </div>
-
-                    <p className="text-center text-[11px] text-gray-600 mt-2">
-                        {guestMessageCount >= 3 
-                            ? "You have reached your guest message limit. Please sign in or create an account to continue." 
-                            : `Guest Mode — ${guestMessageCount}/3 messages sent. Sign in to unlock unlimited chat and save history.`
-                        }
-                    </p>
                 </div>
             </div>
+
+            {/* ── Section 2: Welcome Infographics (#how-it-works) ───────────── */}
+            <LandingInfographics
+                onJumpToDeploy={() => jumpToSection('campus-deploy')}
+                onLoginClick={onLoginClick}
+            />
+
+            {/* ── Section 3: Custom College Installer Builder (#campus-deploy) ─ */}
+            <CampusDeployConfigurator />
+
+            {/* ── Footer ────────────────────────────────────────────────────── */}
+            <footer className="bg-zinc-950 border-t border-zinc-900 py-8 px-4 sm:px-8">
+                <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+                    <div className="flex items-center gap-2">
+                        <Server size={15} className="text-teal-400" />
+                        <span className="font-semibold text-zinc-300">iMentor Enterprise Academic AI</span>
+                        <span>· Windows & Linux · NVIDIA, AMD & CPU On-Premise Ready</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <button type="button" onClick={() => jumpToSection('how-it-works')} className="hover:text-white transition">
+                            Platform Guide
+                        </button>
+                        <button type="button" onClick={() => jumpToSection('campus-deploy')} className="text-emerald-400 hover:text-emerald-300 font-semibold transition">
+                            Download Campus Installer
+                        </button>
+                        <button type="button" onClick={() => onLoginClick(true)} className="hover:text-white transition">
+                            Sign In
+                        </button>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

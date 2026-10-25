@@ -20,7 +20,7 @@ import {
     Brain,
     Sparkles,
     Type,
-    Code2, Trophy
+    Code2, Trophy, ShieldCheck
 } from 'lucide-react';
 import ToolsModal from '../tools/ToolsModal.jsx';
 import LevelBadge from '../gamification/LevelBadge.jsx';
@@ -184,7 +184,7 @@ function TopNav({
 
     const navigate = useNavigate();
     const { level, totalXP, loading: levelLoading } = useUserLevel(null, xpRefreshCounter);
-    const { selectedLLM, switchLLM, tutorMode, setLearningMode } = useAppState();
+    const { selectedLLM, switchLLM, tutorMode, setLearningMode, isAdminSessionActive } = useAppState();
 
     const handleEnableTutorMode = () => navigate('/tutor');
 

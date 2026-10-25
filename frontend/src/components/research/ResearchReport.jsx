@@ -158,14 +158,8 @@ const ResearchReport = ({ researchReport, sources: propSources, reportId: propRe
         'What are the primary real-time deployment and hardware latency bottlenecks reported?'
     ]);
 
-    if (!researchReport) return null;
-
-    const summary = researchReport.executiveSummary || {};
-    const crossAnalysis = researchReport.crossSourceAnalysis || {};
-    const quantSummary = researchReport.quantitativeSummary || {};
-    const risks = researchReport.riskAssessment || {};
-    const evidenceProfile = researchReport.evidenceProfile || {};
     const comparisonMatrix = useMemo(() => {
+        if (!researchReport) return [];
         if (Array.isArray(liveMatrixOverrides) && liveMatrixOverrides.length > 0) return liveMatrixOverrides;
         if (Array.isArray(researchReport.comparisonMatrix) && researchReport.comparisonMatrix.length > 0) {
             return researchReport.comparisonMatrix;
@@ -184,13 +178,7 @@ const ResearchReport = ({ researchReport, sources: propSources, reportId: propRe
             doi: s.doi,
             url: s.openAccessUrl || s.url
         }));
-    }, [liveMatrixOverrides, researchReport.comparisonMatrix, allSources]);
-
-    const phdDirections = Array.isArray(researchReport.phdResearchDirections) ? researchReport.phdResearchDirections : [];
-    const blueprint = researchReport.searchStrategyBlueprint || {};
-    const prismaStats = researchReport.prismaStats || evidenceProfile.prismaStats || {};
-    const fullTextCount = allSources.filter(s => s.hasFullText).length || evidenceProfile.fullTextSources || 0;
-    const openAccessCount = allSources.filter(s => s.isOpenAccess || s.openAccessUrl || s.pdf_url).length || evidenceProfile.openAccessSources || 0;
+    }, [liveMatrixOverrides, researchReport, allSources]);
 
     const filteredMatrix = useMemo(() => {
         if (!matrixSearch.trim()) return comparisonMatrix;
@@ -203,6 +191,19 @@ const ResearchReport = ({ researchReport, sources: propSources, reportId: propRe
             String(r.keyMetrics || '').toLowerCase().includes(q)
         );
     }, [comparisonMatrix, matrixSearch]);
+
+    if (!researchReport) return null;
+
+    const summary = researchReport.executiveSummary || {};
+    const crossAnalysis = researchReport.crossSourceAnalysis || {};
+    const quantSummary = researchReport.quantitativeSummary || {};
+    const risks = researchReport.riskAssessment || {};
+    const evidenceProfile = researchReport.evidenceProfile || {};
+    const phdDirections = Array.isArray(researchReport.phdResearchDirections) ? researchReport.phdResearchDirections : [];
+    const blueprint = researchReport.searchStrategyBlueprint || {};
+    const prismaStats = researchReport.prismaStats || evidenceProfile.prismaStats || {};
+    const fullTextCount = allSources.filter(s => s.hasFullText).length || evidenceProfile.fullTextSources || 0;
+    const openAccessCount = allSources.filter(s => s.isOpenAccess || s.openAccessUrl || s.pdf_url).length || evidenceProfile.openAccessSources || 0;
 
 
     const handleAskCorpus = async (qOverride = null) => {
